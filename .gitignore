@@ -1,6 +1,13 @@
 dist/
 build/
-*.egg-info
+*.egg-info/
 __pycache__/
 *.pyc
+.venv/
+.env
+.python-version
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.DS_Store
 test/
