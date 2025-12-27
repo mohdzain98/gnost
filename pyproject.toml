@@ -1,0 +1,17 @@
+[project]
+name = "gnost"
+version = "0.1.0"
+description = "GNOST — Code Knowledge Scanner and LOC analyzer"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [
+  { name="Mohd Zain", email = "zainmohd1998@gmail.com" }
+]
+
+dependencies = [
+    "rich"
+]
+
+[project.scripts]
+gnost = "gnost.cli:main"
