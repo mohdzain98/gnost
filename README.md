@@ -1,7 +1,7 @@
 # GNOST — Codebase Knowledge
-![Status](https://img.shields.io/badge/status-v0.1.0--pre--release-yellow)
-![License](https://img.shields.io/badge/license-MIT-blue)
-
+![PyPI](https://img.shields.io/pypi/v/gnost)
+![Python](https://img.shields.io/pypi/pyversions/gnost)
+![License](https://img.shields.io/pypi/l/gnost)
 
 
 GNOST helps developers understand unfamiliar codebases by automatically identifying **entry points**, **execution flow**, and **core logic**.

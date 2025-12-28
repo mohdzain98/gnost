@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "GNOST — Codebase Knowledge"
 readme = "README.md"
 requires-python = ">=3.8"
-license = { text = "MIT" }
+license = { file = "LICENSE" }
 authors = [
   { name="Mohd Zain", email = "zainmohd1998@gmail.com" }
 ]
@@ -13,6 +13,20 @@ dependencies = [
     "rich",
     "tqdm"
 ]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Documentation = "https://gnost.readthedocs.io"
+Source = "https://github.com/mohdzain98/gnost"
+Issues = "https://github.com/mohdzain98/gnost/issues"
 
 [project.scripts]
 gnost = "gnost.cli:main"
