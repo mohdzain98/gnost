@@ -1,18 +1,144 @@
-from rich.table import Table
-from rich.console import Console
-from gnost.config.languages import LANGUAGES
+from gnost.scanner.models import ScanResult
+from gnost.core.flow import FlowResult
+from gnost.core.graph import DependencyGraph
+from gnost.utils.printer import Printer
+from gnost.core.ranker import HotspotRanker
 
-console = Console()
 
+class SummaryReporter:
+    """
+    Generates a human-readable onboarding summary.
+    """
 
-def render(data):
-    table = Table(title="GNOST — Summary")
+    def __init__(
+        self,
+        scan: ScanResult,
+        flow: FlowResult,
+        graph: DependencyGraph,
+        printer: Printer | None = None,
+    ):
+        self.scan = scan
+        self.flow = flow
+        self.graph = graph
+        self.printer = printer or Printer()
 
-    table.add_column("Language")
-    table.add_column("Files", justify="right")
-    table.add_column("LOC", justify="right")
+    # -------------------------
+    # Public API
+    # -------------------------
 
-    for ext, stats in data["by_language"].items():
-        table.add_row(LANGUAGES[ext]["name"], str(stats["files"]), str(stats["loc"]))
+    def render(self):
+        self._header()
+        self._project_overview()
+        self._entry_points()
+        self._execution_flow()
+        self._hotspots()
+        self._reading_guide()
 
-    console.print(table)
+    # -------------------------
+    # Sections
+    # -------------------------
+
+    def _header(self):
+        self.printer.title("GNOST — Project Onboarding Summary")
+
+    def _project_overview(self):
+        self.printer.section("Project Overview")
+
+        languages = ", ".join(
+            f"{lang} ({count})" for lang, count in self.scan.languages.items()
+        )
+
+        self.printer.kv("Root", self.scan.root)
+        self.printer.kv("Languages", languages or "Unknown")
+        self.printer.kv("Framework", self.scan.framework or "Not detected")
+        self.printer.newline()
+
+    def _entry_points(self):
+        self.printer.section("Entry Points")
+
+        if not self.flow.entry_points:
+            self.printer.text("No explicit entry point detected.")
+            self.printer.newline()
+            return
+
+        for ep in self.flow.entry_points:
+            self.printer.bullet(f"{ep.file}  ({ep.reason})")
+
+        self.printer.newline()
+
+    def _execution_flow(self):
+        self.printer.section("Execution Flow (High Level)")
+
+        if not self.flow.paths:
+            self.printer.text("Unable to infer execution flow.")
+            self.printer.newline()
+            return
+
+        # Show only top N paths (avoid noise)
+        MAX_PATHS = 3
+
+        for i, path in enumerate(self.flow.paths[:MAX_PATHS], start=1):
+            chain = " → ".join(self._shorten(p) for p in path.path)
+            self.printer.bullet(chain)
+
+        if len(self.flow.paths) > MAX_PATHS:
+            self.printer.text(f"... and {len(self.flow.paths) - MAX_PATHS} more paths")
+
+        self.printer.newline()
+
+    def _reading_guide(self):
+        self.printer.section("Recommended Reading Order")
+
+        layers = self.flow.layers
+
+        if layers.get("entry"):
+            self.printer.subsection("Start Here")
+            for f in sorted(layers["entry"]):
+                self.printer.bullet(self._shorten(f))
+
+        if layers.get("core"):
+            self.printer.subsection("Core Logic")
+            for f in sorted(layers["core"]):
+                self.printer.bullet(self._shorten(f))
+
+        if layers.get("leaf"):
+            self.printer.subsection("Supporting / Leaf Code")
+            for f in sorted(layers["leaf"]):
+                self.printer.bullet(self._shorten(f))
+
+        self.printer.newline()
+
+    def _hotspots(self):
+        self.printer.section("Hotspots (Most Important Files)")
+
+        # Build ranking
+        ranker = HotspotRanker(
+            graph=self.graph,
+            flow=self.flow,
+        )
+
+        # If graph is not directly available, pass it explicitly (see note below)
+        hotspots = ranker.rank(top=5)
+
+        if not hotspots:
+            self.printer.text("No significant hotspots detected.")
+            self.printer.newline()
+            return
+
+        for h in hotspots:
+            self.printer.bullet(
+                f"{self._shorten(h.file)} "
+                f"(score={h.score}, layer={h.layer}, fan-in={h.fan_in})"
+            )
+
+        self.printer.newline()
+
+    # -------------------------
+    # Helpers
+    # -------------------------
+
+    def _shorten(self, path: str) -> str:
+        """
+        Shorten long paths for readability.
+        """
+        return path.replace(self.scan.root + "/", "")
