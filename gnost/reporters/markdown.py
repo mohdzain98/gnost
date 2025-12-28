@@ -52,7 +52,7 @@ class MarkdownReporter:
 
     def _header(self) -> str:
         return (
-            f"# {self.scan.root.split("/")[-1]} — Project Onboarding Guide\n\n"
+            f"# {self.scan.root.split('/')[-1]} — Project Onboarding Guide\n\n"
             "_Generated automatically by GNOST._"
         )
 
