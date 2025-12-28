@@ -52,6 +52,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Output format is considered stable for 0.x usage
 - Designed for onboarding and exploration, not security auditing
 
+## [0.1.1] – Metadata & Packaging Fixes
+
+### Fixed
+- Added Python version classifiers for PyPI
+- Declared project license metadata
+- Added project URLs (Homepage, Documentation, Source, Issues)
+
+### Notes
+- No functional changes
+
 ## [Unreleased]
 
 ### Planned
