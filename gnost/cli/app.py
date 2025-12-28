@@ -1,7 +1,8 @@
 import argparse
 from gnost import __version__
 from gnost.scanner.engine import scan
-from gnost.reporters import summary, stats, folders, files
+from gnost.reporters import stats, folders, files, loc_summary
+from gnost.cli.commands.onboard import run as onboard_run
 
 
 def main():
@@ -15,6 +16,10 @@ def main():
             "  summary|stats|folders|files:\n"
             "    --include  Comma-separated folder names to include\n"
             "    --exclude  Comma-separated folder names to exclude\n"
+            "    --progress Show a progress bar while scanning\n"
+            "  onboard:\n"
+            "    --progress Show a progress bar while onboarding\n"
+            "    --mermaid  Generate only Mermaid flow diagram\n"
             "  files:\n"
             "    --top      Number of files to show (default: 5)\n"
             "Use `gnost <command> --help` for full command options."
@@ -39,6 +44,11 @@ def main():
         "--include",
         help="Comma-separated folder names to include (only these are scanned)",
     )
+    base.add_argument(
+        "--progress",
+        action="store_true",
+        help="Show a progress bar while scanning",
+    )
 
     sub.add_parser("summary", parents=[base], help="Show a summary table")
     sub.add_parser("stats", parents=[base], help="Show detailed stats per language")
@@ -55,6 +65,18 @@ def main():
     )
 
     sub.add_parser("version", help="Display gnost version")
+    onboard = sub.add_parser("onboard", help="Onboard a new codebase")
+    onboard.add_argument("path", nargs="?", default=".")
+    onboard.add_argument(
+        "--mermaid",
+        action="store_true",
+        help="Generate only Mermaid flow diagram (FLOW.mmd)",
+    )
+    onboard.add_argument(
+        "--progress",
+        action="store_true",
+        help="Show a progress bar while onboarding",
+    )
 
     args = parser.parse_args()
 
@@ -62,10 +84,18 @@ def main():
         print(f"gnost {__version__}")
         return
 
+    if args.cmd == "onboard":
+        onboard_run(
+            args.path,
+            diagram_only=getattr(args, "mermaid", False),
+            progress=getattr(args, "progress", False),
+        )
+        return
+
     include = args.include.split(",") if args.include else []
     exclude = args.exclude.split(",") if args.exclude else []
 
-    data = scan(args.path, include, exclude)
+    data = scan(args.path, include, exclude, progress=args.progress)
 
     if args.cmd == "stats":
         stats.render(data)
@@ -74,7 +104,7 @@ def main():
     elif args.cmd == "files":
         files.render(data, args.top)
     else:
-        summary.render(data)
+        loc_summary.render(data)
 
 
 if __name__ == "__main__":

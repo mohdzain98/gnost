@@ -3,6 +3,7 @@ from rich.table import Table
 
 console = Console()
 
+
 def print_summary(results, file_count):
     total_loc = sum(results.values())
     table = Table(title="GNOST — Code Knowledge Scanner")
@@ -14,12 +15,32 @@ def print_summary(results, file_count):
 
     for ext, loc in results.items():
         pct = (loc / total_loc * 100) if total_loc else 0
-        table.add_row(
-            ext.upper(),
-            str(file_count.get(ext, 0)),
-            str(loc),
-            f"{pct:.2f}%"
-        )
+        table.add_row(ext.upper(), str(file_count.get(ext, 0)), str(loc), f"{pct:.2f}%")
 
     console.print(table)
     console.print(f"[bold green]Total LOC: {total_loc}[/bold green]")
+
+
+class Printer:
+    def title(self, text: str):
+        print(f"\n{text}")
+        print("=" * len(text))
+
+    def section(self, text: str):
+        print(f"\n{text}")
+        print("-" * len(text))
+
+    def subsection(self, text: str):
+        print(f"\n{text}")
+
+    def kv(self, key: str, value: str):
+        print(f"{key}: {value}")
+
+    def bullet(self, text: str):
+        print(f"  • {text}")
+
+    def text(self, text: str):
+        print(text)
+
+    def newline(self):
+        print()

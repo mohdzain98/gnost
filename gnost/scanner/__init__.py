@@ -1,3 +1,4 @@
-from .engine import scan
+from .engine import ScannerEngine
+from .loc import scan
 
-__all__ = ["scan"]
+__all__ = ["scan", "ScannerEngine"]
