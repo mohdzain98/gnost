@@ -141,7 +141,7 @@ class MarkdownReporter:
             "To understand specific scenarios, see the entry-based execution paths:\n\n"
             "- 📍 [Entry-based Paths](flow/entry-paths.md)\n\n"
             "- 🧭 [folder-based Paths](flow/folder-paths.md)\n\n"
-            "(Complete system flow: [flow/flow-full.md](flow/flow-full.md))\n"
+            "(Complete system flow: [flow/flow-full.md](flow/FLOW-full.md))\n"
         )
 
     def _mermaid_flow(self) -> str:
@@ -163,8 +163,8 @@ class MarkdownReporter:
             f"{overview_diagram}\n\n"
             "> 📌 This diagram shows the high-level execution flow.<br>"
             "For the complete flow, see "
-            "[**flow/flow-full.md**](./flow/flow-full.md)<br>"
-            "Raw Mermaid: [flow/flow-full.mmd](./flow/flow-full.mmd)"
+            "[**flow/flow-full.md**](./flow/FLOW-full.md)<br>"
+            "Raw Mermaid: [flow/flow-full.mmd](./flow/FLOW-full.mmd)"
         )
 
     def _short_path(self, path: str, depth: int = 2) -> str:
