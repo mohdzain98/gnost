@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "gnost"
 version = "0.2.0"
@@ -31,3 +35,6 @@ Changelog = "https://github.com/mohdzain98/gnost/blob/main/CHANGELOG.md"
 
 [project.scripts]
 gnost = "gnost.cli:main"
+
+[tool.setuptools]
+packages = ["gnost"]
