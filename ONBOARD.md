@@ -16,11 +16,11 @@ _Generated automatically by <a href='https://gnost.readthedocs.io'>GNOST</a>._
 
 ## Execution Flow (High Level)
 
-- `gnost/cli/app.py` → `gnost/cli/commands/onboard.py` → `gnost/languages/typescript.py` → `gnost/languages/javascript.py` → `gnost/languages/base.py`
-- `gnost/cli/app.py` → `gnost/cli/commands/onboard.py` → `gnost/core/insight_builder.py` → `gnost/scanner/models.py` → `gnost/languages/base.py`
-- `gnost/cli/app.py` → `gnost/cli/commands/onboard.py` → `gnost/core/insight_builder.py` → `gnost/core/flow.py` → `gnost/languages/base.py`
-- `gnost/cli/app.py` → `gnost/cli/commands/onboard.py` → `gnost/core/insight_builder.py` → `gnost/core/flow.py` → `gnost/scanner/models.py` → `gnost/languages/base.py`
-- `gnost/cli/app.py` → `gnost/cli/commands/onboard.py` → `gnost/core/insight_builder.py` → `gnost/core/flow.py` → `gnost/core/graph.py` → `gnost/scanner/models.py` → `gnost/languages/base.py`
+- `gnost/languages/python.py` → `gnost/languages/base.py`
+- `gnost/cli/app.py` → `gnost/scanner/engine.py` → `gnost/languages/base.py`
+- `gnost/cli/app.py` → `gnost/scanner/engine.py` → `gnost/scanner/models.py` → `gnost/languages/base.py`
+- `gnost/cli/app.py` → `gnost/scanner/engine.py` → `gnost/scanner/filters.py`
+- `gnost/cli/app.py` → `gnost/scanner/engine.py` → `gnost/scanner/loc.py` → `gnost/utils/progress.py`
 
 _(48 additional paths omitted for clarity.)_
 
@@ -28,41 +28,41 @@ _(48 additional paths omitted for clarity.)_
 
 ```mermaid
 flowchart TD
-  gnost_cli_app_py --> gnost_cli_commands_onboard_py
-  gnost_cli_commands_onboard_py --> gnost_languages_javascript_py
-  gnost_core_flow_py --> gnost_core_graph_py
-  gnost_cli_commands_onboard_py --> gnost_reporters_markdown_py
-  gnost_reporters_summary_py --> gnost_scanner_models_py
-  gnost_cli_commands_onboard_py --> gnost_reporters_summary_py
-  gnost_cli_commands_onboard_py --> gnost_languages_python_py
-  gnost_reporters_summary_py --> gnost_core_flow_py
-  gnost_cli_commands_onboard_py --> gnost_languages_typescript_py
-  gnost_core_ranker_py --> gnost_core_graph_py
-  gnost_languages_typescript_py --> gnost_languages_javascript_py
-  gnost_cli_app_py --> gnost_scanner_engine_py
-  gnost_cli_commands_onboard_py --> gnost_core_insight_builder_py
-  gnost_reporters_summary_py --> gnost_core_ranker_py
-  gnost_cli_commands_onboard_py --> gnost_core_flow_py
-  gnost_cli_commands_onboard_py --> gnost_reporters_mermaid_py
-  gnost_core_insight_builder_py --> gnost_core_graph_py
-  gnost_scanner_engine_py --> gnost_scanner_models_py
-  gnost_core_flow_py --> gnost_scanner_models_py
-  gnost_scanner_engine_py --> gnost_scanner_loc_py
-  gnost_cli_commands_onboard_py --> gnost_scanner_engine_py
-  gnost_reporters_markdown_py --> gnost_scanner_models_py
-  gnost_cli_commands_onboard_py --> gnost_languages_java_py
-  gnost_reporters_summary_py --> gnost_core_graph_py
-  gnost_reporters_markdown_py --> gnost_core_flow_py
-  gnost_core_ranker_py --> gnost_core_flow_py
-  gnost_reporters_markdown_py --> gnost_reporters_mermaid_py
-  gnost_cli_commands_onboard_py --> gnost_core_graph_py
-  gnost_core_insight_builder_py --> gnost_scanner_models_py
   gnost_core_insight_builder_py --> gnost_core_flow_py
-  gnost_core_graph_py --> gnost_scanner_models_py
+  gnost_cli_commands_onboard_py --> gnost_reporters_summary_py
+  gnost_cli_commands_onboard_py --> gnost_languages_java_py
+  gnost_scanner_engine_py --> gnost_scanner_loc_py
+  gnost_core_insight_builder_py --> gnost_scanner_models_py
+  gnost_cli_app_py --> gnost_scanner_engine_py
   gnost_reporters_mermaid_py --> gnost_core_flow_py
+  gnost_reporters_markdown_py --> gnost_reporters_mermaid_py
+  gnost_cli_commands_onboard_py --> gnost_core_flow_py
+  gnost_reporters_summary_py --> gnost_core_ranker_py
+  gnost_reporters_summary_py --> gnost_core_graph_py
+  gnost_reporters_summary_py --> gnost_core_flow_py
+  gnost_cli_commands_onboard_py --> gnost_languages_javascript_py
+  gnost_reporters_summary_py --> gnost_scanner_models_py
+  gnost_cli_commands_onboard_py --> gnost_reporters_mermaid_py
+  gnost_cli_app_py --> gnost_cli_commands_onboard_py
+  gnost_core_graph_py --> gnost_scanner_models_py
+  gnost_cli_commands_onboard_py --> gnost_core_insight_builder_py
+  gnost_scanner_engine_py --> gnost_scanner_models_py
+  gnost_core_flow_py --> gnost_core_graph_py
+  gnost_cli_commands_onboard_py --> gnost_languages_python_py
+  gnost_cli_commands_onboard_py --> gnost_languages_typescript_py
+  gnost_cli_commands_onboard_py --> gnost_reporters_markdown_py
+  gnost_cli_commands_onboard_py --> gnost_scanner_engine_py
+  gnost_core_ranker_py --> gnost_core_graph_py
+  gnost_reporters_markdown_py --> gnost_core_flow_py
+  gnost_core_flow_py --> gnost_scanner_models_py
+  gnost_core_insight_builder_py --> gnost_core_graph_py
+  gnost_reporters_markdown_py --> gnost_scanner_models_py
+  gnost_languages_typescript_py --> gnost_languages_javascript_py
+  gnost_core_ranker_py --> gnost_core_flow_py
+  gnost_cli_commands_onboard_py --> gnost_core_graph_py
 ```
 
-> 📌 This diagram shows the high-level execution flow.<br>For the complete flow, see [**flow/flow-full.md**](./flow/flow-full.md)<br>Raw Mermaid: [flow/flow-full.mmd](./flow/flow-full.mmd)
+> 📌 This diagram shows the high-level execution flow.<br>For the complete flow, see [**flow/flow-full.md**](./flow/FLOW-full.md)<br>Raw Mermaid: [flow/flow-full.mmd](./flow/FLOW-full.mmd)
 
 ## Recommended Reading Order
 
@@ -151,4 +151,4 @@ To understand specific scenarios, see the entry-based execution paths:
 
 - 🧭 [folder-based Paths](flow/folder-paths.md)
 
-(Complete system flow: [flow/flow-full.md](flow/flow-full.md))
+(Complete system flow: [flow/flow-full.md](flow/FLOW-full.md))
