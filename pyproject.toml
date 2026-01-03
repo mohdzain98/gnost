@@ -1,6 +1,6 @@
 [project]
 name = "gnost"
-version = "0.1.2"
+version = "0.2.0"
 description = "GNOST — Codebase Knowledge"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -27,6 +27,7 @@ classifiers = [
 Documentation = "https://gnost.readthedocs.io"
 Source = "https://github.com/mohdzain98/gnost"
 Issues = "https://github.com/mohdzain98/gnost/issues"
+Changelog = "https://github.com/mohdzain98/gnost/blob/main/CHANGELOG.md"
 
 [project.scripts]
 gnost = "gnost.cli:main"

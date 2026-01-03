@@ -11,6 +11,4 @@ __pycache__/
 .mypy_cache/
 .DS_Store
 test/
-flow.mmd
-ONBOARD.md
 setup.md
