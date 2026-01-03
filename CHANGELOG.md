@@ -6,6 +6,51 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
+## [0.2.0] — Human-First Onboarding Insights
+
+### Added
+- **Languages**
+  - Support for JSX and TSX as JavaScript and TypeScript respectively
+
+- **First Files to Read**
+  - Automatically highlights the most important files to start with
+  - Based on entry points, execution flow, and dependency influence
+
+- **Caution Areas**
+  - Identifies high-impact and tightly coupled files
+  - Warns about areas that require extra care when modifying
+
+- **Onboarding Insights Engine**
+  - New analysis layer (InsightBuilder) producing structured onboarding insights
+  - Decouples analysis from rendering for future extensibility
+
+- **Improved Mermaid Flow Diagrams**
+  - Added layered diagrams (Entry / Core / Leaf)
+  - Support for execution depth limiting
+  - Support for combined path diagrams for grouped execution flows
+  - Cleaner node naming and reduced visual noise
+
+### Improved
+- Onboarding Output Quality
+- Cleaner, more readable terminal summaries
+- Shortened file paths for better CLI readability
+
+### Markdown Onboarding Documentation
+- ONBOARD.md now includes human-readable onboarding guidance
+- Structured sections for reading order, architecture, and risks
+
+
+## [0.1.1] – Metadata & Packaging Fixes
+
+### Fixed
+- Added Python version classifiers for PyPI
+- Declared project license metadata
+- Added project URLs (Homepage, Documentation, Source, Issues)
+
+### Notes
+- No functional changes
+
+---
 
 ## [0.1.0] – Initial Public Release
 **Release name:** Codebase Onboarding Intelligence
@@ -37,8 +82,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Supported Languages
 - Python (.py)
-- JavaScript (.js)
-- TypeScript (.ts)
+- JavaScript (.js, .jsx)
+- TypeScript (.ts, .tsx)
 - Java (.java)
 
 ### Known Limitations
@@ -52,23 +97,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Output format is considered stable for 0.x usage
 - Designed for onboarding and exploration, not security auditing
 
-## [0.1.1] – Metadata & Packaging Fixes
+## Planned v0.3.0 — Deeper Code Intelligence [Unreleased]
+- **Planned**
+- Circular Dependency Detection
+  - Identify and report cyclic dependencies between modules
 
-### Fixed
-- Added Python version classifiers for PyPI
-- Declared project license metadata
-- Added project URLs (Homepage, Documentation, Source, Issues)
+- **LOC-Based Risk Analysis**
+  - Detect large and complex files using lines-of-code metrics
 
-### Notes
-- No functional changes
+- **AST-Aware Flow Analysis**
+  - Language-specific execution flow using AST parsing (Python, JS/TS)
 
-## [Unreleased]
+- **Advanced Mermaid Enhancements**
+  - Smarter diagram simplification for large codebases
+  - Path-level annotations and divergence markers
 
-### Planned
+- **Advanced Caution Scoring**
+  - More accurate severity ranking using multiple signals
 
-- Hotspot coloring in Mermaid diagrams
-- JavaScript/TypeScript framework depth improvements
-- GitHub Action for auto-generated onboarding docs
-- Tree-sitter based AST parsing
+- **CLI Enhancements**
+  - --insights-only mode
+  - Configurable thresholds for caution detection
 
-```GNOST is in early development v0.1.0. APIs and behavior may evolve.```
+- **Export & Integration**
+  - JSON export of onboarding insights
+  - Better integration with documentation and CI workflows
+
+```GNOST is in early development v0.2.0. APIs and behavior may evolve.```

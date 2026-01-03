@@ -2,7 +2,12 @@ import os
 from typing import Dict, List
 
 from gnost.languages.base import LanguageAdapter
-from gnost.scanner.filters import is_virtualenv_dir, should_ignore
+from gnost.scanner.filters import (
+    is_gitignored,
+    is_virtualenv_dir,
+    load_gitignore,
+    should_ignore,
+)
 from gnost.scanner.loc import scan
 from gnost.scanner.models import FileInfo, ScanResult
 
@@ -21,7 +26,8 @@ class ScannerEngine:
     # -------------------------
 
     def scan(self, root: str) -> ScanResult:
-        files = self._discover_files(root)
+        gitignore = load_gitignore(root)
+        files = self._discover_files(root, gitignore)
 
         detected_files: List[FileInfo] = []
         entry_points = []
@@ -71,19 +77,24 @@ class ScannerEngine:
     # Internal Helpers
     # -------------------------
 
-    def _discover_files(self, root: str) -> List[str]:
+    def _discover_files(self, root: str, gitignore: list[str]) -> List[str]:
         collected = []
 
         for dirpath, dirnames, filenames in os.walk(root):
             dirnames[:] = [
-                d for d in dirnames if not is_virtualenv_dir(os.path.join(dirpath, d))
+                d
+                for d in dirnames
+                if not is_virtualenv_dir(os.path.join(dirpath, d))
+                and not is_gitignored(os.path.join(dirpath, d), root, gitignore)
             ]
-            if should_ignore(dirpath):
+            if should_ignore(dirpath) or is_gitignored(dirpath, root, gitignore):
                 continue
 
             for file in filenames:
                 full_path = os.path.join(dirpath, file)
-                if should_ignore(full_path):
+                if should_ignore(full_path) or is_gitignored(
+                    full_path, root, gitignore
+                ):
                     continue
                 collected.append(full_path)
 

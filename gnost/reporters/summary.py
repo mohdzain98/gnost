@@ -3,6 +3,7 @@ from gnost.core.flow import FlowResult
 from gnost.core.graph import DependencyGraph
 from gnost.utils.printer import Printer
 from gnost.core.ranker import HotspotRanker
+from gnost.models.insights import OnboardingInsights
 
 
 class SummaryReporter:
@@ -16,10 +17,12 @@ class SummaryReporter:
         flow: FlowResult,
         graph: DependencyGraph,
         printer: Printer | None = None,
+        insights: OnboardingInsights = None,
     ):
         self.scan = scan
         self.flow = flow
         self.graph = graph
+        self.insights = insights
         self.printer = printer or Printer()
 
     # -------------------------
@@ -33,6 +36,10 @@ class SummaryReporter:
         self._execution_flow()
         self._hotspots()
         self._reading_guide()
+
+        if self.insights:
+            self._first_files()
+            self._caution_areas()
 
     # -------------------------
     # Sections
@@ -130,6 +137,38 @@ class SummaryReporter:
                 f"{self._shorten(h.file)} "
                 f"(score={h.score}, layer={h.layer}, fan-in={h.fan_in})"
             )
+
+        self.printer.newline()
+
+    def _first_files(self):
+        self.printer.section("First Files to Read")
+
+        for item in self.insights.first_files[:5]:
+            short = self._short_path(item.path, depth=3)
+            self.printer.bullet(f"{short} — {item.reason}")
+
+        self.printer.newline()
+
+    def _short_path(self, path: str, depth: int = 2) -> str:
+        """
+        Shorten a file path to the last `depth` components.
+        Example:
+        gnost/core/flow.py  → core/flow.py
+        """
+        parts = path.replace("\\", "/").split("/")
+        return "/".join(parts[-depth:])
+
+    def _caution_areas(self):
+        if not self.insights.caution_areas:
+            return
+
+        self.printer.section("Caution Areas")
+
+        for c in self.insights.caution_areas[:5]:
+            short = self._short_path(c.path, depth=3)
+            sev = c.severity
+            self.printer.bullet(f"{short} [{c.category.value}] severity: {sev}")
+            self.printer.text(f"  {c.description}")
 
         self.printer.newline()
 

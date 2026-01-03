@@ -9,19 +9,22 @@ def main():
     parser = argparse.ArgumentParser(
         prog="gnost",
         usage="gnost [command]",
-        description="GNOST — Code Knowledge Scanner",
+        description="GNOST — Codebase Knowledge",
         formatter_class=argparse.RawTextHelpFormatter,
         epilog=(
             "Command Options:\n"
             "  summary|stats|folders|files:\n"
-            "    --include  Comma-separated folder names to include\n"
-            "    --exclude  Comma-separated folder names to exclude\n"
-            "    --progress Show a progress bar while scanning\n"
+            "    --include      Comma-separated folder names to include\n"
+            "    --exclude      Comma-separated folder names to exclude\n"
+            "    --progress     Show a progress bar while scanning\n\n"
             "  onboard:\n"
-            "    --progress Show a progress bar while onboarding\n"
-            "    --mermaid  Generate only Mermaid flow diagram\n"
+            "    --progress     Show a progress bar while onboarding\n"
+            "    --mermaid      Generate only Mermaid flow diagram\n"
+            "    --inject       Inject onboarding link into README.md\n"
+            "    --layered      Produce Layered mermaid as Entry -> Core -> Leaf\n"
+            "    --depth DEPTH  Limit execution flow depth (e.g. --depth 2)\n\n"
             "  files:\n"
-            "    --top      Number of files to show (default: 5)\n"
+            "    --top          Number of files to show (default: 5)\n"
             "Use `gnost <command> --help` for full command options."
         ),
     )
@@ -77,6 +80,22 @@ def main():
         action="store_true",
         help="Show a progress bar while onboarding",
     )
+    onboard.add_argument(
+        "--inject",
+        action="store_true",
+        help="Inject onboarding link into README.md",
+    )
+    onboard.add_argument(
+        "--layered",
+        action="store_true",
+        help="Produce Layered mermaid as Entry -> Core -> Leaf",
+    )
+    onboard.add_argument(
+        "--depth",
+        type=int,
+        default=None,
+        help="Limit execution flow depth (e.g. --depth 2)",
+    )
 
     args = parser.parse_args()
 
@@ -89,6 +108,9 @@ def main():
             args.path,
             diagram_only=getattr(args, "mermaid", False),
             progress=getattr(args, "progress", False),
+            inject=getattr(args, "inject", False),
+            depth=getattr(args, "depth", None),
+            layered=getattr(args, "layered", False),
         )
         return
 

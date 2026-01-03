@@ -28,6 +28,21 @@ class FlowResult:
     paths: List[FlowPath]
     layers: Dict[str, Set[str]]  # entry, core, leaf
 
+    def overview_nodes(self) -> Set[str]:
+        """
+        Nodes to include in overview diagram.
+        Entry + Core layers only.
+        """
+        nodes = set()
+
+        for ep in self.entry_points:
+            nodes.add(ep.file)
+
+        for f in self.layers.get("core", []):
+            nodes.add(f)
+
+        return nodes
+
 
 class FlowBuilder:
     """
