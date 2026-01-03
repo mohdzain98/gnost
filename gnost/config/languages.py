@@ -16,7 +16,9 @@ LANG_EXTENSIONS = {
 LANGUAGES = {
     "py": {"name": "Python", "comment": "#"},
     "js": {"name": "JavaScript", "comment": "//"},
+    "jsx": {"name": "JavaScript", "comment": "//"},
     "ts": {"name": "TypeScript", "comment": "//"},
+    "tsx": {"name": "TypeScript", "comment": "//"},
     "java": {"name": "Java", "comment": "//"},
     "c": {"name": "C", "comment": "//"},
     "cpp": {"name": "C++", "comment": "//"},
