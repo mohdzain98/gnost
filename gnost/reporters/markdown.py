@@ -1,11 +1,8 @@
-# gnost/reporters/markdown.py
-
 from pathlib import Path
-from typing import List
-
 from gnost.scanner.models import ScanResult
 from gnost.core.flow import FlowResult
 from gnost.reporters.mermaid import MermaidFlowReporter
+from gnost.models.insights import OnboardingInsights
 
 
 class MarkdownReporter:
@@ -18,10 +15,16 @@ class MarkdownReporter:
         scan: ScanResult,
         flow: FlowResult,
         output_file: str = "ONBOARD.md",
+        insights: OnboardingInsights = None,
+        mermaid_depth: int | None = None,
+        mermaid_layered: bool | None = False,
     ):
         self.scan = scan
         self.flow = flow
+        self.insights = insights
         self.output_file = Path(scan.root) / output_file
+        self.mermaid_depth = mermaid_depth
+        self.mermaid_layered = mermaid_layered
 
     # -------------------------
     # Public API
@@ -29,6 +32,7 @@ class MarkdownReporter:
 
     def write(self):
         content = self._render()
+        content += self._path_specific_flows()
         self.output_file.write_text(content, encoding="utf-8")
 
     # -------------------------
@@ -44,7 +48,15 @@ class MarkdownReporter:
             self._mermaid_flow(),
             self._reading_guide(),
         ]
-        return "\n\n".join(sections).strip() + "\n"
+        if self.insights:
+            sections.extend(
+                [
+                    self._first_files_md(),
+                    self._caution_areas_md(),
+                ]
+            )
+
+        return "\n\n".join(s for s in sections if s).strip() + "\n"
 
     # -------------------------
     # Sections
@@ -53,7 +65,7 @@ class MarkdownReporter:
     def _header(self) -> str:
         return (
             f"# {self.scan.root.split('/')[-1]} — Project Onboarding Guide\n\n"
-            "_Generated automatically by GNOST._"
+            "_Generated automatically by <a href='https://gnost.readthedocs.io'>GNOST</a>._"
         )
 
     def _project_overview(self) -> str:
@@ -123,12 +135,68 @@ class MarkdownReporter:
 
         return "\n".join(lines)
 
+    def _path_specific_flows(self) -> str:
+        return (
+            "## Key Execution Paths\n\n"
+            "To understand specific scenarios, see the entry-based execution paths:\n\n"
+            "- 📍 [Entry-based Paths](flow/entry-paths.md)\n\n"
+            "- 🧭 [folder-based Paths](flow/folder-paths.md)\n\n"
+            "(Complete system flow: [flow/flow-full.md](flow/flow-full.md))\n"
+        )
+
     def _mermaid_flow(self) -> str:
-        reporter = MermaidFlowReporter(
+        """
+        Render a high-level overview Mermaid diagram and link to full flow.
+        """
+
+        overview_reporter = MermaidFlowReporter(
             flow=self.flow,
             root=self.scan.root,
+            overview=True,
+            depth=self.mermaid_depth,
+            layered=self.mermaid_layered,
         )
-        return "## Execution Flow Diagram\n\n" + reporter.render()
+        overview_diagram = overview_reporter.render()
+
+        return (
+            "## Execution Flow (Overview)\n\n"
+            f"{overview_diagram}\n\n"
+            "> 📌 This diagram shows the high-level execution flow.<br>"
+            "For the complete flow, see "
+            "[**flow/flow-full.md**](./flow/flow-full.md)<br>"
+            "Raw Mermaid: [flow/flow-full.mmd](./flow/flow-full.mmd)"
+        )
+
+    def _short_path(self, path: str, depth: int = 2) -> str:
+        """
+        Shorten a file path to the last `depth` components.
+        Example:
+        gnost/core/flow.py  → core/flow.py
+        """
+        parts = path.replace("\\", "/").split("/")
+        return "/".join(parts[-depth:])
+
+    def _first_files_md(self) -> str:
+        lines = ["## 📘 First Files to Read"]
+
+        for item in self.insights.first_files:
+            short_path = self._short_path(path=item.path, depth=3)
+            lines.append(f"- **`{short_path}`**")
+            lines.append(f"  - {item.reason}")
+
+        return "\n".join(lines)
+
+    def _caution_areas_md(self) -> str:
+        lines = ["## ⚠️ Caution Areas"]
+
+        for c in self.insights.caution_areas:
+            short_path = self._short_path(path=c.path, depth=3)
+            lines.append(f"### `{short_path}`")
+            lines.append(f"- **Type:** {c.category.value}")
+            lines.append(f"- **Severity:** {c.severity}")
+            lines.append(f"- {c.description}")
+
+        return "\n".join(lines)
 
     # -------------------------
     # Helpers

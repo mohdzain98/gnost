@@ -2,13 +2,20 @@ import os
 
 from gnost.config.languages import LANGUAGES
 from gnost.scanner.classify import classify_lines
-from gnost.scanner.filters import DEFAULT_EXCLUDES, is_virtualenv_dir, should_skip
+from gnost.scanner.filters import (
+    DEFAULT_EXCLUDES,
+    is_gitignored,
+    is_virtualenv_dir,
+    load_gitignore,
+    should_skip,
+)
 from gnost.utils.progress import progress_bar
 
 
 def scan(path=".", include=None, exclude=None, progress=False):
     include = set(include or [])
     exclude = DEFAULT_EXCLUDES | set(exclude or [])
+    gitignore = load_gitignore(path)
 
     files = []
     by_language = {}
@@ -17,11 +24,16 @@ def scan(path=".", include=None, exclude=None, progress=False):
     with progress_bar(enabled=progress, desc="Scanning") as bar:
         for root, dirnames, filenames in os.walk(path):
             dirnames[:] = [
-                d for d in dirnames if not is_virtualenv_dir(os.path.join(root, d))
+                d
+                for d in dirnames
+                if not is_virtualenv_dir(os.path.join(root, d))
+                and not is_gitignored(os.path.join(root, d), path, gitignore)
             ]
             rel_root = os.path.relpath(root, path)
 
-            if should_skip(rel_root, include, exclude):
+            if should_skip(rel_root, include, exclude) or is_gitignored(
+                root, path, gitignore
+            ):
                 continue
 
             for name in filenames:
@@ -30,6 +42,9 @@ def scan(path=".", include=None, exclude=None, progress=False):
                     continue
 
                 full_path = os.path.join(root, name)
+
+                if is_gitignored(full_path, path, gitignore):
+                    continue
 
                 try:
                     with open(full_path, "r", errors="ignore") as f:
