@@ -1,6 +1,6 @@
 import argparse
 from gnost import __version__
-from gnost.scanner.engine import scan
+from gnost.scanner.loc import scan
 from gnost.reporters import stats, folders, files, loc_summary
 from gnost.cli.commands.onboard import run as onboard_run
 

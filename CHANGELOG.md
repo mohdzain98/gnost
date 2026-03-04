@@ -6,6 +6,29 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
+## [0.2.1] — Onboarding Output & Documentation Hardening
+
+### Added
+- **ONBOARD.md Tables**
+  - Added a Summary table (Language, Files, LOC)
+  - Added a Stats table (Language, Files, Code, Comments, Blanks, LOC)
+
+- **Security Policy**
+  - Added `SECURITY.md` with vulnerability reporting guidance
+
+### Changed
+- **Flow Output Location**
+  - `gnost onboard` now writes flow artifacts to `docs/flow` at repository root
+  - Automatically creates `docs/` when it does not exist
+  - `ONBOARD.md` links now point to `docs/flow/*`
+
+### Fixed
+- **Repository Root Output Resolution**
+  - Running `gnost onboard` from subdirectories (for example `gnost/`) now writes outputs to repo root (`<repo>/docs` and `<repo>/ONBOARD.md`)
+- **Correctly map of JSX and TSX**
+  - Now js is mapped as JavaScript.js and JSX is mapped as JavaScript.jsx
+  - Same mapping for ts
+
 ## [0.2.0] — Human-First Onboarding Insights
 
 ### Added
@@ -123,4 +146,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   - JSON export of onboarding insights
   - Better integration with documentation and CI workflows
 
-```GNOST is in early development v0.2.0. APIs and behavior may evolve.```
+```GNOST is in early development v0.2.1. APIs and behavior may evolve.```

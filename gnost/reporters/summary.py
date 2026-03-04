@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from gnost.scanner.models import ScanResult
 from gnost.core.flow import FlowResult
 from gnost.core.graph import DependencyGraph

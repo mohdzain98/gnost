@@ -17,7 +17,7 @@ def count_loc(path: str = "."):
                 try:
                     with open(os.path.join(root, f), "r", errors="ignore") as fh:
                         results[ext] += sum(1 for _ in fh)
-                except:
+                except OSError:
                     pass
 
     return results, file_count

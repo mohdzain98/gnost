@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 from typing import Dict, List
 
@@ -8,7 +10,6 @@ from gnost.scanner.filters import (
     load_gitignore,
     should_ignore,
 )
-from gnost.scanner.loc import scan
 from gnost.scanner.models import FileInfo, ScanResult
 
 

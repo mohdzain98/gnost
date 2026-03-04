@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gnost"
-version = "0.2.0"
+version = "0.2.1"
 description = "GNOST — Codebase Knowledge"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -36,5 +36,5 @@ Changelog = "https://github.com/mohdzain98/gnost/blob/main/CHANGELOG.md"
 [project.scripts]
 gnost = "gnost.cli:main"
 
-[tool.setuptools]
-packages = ["gnost"]
+[tool.setuptools.packages.find]
+include = ["gnost*"]

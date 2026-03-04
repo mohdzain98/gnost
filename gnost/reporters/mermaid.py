@@ -1,5 +1,7 @@
 # gnost/reporters/mermaid.py
 
+from __future__ import annotations
+
 from typing import Dict, Set
 from gnost.core.flow import FlowResult
 

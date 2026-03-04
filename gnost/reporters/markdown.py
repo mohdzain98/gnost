@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 from pathlib import Path
+from gnost.config.languages import LANGUAGES
 from gnost.scanner.models import ScanResult
 from gnost.core.flow import FlowResult
 from gnost.reporters.mermaid import MermaidFlowReporter
@@ -15,6 +18,8 @@ class MarkdownReporter:
         scan: ScanResult,
         flow: FlowResult,
         output_file: str = "ONBOARD.md",
+        output_root: str | None = None,
+        loc_data: dict | None = None,
         insights: OnboardingInsights = None,
         mermaid_depth: int | None = None,
         mermaid_layered: bool | None = False,
@@ -22,7 +27,9 @@ class MarkdownReporter:
         self.scan = scan
         self.flow = flow
         self.insights = insights
-        self.output_file = Path(scan.root) / output_file
+        self.loc_data = loc_data
+        base_output_root = Path(output_root) if output_root else Path(scan.root)
+        self.output_file = base_output_root / output_file
         self.mermaid_depth = mermaid_depth
         self.mermaid_layered = mermaid_layered
 
@@ -43,6 +50,7 @@ class MarkdownReporter:
         sections = [
             self._header(),
             self._project_overview(),
+            self._summary_and_stats_tables(),
             self._entry_points(),
             self._execution_flow(),
             self._mermaid_flow(),
@@ -139,9 +147,9 @@ class MarkdownReporter:
         return (
             "## Key Execution Paths\n\n"
             "To understand specific scenarios, see the entry-based execution paths:\n\n"
-            "- 📍 [Entry-based Paths](flow/entry-paths.md)\n\n"
-            "- 🧭 [folder-based Paths](flow/folder-paths.md)\n\n"
-            "(Complete system flow: [flow/flow-full.md](flow/FLOW-full.md))\n"
+            "- 📍 [Entry-based Paths](docs/flow/entry-paths.md)\n\n"
+            "- 🧭 [folder-based Paths](docs/flow/folder-paths.md)\n\n"
+            "(Complete system flow: [flow/flow-full.md](docs/flow/FLOW-full.md))\n"
         )
 
     def _mermaid_flow(self) -> str:
@@ -163,9 +171,43 @@ class MarkdownReporter:
             f"{overview_diagram}\n\n"
             "> 📌 This diagram shows the high-level execution flow.<br>"
             "For the complete flow, see "
-            "[**flow/flow-full.md**](./flow/FLOW-full.md)<br>"
-            "Raw Mermaid: [flow/flow-full.mmd](./flow/FLOW-full.mmd)"
+            "[**flow/flow-full.md**](./docs/flow/FLOW-full.md)<br>"
+            "Raw Mermaid: [flow/flow-full.mmd](./docs/flow/FLOW-full.mmd)"
         )
+
+    def _summary_and_stats_tables(self) -> str:
+        if not self.loc_data or not self.loc_data.get("by_language"):
+            return ""
+
+        rows = []
+        for ext, stats in self.loc_data["by_language"].items():
+            language = LANGUAGES.get(ext, {}).get("name", ext.upper())
+            rows.append((language, stats))
+
+        rows.sort(key=lambda item: item[0].lower())
+
+        summary_lines = [
+            "## Summary Table",
+            "",
+            "| Language | Files | LOC |",
+            "|---|---:|---:|",
+        ]
+        for language, stats in rows:
+            summary_lines.append(f"| {language} | {stats['files']} | {stats['loc']} |")
+
+        stats_lines = [
+            "## Stats Table",
+            "",
+            "| Language | Files | Code | Comments | Blanks | LOC |",
+            "|---|---:|---:|---:|---:|---:|",
+        ]
+        for language, stats in rows:
+            stats_lines.append(
+                f"| {language} | {stats['files']} | {stats['code']} | "
+                f"{stats['comments']} | {stats['blanks']} | {stats['loc']} |"
+            )
+
+        return "\n".join(summary_lines + [""] + stats_lines)
 
     def _short_path(self, path: str, depth: int = 2) -> str:
         """

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 
 from gnost.languages.python import PythonAdapter
@@ -5,6 +7,7 @@ from gnost.languages.javascript import JavaScriptAdapter
 from gnost.languages.typescript import TypeScriptAdapter
 from gnost.languages.java import JavaAdapter
 from gnost.scanner.engine import ScannerEngine
+from gnost.scanner.loc import scan as loc_scan
 from gnost.core.insight_builder import InsightBuilder
 from gnost.core.graph import DependencyGraph
 from gnost.core.flow import FlowBuilder
@@ -13,6 +16,27 @@ from gnost.reporters.markdown import MarkdownReporter
 from gnost.reporters.mermaid import MermaidFlowReporter
 from gnost.reporters.readme import ReadmeInjector
 from gnost.utils.progress import progress_bar
+
+
+def resolve_repo_root(path: str) -> str:
+    """
+    Resolve repository root from a starting path.
+    Prefers nearest parent containing pyproject.toml or .git.
+    """
+    current = os.path.abspath(path)
+    if os.path.isfile(current):
+        current = os.path.dirname(current)
+
+    while True:
+        if os.path.exists(os.path.join(current, "pyproject.toml")) or os.path.isdir(
+            os.path.join(current, ".git")
+        ):
+            return current
+
+        parent = os.path.dirname(current)
+        if parent == current:
+            return os.path.abspath(path)
+        current = parent
 
 
 def feature_entry_node(path: list[str], keyword: str) -> str:
@@ -96,8 +120,11 @@ def run(
     gnost onboard [path] [--mermaid]
     Generates a high-level onboarding summary for a codebase.
     """
-    root = os.path.abspath(path or ".")
-    flow_dir = os.path.join(root, "flow")
+    scan_root = os.path.abspath(path or ".")
+    output_root = resolve_repo_root(scan_root)
+    docs_dir = os.path.join(output_root, "docs")
+    flow_dir = os.path.join(docs_dir, "flow")
+    os.makedirs(docs_dir, exist_ok=True)
     os.makedirs(flow_dir, exist_ok=True)
 
     with progress_bar(enabled=progress, total=4, desc="Onboarding") as bar:
@@ -115,7 +142,8 @@ def run(
         # 2. Scan repository
         # -------------------------
         scanner = ScannerEngine(adapters=adapters)
-        scan_result = scanner.scan(root)
+        scan_result = scanner.scan(scan_root)
+        loc_data = loc_scan(scan_root)
         if bar is not None:
             bar.update(1)
 
@@ -156,7 +184,7 @@ def run(
                 layered=layered,
             ).render(markdown=False)
 
-            output_path = os.path.join(root, "FLOW-full.mmd")
+            output_path = os.path.join(flow_dir, "FLOW-full.mmd")
             with open(output_path, "w", encoding="utf-8") as f:
                 f.write(full_diagram + "\n")
 
@@ -256,7 +284,7 @@ def run(
         # -------------------------
         DEFAULT_KEYWORDS = ["auth", "user", "payment", "order", "login"]
 
-        auto_keywords = detect_keywords_from_folders(root)
+        auto_keywords = detect_keywords_from_folders(scan_root)
 
         KEYWORDS = sorted(set(DEFAULT_KEYWORDS + auto_keywords))
         MAX_REPRESENTATIVE_PATHS = 2
@@ -347,13 +375,15 @@ def run(
             scan=scan_result,
             flow=flow_result,
             output_file="ONBOARD.md",
+            output_root=output_root,
+            loc_data=loc_data,
             mermaid_depth=depth,
             mermaid_layered=layered,
             insights=insights,
         ).write()
 
         if inject:
-            injector = ReadmeInjector(root)
+            injector = ReadmeInjector(output_root)
             changed = injector.inject()
 
             if changed:
