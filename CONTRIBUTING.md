@@ -32,6 +32,10 @@ pip install -r requirements.txt
 - Maintain a professional, open-source friendly tone in code and docs.
 - Prefer small, reviewable commits.
 - Avoid formatting churn unrelated to your change.
+- Follow core design principles in contribution code: 
+  - OOP practices (mainly encapsulation), 
+  - the Open/Closed Principle, and 
+  - DRY (Don't Repeat Yourself) Principle.
 
 ## Architecture Notes
 GNOST follows a clear separation of concerns:
