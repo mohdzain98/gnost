@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from pathlib import Path
 from gnost.config.languages import LANGUAGES
 from gnost.scanner.models import ScanResult
