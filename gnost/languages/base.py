@@ -1,7 +1,7 @@
 # gnost/languages/base.py
 
 from abc import ABC, abstractmethod
-from typing import List, Dict, Optional
+from typing import List, Optional
 
 
 class EntryPoint:
