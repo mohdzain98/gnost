@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Dict, Set
+from typing import Dict, Optional, Set
 from gnost.core.flow import FlowResult
 
 
@@ -16,7 +16,7 @@ class MermaidFlowReporter:
         flow: FlowResult,
         root: str,
         overview: bool = False,
-        depth: int | None = None,
+        depth: Optional[int] = None,
         layered: bool = False,
     ):
         self.flow = flow

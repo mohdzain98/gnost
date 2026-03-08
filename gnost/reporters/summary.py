@@ -6,6 +6,7 @@ from gnost.core.graph import DependencyGraph
 from gnost.utils.printer import Printer
 from gnost.core.ranker import HotspotRanker
 from gnost.models.insights import OnboardingInsights
+from typing import Optional
 
 
 class SummaryReporter:
@@ -18,7 +19,7 @@ class SummaryReporter:
         scan: ScanResult,
         flow: FlowResult,
         graph: DependencyGraph,
-        printer: Printer | None = None,
+        printer: Optional[Printer] = None,
         insights: OnboardingInsights = None,
     ):
         self.scan = scan

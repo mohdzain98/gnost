@@ -403,7 +403,7 @@ class RobustnessAnalyzer(QualityAnalyzer):
             seen = set()
             code_counts = Counter()
 
-            def _norm_code(code: str | None) -> str:
+            def _norm_code(code: Optional[str]) -> str:
                 return (code or "<unknown>").strip().lower()
 
             for raw_line in output.splitlines():

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 from collections import defaultdict
-from typing import Dict, List, Set
+from typing import Dict, List, Optional, Set
 
 from gnost.scanner.models import ScanResult, FileInfo
 
@@ -100,7 +100,7 @@ class DependencyGraph:
     @staticmethod
     def _resolve_import(
         import_path: str, files: List[FileInfo], source: str
-    ) -> str | None:
+    ) -> Optional[str]:
         """
         Resolve imports for Python, JS, TS.
         """

@@ -3,6 +3,7 @@ import json
 import os
 import tempfile
 import logging
+from typing import Optional
 from pathlib import Path
 from termcolor import colored
 from gnost.analysis.core.interfaces import AnalyzerRegistry
@@ -136,7 +137,7 @@ class Analysis:
         os.replace(tmp, path)
 
     def collect_code_files(
-        self, target_path: str, *, exts: set[str] | None = None
+        self, target_path: str, *, exts: Optional[set[str]] = None
     ) -> list[str]:
         """Return a list of code files under target_path using Extract's filters."""
         exts = exts or set(Extract.CODE_EXTS)

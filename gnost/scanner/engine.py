@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import os
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from gnost.languages.base import LanguageAdapter
 from gnost.scanner.filters import (
@@ -111,7 +111,7 @@ class ScannerEngine:
                 mapping[ext] = adapter
         return mapping
 
-    def _read_file(self, file_path: str) -> str | None:
+    def _read_file(self, file_path: str) -> Optional[str]:
         try:
             with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
                 return f.read()
