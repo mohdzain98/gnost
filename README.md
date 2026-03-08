@@ -5,10 +5,10 @@
 ![License](https://img.shields.io/pypi/l/gnost)
 ![Downloads](https://static.pepy.tech/badge/gnost)
 
-<!-- ![Monthly Downloads](https://static.pepy.tech/badge/gnost/month) -->
-
 GNOST is a lightweight static analysis CLI tool that helps developers understand unfamiliar codebases in minutes.<br>
-It automatically detects entry points, maps execution flow, identifies critical files, and generates onboarding documentation and Mermaid diagrams.
+It automatically detects entry points, maps execution flow, identifies critical files, and generates onboarding documentation and Mermaid diagrams.  
+
+It also performs quality analysis (`gnost analyze`) for maintainability, robustness, observability, and readability to provide a fast quality score and prioritized findings.
 
 Perfect for first-day onboarding, audits, and codebase exploration.
 
@@ -23,10 +23,9 @@ Perfect for first-day onboarding, audits, and codebase exploration.
 - Identifies **hotspot files** (most important code)
 - Generates **onboarding documentation**
 - Produces **Mermaid flow diagrams**
-- Works across multiple languages
+- Runs code **quality analysis** for maintainability, robustness, observability, and readability
 
-## 📌 Getting Started
-Install:
+## Install
 
 ```bash
 pip install gnost
@@ -38,12 +37,26 @@ Run the onboarding scan:
 gnost onboard .
 ```
 
-Minimal usage examples:
+## Minimal usage examples
 
 ```bash
 gnost summary .
 gnost stats .
 ```
+
+## New in 0.3.0 (Analysis)
+
+```bash
+gnost analyze .
+gnost analyze . --parallel -o
+gnost open report
+```
+
+### Analysis scope
+
+- `gnost analyze` currently supports Python codebases only.
+- JavaScript/TypeScript/Java analysis is planned for future releases.
+
 ## 🌍 Supported Languages
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
@@ -81,4 +94,5 @@ GNOST prioritizes:
 It is designed to be simple, fast, and immediately useful.
 
 ## License
+
 MIT License

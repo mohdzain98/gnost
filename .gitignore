@@ -11,4 +11,5 @@ __pycache__/
 .mypy_cache/
 .DS_Store
 test/
+planners/
 setup.md

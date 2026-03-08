@@ -1,6 +1,6 @@
 project = "GNOST"
 author = "Mohd Zain"
-release = "0.1.1"
+release = "0.3.0"
 
 extensions = [
     "sphinx.ext.autodoc",

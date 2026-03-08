@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gnost"
-version = "0.2.1"
+version = "0.3.0"
 description = "GNOST — Codebase Knowledge"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -15,7 +15,12 @@ authors = [
 
 dependencies = [
     "rich",
-    "tqdm"
+    "tqdm",
+    "termcolor",
+    "bandit",
+    "radon",
+    "mypy",
+    "ruff"
 ]
 
 classifiers = [
@@ -26,6 +31,9 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+
+[project.optional-dependencies]
+test = ["pytest"]
 
 [project.urls]
 Documentation = "https://gnost.readthedocs.io"
@@ -38,3 +46,7 @@ gnost = "gnost.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["gnost*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

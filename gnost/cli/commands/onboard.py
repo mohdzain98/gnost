@@ -19,8 +19,8 @@ from gnost.utils.progress import progress_bar
 
 
 def resolve_repo_root(path: str) -> str:
-    """
-    Resolve repository root from a starting path.
+    """Resolve repository root from a starting path.
+
     Prefers nearest parent containing pyproject.toml or .git.
     """
     current = os.path.abspath(path)

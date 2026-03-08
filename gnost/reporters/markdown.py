@@ -210,11 +210,12 @@ class MarkdownReporter:
         return "\n".join(summary_lines + [""] + stats_lines)
 
     def _short_path(self, path: str, depth: int = 2) -> str:
-        """
-        Shorten a file path to the last `depth` components.
+        """Shorten a file path to the last `depth` components.
+
         Example:
         gnost/core/flow.py  → core/flow.py
         """
+
         parts = path.replace("\\", "/").split("/")
         return "/".join(parts[-depth:])
 
