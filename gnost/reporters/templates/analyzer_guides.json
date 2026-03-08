@@ -1,0 +1,247 @@
+{
+  "analyzers": {
+    "maintainability": {
+      "title": "Maintainability",
+      "quality_categories": [
+        "Complexity Risk Ranking",
+        "Cyclomatic Complexity",
+        "Code Duplication",
+        "Complexity Hotspots"
+      ],
+      "description": "Evaluates maintainability signals across modules and functions, with emphasis on complexity and long-term edit risk.",
+      "what_it_finds": [
+        "High function or file complexity",
+        "Low maintainability index",
+        "Repeated logic and deep branching patterns"
+      ],
+      "tools_used": [
+        "radon"
+      ],
+      "severity_focus": [
+        {
+          "severity": "High",
+          "description": "Indicates poor maintainability and high technical debt. Typically caused by extremely low MI (≤ 10) or high cyclomatic complexity (>20). Code at this level is difficult to extend, debug, or reuse.",
+          "example": "Maintainability Index ≤ 10, Cyclomatic Complexity > 20"
+        },
+        {
+          "severity": "Medium",
+          "description": "Moderate maintainability issues that require refactoring or cleanup. Caused by MI between 10-20, moderate complexity (>10), or duplication. Such code is maintainable but may lead to higher future maintenance cost.",
+          "example": "Maintainability Index 10-20, Cyclomatic Complexity 10-20, Function/Code Duplication"
+        },
+        {
+          "severity": "Info",
+          "description": "Codebase is generally maintainable with low complexity and high MI. No immediate action required but monitor quality regularly.",
+          "example": "Maintainability Index > 20, System Rank: Highly/Fairly Maintainable"
+        }
+      ],
+      "extra_sections": [
+        {
+          "title": "Terms",
+          "headers": [
+            "Term",
+            "Meaning"
+          ],
+          "rows": [
+            [
+              "Cyclomatic Complexity",
+              "Cyclomatic Complexity measures the number of independent execution paths in a function. It increases with branching, loops, and conditional logic."
+            ],
+            [
+              "Complexity Risk Ranking",
+              "Maintainability rank is derived from aggregated function complexity distribution. Rank lowers as low/high/very_high complexity percentages exceed thresholds for the analyzed codebase."
+            ]
+          ]
+        },
+        {
+          "title": "Cyclomatic Complexity",
+          "headers": [
+            "Complexity Risk Ranking",
+            "CC"
+          ],
+          "rows": [
+            [
+              "low - simple",
+              "1-5"
+            ],
+            [
+              "low - well structured and stable",
+              "6-10"
+            ],
+            [
+              "moderate - slightly complex",
+              "11-20"
+            ],
+            [
+              "more than moderate - more complex",
+              "21-30"
+            ],
+            [
+              "high - complex, alarming",
+              "31-40"
+            ],
+            [
+              "very high - error-prone, unstable",
+              "41+"
+            ]
+          ]
+        },
+        {
+          "title": "Complexity Risk Ranking",
+          "headers": [
+            "Moderate",
+            "High",
+            "Very High",
+            "Meaning"
+          ],
+          "rows": [
+            [
+              "≤ 40 %",
+              "≤ 10 %",
+              "= 0 %",
+              "Moderately Maintainable"
+            ],
+            [
+              "≤ 50 %",
+              "≤ 15 %",
+              "≤ 5 %",
+              "Maintainable"
+            ],
+            [
+              "> 50 %",
+              "> 15 %",
+              "> 5 %",
+              "Poorly Maintainable"
+            ]
+          ]
+        }
+      ]
+    },
+    "readability": {
+      "title": "Readability",
+      "quality_categories": [
+        "Docstring completeness",
+        "Unused/unused-like symbols",
+        "Whitespace and syntax style",
+        "Function signatures and readability smells"
+      ],
+      "description": "Flags Python code style and readability issues to improve consistency and comprehension.",
+      "what_it_finds": [
+        "Missing docstrings and weak documentation patterns",
+        "Overly long lines and complex function bodies",
+        "Unused imports/variables and minor style violations"
+      ],
+      "tools_used": [
+        "ruff"
+      ],
+      "severity_focus": [
+        {
+          "severity": "High",
+          "description": "Significant readability or documentation gaps that increase onboarding and maintenance cost.",
+          "example": "Critical docstring/clarity issues, repeated style violations"
+        },
+        {
+          "severity": "Medium",
+          "description": "Moderate quality concerns in style and structure; worth cleaning in next hardening pass.",
+          "example": "Mixed style patterns, repeated long lines, heavy nesting"
+        },
+        {
+          "severity": "Low",
+          "description": "Minor cleanup opportunities that improve consistency over time.",
+          "example": "Whitespace or light stylistic preferences"
+        }
+      ]
+    },
+    "robustness": {
+      "title": "Robustness",
+      "quality_categories": [
+        "Security anti-patterns",
+        "Type-safety weaknesses",
+        "Input validation coverage",
+        "Defensive handling"
+      ],
+      "description": "Detects coding practices that reduce runtime safety and increase failure risk.",
+      "what_it_finds": [
+        "High-risk or unsafe constructs",
+        "Typing and validation weaknesses",
+        "Exception and error-handling risks"
+      ],
+      "tools_used": [
+        "bandit",
+        "mypy"
+      ],
+      "severity_focus": [
+        {
+          "severity": "High",
+          "description": "Issues that can directly cause runtime failure or exploitable behavior.",
+          "example": "Dangerous security patterns or unsafe operations like Return value mismatch, invalid arguement type, invalid return statement"
+        },
+        {
+          "severity": "Medium",
+          "description": "Potential stability concerns that degrade reliability without immediate failure.",
+          "example": "Potentially unsafe patterns with limited risk like Wrong Operator, missing/invalid type argument"
+        },
+        {
+          "severity": "Low",
+          "description": "Minor robustness improvements and low-impact suggestions.",
+          "example": "Style-level robustness improvements like missing function annotations, call to untyped function"
+        }
+      ]
+    },
+    "observability": {
+      "title": "Observability",
+      "quality_categories": [
+        "Logging coverage",
+        "Critical function instrumentation",
+        "Monitoring and exception visibility"
+      ],
+      "description": "Checks runtime visibility so incidents can be diagnosed and traced with less ambiguity.",
+      "what_it_finds": [
+        "Missing logs in critical functions",
+        "Low coverage of observability across files",
+        "Unstructured or weak instrumentation practices"
+      ],
+      "tools_used": [
+        "AST scanning rules",
+        "internal heuristic analysis"
+      ],
+      "severity_focus": [
+        {
+          "severity": "High",
+          "description": "Critical observability gaps that can hide production failures or block debugging. These include missing logs in critical functions or overall observability score below threshold.",
+          "example": "Overall observability score < 30, critical function without logging"
+        },
+        {
+          "severity": "Medium",
+          "description": "Files or modules with insufficient logging or limited instrumentation, reducing incident traceability.",
+          "example": "Files with Poor Observability"
+        },
+        {
+          "severity": "Low",
+          "description": "Logging is present but not structured or standardized, making correlation and deep analysis harder.",
+          "example": "Missing Structured Logging"
+        },
+        {
+          "severity": "Info",
+          "description": "Files with fair observability that meet minimum standards but can still benefit from richer logs.",
+          "example": "Files with Fair Observability"
+        }
+      ]
+      ,
+      "extra_sections": [
+        {
+          "title": "What is a Critical Function?",
+          "headers": [
+            "Term",
+            "Meaning"
+          ],
+          "rows": [
+            [
+              "Critical Function",
+              "Any function that includes patterns like error/exception handling, authentication/authorization, processing, validation, or functions with try/except/raise usage. These functions are expected to emit logs because failures here have higher observability impact."
+            ]
+          ]
+        }
+      ]
+    }
+  }
+}
