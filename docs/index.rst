@@ -4,7 +4,11 @@ GNOST — Codebase Knowledge
 GNOST helps developers understand unfamiliar codebases by identifying
 entry points, execution flow, and core logic automatically.
 
-It is designed for **first-day onboarding** as well as decorating your repo, not just code statistics.
+It also supports code quality analysis through ``gnost analyze`` to score and flag
+maintainability, robustness, observability, and readability issues.
+
+It is designed for **first-day onboarding** as well as code quality triage and
+continuous reporting, not just code statistics.
 
 Usage
 -----
@@ -25,6 +29,8 @@ Complete CLI usage::
         files     Show the largest files by LOC
         version   Display gnost version
         onboard   Onboard a new codebase
+        analyze   Analyze the codebase
+        open      Open generated reports
 
     Command Options:
     summary|stats|folders|files:
@@ -39,6 +45,22 @@ Complete CLI usage::
         --layered  Produce Layered mermaid as Entry -> Core -> Leaf
         --depth    Limit execution flow depth (e.g. --depth 2)
 
+    analyze:
+        path                    File or directory to analyze (default: .)
+        -a, --analyzer          Enable only specific analyzers
+        --parallel              Run analyzers in parallel
+        -o, --out               Write JSON and HTML report to docs/analysis/gnost_analysis.json|html
+        -v, --verbose           Show traceback on failures
+        --quiet                 Reduce logs; keep warnings/errors only
+        --list-analyzers        List available analyzers and exit
+        --timeout SECONDS       Analyzer timeout (default: 900)
+        --compact               Write compact JSON when --out is used
+        --no-progress           Hide progress updates
+        --max-findings N        Per-analyzer findings limit (default: 1000)
+
+    open:
+        report|rpt              Open the generated report in browser
+
     files:
         --top      Number of files to show (default: 5)
     Use `gnost <command> --help` for full command options.
@@ -51,6 +73,8 @@ Run GNOST commands from the root of a repository::
     gnost folders [path]
     gnost files [path] --top 10
     gnost onboard [path]
+    gnost analyze [path] --parallel -o
+    gnost open report
 
 Subcommand usage::
 
@@ -59,8 +83,9 @@ Subcommand usage::
     gnost folders [path] [--include INCLUDE] [--exclude EXCLUDE] [--progress]
     gnost files [path] [--include INCLUDE] [--exclude EXCLUDE] [--progress] [--top TOP]
     gnost onboard [path] [--mermaid] [--progress] [--inject] [--layered] [--depth DEPTH]
+    gnost analyze [path] [--parallel] [--out] [--list-analyzers] [--no-progress]
+    gnost open report|rpt
     gnost version
-
 
 Key Commands
 ------------
@@ -79,6 +104,12 @@ Key Commands
 
 ``onboard``
     Generate onboarding summary and execution flow outputs.
+
+``analyze``
+    Analyze code quality and generate JSON/HTML findings report.
+
+``open``
+    Open the generated analysis report from terminal.
 
 ``version``
     Display GNOST version.
@@ -106,6 +137,45 @@ This produces:
   - *folder-paths.md* — Mermaid of all paths inside different folders
 
 
+Code Analysis
+-------------
+
+Run quality analysis::
+
+    gnost analyze .
+
+Run with all analyzers and write report files::
+
+    gnost analyze . --parallel -o
+
+Available findings output::
+
+- Terminal rich table with analyzer score and severity counts
+- ``docs/analysis/gnost_analysis.json`` for CI or scripting
+- ``docs/analysis/gnost_analysis.html`` for interactive inspection
+
+Example report:
+
+.. image:: ../assets/report_example.png
+   :alt: GNOST Analysis Report
+   :width: 95%
+
+Open report::
+
+    gnost open report
+
+Use CLI docs
+-------------
+
+Use dedicated pages for details:
+
+.. toctree::
+   :maxdepth: 2
+
+   onboard
+   analyze
+   analyzer_guide
+
 Options
 -------
 
@@ -132,6 +202,24 @@ Options
 
 ``--depth``
     Limit execution flow depth (onboard) (e.g. ``--depth 2``).
+
+``--analyzer``
+    Select analyzer(s) by name in analyze.
+
+``-a``
+    Alias for ``--analyzer``.
+
+``-o``
+    Save analysis results in ``docs/analysis`` (JSON + HTML).
+
+``--timeout``
+    Time limit for analyzer runs.
+
+``--compact``
+    Use compact JSON output with ``--out``.
+
+``--max-findings``
+    Limit per-analyzer findings to keep output bounded.
 
 ``--version``
     Show version and exit.
@@ -169,6 +257,10 @@ Show largest files::
 
     gnost files src --top 20
 
+Analyze project::
+
+    gnost analyze . --parallel -o
+    gnost open report
 
 Supported Languages
 -------------------
@@ -178,6 +270,11 @@ Supported Languages
 - TypeScript
 - Java
 
+
+Analyzer Guide
+--------------
+
+- :doc:`analyzer_guide`
 
 Links
 -----

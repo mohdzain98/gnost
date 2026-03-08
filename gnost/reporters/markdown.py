@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from typing import Optional
 from pathlib import Path
 from gnost.config.languages import LANGUAGES
 from gnost.scanner.models import ScanResult
@@ -18,11 +19,11 @@ class MarkdownReporter:
         scan: ScanResult,
         flow: FlowResult,
         output_file: str = "ONBOARD.md",
-        output_root: str | None = None,
-        loc_data: dict | None = None,
+        output_root: Optional[str] = None,
+        loc_data: Optional[dict] = None,
         insights: OnboardingInsights = None,
-        mermaid_depth: int | None = None,
-        mermaid_layered: bool | None = False,
+        mermaid_depth: Optional[int] = None,
+        mermaid_layered: Optional[bool] = False,
     ):
         self.scan = scan
         self.flow = flow
@@ -210,11 +211,12 @@ class MarkdownReporter:
         return "\n".join(summary_lines + [""] + stats_lines)
 
     def _short_path(self, path: str, depth: int = 2) -> str:
-        """
-        Shorten a file path to the last `depth` components.
+        """Shorten a file path to the last `depth` components.
+
         Example:
         gnost/core/flow.py  → core/flow.py
         """
+
         parts = path.replace("\\", "/").split("/")
         return "/".join(parts[-depth:])
 

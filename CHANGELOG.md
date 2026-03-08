@@ -6,6 +6,29 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
+## [0.3.0] — Static Analysis & Reporting Improvements
+
+### Added
+- `gnost analyze`
+  - Maintainers now get code quality scoring with findings and analyzer-level summaries.
+  - Added JSON output and HTML report generation in `docs/analysis/`.
+  - Added command guide coverage under Read the Docs (`analyze`, `analyzer guide` pages).
+- `gnost open report`
+  - Added report-opening helper command (and shorthand `gnost open rpt`).
+  - Added usage hints with OS-specific shell command fallback.
+
+### Changed
+- Standardized analyzer result reporting in terminal and HTML output with severity breakdowns.
+- Added `open report` flow guidance in post-analysis completion message.
+- Updated README to concise usage-focused reference content.
+
+### Fixed
+- Updated changelog/versioning metadata and release documentation to `0.3.0`.
+
+### Notes
+- `gnost analyze` is currently Python-only.
+- JavaScript/TypeScript and Java analyzers are planned in follow-up releases.
+
 ## [0.2.1] — Onboarding Output & Documentation Hardening
 
 ### Added
@@ -120,7 +143,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Output format is considered stable for 0.x usage
 - Designed for onboarding and exploration, not security auditing
 
-## Planned v0.3.0 — Deeper Code Intelligence [Unreleased]
+## Planned v0.4.0 — Deeper Code Intelligence [Unreleased]
 - **Planned**
 - Circular Dependency Detection
   - Identify and report cyclic dependencies between modules

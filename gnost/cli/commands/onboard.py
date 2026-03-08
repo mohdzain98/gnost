@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+from typing import Optional
 
 from gnost.languages.python import PythonAdapter
 from gnost.languages.javascript import JavaScriptAdapter
@@ -19,8 +20,8 @@ from gnost.utils.progress import progress_bar
 
 
 def resolve_repo_root(path: str) -> str:
-    """
-    Resolve repository root from a starting path.
+    """Resolve repository root from a starting path.
+
     Prefers nearest parent containing pyproject.toml or .git.
     """
     current = os.path.abspath(path)
@@ -109,11 +110,11 @@ def detect_keywords_from_folders(root: str) -> list[str]:
 
 
 def run(
-    path: str | None = None,
+    path: Optional[str] = None,
     diagram_only: bool = False,
     progress: bool = False,
     inject: bool = False,
-    depth: int | None = None,
+    depth: Optional[int] = None,
     layered: bool = False,
 ):
     """

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from gnost.core.graph import DependencyGraph
 from gnost.core.flow import FlowResult
@@ -37,7 +37,7 @@ class HotspotRanker:
     # Public API
     # -------------------------
 
-    def rank(self, top: int | None = None) -> List[Hotspot]:
+    def rank(self, top: Optional[int] = None) -> List[Hotspot]:
         stats = self._collect_stats()
         hotspots = []
 
