@@ -154,6 +154,12 @@ Available findings output::
 - ``docs/analysis/gnost_analysis.json`` for CI or scripting
 - ``docs/analysis/gnost_analysis.html`` for interactive inspection
 
+Example report:
+
+.. image:: ../assets/report_example.png
+   :alt: GNOST Analysis Report
+   :width: 95%
+
 Open report::
 
     gnost open report

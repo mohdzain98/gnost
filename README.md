@@ -52,6 +52,10 @@ gnost analyze . --parallel -o
 gnost open report
 ```
 
+### Analysis report preview
+
+![GNOST analysis report](assets/report_example.png)
+
 ### Analysis scope
 
 - `gnost analyze` currently supports Python codebases only.
