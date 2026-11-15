@@ -168,16 +168,6 @@ class QualityAnalyzer(BaseAnalyzer):
 class ComplianceAnalyzer(BaseAnalyzer):
     """Base class for compliance-focused analyzers."""
 
-    # @abstractmethod
-    # def get_compliance_frameworks(self) -> List[str]:
-    #     """
-    #     Get list of compliance frameworks this analyzer supports.
-
-    #     Returns:
-    #         List of frameworks (e.g., ['GDPR', 'HIPAA', 'PCI-DSS'])
-    #     """
-    #     pass
-
     @abstractmethod
     def check_compliance(self, config: AnalysisConfiguration) -> Dict[str, bool]:
         """

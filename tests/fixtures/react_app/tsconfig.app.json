@@ -1,0 +1,10 @@
+{
+  // JSON with comments and trailing commas, like real tsconfig files
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "paths": {
+      "@/*": ["./src/*"], // alias
+    },
+  },
+  "include": ["src"],
+}

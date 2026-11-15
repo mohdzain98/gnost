@@ -34,9 +34,7 @@ def test_analyze_list_analyzers(monkeypatch, tmp_path, capsys):
             return ["robustness", "readability"]
 
     monkeypatch.setattr(app.analysis, "initialize_analyzers", lambda: None)
-    monkeypatch.setattr(
-        app.analysis, "get_analyzer_registry", lambda: DummyRegistry()
-    )
+    monkeypatch.setattr(app.analysis, "get_analyzer_registry", lambda: DummyRegistry())
     monkeypatch.setattr("sys.argv", ["gnost", "analyze", "--list-analyzers"])
 
     result = app.main()
@@ -116,7 +114,11 @@ def test_analyze_out_writes_json_and_html_files(monkeypatch, tmp_path):
 
     result = app.main()
     assert result == 0
-    assert captured["json"] == str(repo_root / "docs" / "analysis" / "gnost_analysis.json")
-    assert captured["html"] == str(repo_root / "docs" / "analysis" / "gnost_analysis.html")
+    assert captured["json"] == str(
+        repo_root / "docs" / "analysis" / "gnost_analysis.json"
+    )
+    assert captured["html"] == str(
+        repo_root / "docs" / "analysis" / "gnost_analysis.html"
+    )
     assert captured["compact"] is True
     assert "findings" in captured["payload"]

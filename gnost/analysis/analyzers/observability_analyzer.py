@@ -87,7 +87,6 @@ class ObservabilityAnalyzer(QualityAnalyzer):
             )
 
             # Find Python files
-            # python_files = self._find_python_files(config.target_path)
             if getattr(config, "files", None):
                 # Use the explicit file list passed from CLI
                 python_files = config.files
@@ -276,8 +275,7 @@ class ObservabilityAnalyzer(QualityAnalyzer):
                     # Get function source code
                     try:
                         func_lines = content.split("\n")[
-                            node.lineno
-                            - 1 : (
+                            node.lineno - 1 : (
                                 node.end_lineno
                                 if hasattr(node, "end_lineno")
                                 else node.lineno
@@ -480,11 +478,7 @@ class ObservabilityAnalyzer(QualityAnalyzer):
         # --- Emit one finding per category ---
         if poor_files:
             files = [f["file_path"] for f in poor_files]
-            coverage = [f'{f["score"]:.1f}%' for f in poor_files]
-            # functions = [
-            #     f'{len(f["functions_without_logging"])} / {f["total_functions"]}'
-            #     for f in poor_files
-            # ]
+            coverage = [f"{f['score']:.1f}%" for f in poor_files]
             clubbed = {
                 "File Paths": files,
                 "Coverage Percentages": coverage,
@@ -518,7 +512,7 @@ class ObservabilityAnalyzer(QualityAnalyzer):
 
         if fair_files:
             files = [f["file_path"] for f in fair_files]
-            coverage = [f'{f["score"]:.1f}%' for f in fair_files]
+            coverage = [f"{f['score']:.1f}%" for f in fair_files]
             clubbed = {
                 "File Paths": files,
                 "Coverage Percentages": coverage,

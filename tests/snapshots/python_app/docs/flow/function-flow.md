@@ -1,0 +1,22 @@
+# Function-level Flow
+
+What each entry point calls, function by function (Python only). Dotted arrows lead to a function already drawn elsewhere in the same diagram. Calls through other objects (`self.client.send()`) are not followed.
+
+## `main.py` → `<main>`
+
+`main.py:13` · 5 functions
+
+```mermaid
+flowchart LR
+  main_py___main_["<main><br/>main.py"]
+  main_py__main["main<br/>main.py"]
+  app_api_py__create_app["create_app<br/>app/api.py"]
+  app_services_users_py__list_users["list_users<br/>app/services/users.py"]
+  app_services_db_py__connect["connect<br/>app/services/db.py"]
+  app_api_py__create_app --> app_services_users_py__list_users
+  app_services_users_py__list_users --> app_services_db_py__connect
+  main_py___main_ --> main_py__main
+  main_py__main --> app_api_py__create_app
+  main_py__main -.-> app_services_users_py__list_users
+```
+

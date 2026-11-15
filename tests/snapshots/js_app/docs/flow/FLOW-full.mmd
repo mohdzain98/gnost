@@ -1,0 +1,8 @@
+flowchart TD
+  src_index_js["src/index.js"]
+  src_lib_format_js["src/lib/format.js"]
+  src_lib_greet_js["src/lib/greet.js"]
+  src_routes_users_js["src/routes/users.js"]
+  src_index_js --> src_lib_greet_js
+  src_index_js --> src_routes_users_js
+  src_lib_greet_js --> src_lib_format_js

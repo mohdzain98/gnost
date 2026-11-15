@@ -91,7 +91,6 @@ class MaintainabilityAnalyzer(QualityAnalyzer):
         """
         error_count = 0
         start_time = asyncio.get_event_loop().time()
-        # python_files = self._find_python_files(config.target_path)
         if getattr(config, "files", None):
             # Use the explicit file list passed from CLI
             python_files = config.files
@@ -107,9 +106,6 @@ class MaintainabilityAnalyzer(QualityAnalyzer):
 
         # Use radon for complexity analysis
         await self._run_radon_analysis(config.target_path)
-
-        # Analyze code duplication
-        # await self._analyze_code_duplication(config.target_path)
 
         # Analyze function duplication
         self._analyze_function_duplication(python_files)
@@ -281,7 +277,9 @@ class MaintainabilityAnalyzer(QualityAnalyzer):
                     func_name = (
                         func.get("name")
                         if func.get("name")
-                        else full_name.split(".")[-1] if full_name else "unknown"
+                        else full_name.split(".")[-1]
+                        if full_name
+                        else "unknown"
                     )
                     line = func.get("lineno", 0)
 
@@ -299,9 +297,7 @@ class MaintainabilityAnalyzer(QualityAnalyzer):
                                 "analysis_error": analysis.get("error"),
                                 "source": "radon_function_analysis",
                             }
-                            suggestion = (
-                                "Review and simplify this function to reduce complexity."
-                            )
+                            suggestion = "Review and simplify this function to reduce complexity."
                         else:
                             findings = {
                                 "metrics": analysis.get("metrics", {}),
@@ -364,7 +360,10 @@ class MaintainabilityAnalyzer(QualityAnalyzer):
 
                 if not self.target_name:
                     return
-                if node.lineno == self.target_line and self.target_name in (node.name, path):
+                if node.lineno == self.target_line and self.target_name in (
+                    node.name,
+                    path,
+                ):
                     self.matches.append((path, node))
 
             def visit_FunctionDef(self, node):
@@ -428,7 +427,9 @@ class MaintainabilityAnalyzer(QualityAnalyzer):
                 return nested
 
         search_target = full_name or func_name
-        function_node = await self._find_function_node(file_path, search_target, line_number)
+        function_node = await self._find_function_node(
+            file_path, search_target, line_number
+        )
         if function_node is not None:
             try:
                 metrics = await analyze_function_complexity(function_node)
@@ -885,16 +886,6 @@ class MaintainabilityAnalyzer(QualityAnalyzer):
         func_hash = hashlib.sha1(combined.encode()).hexdigest()
 
         return func_hash, identifiers
-
-        #     if isinstance(child, ast.Attribute):
-        #         identifiers.append(child.attr)
-        #     elif isinstance(child, ast.Name):
-        #         identifiers.append(child.id)
-
-        # # Create a simple hash from node counts
-        # hash_string = "".join(f"{k}:{v}" for k, v in sorted(node_counts.items()))
-        # id_part = ",".join(sorted(set(identifiers)))
-        # return hash(hash_string + id_part)
 
     def _create_empty_result(self) -> AnalysisResult:
         """Create an empty analysis result."""

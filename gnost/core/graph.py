@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-import os
 from collections import defaultdict
-from typing import Dict, List, Optional, Set
+from typing import Dict, List, Set, Tuple
 
-from gnost.scanner.models import ScanResult, FileInfo
+from gnost.core.resolver import ImportResolver
+from gnost.scanner.models import ScanResult
 
 
 class DependencyGraph:
@@ -17,6 +17,8 @@ class DependencyGraph:
     def __init__(self):
         self.adjacency: Dict[str, Set[str]] = defaultdict(set)
         self.reverse_adjacency: Dict[str, Set[str]] = defaultdict(set)
+        # Edges created only by imports that do not run at load time.
+        self.deferred_edges: Set[Tuple[str, str]] = set()
 
     # -------------------------
     # Build Graph
@@ -25,20 +27,20 @@ class DependencyGraph:
     @classmethod
     def from_scan(cls, scan: ScanResult) -> "DependencyGraph":
         graph = cls()
+        resolver = ImportResolver(scan.root, scan.files)
 
-        for file_info in scan.files:
+        for file_info in sorted(scan.files, key=lambda f: f.path):
             source = file_info.path
             graph._ensure_node(source)
 
+            eager: Set[str] = set()
+            lazy: Set[str] = set()
             for imp in file_info.imports:
-                target = cls._resolve_import(
-                    imp.target,
-                    scan.files,
-                    source,
-                )
+                for target in resolver.resolve(imp, file_info.language):
+                    (lazy if imp.deferred else eager).add(target)
 
-                if target:
-                    graph.add_edge(source, target)
+            for target in sorted(eager | lazy):
+                graph.add_edge(source, target, deferred=target not in eager)
 
         return graph
 
@@ -46,9 +48,21 @@ class DependencyGraph:
     # Graph Operations
     # -------------------------
 
-    def add_edge(self, source: str, target: str):
+    def add_edge(self, source: str, target: str, deferred: bool = False):
         self.adjacency[source].add(target)
         self.reverse_adjacency[target].add(source)
+        if deferred:
+            self.deferred_edges.add((source, target))
+        else:
+            self.deferred_edges.discard((source, target))
+
+    def eager_dependencies_of(self, file: str) -> Set[str]:
+        """Dependencies that load when the file does (not deferred)."""
+        return {
+            dep
+            for dep in self.adjacency.get(file, set())
+            if (file, dep) not in self.deferred_edges
+        }
 
     def _ensure_node(self, node: str):
         self.adjacency.setdefault(node, set())
@@ -92,35 +106,3 @@ class DependencyGraph:
 
     def fan_out(self, file: str) -> int:
         return len(self.adjacency.get(file, []))
-
-    # -------------------------
-    # Helpers
-    # -------------------------
-
-    @staticmethod
-    def _resolve_import(
-        import_path: str, files: List[FileInfo], source: str
-    ) -> Optional[str]:
-        """
-        Resolve imports for Python, JS, TS.
-        """
-
-        # -------- Python style --------
-        normalized = import_path.replace(".", "/")
-        for f in files:
-            if f.path.endswith(normalized + ".py"):
-                return f.path
-
-        # -------- JS / TS relative imports --------
-        if import_path.startswith("."):
-            base_dir = os.path.dirname(source)
-            candidate = os.path.normpath(os.path.join(base_dir, import_path))
-
-            for ext in (".js", ".ts"):
-                for f in files:
-                    if f.path == candidate + ext:
-                        return f.path
-                    if f.path == os.path.join(candidate, "index" + ext):
-                        return f.path
-
-        return None

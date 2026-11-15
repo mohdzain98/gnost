@@ -37,15 +37,9 @@ class ToolRunner:
     def _check_tool_availability(self):
         """Check which tools are available on the system."""
         tools_to_check = [
-            "pylint",
-            "semgrep",
-            "gitleaks",
             "radon",
             "mypy",
-            "pip-audit",
-            "pip-licenses",
             "bandit",
-            "safety",
         ]
 
         for tool in tools_to_check:
@@ -91,17 +85,7 @@ class ToolRunner:
             ToolTimeoutError: If the tool execution times out
         """
         if not self.is_tool_available(tool_name):
-            # Try to install common tools via pip if they're missing
-            if tool_name in ["pip-audit", "pip-licenses"]:
-                try:
-                    self._install_pip_tool(tool_name)
-                    self.tool_cache[tool_name] = True
-                except Exception:
-                    raise ToolNotFoundError(
-                        f"Tool '{tool_name}' is not available and could not be installed"
-                    )
-            else:
-                raise ToolNotFoundError(f"Tool '{tool_name}' is not available")
+            raise ToolNotFoundError(f"Tool '{tool_name}' is not available")
 
         # Prepare command
         cmd = [tool_name] + args

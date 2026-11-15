@@ -13,3 +13,8 @@ __pycache__/
 test/
 planners/
 setup.md
+project-docs/tasks
+docs/_build/
+test-results/
+.codegraph/
+.claude/worktrees/

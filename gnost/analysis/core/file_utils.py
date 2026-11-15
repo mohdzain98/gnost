@@ -2,6 +2,7 @@
 File utilities for code analysis.
 Provides common functionality for finding and filtering files across analyzers.
 """
+
 # Flake8: noqa: E501
 import os
 from typing import List, Set

@@ -10,6 +10,13 @@ maintainability, robustness, observability, and readability issues.
 It is designed for **first-day onboarding** as well as code quality triage and
 continuous reporting, not just code statistics.
 
+.. image:: ../assets/viewer_demo.gif
+   :alt: The gnost flow explorer: folder overview, open a folder, open a file, hover for details
+   :width: 100%
+
+*The interactive flow explorer that* ``gnost onboard`` *and* ``gnost open flow``
+*give you, shown here on GNOST's own source code.*
+
 Usage
 -----
 
@@ -30,7 +37,8 @@ Complete CLI usage::
         version   Display gnost version
         onboard   Onboard a new codebase
         analyze   Analyze the codebase
-        open      Open generated reports
+        open      Open a report or diagram in the browser
+        show      Same as `open FILE` (shorter name)
 
     Command Options:
     summary|stats|folders|files:
@@ -44,6 +52,18 @@ Complete CLI usage::
         --inject   Inject onboarding link into README.md files
         --layered  Produce Layered mermaid as Entry -> Core -> Leaf
         --depth    Limit execution flow depth (e.g. --depth 2)
+        --json [FILE]    Also write insights as JSON (default: docs/insights/gnost_insights.json)
+        --insights-only  Write only the insights JSON
+        --max-edges N    Largest diagram drawn file by file (default 80)
+        --collapse [LEVEL]  Group diagrams by folder
+
+    open|show:
+        target                  report (default), flow, or a .mmd / .md / .html file
+                                (`show` takes only a file)
+        --path FILE             Custom report or diagram path
+        --view auto|graph|mermaid  Interactive graph for big diagrams (auto), or force one
+        -o, --output FILE       Where to save the HTML page (default: a temp file)
+        --no-open               Write the HTML but do not open a browser
 
     analyze:
         path                    File or directory to analyze (default: .)
@@ -82,7 +102,7 @@ Subcommand usage::
     gnost stats [path] [--include INCLUDE] [--exclude EXCLUDE] [--progress]
     gnost folders [path] [--include INCLUDE] [--exclude EXCLUDE] [--progress]
     gnost files [path] [--include INCLUDE] [--exclude EXCLUDE] [--progress] [--top TOP]
-    gnost onboard [path] [--mermaid] [--progress] [--inject] [--layered] [--depth DEPTH]
+    gnost onboard [path] [--mermaid] [--progress] [--inject] [--layered] [--depth DEPTH] [--json [FILE]] [--insights-only] [--max-edges N] [--collapse [LEVEL]]
     gnost analyze [path] [--parallel] [--out] [--list-analyzers] [--no-progress]
     gnost open report|rpt
     gnost version
@@ -176,6 +196,7 @@ Use dedicated pages for details:
    onboard
    analyze
    analyzer_guide
+   configuration
 
 Options
 -------
@@ -221,6 +242,12 @@ Options
 
 ``--max-findings``
     Limit per-analyzer findings to keep output bounded.
+
+``--json``
+    Write onboarding insights as JSON (onboard).
+
+``--insights-only``
+    Write only the insights JSON and skip ONBOARD.md and diagrams (onboard).
 
 ``--version``
     Show version and exit.

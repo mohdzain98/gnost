@@ -131,7 +131,6 @@ class ReadabilityAnalyzer(QualityAnalyzer):
             )
 
             # Find Python files
-            # python_files = self._find_python_files(config.target_path)
             if getattr(config, "files", None):
                 # Use the explicit file list passed from CLI
                 python_files = config.files
@@ -576,13 +575,6 @@ class ReadabilityAnalyzer(QualityAnalyzer):
             )
         )
 
-        # # Simple scoring algorithm: fewer issues = higher score
-        # if total_files > 1:
-        #     issues_per_file = total_issues / total_files
-        #     # Scale: 0 issues = 100%, 10+ issues per file = 0%
-        #     overall_score = max(0, min(100, 100 - (issues_per_file * 10)))
-        # else:
-        #     overall_score = 100 / total_issues
         overall_result = dict(overall_details)
         total = sum(overall_result.values()) or 1
         overall_result["total_issues"] = total

@@ -8,6 +8,7 @@ from pathlib import Path
 from termcolor import colored
 from gnost.analysis.core.interfaces import AnalyzerRegistry
 from gnost.analysis.utils.extract import Extract
+from gnost.scanner.filters import is_excluded
 from gnost.analysis.core.models import AnalysisConfiguration
 from gnost.analysis.core.engine import (
     UnifiedAnalysisEngine as Engine,
@@ -137,7 +138,11 @@ class Analysis:
         os.replace(tmp, path)
 
     def collect_code_files(
-        self, target_path: str, *, exts: Optional[set[str]] = None
+        self,
+        target_path: str,
+        *,
+        exts: Optional[set[str]] = None,
+        exclude: Optional[list] = None,
     ) -> list[str]:
         """Return a list of code files under target_path using Extract's filters."""
         exts = exts or set(Extract.CODE_EXTS)
@@ -158,7 +163,9 @@ class Analysis:
                         if not Extract.is_hidden_dir(entry):
                             stack.append(entry)
                     else:
-                        if Extract.is_code_file(entry, exts):
+                        if Extract.is_code_file(entry, exts) and not is_excluded(
+                            str(entry), str(project_root), exclude or []
+                        ):
                             files.append(str(entry))
             except PermissionError:
                 # ignore unreadable dirs

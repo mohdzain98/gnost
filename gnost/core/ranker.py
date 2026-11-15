@@ -69,20 +69,22 @@ class HotspotRanker:
         stats: Dict[str, dict] = {}
 
         # Init nodes
-        for node in self.graph.all_nodes():
+        for node in sorted(self.graph.all_nodes()):
             stats[node] = {
                 "fan_in": self.graph.fan_in(node),
                 "fan_out": self.graph.fan_out(node),
                 "path_freq": 0,
-                "depth": 999,
+                "depth": 0,  # files outside the flow take no depth penalty
                 "layer": self._layer_of(node),
             }
 
-        # Count path frequency + depth
+        # Count path frequency; depth is the shortest distance from an entry point
         for path in self.flow.paths:
-            for depth, file in enumerate(path.path):
+            for file in path.path[1:]:  # every path starts at its entry point
                 stats[file]["path_freq"] += 1
-                stats[file]["depth"] = min(stats[file]["depth"], depth)
+        for file, depth in self.flow.depths.items():
+            if file in stats:
+                stats[file]["depth"] = depth
 
         return stats
 

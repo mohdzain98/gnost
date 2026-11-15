@@ -9,6 +9,7 @@ import json
 import re
 import asyncio
 import ast
+from pathlib import Path
 from typing import List, Dict, Any, Optional, Tuple
 from collections import defaultdict, Counter
 from gnost.utils.logger import AppLogger
@@ -27,6 +28,8 @@ from gnost.analysis.core.models import (
 )
 
 logger = AppLogger.get_logger(__name__)
+
+MYPY_CONFIG = Path(__file__).resolve().parent.parent / "config" / "mypy.ini"
 
 
 class RobustnessAnalyzer(QualityAnalyzer):
@@ -122,7 +125,6 @@ class RobustnessAnalyzer(QualityAnalyzer):
             )
 
             # Find Python files
-            # python_files = self._find_python_files(config.target_path)
             if getattr(config, "files", None):
                 # Use the explicit file list passed from CLI
                 python_files = config.files
@@ -379,7 +381,7 @@ class RobustnessAnalyzer(QualityAnalyzer):
             return findings
 
         try:
-            cmd = ["mypy", "--config-file", "mypy.ini"] + files
+            cmd = ["mypy", "--config-file", str(MYPY_CONFIG)] + files
             result = await asyncio.create_subprocess_exec(
                 *cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
             )
@@ -699,8 +701,6 @@ class RobustnessAnalyzer(QualityAnalyzer):
     ) -> Optional[UnifiedFinding]:
         """Create a UnifiedFinding from a MyPy issue."""
         formatted_msg = re.sub(r'"([^"]+)"', r"`\1`", message)
-        # if error_code:
-        #     formatted_msg += f" [{error_code}]"
 
         normalized_code = (error_code or "").strip()
         code_labels = [c.strip() for c in normalized_code.split(",") if c.strip()]
@@ -722,7 +722,9 @@ class RobustnessAnalyzer(QualityAnalyzer):
                 file_path="/".join(filepath.split("/")[-2:]),
                 line_number=line_num,
             ),
-            rule_id=(normalized_code.split(",")[0].strip() if normalized_code else None),
+            rule_id=(
+                normalized_code.split(",")[0].strip() if normalized_code else None
+            ),
             remediation_guidance=self._get_mypy_remediation(codes[0]),
             remediation_complexity=self._get_mypy_complexity(codes[0]),
             source_analyzer=self.name,
@@ -812,16 +814,6 @@ class RobustnessAnalyzer(QualityAnalyzer):
             "high": 0.9,
         }
         return mapping.get(confidence.lower(), 0.6)
-
-    # Removed because mypy mostly gives error to most of the findings
-    # def _map_mypy_severity(self, level: str) -> SeverityLevel:
-    #     """Map MyPy level to our SeverityLevel."""
-    #     mapping = {
-    #         "error": SeverityLevel.HIGH,
-    #         "warning": SeverityLevel.MEDIUM,
-    #         "note": SeverityLevel.LOW,
-    #     }
-    #     return mapping.get(level.lower(), SeverityLevel.MEDIUM)
 
     def _map_bandit_to_cwe(self, test_id: str) -> Optional[str]:
         """Map Bandit test IDs to CWE identifiers."""

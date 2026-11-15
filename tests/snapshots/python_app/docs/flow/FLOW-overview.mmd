@@ -1,0 +1,7 @@
+flowchart TD
+  app_api_py["app/api.py"]
+  app_services_users_py["app/services/users.py"]
+  main_py["main.py"]
+  app_api_py --> app_services_users_py
+  main_py --> app_api_py
+  main_py --> app_services_users_py

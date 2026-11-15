@@ -1,0 +1,517 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://gnost.readthedocs.io/schemas/insights-1.3.json",
+  "title": "GNOST onboarding insights",
+  "description": "Output of `gnost onboard --json`. Paths are relative to the scanned root. Version 1.x only adds fields; consumers must ignore unknown fields.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "generator",
+    "project",
+    "entry_points",
+    "routes",
+    "layers",
+    "first_files",
+    "hotspots",
+    "caution_areas",
+    "cycles",
+    "graph",
+    "stats",
+    "flows",
+    "callgraph"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^1\\.[0-9]+$"
+    },
+    "generator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version"
+      ],
+      "properties": {
+        "name": {
+          "const": "gnost"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "languages",
+        "framework",
+        "files"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "languages": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "framework": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "files": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "entry_points": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "file",
+          "reason",
+          "priority"
+        ],
+        "properties": {
+          "file": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "priority": {
+            "enum": [
+              "primary",
+              "secondary"
+            ]
+          }
+        }
+      }
+    },
+    "routes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "method",
+          "path",
+          "handler",
+          "file",
+          "line",
+          "framework"
+        ],
+        "properties": {
+          "method": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "handler": {
+            "type": "string"
+          },
+          "file": {
+            "type": "string"
+          },
+          "line": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "framework": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "layers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entry",
+        "core",
+        "leaf"
+      ],
+      "properties": {
+        "entry": {
+          "$ref": "#/definitions/paths"
+        },
+        "core": {
+          "$ref": "#/definitions/paths"
+        },
+        "leaf": {
+          "$ref": "#/definitions/paths"
+        }
+      }
+    },
+    "first_files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "reason",
+          "score"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "score": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "hotspots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "file",
+          "score",
+          "fan_in",
+          "fan_out",
+          "depth",
+          "layer"
+        ],
+        "properties": {
+          "file": {
+            "type": "string"
+          },
+          "score": {
+            "type": "number"
+          },
+          "fan_in": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "fan_out": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "depth": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "layer": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "caution_areas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "category",
+          "severity",
+          "description",
+          "metrics",
+          "score",
+          "partial",
+          "factors"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "category": {
+            "enum": [
+              "high_impact",
+              "large_file",
+              "tight_coupling",
+              "circular_dependency",
+              "high_complexity",
+              "low_observability"
+            ]
+          },
+          "severity": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "description": {
+            "type": "string"
+          },
+          "metrics": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number"
+            }
+          },
+          "score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "partial": {
+            "type": "boolean"
+          },
+          "factors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "name",
+                "value",
+                "contribution",
+                "estimated"
+              ],
+              "properties": {
+                "name": {
+                  "enum": [
+                    "cycles",
+                    "size",
+                    "impact",
+                    "coupling",
+                    "complexity",
+                    "observability"
+                  ]
+                },
+                "value": {
+                  "type": "number"
+                },
+                "contribution": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "estimated": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "cycles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "files",
+          "example"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "import-time",
+              "deferred"
+            ]
+          },
+          "files": {
+            "$ref": "#/definitions/paths"
+          },
+          "example": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 2
+          }
+        }
+      }
+    },
+    "graph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nodes",
+        "edges"
+      ],
+      "properties": {
+        "nodes": {
+          "$ref": "#/definitions/paths"
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "source",
+              "target",
+              "deferred"
+            ],
+            "properties": {
+              "source": {
+                "type": "string"
+              },
+              "target": {
+                "type": "string"
+              },
+              "deferred": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      }
+    },
+    "stats": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "files",
+        "entry_points",
+        "routes",
+        "reachable_files",
+        "edges",
+        "cycles_import_time",
+        "cycles_deferred"
+      ],
+      "properties": {
+        "files": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "entry_points": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "reachable_files": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "edges": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "cycles_import_time": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "cycles_deferred": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "routes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "flows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "label",
+          "size",
+          "truncated",
+          "entry"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "route",
+              "main"
+            ]
+          },
+          "label": {
+            "type": "string"
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "truncated": {
+            "type": "boolean"
+          },
+          "entry": {
+            "$ref": "#/definitions/call"
+          }
+        }
+      }
+    },
+    "callgraph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "functions",
+        "edges",
+        "unparsed_files"
+      ],
+      "properties": {
+        "functions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "edges": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unparsed_files": {
+          "$ref": "#/definitions/paths"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "call": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "function",
+        "file",
+        "line",
+        "repeat",
+        "calls"
+      ],
+      "properties": {
+        "function": {
+          "type": "string"
+        },
+        "file": {
+          "type": "string"
+        },
+        "line": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "repeat": {
+          "type": "boolean"
+        },
+        "calls": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/call"
+          }
+        }
+      }
+    }
+  }
+}

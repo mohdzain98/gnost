@@ -36,6 +36,7 @@ class SummaryReporter:
         self._header()
         self._project_overview()
         self._entry_points()
+        self._routes()
         self._execution_flow()
         self._hotspots()
         self._reading_guide()
@@ -43,6 +44,7 @@ class SummaryReporter:
         if self.insights:
             self._first_files()
             self._caution_areas()
+            self._cycles()
 
     # -------------------------
     # Sections
@@ -72,8 +74,25 @@ class SummaryReporter:
             return
 
         for ep in self.flow.entry_points:
-            self.printer.bullet(f"{ep.file}  ({ep.reason})")
+            self.printer.bullet(f"{self._shorten(ep.file)}  ({ep.reason})")
 
+        self.printer.newline()
+
+    ROUTE_LIMIT = 10
+
+    def _routes(self):
+        routes = self.scan.routes
+        if not routes:
+            return
+
+        self.printer.section("Routes")
+        for route in routes[: self.ROUTE_LIMIT]:
+            self.printer.bullet(
+                f"{route.method} {route.path} → {route.handler} "
+                f"({self._shorten(route.file)}:{route.line})"
+            )
+        if len(routes) > self.ROUTE_LIMIT:
+            self.printer.text(f"... and {len(routes) - self.ROUTE_LIMIT} more routes")
         self.printer.newline()
 
     def _execution_flow(self):
@@ -96,25 +115,28 @@ class SummaryReporter:
 
         self.printer.newline()
 
+    READING_LIMIT = 15
+
     def _reading_guide(self):
         self.printer.section("Recommended Reading Order")
 
-        layers = self.flow.layers
-
-        if layers.get("entry"):
-            self.printer.subsection("Start Here")
-            for f in sorted(layers["entry"]):
+        sections = [
+            ("entry", "Start Here"),
+            ("core", "Core Logic"),
+            ("leaf", "Supporting / Leaf Code"),
+        ]
+        for layer, title in sections:
+            files = self.flow.ordered_layer(layer)
+            if not files:
+                continue
+            self.printer.subsection(title)
+            for f in files[: self.READING_LIMIT]:
                 self.printer.bullet(self._shorten(f))
-
-        if layers.get("core"):
-            self.printer.subsection("Core Logic")
-            for f in sorted(layers["core"]):
-                self.printer.bullet(self._shorten(f))
-
-        if layers.get("leaf"):
-            self.printer.subsection("Supporting / Leaf Code")
-            for f in sorted(layers["leaf"]):
-                self.printer.bullet(self._shorten(f))
+            if len(files) > self.READING_LIMIT:
+                self.printer.text(
+                    f"... and {len(files) - self.READING_LIMIT} more "
+                    "(closest to an entry point listed first)"
+                )
 
         self.printer.newline()
 
@@ -147,19 +169,10 @@ class SummaryReporter:
         self.printer.section("First Files to Read")
 
         for item in self.insights.first_files[:5]:
-            short = self._short_path(item.path, depth=3)
+            short = self._shorten(item.path)
             self.printer.bullet(f"{short} — {item.reason}")
 
         self.printer.newline()
-
-    def _short_path(self, path: str, depth: int = 2) -> str:
-        """
-        Shorten a file path to the last `depth` components.
-        Example:
-        gnost/core/flow.py  → core/flow.py
-        """
-        parts = path.replace("\\", "/").split("/")
-        return "/".join(parts[-depth:])
 
     def _caution_areas(self):
         if not self.insights.caution_areas:
@@ -168,10 +181,33 @@ class SummaryReporter:
         self.printer.section("Caution Areas")
 
         for c in self.insights.caution_areas[:5]:
-            short = self._short_path(c.path, depth=3)
+            short = self._shorten(c.path)
             sev = c.severity
-            self.printer.bullet(f"{short} [{c.category.value}] severity: {sev}")
+            score = f" score {c.score:g}" if c.score else ""
+            self.printer.bullet(f"{short} [{c.category.value}] severity: {sev}{score}")
             self.printer.text(f"  {c.description}")
+
+        self.printer.newline()
+
+    def _cycles(self):
+        cycles = self.insights.cycles
+        self.printer.section("Circular Dependencies")
+
+        if not cycles:
+            self.printer.text("None detected.")
+            self.printer.newline()
+            return
+
+        eager = [c for c in cycles if c.kind == "import-time"]
+        self.printer.text(
+            f"{len(eager)} import-time, {len(cycles) - len(eager)} deferred "
+            "(imports inside functions or type-only)"
+        )
+        for cycle in cycles[:5]:
+            chain = " → ".join(self._shorten(f) for f in cycle.example)
+            self.printer.bullet(f"[{cycle.kind}] {chain}")
+        if len(cycles) > 5:
+            self.printer.text(f"... and {len(cycles) - 5} more")
 
         self.printer.newline()
 

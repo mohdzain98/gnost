@@ -1,29 +1,7 @@
-"""
-Prod Shift file contains changes needed to be done on prod which are different from local host
+"""Helpers for collecting the source files that ``gnost analyze`` inspects.
 
-Gitleaks is not available on Debian which streamlit community cloud uses.
-
-This is utility functions for managing the Gitleaks binary in production environments
-(e.g., Streamlit Community Cloud) where direct package installation via apt/brew
-is not possible.
-
-This module ensures that the Gitleaks CLI tool is available at runtime by:
-
-1. Checking if Gitleaks is already installed on the system.
-2. Downloading the official prebuilt Linux binary from GitHub Releases if not.
-3. Extracting it into a writable directory (/tmp) and making it executable.
-4. Returning the path to the binary so it can be invoked with subprocess.
-
-Notes:
-- Pin the `GITLEAKS_VERSION` environment variable (default: v8.18.4) to control
-  which release is downloaded.
-- This approach avoids relying on apt/brew and keeps the app portable across
-  cloud deployments.
-- On Streamlit Community, binaries should be placed under `/tmp` since it is
-  writable at runtime.
-
-Secondly Class Extract is used to extract zip files on the prod as accepting folder path is not possible only accepting zip file is possible
-
+The ``Extract`` class holds the supported extensions (currently Python only) and
+the directory names that are always skipped, and can unpack zip archives.
 """
 
 import os

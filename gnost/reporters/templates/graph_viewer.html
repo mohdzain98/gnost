@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>__TITLE__</title>
+<style>
+  :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d; --code:#161b22; --hl:#58a6ff; }
+  :root[data-theme="light"] { --bg:#fff; --fg:#1f2328; --muted:#656d76; --line:#d0d7de; --code:#f6f8fa; --hl:#0969da; }
+  html,body { height:100%; margin:0; background:var(--bg); color:var(--fg);
+              font:14px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+  header { height:44px; box-sizing:border-box; padding:8px 14px; border-bottom:1px solid var(--line);
+           display:flex; gap:10px; align-items:center; }
+  header .crumb { color:var(--muted); } header .crumb b { color:var(--fg); }
+  header .sp { flex:1; }
+  button { background:var(--code); color:var(--fg); border:1px solid var(--line);
+           border-radius:6px; padding:3px 10px; cursor:pointer; }
+  button:hover { border-color:var(--hl); }
+  label { color:var(--muted); cursor:pointer; }
+  #cy { position:absolute; top:44px; bottom:32px; left:0; right:340px; }
+  #zoom { position:absolute; right:352px; bottom:44px; display:flex; flex-direction:column; gap:6px; z-index:5; }
+  #zoom button { width:36px; height:36px; padding:0; display:flex; align-items:center; justify-content:center; }
+  #hint { position:absolute; bottom:0; left:0; right:340px; height:32px; box-sizing:border-box;
+          padding:6px 14px; border-top:1px solid var(--line); color:var(--muted); white-space:nowrap;
+          overflow:hidden; text-overflow:ellipsis; background:var(--bg); }
+  #hint b { color:var(--fg); } #hint .o { color:#2da44e; } #hint .i { color:#58a6ff; }
+  #side { position:absolute; top:44px; bottom:0; right:0; width:340px; box-sizing:border-box;
+          border-left:1px solid var(--line); display:flex; flex-direction:column; }
+  #info { padding:12px; overflow:auto; max-height:45%; border-bottom:1px solid var(--line); }
+  #info h4 { margin:10px 0 4px; } #info ul { margin:0; padding-left:18px; }
+  #pick { padding:8px 12px 12px; overflow:auto; flex:1; }
+  #q { width:100%; box-sizing:border-box; background:var(--code); color:var(--fg);
+       border:1px solid var(--line); border-radius:6px; padding:5px 8px; margin-bottom:6px; }
+  li.f { cursor:pointer; list-style:none; word-break:break-all; padding:1px 4px; border-radius:4px; }
+  li.f:hover, .lnk:hover { background:var(--code); color:var(--hl); }
+  .lnk { cursor:pointer; } details > summary { cursor:pointer; padding:2px 0; }
+  details ul { margin:0 0 4px; padding-left:10px; }
+  .k { display:inline-block; width:22px; border-top:3px solid; vertical-align:middle; }
+  .muted { color:var(--muted); } #err { color:#d1242f; padding:16px; }
+</style>
+</head>
+<body>
+<header>
+  <button id="home">All folders</button>
+  <span class="crumb" id="crumb"></span><span class="sp"></span>
+  <label><input id="hubs" type="checkbox" checked> hide arrows into shared folders</label>
+  <button id="all">Show everything</button><button id="fit">Fit</button><button id="theme" title="Switch theme">Light</button>
+</header>
+<div id="cy"></div>
+<div id="zoom">
+  <button id="zin" title="Zoom in" aria-label="Zoom in"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21M10.5 7.5v6M7.5 10.5h6"/></svg></button>
+  <button id="zout" title="Zoom out" aria-label="Zoom out"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21M7.5 10.5h6"/></svg></button>
+</div>
+<div id="hint"></div>
+<div id="side">
+  <div id="info"></div>
+  <div id="pick"><input id="q" type="search" placeholder="Search files..."><div id="tree"></div></div>
+</div>
+<div id="err"></div>
+<script src="__CYTO__"></script>
+<script src="__LB__"></script><script src="__CB__"></script><script src="__FCOSE__"></script>
+<script>
+const SOURCE = __SOURCE__;
+const RED = "#d32f2f", ORANGE = "#f57c00", GREEN = "#2da44e", BLUE = "#0969da", GREY = "#8b949e";
+
+function parse(src) {
+  const nodes = {}, edges = [], colors = {};
+  for (const raw of src.split("\n")) {
+    const line = raw.trim(); let m;
+    if ((m = line.match(/^(\w+)\["(.*)"\]$/))) nodes[m[1]] = m[2].replace(/<br\/>.*$/, "");
+    else if ((m = line.match(/^(\w+)\s+(-->|==>|-\.->)(?:\|[^|]*\|)?\s+(\w+)$/)))
+      edges.push({ source: m[1], target: m[3], dashed: m[2] === "-.->", hard: m[2] === "==>" });
+    else if ((m = line.match(/^linkStyle ([\d,]+) stroke:(#\w+)/)))
+      m[1].split(",").forEach(i => colors[+i] = m[2]);
+  }
+  edges.forEach((e, i) => { e.cyc = colors[i] || (e.hard ? RED : null); });
+  return { nodes, edges };
+}
+
+if (typeof cytoscape === "undefined") {
+  document.getElementById("err").textContent =
+    "Could not load the graph library from the CDN. Check your internet connection.";
+} else {
+  const FCOSE = typeof cytoscapeFcose !== "undefined";
+  if (FCOSE) cytoscape.use(cytoscapeFcose);
+  const { nodes, edges } = parse(SOURCE);
+  const ids = Object.keys(nodes);
+  const dirOf = id => { const l = nodes[id]; return l.includes("/") ? l.slice(0, l.lastIndexOf("/")) : "."; };
+  const base = id => nodes[id].split("/").pop();
+  const outs = {}, ins = {}, byFolder = {};
+  ids.forEach(i => { outs[i] = []; ins[i] = []; (byFolder[dirOf(i)] = byFolder[dirOf(i)] || []).push(i); });
+  const E = edges.filter(e => outs[e.source] && ins[e.target]);
+  E.forEach(e => { outs[e.source].push(e); ins[e.target].push(e); });
+  const folders = Object.keys(byFolder).sort();
+  const state = { mode: "folders", folder: null, file: null, all: false };
+  const $ = id => document.getElementById(id);
+  const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+
+  const cy = cytoscape({
+    container: $("cy"), wheelSensitivity: 0.25, minZoom: 0.05, maxZoom: 6,
+    style: [
+      { selector: "node", style: { label: "data(label)", "font-size": 11, color: GREY,
+        "text-valign": "bottom", "text-margin-y": 3, "text-wrap": "wrap", "text-max-width": 140,
+        "background-color": "#4f7cff", width: "data(size)", height: "data(size)", "overlay-padding": 8 } },
+      { selector: "node.folder", style: { shape: "round-rectangle", "background-color": "#4f7cff",
+        "background-opacity": 0.1, "border-width": 1.5, "border-color": "#4f7cff", "font-size": 12,
+        "text-valign": "center", "text-margin-y": 0, color: "#c9d1d9", "text-outline-width": 0,
+        width: "data(w)", height: 38 } },
+      { selector: "node.folder.hub", style: { "background-color": "#8b949e", "border-color": "#8b949e",
+        "background-opacity": 0.08 } },
+      { selector: "node.parent", style: { shape: "round-rectangle", "background-opacity": 0.06,
+        "background-color": "#888", "border-width": 1, "border-color": GREY, "text-valign": "top",
+        "text-margin-y": -4, "font-weight": "bold", padding: 14 } },
+      { selector: "node.colL", style: { "text-halign": "left", "text-valign": "center", "text-margin-x": -8,
+        "text-margin-y": 0, "font-size": 12, color: "#c9d1d9" } },
+      { selector: "node.colR, node.colC", style: { "text-halign": "right", "text-valign": "center",
+        "text-margin-x": 8, "text-margin-y": 0, "font-size": 12, color: "#c9d1d9" } },
+      { selector: "node.focus", style: { "background-color": GREEN, "font-weight": "bold", "font-size": 13,
+        color: GREEN } },
+      { selector: "node.outside", style: { "background-color": "#a371f7" } },
+      { selector: "edge", style: { width: "data(w)", "line-color": GREY, "target-arrow-color": GREY,
+        "target-arrow-shape": "triangle", "arrow-scale": 0.7, "curve-style": "bezier", opacity: 0.22,
+        label: "", "font-size": 11, color: "#fff", "text-background-color": "#4f5b68",
+        "text-background-opacity": 0.9, "text-background-padding": 2 } },
+      { selector: "edge.dashed", style: { "line-style": "dashed" } },
+      { selector: "edge.out", style: { "line-color": GREEN, "target-arrow-color": GREEN, opacity: 0.5 } },
+      { selector: "edge.in", style: { "line-color": BLUE, "target-arrow-color": BLUE, opacity: 0.5 } },
+      { selector: "edge.red", style: { "line-color": RED, "target-arrow-color": RED, opacity: 0.6 } },
+      { selector: "edge.orange", style: { "line-color": ORANGE, "target-arrow-color": ORANGE, opacity: 0.6 } },
+      { selector: "node.faded", style: { opacity: 0.5 } },
+      { selector: "edge.faded", style: { opacity: 0.05 } },
+      { selector: "edge.detail", style: { display: "none" } },
+      { selector: "edge.detail.hot", style: { display: "element" } },
+      { selector: "edge.hot", style: { opacity: 1, label: "data(label)", "z-index": 9 } },
+    ],
+  });
+
+  function fitLayout() {
+    cy.layout(FCOSE ? { name: "fcose", quality: "proof", randomize: true, animate: false,
+        nodeRepulsion: 60000, idealEdgeLength: 230, nodeSeparation: 190, packComponents: true,
+        nodeDimensionsIncludeLabels: true }
+      : { name: "cose", animate: false, nodeRepulsion: 60000, idealEdgeLength: 230 }).run();
+    cy.fit(undefined, 40);
+  }
+
+  // Files that import the focus on the left, files it imports on the right, the
+  // focus (a file, or the files of a folder) in the middle; names line up in rows.
+  // Ring layout: the focus sits in the middle and the folders it touches are boxes
+  // around it (left, top, bottom, then right), so arrows fan out without crossing
+  // other boxes. Three boxes on a side form an arch (the middle one set back).
+  const ROW = 24, BOX_W = 340, SIDE_GAP = 330, V_GAP = 160, ARCH = 90, PER_ROW = 3;
+  function columnLayout(F, left, right) {
+    const mid = [...F].sort((a, b) => nodes[a].localeCompare(nodes[b]));
+    const cols = state.file ? 1 : Math.max(1, Math.ceil(Math.sqrt(mid.length / 1.5)));
+    const rows = Math.ceil(mid.length / cols), colW = 260;
+    const pos = {};
+    mid.forEach((i, k) => { pos[i] = { x: (k % cols) * colW - ((cols - 1) * colW) / 2,
+      y: Math.floor(k / cols) * (ROW + 6) - (rows * (ROW + 6)) / 2 }; });
+    const cw = state.file ? 120 : (cols - 1) * colW + 220, ch = state.file ? 30 : rows * (ROW + 6) + 20;
+
+    const groups = {};
+    [...left, ...right].forEach(i => (groups[dirOf(i)] = groups[dirOf(i)] || []).push(i));
+    const list = Object.keys(groups).map(d => ({ d, files: groups[d].sort((a, b) => nodes[a].localeCompare(nodes[b])) }))
+      .sort((a, b) => b.files.length - a.files.length || a.d.localeCompare(b.d));
+    const order = ["left", "top", "bottom", "right"];
+    const sides = { left: [], top: [], bottom: [], right: [] }, load = { left: 0, top: 0, bottom: 0, right: 0 };
+    list.forEach(g => {
+      const side = order.reduce((best, c) => load[c] < load[best] ? c : best, order[0]);
+      sides[side].push(g); load[side] += g.files.length + 2;
+    });
+    const height = g => g.files.length * ROW + 30;
+    const place = (g, x, y) => g.files.forEach((i, k) => { pos[i] = { x, y: y + k * ROW }; });
+
+    // top and bottom rows, in tiers of PER_ROW boxes
+    const rowWidth = Math.min(PER_ROW, Math.max(sides.top.length, sides.bottom.length)) * (BOX_W + 60);
+    const sideX = Math.max(cw / 2 + SIDE_GAP, rowWidth / 2 + BOX_W / 2);
+    for (const side of ["top", "bottom"]) {
+      const sign = side === "top" ? -1 : 1;
+      let offset = ch / 2 + V_GAP;
+      for (let t = 0; t * PER_ROW < sides[side].length; t++) {
+        const tier = sides[side].slice(t * PER_ROW, (t + 1) * PER_ROW);
+        const tierH = Math.max(...tier.map(height));
+        tier.forEach((g, k) => {
+          const u = tier.length > 1 ? (k / (tier.length - 1)) * 2 - 1 : 0;
+          const x = (k - (tier.length - 1) / 2) * (BOX_W + 60);
+          const away = offset + (tier.length === 3 ? ARCH * (1 - u * u) : 0);
+          const h = height(g);
+          place(g, x, sign < 0 ? -away - h + 14 : away + 14);
+        });
+        offset += tierH + 80 + (tier.length === 3 ? ARCH : 0);
+      }
+    }
+    // left and right columns, stacked and centred
+    for (const side of ["left", "right"]) {
+      const sign = side === "left" ? -1 : 1;
+      const total = sides[side].reduce((n, g) => n + height(g) + 70, -70);
+      let y = -total / 2;
+      sides[side].forEach(g => { place(g, sign * sideX, y + 14); y += height(g) + 70; });
+    }
+    cy.layout({ name: "preset", positions: n => pos[n.id()], fit: true, padding: 150 }).run();
+    cy.nodes().removeClass("colL colR");
+    sides.left.forEach(g => g.files.forEach(i => cy.getElementById(i).addClass("colL")));
+    ["top", "bottom", "right"].forEach(sd => sides[sd].forEach(g =>
+      g.files.forEach(i => cy.getElementById(i).addClass("colR"))));
+  }
+
+  function edgeClass(e, extra) {
+    const c = [extra || ""];
+    if (e.dashed) c.push("dashed");
+    if (e.cyc === RED) c.push("red"); else if (e.cyc) c.push("orange");
+    return c.join(" ");
+  }
+
+  // ---------- folder overview ----------
+  function foldersView() {
+    const agg = {};
+    E.forEach(e => {
+      const a = dirOf(e.source), b = dirOf(e.target); if (a === b) return;
+      const k = a + "\u0000" + b;
+      const x = agg[k] = agg[k] || { a, b, n: 0, red: false, orange: false, deferred: true };
+      x.n++; x.red = x.red || e.cyc === RED; x.orange = x.orange || (e.cyc && e.cyc !== RED);
+      x.deferred = x.deferred && e.dashed;
+    });
+    const importers = {};
+    Object.values(agg).forEach(x => (importers[x.b] = importers[x.b] || new Set()).add(x.a));
+    const limit = Math.max(5, Math.round(folders.length * 0.4));
+    const hubs = new Set(folders.filter(f => importers[f] && importers[f].size >= limit));
+    const hide = $("hubs").checked;
+    const els = folders.map(f => ({ data: { id: "d:" + f, label: f + "\n" + byFolder[f].length + " files",
+        w: Math.max(90, f.length * 7.5), size: 10 }, classes: "folder" + (hide && hubs.has(f) ? " hub" : "") }));
+    Object.values(agg).forEach(x => {
+      if (hide && hubs.has(x.b) && !x.red && !x.orange) return;
+      els.push({ data: { id: "x:" + x.a + ">" + x.b, source: "d:" + x.a, target: "d:" + x.b,
+          w: 1 + Math.log2(x.n) * 0.8, label: x.n > 1 ? String(x.n) : "" },
+        classes: (x.deferred ? "dashed " : "") + (x.red ? "red" : x.orange ? "orange" : "") });
+    });
+    cy.elements().remove(); cy.add(els); fitLayout();
+    const names = [...hubs].sort();
+    $("info").innerHTML = "<b>Folders</b> and how many imports go between them (thicker arrow = more; hover a folder to see the numbers). " +
+      "<b>Click a folder</b> to open its files." +
+      (hide && names.length ? '<p class="muted">Arrows into these shared folders are hidden (grey boxes): ' +
+        names.map(n => '<span class="lnk" data-folder="' + esc(n) + '">' + esc(n) + "</span>").join(", ") + ".</p>" : "") +
+      legend();
+    $("crumb").innerHTML = "<b>All folders</b>";
+  }
+
+  // ---------- files view ----------
+  function filesView() {
+    let F = new Set(), picked, label;
+    if (state.all) { picked = E; ids.forEach(i => F.add(i)); label = "Everything"; }
+    else if (state.file) {
+      const f = state.file; F.add(f); picked = outs[f].concat(ins[f]); label = nodes[f];
+    } else {
+      byFolder[state.folder].forEach(i => F.add(i));
+      picked = E.filter(e => F.has(e.source) || F.has(e.target)); label = state.folder;
+    }
+    const inc = new Set(F);
+    picked.forEach(e => { inc.add(e.source); inc.add(e.target); });
+    const right = new Set(), left = new Set();
+    if (!state.all) {
+      picked.forEach(e => {
+        const s = F.has(e.source), t = F.has(e.target);
+        if (s && !t) right.add(e.target); else if (t && !s) left.add(e.source);
+      });
+      left.forEach(i => { if (right.has(i)) left.delete(i); });
+    }
+    const els = [], parents = new Map();
+    const focusDir = state.file ? dirOf(state.file) : state.folder;
+    const pidOf = i => "p:" + dirOf(i) + (!state.all && !F.has(i) && dirOf(i) === focusDir ? "\u2022near" : "");
+    inc.forEach(i => {
+      const d = dirOf(i), pid = pidOf(i);
+      parents.set(pid, d);
+      els.push({ data: { id: i, label: base(i), parent: pid, size: F.has(i) && !state.all ? 16 : 12 },
+        classes: (state.all ? "" : left.has(i) ? "colL " : right.has(i) ? "colR " : "colC ") +
+          (state.file === i ? "focus" : (!state.all && !F.has(i) && dirOf(i) !== (state.file ? dirOf(state.file) : state.folder) ? "outside" : ""))  });
+    });
+    parents.forEach((d, pid) => els.push({ data: { id: pid, label: d, dir: d, size: 1 }, classes: "parent" }));
+    if (state.all) {
+      picked.forEach((e, k) => els.push({ data: { id: "e" + k, source: e.source, target: e.target, w: 1, label: "" },
+        classes: edgeClass(e, "") }));
+    } else {
+      // One arrow per box, ending at the box border; the file-level arrows are kept
+      // hidden and appear when a file is hovered.
+      const end = i => F.has(i) ? (state.file ? i : "p:" + focusDir) : pidOf(i);
+      const agg = {};
+      picked.forEach((e, k) => {
+        const out = F.has(e.source), dir = out ? "out" : "in";
+        els.push({ data: { id: "d" + k, source: e.source, target: e.target, w: 1.5, label: "" },
+          classes: edgeClass(e, dir) + " detail" });
+        const a = end(e.source), b = end(e.target); if (a === b) return;
+        const x = agg[a + "\u0000" + b] = agg[a + "\u0000" + b] ||
+          { a, b, n: 0, dir, red: false, orange: false, deferred: true };
+        x.n++; x.red = x.red || e.cyc === RED; x.orange = x.orange || (e.cyc && e.cyc !== RED);
+        x.deferred = x.deferred && e.dashed;
+      });
+      Object.values(agg).forEach((x, k) => els.push({
+        data: { id: "a" + k, source: x.a, target: x.b, w: 1.5 + Math.log2(x.n) * 0.8, label: x.n > 1 ? String(x.n) : "" },
+        classes: x.dir + (x.deferred ? " dashed" : "") + (x.red ? " red" : x.orange ? " orange" : "") }));
+    }
+    cy.elements().remove(); cy.add(els);
+    if (state.all) fitLayout(); else columnLayout(F, left, right);
+
+    const crumb = state.file
+      ? '<span class="lnk" data-folder="' + esc(dirOf(state.file)) + '">' + esc(dirOf(state.file)) + "</span> / <b>" + esc(base(state.file)) + "</b>"
+      : "<b>" + esc(label) + "</b>";
+    $("crumb").innerHTML = crumb;
+    let html;
+    if (state.file) {
+      const f = state.file;
+      html = "<b>" + esc(nodes[f]) + "</b>" + list("Imports", outs[f].map(e => e.target), GREEN) +
+        list("Imported by", ins[f].map(e => e.source), BLUE);
+    } else if (state.all) {
+      html = "<b>Everything</b><p class=\"muted\">" + ids.length + " files, " + E.length +
+        " imports. Click a file or folder box to focus on it.</p>";
+    } else {
+      const outside = [...inc].filter(i => !F.has(i));
+      html = "<b>" + esc(state.folder) + "</b> <span class=\"muted\">" + F.size + " files</span>" +
+        '<p class="muted">Green: imports going out of the folder. Blue: coming in. Purple dots are files from other folders. Click a file to focus on it.</p>' +
+        list("Other files it touches", outside, "#a371f7");
+    }
+    $("info").innerHTML = html + legend();
+  }
+
+  const legend = () => '<h4>Legend</h4>' +
+    '<div><span class="k" style="border-color:' + GREY + '"></span> import &nbsp;<span class="k" style="border-color:' + GREY + ';border-top-style:dashed"></span> deferred</div>' +
+    '<div><span class="k" style="border-color:' + ORANGE + '"></span> circular, closes via a deferred import</div>' +
+    '<div><span class="k" style="border-color:' + RED + '"></span> circular import at load time</div>';
+  const list = (title, arr, color) => {
+    const u = [...new Set(arr)].sort();
+    return u.length ? '<h4 style="color:' + color + '">' + title + " (" + u.length + ")</h4><ul>" +
+      u.map(i => '<li class="lnk" data-file="' + i + '">' + esc(nodes[i]) + "</li>").join("") + "</ul>" : "";
+  };
+
+  function render() { state.mode === "folders" ? foldersView() : filesView(); }
+  const openFolder = f => { Object.assign(state, { mode: "files", folder: f, file: null, all: false }); render(); };
+  const openFile = f => { Object.assign(state, { mode: "files", file: f, folder: dirOf(f), all: false }); render(); };
+
+  // ---------- hover hint (bottom line) ----------
+  const DEFAULT_HINT = "Hover over any file or folder to see its connections. Click to open it, scroll to zoom, drag to pan.";
+  const hint = $("hint"); hint.textContent = DEFAULT_HINT;
+  const plural = (n, w) => n + " " + w + (n === 1 ? "" : "s");
+  function describe(n) {
+    if (n.isEdge()) {
+      const a = n.source(), b = n.target(), c = +n.data("label") || 1;
+      return "<b>" + esc(a.data("full") || a.data("dir") || a.data("label")) + "</b> imports <b>" +
+        esc(b.data("full") || b.data("dir") || b.data("label")) + "</b>" + (c > 1 ? " (" + plural(c, "import") + ")" : "");
+    }
+    if (n.hasClass("folder") || n.hasClass("parent")) {
+      const d = n.hasClass("folder") ? n.id().slice(2) : n.data("dir");
+      const files = (byFolder[d] || []).length;
+      const outF = new Set(), inF = new Set();
+      (byFolder[d] || []).forEach(f => { outs[f].forEach(e => dirOf(e.target) !== d && outF.add(dirOf(e.target)));
+        ins[f].forEach(e => dirOf(e.source) !== d && inF.add(dirOf(e.source))); });
+      return "<b>" + esc(d) + "</b>: " + plural(files, "file") + ' &middot; <span class="o">imports from ' +
+        plural(outF.size, "other folder") + '</span> &middot; <span class="i">imported by ' + plural(inF.size, "other folder") + "</span>";
+    }
+    const id = n.id();
+    return "<b>" + esc(nodes[id]) + '</b>: <span class="o">imports ' + plural(new Set(outs[id].map(e => e.target)).size, "file") +
+      '</span> &middot; <span class="i">imported by ' + plural(new Set(ins[id].map(e => e.source)).size, "file") + "</span>";
+  }
+  // Hovering something fades everything that is not connected to it.
+  function focusOn(t) {
+    let keep = t;
+    if (t.isNode()) {
+      const edges = t.connectedEdges();
+      edges.addClass("hot");
+      keep = t.union(t.descendants()).union(edges).union(edges.connectedNodes());
+      keep = keep.union(t.descendants().connectedEdges().addClass("hot"));
+    } else keep = t.union(t.connectedNodes());
+    keep = keep.union(keep.nodes().ancestors());
+    cy.elements().not(keep).addClass("faded");
+  }
+  function unfocus() { cy.elements().removeClass("faded hot"); }
+  cy.on("mouseover", "node, edge", e => { unfocus(); focusOn(e.target); hint.innerHTML = describe(e.target); });
+  cy.on("mouseout", "node, edge", () => { unfocus(); hint.textContent = DEFAULT_HINT; });
+  cy.on("tap", "node.folder", e => openFolder(e.target.id().slice(2)));
+  cy.on("tap", "node.parent", e => openFolder(e.target.data("dir")));
+  cy.on("tap", "node", e => { if (!e.target.hasClass("folder") && !e.target.hasClass("parent")) openFile(e.target.id()); });
+  $("info").addEventListener("click", e => {
+    const t = e.target.closest("[data-file],[data-folder]"); if (!t) return;
+    t.dataset.file ? openFile(t.dataset.file) : openFolder(t.dataset.folder);
+  });
+  $("home").onclick = () => { state.mode = "folders"; render(); };
+  $("all").onclick = () => { Object.assign(state, { mode: "files", all: true, file: null }); render(); };
+  $("fit").onclick = () => cy.fit(undefined, 40);
+  const zoomBy = f => cy.zoom({ level: Math.min(cy.maxZoom(), Math.max(cy.minZoom(), cy.zoom() * f)),
+    renderedPosition: { x: cy.width() / 2, y: cy.height() / 2 } });
+  $("zin").onclick = () => zoomBy(1.3);
+  $("zout").onclick = () => zoomBy(1 / 1.3);
+  $("hubs").onchange = () => { if (state.mode === "folders") render(); };
+
+  // ---------- file picker ----------
+  function tree(filter) {
+    const q = filter.trim().toLowerCase();
+    $("tree").innerHTML = folders.map(f => {
+      const files = byFolder[f].filter(i => !q || nodes[i].toLowerCase().includes(q)).sort();
+      if (!files.length) return "";
+      return "<details" + (q ? " open" : "") + '><summary><span class="lnk" data-folder="' + esc(f) + '">' +
+        esc(f) + '</span> <span class="muted">' + files.length + "</span></summary><ul>" +
+        files.map(i => '<li class="f" data-file="' + i + '">' + esc(base(i)) + "</li>").join("") + "</ul></details>";
+    }).join("");
+  }
+  $("q").addEventListener("input", e => tree(e.target.value));
+  $("tree").addEventListener("click", e => {
+    const t = e.target.closest("[data-file],[data-folder]"); if (!t) return;
+    if (t.dataset.folder !== undefined) { e.preventDefault(); openFolder(t.dataset.folder); }
+    else openFile(t.dataset.file);
+  });
+  tree("");
+  // dark by default; the choice is remembered when storage is available
+  function applyTheme(t) {
+    document.documentElement.dataset.theme = t;
+    $("theme").textContent = t === "dark" ? "Light" : "Dark";
+    cy.style().selector("node.colL, node.colR, node.colC, node.folder").style("color", t === "dark" ? "#c9d1d9" : "#24292f")
+      .selector("node.focus").style("color", t === "dark" ? GREEN : "#1a7f37").update();
+  }
+  let theme = "dark";
+  try { theme = localStorage.getItem("gnost-theme") || "dark"; } catch (e) {}
+  applyTheme(theme);
+  $("theme").onclick = () => {
+    theme = theme === "dark" ? "light" : "dark"; applyTheme(theme);
+    try { localStorage.setItem("gnost-theme", theme); } catch (e) {}
+  };
+  render();
+}
+</script>
+</body>
+</html>

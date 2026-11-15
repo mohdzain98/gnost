@@ -1,0 +1,14 @@
+# Entry-based Execution Paths
+
+These diagrams show individual execution paths starting from application entry points. Each path represents one possible flow through the system.
+
+## Path 1 — `src/main/java/demo/App.java`
+
+```mermaid
+flowchart LR
+  src_main_java_demo_App_java["src/main/java/demo/App.java"]
+  src_main_java_demo_Greeter_java["src/main/java/demo/Greeter.java"]
+  src_main_java_demo_App_java --> src_main_java_demo_Greeter_java
+```
+
+**Execution chain:** src/main/java/demo/App.java → src/main/java/demo/Greeter.java
