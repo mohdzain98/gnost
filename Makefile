@@ -14,7 +14,7 @@ help: ## Show this help
 		awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-14s\033[0m %s\n", $$1, $$2}'
 
 install: ## Install gnost in editable mode with test and lint tools
-	$(PYTHON) -m pip install -e ".[test]" ruff
+	$(PYTHON) -m pip install -e ".[test]" "ruff==0.15.4"
 
 install-docs: ## Install Sphinx and the docs theme
 	$(PYTHON) -m pip install -r docs/requirements.txt
