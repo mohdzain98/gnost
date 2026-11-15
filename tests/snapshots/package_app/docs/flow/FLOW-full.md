@@ -1,0 +1,28 @@
+# Full Execution Flow
+
+```mermaid
+flowchart TD
+  app_api_v1___init___py["app/api/v1/__init__.py"]
+  app_api_v1_chat_py["app/api/v1/chat.py"]
+  app_api_v1_notes_py["app/api/v1/notes.py"]
+  app_config_py["app/config.py"]
+  app_main_py["app/main.py"]
+  app_models_py["app/models.py"]
+  app_services___init___py["app/services/__init__.py"]
+  app_services_store_py["app/services/store.py"]
+  app_api_v1_chat_py --> app_api_v1_notes_py
+  app_api_v1_chat_py --> app_services___init___py
+  app_api_v1_chat_py --> app_services_store_py
+  app_api_v1_notes_py --> app_config_py
+  app_api_v1_notes_py --> app_models_py
+  app_main_py --> app_api_v1___init___py
+  app_main_py --> app_api_v1_chat_py
+  app_main_py --> app_api_v1_notes_py
+  app_main_py --> app_config_py
+  app_main_py --> app_services___init___py
+  app_services___init___py --> app_services_store_py
+  app_services_store_py --> app_config_py
+```
+
+> ℹ️ This file renders the complete Mermaid diagram on GitHub.
+> For raw Mermaid source, see [**FLOW-full.mmd**](./FLOW-full.mmd). Every file and import, ungrouped and nothing omitted: [**flow-complete.mmd**](./flow-complete.mmd)

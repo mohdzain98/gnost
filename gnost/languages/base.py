@@ -9,9 +9,14 @@ class EntryPoint:
     Represents a detected entry point in the codebase.
     """
 
-    def __init__(self, file: str, reason: str):
+    PRIMARY = 0
+    SECONDARY = 1
+
+    def __init__(self, file: str, reason: str, priority: int = 0):
         self.file = file
         self.reason = reason
+        # PRIMARY: where the application starts. SECONDARY: helper scripts.
+        self.priority = priority
 
     def __repr__(self):
         return f"EntryPoint(file={self.file}, reason={self.reason})"
@@ -19,12 +24,28 @@ class EntryPoint:
 
 class ImportEdge:
     """
-    Represents an import dependency: file -> imported module/file
+    Represents an import dependency: file -> imported module/file.
+
+    `names` holds the names imported from `target` (``from target import a, b``)
+    so a resolver can tell submodules from symbols. `level` is the number of
+    leading dots of a relative import (0 for absolute imports). `deferred` marks
+    imports that do not run when the module loads: inside a function, under
+    ``TYPE_CHECKING``, a dynamic ``import()`` or a type-only import.
     """
 
-    def __init__(self, source: str, target: str):
+    def __init__(
+        self,
+        source: str,
+        target: str,
+        names: Optional[List[str]] = None,
+        level: int = 0,
+        deferred: bool = False,
+    ):
         self.source = source
         self.target = target
+        self.names = names or []
+        self.level = level
+        self.deferred = deferred
 
 
 class LanguageAdapter(ABC):
@@ -65,6 +86,13 @@ class LanguageAdapter(ABC):
     # -------------------------
     # Optional Enhancements
     # -------------------------
+
+    def detect_framework_from_manifest(self, root: str) -> Optional[str]:
+        """
+        Detect a framework from project manifests (package.json, ...).
+        Optional — more reliable than scanning source when a manifest exists.
+        """
+        return None
 
     def detect_calls(self, content: str) -> List[str]:
         """

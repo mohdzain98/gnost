@@ -28,6 +28,8 @@ from gnost.analysis.core.models import (
     ConsolidatedReport,
 )
 from gnost.cli.commands.onboard import run as onboard_run
+from gnost.config.settings import ConfigError, load_config, report_warnings
+from gnost.reporters.mermaid import DEFAULT_MAX_EDGES
 from gnost.cli.commands.analysis import Analysis
 from gnost.utils.logger import AppLogger
 
@@ -138,7 +140,7 @@ def _open_analysis_report(report_path: str) -> bool:
     if not os.path.isfile(abs_path):
         return False
     try:
-        return webbrowser.open(f"file://{abs_path}")
+        return webbrowser.open(pathlib.Path(abs_path).as_uri())
     except Exception:
         return False
 
@@ -240,7 +242,11 @@ def main():
             "    --mermaid      Generate only Mermaid flow diagram\n"
             "    --inject       Inject onboarding link into README.md\n"
             "    --layered      Produce Layered mermaid as Entry -> Core -> Leaf\n"
-            "    --depth DEPTH  Limit execution flow depth (e.g. --depth 2)\n\n"
+            "    --depth DEPTH  Limit execution flow depth (e.g. --depth 2)\n"
+            "    --json [FILE]  Also write insights as JSON (default: docs/insights/gnost_insights.json)\n"
+            "    --insights-only  Write only the insights JSON\n"
+            "    --max-edges N  Largest diagram drawn file by file (default 80); bigger ones group by folder\n"
+            "    --collapse [LEVEL]  Group diagrams by folder, LEVEL folders deep (default 1)\n\n"
             "  analyze:\n"
             "    path                 File or directory to analyze (default: .)\n"
             "    -a, --analyzer       Enable only specific analyzers\n"
@@ -329,6 +335,37 @@ def main():
         default=None,
         help="Limit execution flow depth (e.g. --depth 2)",
     )
+    onboard.add_argument(
+        "--json",
+        nargs="?",
+        const="",
+        default=None,
+        metavar="FILE",
+        help="Also write the insights as JSON "
+        "(default: docs/insights/gnost_insights.json)",
+    )
+    onboard.add_argument(
+        "--insights-only",
+        action="store_true",
+        help="Write only the insights JSON; skip ONBOARD.md and the diagrams",
+    )
+    onboard.add_argument(
+        "--max-edges",
+        type=int,
+        default=None,
+        metavar="N",
+        help=f"Largest diagram to draw file by file (default: {DEFAULT_MAX_EDGES}); "
+        "bigger ones are grouped by folder",
+    )
+    onboard.add_argument(
+        "--collapse",
+        nargs="?",
+        type=int,
+        const=1,
+        default=None,
+        metavar="LEVEL",
+        help="Group diagrams by folder, LEVEL folders deep (default 1: top-level folders)",
+    )
     analyze = sub.add_parser("analyze", help="Analyze the codebase")
     analyze.add_argument(
         "path",
@@ -372,7 +409,7 @@ def main():
         help="List available analyzers and exit.",
     )
     analyze.add_argument(
-        "--timeout", type=int, default=900, help="Waiting time in sec, default 900"
+        "--timeout", type=int, default=None, help="Waiting time in sec, default 900"
     )
     analyze.add_argument(
         "--compact",
@@ -387,27 +424,71 @@ def main():
     analyze.add_argument(
         "--max-findings",
         type=int,
-        default=1000,
+        default=None,
         help="Finding threshold for individual analyzer, default 1000",
     )
 
-    open_cmd = sub.add_parser("open", help="Open generated reports")
+    open_cmd = sub.add_parser(
+        "open", help="Open a report or diagram in the browser (report, flow or a file)"
+    )
     open_cmd.add_argument(
         "target",
         nargs="?",
         default="report",
-        help="Currently supported: report (alias: rpt)",
+        help=(
+            "report (default, alias: rpt): the analysis report; "
+            "flow: the flow explorer (docs/flow/flow-complete.mmd); "
+            "or a .mmd, .md or .html file"
+        ),
     )
     open_cmd.add_argument(
         "--path",
-        help="Custom report path (optional). Defaults to docs/analysis/gnost_analysis.html",
+        help="Custom report or diagram path (optional)",
+    )
+    open_cmd.add_argument(
+        "--view",
+        choices=["auto", "graph", "mermaid"],
+        default="auto",
+        help="auto: interactive graph for big diagrams, Mermaid otherwise",
+    )
+    open_cmd.add_argument("-o", "--output", help="Where to save the HTML page")
+    open_cmd.add_argument(
+        "--no-open", action="store_true", help="Write the HTML page but do not open it"
+    )
+
+    show_cmd = sub.add_parser(
+        "show", help="Same as `gnost open FILE` (kept as a shorter name)"
+    )
+    show_cmd.add_argument("file", help="Mermaid (.mmd) or Markdown (.md) file")
+    show_cmd.add_argument("-o", "--output", help="Where to save the HTML page")
+    show_cmd.add_argument(
+        "--view",
+        choices=["auto", "graph", "mermaid"],
+        default="auto",
+        help="auto: interactive graph for big diagrams, Mermaid otherwise",
+    )
+    show_cmd.add_argument(
+        "--no-open", action="store_true", help="Write the HTML page but do not open it"
     )
 
     args = parser.parse_args()
 
+    if args.cmd == "show":
+        from gnost.cli.commands.show import run as show_run
+
+        return show_run(args.file, args.output, not args.no_open, args.view)
+
     if args.cmd == "version":
         print(f"gnost {__version__}")
         return 0
+
+    if args.cmd in ("onboard", "analyze"):
+        try:
+            config = load_config(args.path)
+        except ConfigError as exc:
+            print(f"gnost: {exc}", file=sys.stderr)
+            return 2
+        report_warnings(config)
 
     if args.cmd == "onboard":
         onboard_run(
@@ -415,8 +496,21 @@ def main():
             diagram_only=getattr(args, "mermaid", False),
             progress=getattr(args, "progress", False),
             inject=getattr(args, "inject", False),
-            depth=getattr(args, "depth", None),
+            depth=config.pick("onboard", "depth", getattr(args, "depth", None), None),
             layered=getattr(args, "layered", False),
+            json_out=getattr(args, "json", None),
+            insights_only=getattr(args, "insights_only", False),
+            max_edges=config.pick(
+                "onboard",
+                "max_edges",
+                getattr(args, "max_edges", None),
+                DEFAULT_MAX_EDGES,
+            ),
+            collapse=config.pick(
+                "onboard", "collapse", getattr(args, "collapse", None), None
+            ),
+            exclude=config.exclude,
+            caution=config.caution_settings(),
         )
         return 0
 
@@ -436,7 +530,12 @@ def main():
         if not args.verbose:
             logging.getLogger("asyncio").setLevel(logging.CRITICAL)
 
-        reader_files, count = analysis.collect_code_files(target_path)
+        if config.exclude:
+            reader_files, count = analysis.collect_code_files(
+                target_path, exclude=config.exclude
+            )
+        else:
+            reader_files, count = analysis.collect_code_files(target_path)
         if args.quiet:
             cprint(f"Total Files for Analysis : {count}", "green")
             analysis.set_quiet_logging()
@@ -446,15 +545,21 @@ def main():
             logger.warning("⚠️ No Python files found after filtering.")
             return 0
 
-        enabled_analyzers: Set[str] = set(args.analyzer or [])
+        enabled_analyzers: Set[str] = set(
+            args.analyzer or config.get("analyze", "analyzers", [])
+        )
         cfg = AnalysisConfiguration(
             target_path=target_path,
             enabled_analyzers=enabled_analyzers,
             severity_threshold=SeverityLevel.INFO,
-            parallel_execution=bool(args.parallel),
+            parallel_execution=bool(
+                args.parallel or config.get("analyze", "parallel", False)
+            ),
             include_low_confidence=False,
-            timeout_seconds=int(args.timeout),
-            max_findings_per_analyzer=int(args.max_findings),
+            timeout_seconds=int(config.pick("analyze", "timeout", args.timeout, 900)),
+            max_findings_per_analyzer=int(
+                config.pick("analyze", "max_findings", args.max_findings, 1000)
+            ),
             files=reader_files,
         )
 
@@ -517,9 +622,30 @@ def main():
 
     if args.cmd == "open":
         normalized_target = str(args.target).lower()
+        if normalized_target == "flow" or (
+            normalized_target not in {"report", "rpt"}
+            and not os.path.isfile(args.target)
+        ):
+            if normalized_target != "flow":
+                logger.error(
+                    f"Unsupported target: {args.target}. Use report, flow, "
+                    "or the path of a .mmd, .md or .html file"
+                )
+                return 2
+            from gnost.cli.commands.show import run as show_run
+
+            flow_file = args.path or os.path.join(
+                os.getcwd(), "docs", "flow", "flow-complete.mmd"
+            )
+            if not os.path.isfile(flow_file):
+                logger.error(f"Flow diagram not found: {flow_file}")
+                logger.error("Run `gnost onboard .` first")
+                return 1
+            return show_run(flow_file, args.output, not args.no_open, args.view)
         if normalized_target not in {"report", "rpt"}:
-            logger.error('Unsupported target. Use: "gnost open report" or "gnost open rpt"')
-            return 2
+            from gnost.cli.commands.show import run as show_run
+
+            return show_run(args.target, args.output, not args.no_open, args.view)
 
         report_path = (
             os.path.abspath(args.path)
@@ -537,8 +663,7 @@ def main():
         if not _open_analysis_report(report_path):
             fallback = _analysis_open_command(report_path)
             logger.error(
-                "Unable to open report automatically using webbrowser. "
-                f"Use: {fallback}"
+                f"Unable to open report automatically using webbrowser. Use: {fallback}"
             )
             return 1
 

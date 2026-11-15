@@ -26,9 +26,7 @@ def _analyzer_risk(findings: List[Dict[str, Any]]) -> float:
         "low": 0.1,
         "info": 0.05,
     }
-    scored_findings = [
-        finding for finding in findings if isinstance(finding, dict)
-    ]
+    scored_findings = [finding for finding in findings if isinstance(finding, dict)]
     if not scored_findings:
         return 0.0
 
@@ -77,7 +75,7 @@ def _analyzer_glossary_html(by_analyzer: Dict[str, List[Dict[str, Any]]]) -> str
         static_guides = {}
 
     if not by_analyzer:
-        return "<p class=\"muted\">No analyzer guidance is available for this report.</p>"
+        return '<p class="muted">No analyzer guidance is available for this report.</p>'
 
     def _list_html(items: List[str]) -> str:
         list_items = "".join(f"<li>{_escape(item)}</li>" for item in items)
@@ -104,7 +102,7 @@ def _analyzer_glossary_html(by_analyzer: Dict[str, List[Dict[str, Any]]]) -> str
             severity_class = str(severity).lower()
             severity_rows.append(
                 f"<tr>"
-                f"<td><span class=\"badge badge-{severity_class}\">{_escape(severity)}</span></td>"
+                f'<td><span class="badge badge-{severity_class}">{_escape(severity)}</span></td>'
                 f"<td>{_escape(row.get('description', ''))}</td>"
                 f"<td>{_escape(row.get('example', ''))}</td>"
                 f"</tr>"
@@ -124,16 +122,20 @@ def _analyzer_glossary_html(by_analyzer: Dict[str, List[Dict[str, Any]]]) -> str
         if not guide:
             continue
         panel_id = f"guide-{str(analyzer_name).replace(' ', '-').lower()}"
-        quality_categories = _list_html([str(i) for i in guide.get("quality_categories", [])])
+        quality_categories = _list_html(
+            [str(i) for i in guide.get("quality_categories", [])]
+        )
         tools = _list_html([str(i) for i in guide.get("tools_used", [])])
         findings = _list_html([str(i) for i in guide.get("what_it_finds", [])])
         card = [
-            f"<section class=\"guide-card\" data-analyzer=\"{_escape(analyzer_name)}\">",
+            f'<section class="guide-card" data-analyzer="{_escape(analyzer_name)}">',
             f"<h3>{_escape(str(guide.get('title', analyzer_name)).replace('_', ' ').title())}</h3>",
             "<div class='guide-meta'>",
-            "<div class='guide-block'><h4>Quality Categories</h4>" + quality_categories + "</div>",
+            "<div class='guide-block'><h4>Quality Categories</h4>"
+            + quality_categories
+            + "</div>",
             "<div class='guide-block'><h4>Description</h4><p>"
-            + _escape(str(guide.get('description', '')))
+            + _escape(str(guide.get("description", "")))
             + "</p></div>",
             "<div class='guide-block'><h4>What it finds</h4>" + findings + "</div>",
             "<div class='guide-block'><h4>Tools used</h4>" + tools + "</div>",
@@ -151,19 +153,19 @@ def _analyzer_glossary_html(by_analyzer: Dict[str, List[Dict[str, Any]]]) -> str
             card.append(f"<div class='guide-subtitle'>{title}</div>{section_table}")
 
         rendered_buttons.append(
-            f"<button type=\"button\" class=\"tab-btn glossary-tab-btn {'active' if first else ''}\" "
-            f"data-guide-tab=\"{_escape(panel_id)}\" data-guide-analyzer=\"{_escape(analyzer_name)}\" "
-            f"aria-selected=\"{'true' if first else 'false'}\">{_escape(str(guide.get('title', analyzer_name)).title())}</button>"
+            f'<button type="button" class="tab-btn glossary-tab-btn {"active" if first else ""}" '
+            f'data-guide-tab="{_escape(panel_id)}" data-guide-analyzer="{_escape(analyzer_name)}" '
+            f'aria-selected="{"true" if first else "false"}">{_escape(str(guide.get("title", analyzer_name)).title())}</button>'
         )
         rendered_panels.append(
-            f"<div class=\"analyzer-guide-panel {'active' if first else ''}\" id=\"{_escape(panel_id)}\">"
+            f'<div class="analyzer-guide-panel {"active" if first else ""}" id="{_escape(panel_id)}">'
             + "".join(card)
             + "</div>"
         )
         first = False
 
     if not rendered_buttons:
-        return "<p class=\"muted\">No analyzer guidance is available for this report.</p>"
+        return '<p class="muted">No analyzer guidance is available for this report.</p>'
 
     body = "".join(rendered_panels)
     buttons = "".join(rendered_buttons)
@@ -172,13 +174,10 @@ def _analyzer_glossary_html(by_analyzer: Dict[str, List[Dict[str, Any]]]) -> str
         with open(template_path, "r", encoding="utf-8") as fp:
             layout_template = fp.read()
     except Exception:
-        return (
-            "<p class=\"muted\">Analyzer guide template is missing or unreadable.</p>"
-        )
+        return '<p class="muted">Analyzer guide template is missing or unreadable.</p>'
 
-    return (
-        layout_template.replace("{{TAB_BUTTONS}}", buttons)
-        .replace("{{TAB_PANELS}}", body)
+    return layout_template.replace("{{TAB_BUTTONS}}", buttons).replace(
+        "{{TAB_PANELS}}", body
     )
 
 
@@ -191,17 +190,17 @@ def render_analysis_html(report: Dict[str, Any], output_file: str) -> None:
     metrics = report.get("analysis_metrics", []) if isinstance(report, dict) else []
 
     risk_score = summary.get("risk_score", 0.0)
-    final_score_source = (
-        report.get("final_score")
-        if isinstance(report, dict)
-        else None
-    )
+    final_score_source = report.get("final_score") if isinstance(report, dict) else None
     if not isinstance(final_score_source, (int, float)):
-        final_score_source = summary.get("final_score") if isinstance(summary, dict) else None
+        final_score_source = (
+            summary.get("final_score") if isinstance(summary, dict) else None
+        )
     final_score = _safe_float(
         final_score_source, _risk_to_score(_safe_float(risk_score))
     )
-    final_score_class = "good" if final_score >= 8 else ("okay" if final_score >= 6 else "bad")
+    final_score_class = (
+        "good" if final_score >= 8 else ("okay" if final_score >= 6 else "bad")
+    )
 
     total_findings = _safe_int(summary.get("total_findings", len(findings)))
     files_with_issues = _safe_int(summary.get("files_with_issues", 0))
@@ -251,7 +250,9 @@ def render_analysis_html(report: Dict[str, Any], output_file: str) -> None:
                 "score": _risk_to_score(_safe_float(metric_risk_score, 0.0)),
                 "findings": len(analyzer_findings),
                 "high": sum(
-                    1 for f in analyzer_findings if str(f.get("severity", "")).lower() == "high"
+                    1
+                    for f in analyzer_findings
+                    if str(f.get("severity", "")).lower() == "high"
                 )
                 + sum(
                     1
@@ -259,10 +260,14 @@ def render_analysis_html(report: Dict[str, Any], output_file: str) -> None:
                     if str(f.get("severity", "")).lower() == "critical"
                 ),
                 "medium": sum(
-                    1 for f in analyzer_findings if str(f.get("severity", "")).lower() == "medium"
+                    1
+                    for f in analyzer_findings
+                    if str(f.get("severity", "")).lower() == "medium"
                 ),
                 "low": sum(
-                    1 for f in analyzer_findings if str(f.get("severity", "")).lower() == "low"
+                    1
+                    for f in analyzer_findings
+                    if str(f.get("severity", "")).lower() == "low"
                 ),
             }
         )
@@ -274,9 +279,13 @@ def render_analysis_html(report: Dict[str, Any], output_file: str) -> None:
             "score": 10.0,
             "findings": len(items),
             "high": sum(
-                1 for f in items if str(f.get("severity", "")).lower() in {"high", "critical"}
+                1
+                for f in items
+                if str(f.get("severity", "")).lower() in {"high", "critical"}
             ),
-            "medium": sum(1 for f in items if str(f.get("severity", "")).lower() == "medium"),
+            "medium": sum(
+                1 for f in items if str(f.get("severity", "")).lower() == "medium"
+            ),
             "low": sum(1 for f in items if str(f.get("severity", "")).lower() == "low"),
         }
         for name, items in by_analyzer.items()

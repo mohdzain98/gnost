@@ -1,0 +1,32 @@
+# Keyword-based Execution Paths
+
+These diagrams show execution flows related to key features, auto-detected from the project structure.
+
+## Feature: `svc`
+
+### Representative Paths
+
+#### Path Group 1
+
+```mermaid
+flowchart LR
+  main_py["main.py"]
+  svc_a_py["svc/a.py"]
+  svc_b_py["svc/b.py"]
+  main_py --> svc_a_py
+  svc_a_py --> svc_b_py
+  linkStyle 1 stroke:#f57c00,stroke-width:2px
+```
+**Execution chain:** main.py → svc/a.py → svc/b.py
+
+### Combined Flow (All `svc` Paths)
+
+```mermaid
+flowchart LR
+  main_py["main.py"]
+  svc_a_py["svc/a.py"]
+  svc_b_py["svc/b.py"]
+  main_py --> svc_a_py
+  svc_a_py --> svc_b_py
+  linkStyle 1 stroke:#f57c00,stroke-width:2px
+```

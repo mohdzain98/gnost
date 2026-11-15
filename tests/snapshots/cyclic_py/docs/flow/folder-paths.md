@@ -1,0 +1,36 @@
+# Keyword-based Execution Paths
+
+These diagrams show execution flows related to key features, auto-detected from the project structure.
+
+## Feature: `pkg`
+
+### Representative Paths
+
+#### Path Group 1
+
+```mermaid
+flowchart LR
+  main_py["main.py"]
+  pkg_a_py["pkg/a.py"]
+  pkg_b_py["pkg/b.py"]
+  main_py --> pkg_a_py
+  pkg_a_py ==> pkg_b_py
+  linkStyle 1 stroke:#d32f2f,stroke-width:3px
+  classDef cycle stroke:#d32f2f,stroke-width:3px
+  class pkg_a_py,pkg_b_py cycle
+```
+**Execution chain:** main.py → pkg/a.py → pkg/b.py
+
+### Combined Flow (All `pkg` Paths)
+
+```mermaid
+flowchart LR
+  main_py["main.py"]
+  pkg_a_py["pkg/a.py"]
+  pkg_b_py["pkg/b.py"]
+  main_py --> pkg_a_py
+  pkg_a_py ==> pkg_b_py
+  linkStyle 1 stroke:#d32f2f,stroke-width:3px
+  classDef cycle stroke:#d32f2f,stroke-width:3px
+  class pkg_a_py,pkg_b_py cycle
+```

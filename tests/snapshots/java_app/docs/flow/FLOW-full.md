@@ -1,0 +1,11 @@
+# Full Execution Flow
+
+```mermaid
+flowchart TD
+  src_main_java_demo_App_java["src/main/java/demo/App.java"]
+  src_main_java_demo_Greeter_java["src/main/java/demo/Greeter.java"]
+  src_main_java_demo_App_java --> src_main_java_demo_Greeter_java
+```
+
+> ℹ️ This file renders the complete Mermaid diagram on GitHub.
+> For raw Mermaid source, see [**FLOW-full.mmd**](./FLOW-full.mmd). Every file and import, ungrouped and nothing omitted: [**flow-complete.mmd**](./flow-complete.mmd)

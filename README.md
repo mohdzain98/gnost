@@ -22,7 +22,10 @@ Perfect for first-day onboarding, audits, and codebase exploration.
 - Infers **high-level execution flow**
 - Identifies **hotspot files** (most important code)
 - Generates **onboarding documentation**
-- Produces **Mermaid flow diagrams**
+- Produces **Mermaid flow diagrams**, plus an interactive **browser explorer** (`gnost open flow`)
+- Finds **HTTP routes** (Flask, FastAPI, Django, Express, NestJS, Spring), **circular imports** and **caution areas** (risky files to read carefully)
+- Traces **function-level flows** for Python, and exports everything as **JSON** for tools and AI
+- Reads an optional **`.gnost.toml`** for excludes, weights and thresholds
 - Runs code **quality analysis** for maintainability, robustness, observability, and readability
 
 ## Install
@@ -37,6 +40,32 @@ Run the onboarding scan:
 gnost onboard .
 ```
 
+## Explore the flow in your browser (since 0.4.0)
+
+`gnost onboard .` writes Mermaid diagrams to `docs/flow/`. For big projects,
+`gnost open` opens them as an interactive explorer instead of one tangled picture:
+
+```bash
+gnost open flow
+# or any file: gnost open docs/flow/flow-complete.mmd   (gnost show FILE does the same)
+```
+
+![GNOST flow explorer: folder overview, open a folder, open a file, hover for details](https://raw.githubusercontent.com/mohdzain98/gnost/main/assets/viewer_demo.gif)
+
+- **Folder overview first.** Each outlined box is a folder; arrows show how many imports go between them.
+- **Click a folder** to see its files and the files it touches, with one arrow per neighbouring folder.
+- **Click a file** (or pick it from the list) to see what it imports and what imports it.
+- **Hover anything** and everything not connected to it fades, so its boxes and arrows stand out; the line at the bottom
+  tells you its connections (for example `gnost/core/resolver.py: imports 2 files · imported by 6 files`).
+- **Zoom** with the magnifier `+` / `-` buttons, the mouse wheel, or the Fit button.
+- Dark by default, with a light theme button. Circular imports are red and orange.
+
+| Folder overview (hovering a folder) | A file and what connects to it |
+| --- | --- |
+| ![Folder overview](https://raw.githubusercontent.com/mohdzain98/gnost/main/assets/viewer_folders.png) | ![File view with hover](https://raw.githubusercontent.com/mohdzain98/gnost/main/assets/viewer_file_hover.png) |
+
+The example above is GNOST analysing its own source code.
+
 ## Minimal usage examples
 
 ```bash
@@ -44,7 +73,7 @@ gnost summary .
 gnost stats .
 ```
 
-## New in 0.3.0 (Analysis)
+## Analysis (since 0.3.0)
 
 ```bash
 gnost analyze .
@@ -54,7 +83,7 @@ gnost open report
 
 ### Analysis report preview
 
-![GNOST analysis report](assets/report_example.png)
+![GNOST analysis report](https://raw.githubusercontent.com/mohdzain98/gnost/main/assets/report_example.png)
 
 ### Analysis scope
 

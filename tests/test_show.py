@@ -1,0 +1,73 @@
+from pathlib import Path
+
+from gnost.cli.commands.show import run
+from gnost.reporters.diagram_viewer import render_viewer_html
+
+
+def test_viewer_embeds_source_safely():
+    html = render_viewer_html("flowchart TD\n  a --> b</script>", "x.mmd", "mermaid")
+    assert "a --> b<\\/script>" in html
+    assert "__SOURCE__" not in html and "__KIND__" not in html
+
+
+def test_show_writes_html_for_mmd_and_md(tmp_path: Path):
+    mmd = tmp_path / "f.mmd"
+    mmd.write_text("flowchart TD\n  a --> b\n", encoding="utf-8")
+    out = tmp_path / "f.html"
+    assert run(str(mmd), str(out), open_browser=False) == 0
+    assert "mermaid" in out.read_text(encoding="utf-8")
+
+    md = tmp_path / "f.md"
+    md.write_text("# t\n", encoding="utf-8")
+    assert run(str(md), str(out), open_browser=False) == 0
+
+
+def test_show_rejects_missing_and_unknown(tmp_path: Path):
+    assert run(str(tmp_path / "nope.mmd"), open_browser=False) == 2
+    other = tmp_path / "a.txt"
+    other.write_text("x", encoding="utf-8")
+    assert run(str(other), open_browser=False) == 2
+
+
+def test_big_mermaid_uses_interactive_graph(tmp_path: Path):
+    lines = ["flowchart TD"] + [f"  n{i} --> n{i + 1}" for i in range(200)]
+    mmd = tmp_path / "big.mmd"
+    mmd.write_text("\n".join(lines), encoding="utf-8")
+    out = tmp_path / "big.html"
+    assert run(str(mmd), str(out), open_browser=False) == 0
+    assert "cytoscape" in out.read_text(encoding="utf-8")
+    assert run(str(mmd), str(out), open_browser=False, mode="mermaid") == 0
+    assert "cytoscape(" not in out.read_text(encoding="utf-8")
+
+
+def test_show_opens_html_as_is(tmp_path: Path, monkeypatch):
+    opened = []
+    monkeypatch.setattr("webbrowser.open", lambda url: opened.append(url) or True)
+    page = tmp_path / "report.html"
+    page.write_text("<html></html>", encoding="utf-8")
+    assert run(str(page)) == 0
+    assert opened and opened[0].startswith("file://") and "report.html" in opened[0]
+
+
+def test_open_command_handles_flow_files_and_bad_targets(tmp_path: Path, monkeypatch):
+    import gnost.cli.app as app
+
+    opened = []
+    monkeypatch.setattr("webbrowser.open", lambda url: opened.append(url) or True)
+    monkeypatch.chdir(tmp_path)
+
+    monkeypatch.setattr("sys.argv", ["gnost", "open", "flow"])
+    assert app.main() == 1  # nothing generated yet
+
+    flow = tmp_path / "docs" / "flow"
+    flow.mkdir(parents=True)
+    (flow / "flow-complete.mmd").write_text(
+        "flowchart TD\n  a --> b\n", encoding="utf-8"
+    )
+    monkeypatch.setattr("sys.argv", ["gnost", "open", "flow"])
+    assert app.main() == 0 and opened
+
+    monkeypatch.setattr("sys.argv", ["gnost", "open", "nonsense"])
+    assert app.main() == 2
+    monkeypatch.setattr("sys.argv", ["gnost", "show", str(flow / "flow-complete.mmd")])
+    assert app.main() == 0

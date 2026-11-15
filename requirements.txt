@@ -6,3 +6,5 @@ radon
 mypy
 ruff
 pytest
+jsonschema
+tomli; python_version < '3.11'

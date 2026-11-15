@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gnost"
-version = "0.3.0"
+version = "0.4.0"
 description = "GNOST — Codebase Knowledge"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 license = { file = "LICENSE" }
 authors = [
   { name="Mohd Zain", email = "zainmohd1998@gmail.com" }
@@ -20,7 +20,8 @@ dependencies = [
     "bandit",
     "radon",
     "mypy",
-    "ruff"
+    "ruff",
+    "tomli; python_version < '3.11'",
 ]
 
 classifiers = [
@@ -28,12 +29,13 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
 
 [project.optional-dependencies]
-test = ["pytest"]
+test = ["pytest", "jsonschema"]
 
 [project.urls]
 Documentation = "https://gnost.readthedocs.io"
@@ -47,6 +49,13 @@ gnost = "gnost.cli:main"
 [tool.setuptools.packages.find]
 include = ["gnost*"]
 
+[tool.setuptools.package-data]
+gnost = ["reporters/templates/*", "analysis/config/*.ini", "schemas/*.json"]
+
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
+
+[tool.ruff]
+# Fixture projects are test data; formatting them would change the snapshots.
+extend-exclude = ["tests/fixtures", "tests/snapshots"]

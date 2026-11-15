@@ -1,7 +1,9 @@
-from collections import Counter, defaultdict
-from typing import List
+from collections import Counter
+from typing import List, Optional
 
 from gnost.core.flow import FlowResult
+from gnost.core.caution import CautionScore, CautionSettings, rank_files
+from gnost.core.cycles import IMPORT_TIME, Cycle
 from gnost.core.graph import DependencyGraph
 from gnost.scanner.models import ScanResult
 
@@ -9,8 +11,10 @@ from gnost.models.insights import (
     OnboardingInsights,
     FileInsight,
     ArchitectureLayers,
+    CautionFactor,
     CautionInsight,
     CautionType,
+    CycleInsight,
 )
 
 
@@ -24,7 +28,9 @@ class InsightBuilder:
         scan: ScanResult,
         flow: FlowResult,
         graph: DependencyGraph,
+        caution: Optional[CautionSettings] = None,
     ):
+        self.caution = caution or CautionSettings()
         self.scan = scan
         self.flow = flow
         self.graph = graph
@@ -34,6 +40,7 @@ class InsightBuilder:
             first_files=self._build_first_files(),
             layers=self._build_architecture_layers(),
             caution_areas=self._build_caution_areas(),
+            cycles=self._build_cycles(),
         )
 
     def _build_first_files(self) -> List[FileInsight]:
@@ -85,44 +92,73 @@ class InsightBuilder:
             leaf=sorted(self.flow.layers.get("leaf", [])),
         )
 
+    _CATEGORY = {
+        "cycles": CautionType.CIRCULAR_DEPENDENCY,
+        "size": CautionType.LARGE_FILE,
+        "impact": CautionType.HIGH_IMPACT,
+        "coupling": CautionType.TIGHT_COUPLING,
+        "complexity": CautionType.HIGH_COMPLEXITY,
+        "observability": CautionType.LOW_OBSERVABILITY,
+    }
+
     def _build_caution_areas(self) -> List[CautionInsight]:
-        """Build caution roots"""
-        cautions: List[CautionInsight] = []
+        """Files that are risky to change, from the rule-based caution score."""
+        ranked = rank_files(self.scan, self.graph, self.flow.cycles, self.caution)
+        reported = [s for s in ranked if s.score >= self.caution.threshold]
+        return [self._to_insight(s) for s in reported[: self.caution.limit]]
 
-        # Fan-in analysis
-        fan_in = defaultdict(int)
-        for src, deps in self.graph.adjacency.items():
-            for dst in deps:
-                fan_in[dst] += 1
+    def _to_insight(self, scored: CautionScore) -> CautionInsight:
+        top = scored.factors[0]
+        return CautionInsight(
+            path=scored.path,
+            category=self._CATEGORY[top.name],
+            severity=scored.severity,
+            description=self._describe(scored),
+            metrics={f.name: f.value for f in scored.factors if f.name != "cycles"},
+            score=scored.score,
+            partial=scored.partial,
+            factors=[
+                CautionFactor(f.name, f.value, f.contribution, f.estimated)
+                for f in scored.factors
+            ],
+        )
 
-        for file, count in fan_in.items():
-            if count >= 5:
-                cautions.append(
-                    CautionInsight(
-                        path=file,
-                        category=CautionType.HIGH_IMPACT,
-                        severity=min(5, count),
-                        description="Many files depend on this module",
-                        metrics={"fan_in": count},
-                    )
+    def _describe(self, scored: CautionScore) -> str:
+        cycle_kind = {
+            c.kind for c in self.flow.cycles for f in c.files if f == scored.path
+        }
+        phrases = []
+        for f in scored.factors[:3]:
+            if f.name == "cycles":
+                phrases.append(
+                    "part of an import-time circular dependency"
+                    if IMPORT_TIME in cycle_kind
+                    else "part of a deferred circular dependency"
                 )
-
-        # -------------------------
-        # High import complexity (proxy for large/complex files)
-        # -------------------------
-        for fi in self.scan.files:
-            import_count = len(fi.imports)
-            if import_count >= 10:
-                cautions.append(
-                    CautionInsight(
-                        path=fi.path,
-                        category=CautionType.TIGHT_COUPLING,
-                        severity=min(5, import_count // 3),
-                        description="File has a high number of dependencies",
-                        metrics={"imports": import_count},
-                    )
+            elif f.name == "size":
+                phrases.append(f"{int(f.value):,} lines of code")
+            elif f.name == "impact":
+                phrases.append(f"imported by {int(f.value)} files")
+            elif f.name == "coupling":
+                phrases.append(f"imports {int(f.value)} project files")
+            elif f.name == "complexity":
+                phrases.append(
+                    f"about {int(f.value)} branches (estimated)"
+                    if f.estimated
+                    else f"a function with complexity {int(f.value)}"
                 )
+            elif f.name == "observability":
+                phrases.append(
+                    f"{int(f.value)} except blocks that neither log nor re-raise"
+                )
+        text = "; ".join(phrases)
+        return text[:1].upper() + text[1:] if text else "Risky to change"
 
-        # Circular dependencies - yet to be added in 0.3.0
+    def _cycles(self) -> List[Cycle]:
+        return self.flow.cycles
 
-        return cautions
+    def _build_cycles(self) -> List[CycleInsight]:
+        return [
+            CycleInsight(files=c.files, example=c.example, kind=c.kind)
+            for c in self._cycles()
+        ]

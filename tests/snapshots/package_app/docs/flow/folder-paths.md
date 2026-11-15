@@ -1,0 +1,136 @@
+# Keyword-based Execution Paths
+
+These diagrams show execution flows related to key features, auto-detected from the project structure.
+
+## Feature: `api`
+
+### Representative Paths
+
+#### Path Group 1
+
+```mermaid
+flowchart LR
+  app_api_v1_chat_py["app/api/v1/chat.py"]
+  app_main_py["app/main.py"]
+  app_services_store_py["app/services/store.py"]
+  app_api_v1_chat_py --> app_services_store_py
+  app_main_py --> app_api_v1_chat_py
+```
+**Execution chain:** app/main.py → app/api/v1/chat.py → app/services/store.py
+
+#### Path Group 2
+
+```mermaid
+flowchart LR
+  app_api_v1_notes_py["app/api/v1/notes.py"]
+  app_main_py["app/main.py"]
+  app_models_py["app/models.py"]
+  app_api_v1_notes_py --> app_models_py
+  app_main_py --> app_api_v1_notes_py
+```
+**Execution chain:** app/main.py → app/api/v1/notes.py → app/models.py
+
+### Combined Flow (All `api` Paths)
+
+```mermaid
+flowchart LR
+  app_api_v1___init___py["app/api/v1/__init__.py"]
+  app_api_v1_chat_py["app/api/v1/chat.py"]
+  app_api_v1_notes_py["app/api/v1/notes.py"]
+  app_main_py["app/main.py"]
+  app_models_py["app/models.py"]
+  app_services_store_py["app/services/store.py"]
+  app_api_v1_chat_py --> app_services_store_py
+  app_api_v1_notes_py --> app_models_py
+  app_main_py --> app_api_v1___init___py
+  app_main_py --> app_api_v1_chat_py
+  app_main_py --> app_api_v1_notes_py
+```
+
+## Feature: `app`
+
+### Representative Paths
+
+#### Path Group 1
+
+```mermaid
+flowchart LR
+  app_api_v1_chat_py["app/api/v1/chat.py"]
+  app_main_py["app/main.py"]
+  app_services_store_py["app/services/store.py"]
+  app_api_v1_chat_py --> app_services_store_py
+  app_main_py --> app_api_v1_chat_py
+```
+**Execution chain:** app/main.py → app/api/v1/chat.py → app/services/store.py
+
+#### Path Group 2
+
+```mermaid
+flowchart LR
+  app_api_v1_notes_py["app/api/v1/notes.py"]
+  app_main_py["app/main.py"]
+  app_models_py["app/models.py"]
+  app_api_v1_notes_py --> app_models_py
+  app_main_py --> app_api_v1_notes_py
+```
+**Execution chain:** app/main.py → app/api/v1/notes.py → app/models.py
+
+### Combined Flow (All `app` Paths)
+
+```mermaid
+flowchart LR
+  app_api_v1___init___py["app/api/v1/__init__.py"]
+  app_api_v1_chat_py["app/api/v1/chat.py"]
+  app_api_v1_notes_py["app/api/v1/notes.py"]
+  app_config_py["app/config.py"]
+  app_main_py["app/main.py"]
+  app_models_py["app/models.py"]
+  app_services___init___py["app/services/__init__.py"]
+  app_services_store_py["app/services/store.py"]
+  app_api_v1_chat_py --> app_services_store_py
+  app_api_v1_notes_py --> app_models_py
+  app_main_py --> app_api_v1___init___py
+  app_main_py --> app_api_v1_chat_py
+  app_main_py --> app_api_v1_notes_py
+  app_main_py --> app_config_py
+  app_main_py --> app_services___init___py
+```
+
+## Feature: `services`
+
+### Representative Paths
+
+#### Path Group 1
+
+```mermaid
+flowchart LR
+  app_api_v1_chat_py["app/api/v1/chat.py"]
+  app_main_py["app/main.py"]
+  app_services_store_py["app/services/store.py"]
+  app_api_v1_chat_py --> app_services_store_py
+  app_main_py --> app_api_v1_chat_py
+```
+**Execution chain:** app/main.py → app/api/v1/chat.py → app/services/store.py
+
+#### Path Group 2
+
+```mermaid
+flowchart LR
+  app_main_py["app/main.py"]
+  app_services___init___py["app/services/__init__.py"]
+  app_main_py --> app_services___init___py
+```
+**Execution chain:** app/main.py → app/services/__init__.py
+
+### Combined Flow (All `services` Paths)
+
+```mermaid
+flowchart LR
+  app_api_v1_chat_py["app/api/v1/chat.py"]
+  app_main_py["app/main.py"]
+  app_services___init___py["app/services/__init__.py"]
+  app_services_store_py["app/services/store.py"]
+  app_api_v1_chat_py --> app_services_store_py
+  app_main_py --> app_api_v1_chat_py
+  app_main_py --> app_services___init___py
+```

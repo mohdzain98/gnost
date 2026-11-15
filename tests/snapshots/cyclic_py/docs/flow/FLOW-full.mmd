@@ -1,0 +1,10 @@
+flowchart TD
+  main_py["main.py"]
+  pkg_a_py["pkg/a.py"]
+  pkg_b_py["pkg/b.py"]
+  main_py --> pkg_a_py
+  pkg_a_py ==> pkg_b_py
+  pkg_b_py ==> pkg_a_py
+  linkStyle 1,2 stroke:#d32f2f,stroke-width:3px
+  classDef cycle stroke:#d32f2f,stroke-width:3px
+  class pkg_a_py,pkg_b_py cycle

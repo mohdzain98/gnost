@@ -1,0 +1,7 @@
+flowchart TD
+  src_index_ts["src/index.ts"]
+  src_math_ts["src/math.ts"]
+  src_view_tsx["src/view.tsx"]
+  src_index_ts --> src_math_ts
+  src_index_ts --> src_view_tsx
+  src_view_tsx --> src_math_ts

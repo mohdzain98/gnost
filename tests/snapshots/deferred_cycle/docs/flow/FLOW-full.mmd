@@ -1,0 +1,9 @@
+flowchart TD
+  main_py["main.py"]
+  svc_a_py["svc/a.py"]
+  svc_b_py["svc/b.py"]
+  main_py --> svc_a_py
+  svc_a_py --> svc_b_py
+  svc_b_py -.-> svc_a_py
+  linkStyle 1 stroke:#f57c00,stroke-width:2px
+  linkStyle 2 stroke:#f57c00,stroke-width:2px

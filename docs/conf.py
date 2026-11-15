@@ -1,12 +1,14 @@
 project = "GNOST"
 author = "Mohd Zain"
-release = "0.3.0"
+release = "0.4.0"
 
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
     "sphinx.ext.autosectionlabel",
 ]
+
+autosectionlabel_prefix_document = True
 
 templates_path = ["_templates"]
 exclude_patterns = []

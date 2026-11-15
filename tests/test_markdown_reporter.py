@@ -17,7 +17,9 @@ def test_markdown_reporter_writes_to_output_root_and_includes_tables(tmp_path: P
         entry_points=[],
         framework=None,
     )
-    flow = FlowResult(entry_points=[], paths=[], layers={"entry": set(), "core": set(), "leaf": set()})
+    flow = FlowResult(
+        entry_points=[], paths=[], layers={"entry": set(), "core": set(), "leaf": set()}
+    )
 
     loc_data = {
         "files": [],

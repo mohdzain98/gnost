@@ -123,3 +123,72 @@ def should_ignore(path: str) -> bool:
             return True
 
     return False
+
+
+# -------------------------
+# Onboarding scan filters
+# -------------------------
+
+NOISE_DIRS = {"vendor", "vendors", "third_party", "site-packages", "bower_components"}
+JS_SUFFIXES = (".js", ".jsx", ".mjs", ".cjs", ".ts", ".tsx")
+NOISE_SUFFIXES = (".min.js", ".min.mjs", ".bundle.js", ".d.ts")
+TEST_DIRS = {"tests", "test", "__tests__", "e2e"}
+
+
+def _rel_parts(path: str, root: str) -> list[str]:
+    return os.path.relpath(path, root).replace(os.sep, "/").split("/")
+
+
+def is_noise_file(path: str, root: str) -> bool:
+    """Vendored, minified, bundled or generated files that are not project code."""
+    parts = _rel_parts(path, root)
+    name = parts[-1].lower()
+    # A vendor/ folder is third-party code for JS, but in Python it is often a
+    # project package, so only the file-name rules apply there.
+    if name.endswith(JS_SUFFIXES) and set(parts[:-1]) & NOISE_DIRS:
+        return True
+    return name.endswith(NOISE_SUFFIXES)
+
+
+def is_test_file(path: str, root: str) -> bool:
+    """Test files: they exercise the code but are not part of its execution flow."""
+    parts = _rel_parts(path, root)
+    if set(parts[:-1]) & TEST_DIRS:
+        return True
+    name = parts[-1].lower()
+    stem = name.rsplit(".", 1)[0]
+    return (
+        name == "conftest.py"
+        or stem.startswith("test_")
+        or stem.endswith("_test")
+        or ".test." in name
+        or ".spec." in name
+    )
+
+
+# -------------------------
+# Exclusion patterns
+# -------------------------
+
+
+def is_excluded(path: str, root: str, patterns: "list[str]") -> bool:
+    """Whether `path` matches an `exclude` pattern.
+
+    A pattern matches the whole relative path (`src/legacy/*.js`), the file name
+    (`*.generated.ts`) or any folder in the path (`legacy`, `docs/build`).
+    """
+    if not patterns:
+        return False
+    rel = os.path.relpath(path, root).replace(os.sep, "/")
+    parts = rel.split("/")
+    for pattern in patterns:
+        pat = pattern.strip().rstrip("/").lstrip("./")
+        if not pat:
+            continue
+        if fnmatch.fnmatch(rel, pat) or fnmatch.fnmatch(parts[-1], pat):
+            return True
+        if any(fnmatch.fnmatch(part, pat) for part in parts[:-1]):
+            return True
+        if "/" in pat and (rel == pat or rel.startswith(pat + "/")):
+            return True
+    return False
