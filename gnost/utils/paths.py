@@ -16,7 +16,7 @@ def shorten(path: str, root: str) -> str:
         if path.startswith(prefix):
             path = path[len(prefix) :]
             break
-    return path.replace(os.sep, "/")
+    return path.replace("\\", "/")
 
 
 def tail(path: str, parts: int = 2) -> str:
