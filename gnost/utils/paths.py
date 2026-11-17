@@ -11,7 +11,7 @@ def shorten(path: str, root: str) -> str:
     Text that merely contains a path (for example ``file:12`` or ``file::name``)
     keeps its suffix; text outside the root is only normalised.
     """
-    for sep in {os.sep, "/"}:
+    for sep in {os.sep, "/", "\\"}:
         prefix = root.rstrip("/\\") + sep
         if path.startswith(prefix):
             path = path[len(prefix) :]
