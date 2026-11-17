@@ -16,6 +16,7 @@ from pathlib import Path
 from typing import Dict, List
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from archive_utils import dereference  # noqa: E402
 from channel_versions import read_version, to_npm  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -48,6 +49,7 @@ def unpack(archive: Path, dest: Path) -> None:
             t.extractall(tmp)
     shutil.move(str(tmp / "gnost"), str(dest / "bundle"))
     shutil.rmtree(tmp)
+    dereference(dest / "bundle")
 
 
 def build_platform(key: str, archive: Path, out: Path, version: str) -> str:

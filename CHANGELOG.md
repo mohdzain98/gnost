@@ -20,6 +20,7 @@ GNOST is now installable without Python and without a global tool: from PyPI, np
 - **Release pipeline:** one workflow publishes to PyPI (trusted publishing), GHCR, npm and the Maven Central Portal; release candidates go to TestPyPI and npm `next`. A separate workflow installs every channel and checks the version, after each release and weekly.
 
 ### Fixed
+- **Standalone binaries:** the Linux binary is built on Ubuntu 22.04 so it starts on Debian 12 and newer systems, and the macOS binary keeps its Python library in the npm and Maven packages (symlinks are replaced by real files).
 - **Windows:** the console no longer crashes on non-ASCII characters (it used cp1252), and reports show project-relative paths with forward slashes. Windows is now tested in CI.
 
 ### Changed

@@ -10,6 +10,8 @@ on:
       - "packaging/entry.py"
       - ".github/workflows/build-binaries.yml"
 
+# The Linux binary is built on ubuntu-22.04 (glibc 2.35) on purpose: a binary
+# built on a newer system will not start on older ones such as Debian 12.
 jobs:
   build:
     strategy:
@@ -18,7 +20,7 @@ jobs:
         include:
           - os: macos-15
             tag: darwin-arm64
-          - os: ubuntu-24.04
+          - os: ubuntu-22.04
             tag: linux-x64
           - os: windows-2022
             tag: win32-x64
@@ -48,7 +50,7 @@ jobs:
         include:
           - os: macos-15
             tag: darwin-arm64
-          - os: ubuntu-24.04
+          - os: ubuntu-22.04
             tag: linux-x64
           - os: windows-2022
             tag: win32-x64
@@ -79,3 +81,10 @@ jobs:
           else
             env -i HOME="$HOME" PATH="/usr/bin:/bin" bash scripts/smoke_binary.sh unpacked/gnost "$VERSION"
           fi
+      - name: Linux binary on Debian 12 (older glibc than the runner)
+        if: matrix.tag == 'linux-x64'
+        run: |
+          VERSION="$(sed -n 's/^__version__ = "\(.*\)"/\1/p' gnost/__init__.py)"
+          OUT="$(docker run --rm -v "$PWD/unpacked/gnost":/g:ro debian:12-slim /g/gnost version)"
+          echo "$OUT"
+          [ "$OUT" = "gnost $VERSION" ]

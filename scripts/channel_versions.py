@@ -50,9 +50,17 @@ def main(argv: list[str]) -> int:
     """Print the version for the requested channel (pypi, npm, maven, docker)."""
     channel = argv[1] if len(argv) > 1 else "pypi"
     version = argv[2] if len(argv) > 2 else read_version()
-    out = {"pypi": lambda v: v, "npm": to_npm, "maven": to_maven, "docker": to_docker}.get(channel)
+    out = {
+        "pypi": lambda v: v,
+        "npm": to_npm,
+        "maven": to_maven,
+        "docker": to_docker,
+    }.get(channel)
     if out is None:
-        print("usage: channel_versions.py [pypi|npm|maven|docker] [version]", file=sys.stderr)
+        print(
+            "usage: channel_versions.py [pypi|npm|maven|docker] [version]",
+            file=sys.stderr,
+        )
         return 2
     print(out(version))
     return 0

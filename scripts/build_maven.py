@@ -18,6 +18,9 @@ import zipfile
 from pathlib import Path
 from typing import Dict, List
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from archive_utils import dereference  # noqa: E402
+
 # Archive platform key (as built by build_binary.py) -> Maven classifier.
 CLASSIFIERS: Dict[str, str] = {
     "darwin-arm64": "darwin-arm64",
@@ -34,6 +37,7 @@ def _extract(archive: Path, dest: Path) -> Path:
     else:
         with tarfile.open(archive) as t:
             t.extractall(dest)
+    dereference(dest / "gnost")
     return dest / "gnost"
 
 

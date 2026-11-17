@@ -69,7 +69,7 @@ jobs:
           [ "$($BIN version)" = "gnost $VERSION" ]
       - name: uvx
         run: |
-          EXTRA=""; [ "$IS_RC" = "true" ] && EXTRA="--index-url https://test.pypi.org/simple/ --extra-index-strategy unsafe-best-match --extra-index-url https://pypi.org/simple/ --prerelease allow"
+          EXTRA=""; [ "$IS_RC" = "true" ] && EXTRA="--index-url https://test.pypi.org/simple/ --index-strategy unsafe-best-match --extra-index-url https://pypi.org/simple/ --prerelease allow"
           [ "$(uvx $EXTRA --from "gnost==$VERSION" gnost version)" = "gnost $VERSION" ]
 
   npm-node-only:
@@ -78,10 +78,19 @@ jobs:
     env:
       NPM_VERSION: ${{ needs.resolve.outputs.npm_version }}
     steps:
+      - name: Wait until every npm package is visible
+        run: |
+          for pkg in gnost-cli gnost-cli-linux-x64 gnost-cli-darwin-arm64 gnost-cli-windows-x64; do
+            for i in $(seq 1 30); do
+              npm view "$pkg@$NPM_VERSION" version >/dev/null 2>&1 && break
+              sleep 10
+            done
+          done
       - name: Run npx inside a container that has Node but no Python
         run: |
+          # A fresh npm cache for each try: a half-installed copy must not be reused.
           for i in 1 2 3 4 5 6; do
-            OUT="$(docker run --rm node:22-slim npx -y "gnost-cli@$NPM_VERSION" version)" && break
+            OUT="$(docker run --rm -e npm_config_cache="/tmp/npm-$i" node:22-slim npx -y "gnost-cli@$NPM_VERSION" version)" && break
             sleep 20
           done
           echo "$OUT"
@@ -107,9 +116,16 @@ jobs:
           NPM_VERSION: ${{ needs.resolve.outputs.npm_version }}
           VERSION: ${{ needs.resolve.outputs.version }}
         run: |
+          for pkg in gnost-cli gnost-cli-darwin-arm64 gnost-cli-windows-x64; do
+            for i in $(seq 1 30); do
+              npm view "$pkg@$NPM_VERSION" version >/dev/null 2>&1 && break
+              sleep 10
+            done
+          done
           CLEAN="$(echo "$PATH" | tr ':' '\n' | grep -vi python | paste -sd: -)"
           for i in 1 2 3 4 5 6; do
-            OUT="$(PATH="$CLEAN" npx -y "gnost-cli@$NPM_VERSION" version)" && break
+            # A fresh npm cache for each try: a half-installed copy must not be reused.
+            OUT="$(PATH="$CLEAN" npm_config_cache="$RUNNER_TEMP/npm-$i" npx -y "gnost-cli@$NPM_VERSION" version)" && break
             sleep 20
           done
           echo "$OUT"

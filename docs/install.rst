@@ -83,6 +83,9 @@ Pick the channel you already use.
 
 Gradle is planned for later. Use Docker, ``uvx`` or ``npx`` in Gradle projects meanwhile.
 
+The standalone binaries (npm and Maven) need a Linux with glibc 2.35 or newer
+(Ubuntu 22.04, Debian 12 or newer). On older systems use Docker, or ``pip`` / ``uvx``.
+
 Which channel should I use?
 ---------------------------
 

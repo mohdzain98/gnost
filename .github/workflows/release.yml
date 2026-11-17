@@ -275,8 +275,16 @@ jobs:
           fi
           TOKEN="$(printf '%s:%s' "$CENTRAL_USERNAME" "$CENTRAL_PASSWORD" | base64 | tr -d '\n')"
           echo "::add-mask::$TOKEN"
-          curl -sS -o /dev/null -w "drop $ID: HTTP %{http_code}\n" -X DELETE \
-            -H "Authorization: Bearer $TOKEN" "https://central.sonatype.com/api/v1/publisher/deployment/$ID" || true
+          # The Portal expects the same "UserToken" scheme the Maven plugin uses.
+          CODE="$(curl -sS -o "$RUNNER_TEMP/drop.txt" -w '%{http_code}' -X DELETE \
+            -H "Authorization: UserToken $TOKEN" \
+            "https://central.sonatype.com/api/v1/publisher/deployment/$ID" || true)"
+          echo "drop $ID: HTTP $CODE"
+          cat "$RUNNER_TEMP/drop.txt" 2>/dev/null | head -c 300; echo
+          case "$CODE" in
+            2*) ;;
+            *) echo "::warning::Could not drop deployment $ID (HTTP $CODE). Drop it by hand: https://central.sonatype.com/publishing/deployments" ;;
+          esac
       - name: Final release - leave it for a person to publish
         if: needs.meta.outputs.is_rc != 'true'
         run: |

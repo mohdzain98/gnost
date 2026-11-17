@@ -53,3 +53,21 @@ def test_maven_version_strings():
     cv = _load("channel_versions")
     assert cv.to_maven("0.5.0rc1") == "0.5.0-rc1"
     assert cv.to_maven("0.5.0") == "0.5.0"
+
+
+def test_symlinked_library_is_stored_as_a_file(tmp_path):
+    import os
+
+    src = tmp_path / "src" / "gnost"
+    (src / "_internal" / "fw").mkdir(parents=True)
+    (src / "gnost").write_text("bin")
+    (src / "_internal" / "fw" / "Python").write_text("lib")
+    os.symlink("fw/Python", src / "_internal" / "Python")
+    archives = tmp_path / "archives"
+    archives.mkdir()
+    with tarfile.open(archives / "gnost-0.5.0-darwin-arm64.tar.gz", "w:gz") as t:
+        t.add(src, arcname="gnost")
+    out = tmp_path / "out"
+    assert _load("build_maven").main(["x", str(archives), str(out)]) == 0
+    with zipfile.ZipFile(out / "darwin-arm64.zip") as z:
+        assert z.read("gnost/_internal/Python") == b"lib"
