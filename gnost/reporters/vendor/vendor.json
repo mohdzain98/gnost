@@ -1,0 +1,44 @@
+{
+  "mermaid": {
+    "version": "11.4.1",
+    "license": "MIT",
+    "file": "mermaid.min.js",
+    "sha256": "a43bc1afd446f9c4cc66ac5dd45d02e8d65e26fc5344ec0ef787f88d6ddb6f9e"
+  },
+  "marked": {
+    "version": "12.0.2",
+    "license": "MIT",
+    "file": "marked.min.js",
+    "sha256": "15fabce5b65898b32b03f5ed25e9f891a729ad4c0d6d877110a7744aa847a894"
+  },
+  "svg-pan-zoom": {
+    "version": "3.6.1",
+    "license": "BSD-2-Clause",
+    "file": "svg-pan-zoom.min.js",
+    "sha256": "f463710320089c61d0f57cec2b886c02de04e21eb92ebd22eaa327fdf0a6b7c6"
+  },
+  "cytoscape": {
+    "version": "3.30.2",
+    "license": "MIT",
+    "file": "cytoscape.min.js",
+    "sha256": "83e8c54a6bec655bfd81df07df605649c268af69aeca67a5ea2da54ea42dac81"
+  },
+  "layout-base": {
+    "version": "2.0.1",
+    "license": "MIT",
+    "file": "layout-base.js",
+    "sha256": "ec15ab5df9af3f20708f4faab994accf91cda71848cd5bb10a23432cc50b6745"
+  },
+  "cose-base": {
+    "version": "2.2.0",
+    "license": "MIT",
+    "file": "cose-base.js",
+    "sha256": "7cae9509bd36235a63a85e71c8d9fa2cd0bc1d0c1ecc5b5a737976f39d040ddf"
+  },
+  "cytoscape-fcose": {
+    "version": "2.2.0",
+    "license": "MIT",
+    "file": "cytoscape-fcose.js",
+    "sha256": "4b1cab218d74996aa59cd8473f9239cc6398b8c1774d84d7e59ad9a68959cb57"
+  }
+}

@@ -28,3 +28,27 @@ def test_mypy_findings_work_outside_repo_cwd(tmp_path, monkeypatch):
 
     findings = asyncio.run(RobustnessAnalyzer()._run_mypy_check([str(target)]))
     assert findings, "expected strict-mode mypy findings for an untyped function"
+
+
+ROOT = Path(__file__).resolve().parent.parent
+
+
+def test_version_has_single_source():
+    pyproject = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    assert 'dynamic = ["version"]' in pyproject
+    assert "\nversion = " not in pyproject.split("[tool.setuptools.dynamic]")[0]
+
+
+def test_channel_versions():
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location(
+        "channel_versions", ROOT / "scripts" / "channel_versions.py"
+    )
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    assert mod.to_npm("0.5.0") == "0.5.0"
+    assert mod.to_npm("0.5.0rc1") == "0.5.0-rc.1"
+    assert mod.read_version() == __import__("gnost").__version__
+    with pytest.raises(ValueError):
+        mod.to_npm("0.5.0.dev1")

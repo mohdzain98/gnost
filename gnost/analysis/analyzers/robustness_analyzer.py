@@ -12,6 +12,7 @@ import ast
 from pathlib import Path
 from typing import List, Dict, Any, Optional, Tuple
 from collections import defaultdict, Counter
+from gnost.analysis.utils.tool_command import tool_command
 from gnost.utils.logger import AppLogger
 from gnost.analysis.utils.df_handling import collect_pandas_info, is_dataframe_expr
 from gnost.analysis.core.interfaces import QualityAnalyzer
@@ -282,7 +283,7 @@ class RobustnessAnalyzer(QualityAnalyzer):
         for file_path in files:
             try:
                 result = await asyncio.create_subprocess_exec(
-                    "bandit",
+                    *tool_command("bandit"),
                     "-f",
                     "json",
                     "-q",
@@ -381,7 +382,7 @@ class RobustnessAnalyzer(QualityAnalyzer):
             return findings
 
         try:
-            cmd = ["mypy", "--config-file", str(MYPY_CONFIG)] + files
+            cmd = tool_command("mypy") + ["--config-file", str(MYPY_CONFIG)] + files
             result = await asyncio.create_subprocess_exec(
                 *cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
             )

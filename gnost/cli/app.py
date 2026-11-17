@@ -31,6 +31,7 @@ from gnost.cli.commands.onboard import run as onboard_run
 from gnost.config.settings import ConfigError, load_config, report_warnings
 from gnost.reporters.mermaid import DEFAULT_MAX_EDGES
 from gnost.cli.commands.analysis import Analysis
+from gnost.analysis.utils.tool_command import RUN_TOOL_FLAG, run_tool_entry
 from gnost.utils.logger import AppLogger
 
 AppLogger.init(level=logging.INFO)
@@ -226,6 +227,8 @@ def _print_analysis_scores(report: ConsolidatedReport) -> None:
 
 
 def main():
+    if len(sys.argv) > 2 and sys.argv[1] == RUN_TOOL_FLAG:
+        raise SystemExit(run_tool_entry(sys.argv[2:]))
     parser = argparse.ArgumentParser(
         prog="gnost",
         usage="gnost [command]",

@@ -12,6 +12,7 @@ from collections import Counter
 from collections import defaultdict
 from typing import List, Dict, Any, Tuple
 
+from gnost.analysis.utils.tool_command import tool_command
 from gnost.analysis.core.interfaces import QualityAnalyzer
 from gnost.analysis.core.file_utils import find_python_files
 from gnost.analysis.core.models import (
@@ -235,7 +236,7 @@ class ReadabilityAnalyzer(QualityAnalyzer):
         #  Check if ruff is available
         try:
             proc = await asyncio.create_subprocess_exec(
-                "ruff",
+                *tool_command("ruff"),
                 "--version",
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
@@ -603,7 +604,7 @@ class ReadabilityAnalyzer(QualityAnalyzer):
 
             # Run Ruff with JSON output
             proc = await asyncio.create_subprocess_exec(
-                "ruff",
+                *tool_command("ruff"),
                 "check",
                 os.fspath(file_path),
                 "--select",

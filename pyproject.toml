@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gnost"
-version = "0.4.0"
+dynamic = ["version"]
 description = "GNOST — Codebase Knowledge"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -46,11 +46,14 @@ Changelog = "https://github.com/mohdzain98/gnost/blob/main/CHANGELOG.md"
 [project.scripts]
 gnost = "gnost.cli:main"
 
+[tool.setuptools.dynamic]
+version = { attr = "gnost.__version__" }
+
 [tool.setuptools.packages.find]
 include = ["gnost*"]
 
 [tool.setuptools.package-data]
-gnost = ["reporters/templates/*", "analysis/config/*.ini", "schemas/*.json"]
+gnost = ["reporters/templates/*", "reporters/vendor/*", "analysis/config/*.ini", "schemas/*.json"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]

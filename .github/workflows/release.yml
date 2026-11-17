@@ -1,0 +1,188 @@
+name: Release
+
+# v0.5.0     -> PyPI, GHCR (latest), npm (latest), GitHub Release
+# v0.5.0rc1  -> TestPyPI, GHCR (rc tag), npm (next), GitHub pre-release
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  meta:
+    runs-on: ubuntu-24.04
+    outputs:
+      version: ${{ steps.v.outputs.version }}
+      npm: ${{ steps.v.outputs.npm }}
+      is_rc: ${{ steps.v.outputs.is_rc }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: v
+        run: |
+          VERSION="$(python3 scripts/channel_versions.py pypi)"
+          TAG="${GITHUB_REF_NAME#v}"
+          if [ "$TAG" != "$VERSION" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match gnost/__init__.py version $VERSION"; exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "npm=$(python3 scripts/channel_versions.py npm)" >> "$GITHUB_OUTPUT"
+          if echo "$VERSION" | grep -Eq '(a|b|rc)[0-9]+$'; then echo "is_rc=true" >> "$GITHUB_OUTPUT"; else echo "is_rc=false" >> "$GITHUB_OUTPUT"; fi
+
+  dist:
+    needs: meta
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip build
+      - run: python -m build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/*
+
+  binaries:
+    needs: meta
+    uses: ./.github/workflows/build-binaries.yml
+
+  github-release:
+    needs: [meta, dist, binaries]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - name: Create or update the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+          IS_RC: ${{ needs.meta.outputs.is_rc }}
+        run: |
+          mkdir release && cd release
+          find ../artifacts -type f \( -name 'gnost-*.tar.gz' -o -name 'gnost-*.zip' -o -name '*.whl' -o -name '*.tar.gz' \) -exec cp {} . \;
+          sha256sum * > SHA256SUMS
+          FLAGS=""; [ "$IS_RC" = "true" ] && FLAGS="--prerelease"
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" * --clobber --repo "$GITHUB_REPOSITORY"
+          else
+            gh release create "$TAG" * --title "$TAG" --generate-notes $FLAGS --repo "$GITHUB_REPOSITORY"
+          fi
+
+  publish-pypi:
+    needs: [meta, dist, binaries]
+    runs-on: ubuntu-24.04
+    environment: ${{ needs.meta.outputs.is_rc == 'true' && 'testpypi' || 'pypi' }}
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          skip-existing: true
+          repository-url: ${{ needs.meta.outputs.is_rc == 'true' && 'https://test.pypi.org/legacy/' || 'https://upload.pypi.org/legacy/' }}
+
+  publish-docker:
+    needs: [meta, publish-pypi]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Wait until the release is visible on the index
+        env:
+          VERSION: ${{ needs.meta.outputs.version }}
+          IS_RC: ${{ needs.meta.outputs.is_rc }}
+        run: |
+          HOST=pypi.org; [ "$IS_RC" = "true" ] && HOST=test.pypi.org
+          for i in $(seq 1 30); do
+            curl -fsS "https://$HOST/pypi/gnost/$VERSION/json" >/dev/null && exit 0
+            sleep 10
+          done
+          echo "gnost $VERSION not visible on $HOST"; exit 1
+      - name: Tags
+        id: tags
+        env:
+          VERSION: ${{ needs.meta.outputs.version }}
+          IS_RC: ${{ needs.meta.outputs.is_rc }}
+        run: |
+          IMG="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/gnost"
+          if [ "$IS_RC" = "true" ]; then
+            echo "list=$IMG:$VERSION,$IMG:rc" >> "$GITHUB_OUTPUT"
+            echo "pip_extra=--pre --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/" >> "$GITHUB_OUTPUT"
+          else
+            MINOR="${VERSION%.*}"
+            echo "list=$IMG:$VERSION,$IMG:$MINOR,$IMG:latest" >> "$GITHUB_OUTPUT"
+            echo "pip_extra=" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.tags.outputs.list }}
+          build-args: |
+            GNOST_VERSION=${{ needs.meta.outputs.version }}
+            PIP_EXTRA=${{ steps.tags.outputs.pip_extra }}
+
+  publish-npm:
+    needs: [meta, binaries, publish-pypi]
+    runs-on: ubuntu-24.04
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+      - name: Trusted publishing needs a recent npm
+        run: npm install -g npm@latest
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          pattern: gnost-*
+      - name: Assemble packages
+        run: python scripts/build_npm.py artifacts npm-out
+      - name: Publish (platform packages first, then gnost-cli)
+        env:
+          IS_RC: ${{ needs.meta.outputs.is_rc }}
+          NPM_VERSION: ${{ needs.meta.outputs.npm }}
+        run: |
+          TAG=latest; [ "$IS_RC" = "true" ] && TAG=next
+          for d in npm-out/gnost-cli-* npm-out/gnost-cli; do
+            NAME="$(node -p "require('./$d/package.json').name")"
+            if npm view "$NAME@$NPM_VERSION" version >/dev/null 2>&1; then
+              echo "$NAME@$NPM_VERSION already published, skipping"; continue
+            fi
+            (cd "$d" && npm publish --provenance --access public --tag "$TAG")
+          done
+
+  verify:
+    needs: [meta, publish-pypi, publish-docker, publish-npm]
+    uses: ./.github/workflows/verify-install.yml
+    with:
+      version: ${{ needs.meta.outputs.version }}
+      npm_version: ${{ needs.meta.outputs.npm }}
+      is_rc: ${{ needs.meta.outputs.is_rc == 'true' }}

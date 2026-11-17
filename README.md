@@ -32,7 +32,13 @@ Perfect for first-day onboarding, audits, and codebase exploration.
 
 ```bash
 pip install gnost
+# or without installing into a project:
+uvx gnost onboard .
+pipx run gnost onboard .
 ```
+
+No Python? Use `npx gnost-cli onboard .` or the Docker image
+`ghcr.io/mohdzain98/gnost`. See the [install guide](https://gnost.readthedocs.io/en/latest/install.html).
 
 Run the onboarding scan:
 

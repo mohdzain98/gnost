@@ -1,6 +1,6 @@
 # Checks that run on every commit. Same tools as `make check` / CI.
 # One-time setup:  make hooks      Run everywhere:  pre-commit run --all-files
-exclude: ^(tests/fixtures/|tests/snapshots/|docs/_build/|assets/|project-docs/tasks/)
+exclude: ^(tests/fixtures/|tests/snapshots/|docs/_build/|assets/|project-docs/tasks/|gnost/reporters/vendor/)
 
 repos:
   # General file hygiene

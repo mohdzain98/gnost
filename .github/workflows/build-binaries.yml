@@ -1,0 +1,81 @@
+name: Build binaries
+
+on:
+  workflow_dispatch:
+  workflow_call:
+  pull_request:
+    paths:
+      - "scripts/build_binary.py"
+      - "scripts/smoke_binary.sh"
+      - "packaging/entry.py"
+      - ".github/workflows/build-binaries.yml"
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-14
+            tag: darwin-arm64
+          - os: ubuntu-24.04
+            tag: linux-x64
+          - os: windows-2022
+            tag: win32-x64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install . pyinstaller
+      - run: python scripts/build_binary.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gnost-${{ matrix.tag }}
+          path: |
+            dist-binary/gnost-*.tar.gz
+            dist-binary/gnost-*.zip
+            dist-binary/*.sha256
+
+  smoke:
+    # Fresh runner, no gnost environment: unpack the archive and run it.
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-14
+            tag: darwin-arm64
+          - os: ubuntu-24.04
+            tag: linux-x64
+          - os: windows-2022
+            tag: win32-x64
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: gnost-${{ matrix.tag }}
+          path: artifact
+      - name: Unpack, verify checksum, smoke test
+        run: |
+          VERSION="$(sed -n 's/^__version__ = "\(.*\)"/\1/p' gnost/__init__.py)"
+          mkdir unpacked
+          cd artifact
+          if [ -f "gnost-$VERSION-${{ matrix.tag }}.zip" ]; then
+            7z x -y "gnost-$VERSION-${{ matrix.tag }}.zip" -o../unpacked
+          else
+            shasum -a 256 -c "gnost-$VERSION-${{ matrix.tag }}.tar.gz.sha256"
+            tar xzf "gnost-$VERSION-${{ matrix.tag }}.tar.gz" -C ../unpacked
+          fi
+          cd ..
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            bash scripts/smoke_binary.sh unpacked/gnost "$VERSION"
+          else
+            env -i HOME="$HOME" PATH="/usr/bin:/bin" bash scripts/smoke_binary.sh unpacked/gnost "$VERSION"
+          fi

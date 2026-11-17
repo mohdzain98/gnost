@@ -1,12 +1,15 @@
 import subprocess
 import json
 import re
+from gnost.analysis.utils.tool_command import tool_command
 
 
 class MIDiagnose:
     @staticmethod
     def run_command(cmd):
-        result = subprocess.run(cmd, capture_output=True, text=True)
+        result = subprocess.run(
+            tool_command(cmd[0]) + cmd[1:], capture_output=True, text=True
+        )
         return result.stdout.strip()
 
     @staticmethod

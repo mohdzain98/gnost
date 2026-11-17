@@ -1,0 +1,11 @@
+{
+  "name": "gnost-cli",
+  "version": "0.0.1",
+  "description": "Placeholder. GNOST codebase knowledge CLI; real releases start with 0.5.0.",
+  "license": "MIT",
+  "homepage": "https://gnost.readthedocs.io",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mohdzain98/gnost.git"
+  }
+}
