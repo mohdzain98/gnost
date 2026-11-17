@@ -52,8 +52,7 @@ jobs:
           gnost open flow --no-open
 
   other-os:
-    # Non-blocking until green; then make required in branch protection.
-    continue-on-error: true
+    # Windows and macOS are green; keep them required (branch protection on main).
     strategy:
       matrix:
         os: [windows-2022, macos-15]
