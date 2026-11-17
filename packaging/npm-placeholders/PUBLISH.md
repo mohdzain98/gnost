@@ -3,7 +3,7 @@
 ```
 npm login
 cd packaging/npm-placeholders
-for d in gnost-cli gnost-cli-darwin-arm64 gnost-cli-linux-x64 gnost-cli-win32-x64 gnost-cli-darwin-x64 gnost-cli-linux-arm64; do
+for d in gnost-cli gnost-cli-darwin-arm64 gnost-cli-linux-x64 gnost-cli-windows-x64 gnost-cli-darwin-x64 gnost-cli-linux-arm64; do
   (cd $d && npm publish --access public)   # asks for your 2FA code each time
 done
 ```

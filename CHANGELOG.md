@@ -8,15 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 ## [0.5.0] — Distribution — unreleased
 
-GNOST is now installable without Python and without a global tool: from PyPI, npm and Docker.
+GNOST is now installable without Python and without a global tool: from PyPI, npm, Maven and Docker.
 
 ### Added
 - **npm:** `npx gnost-cli onboard .` runs a standalone binary (macOS Apple silicon, Linux x86_64, Windows x86_64). The `gnost-cli` package picks the matching platform package and checks its checksum before running.
+- **Maven:** `mvn io.github.mohdzain98:gnost-maven-plugin:0.5.0:onboard` (also `analyze` and `summary`) runs the standalone binary for your platform from Maven Central, no Python or Node needed. Targets Java 8+ and Maven 3.6.3+; options are `-Dgnost.*` properties and output goes to the project folder. The binaries are the `gnost-binary` artifact with `darwin-arm64`, `linux-x64` and `windows-x64` classifiers.
 - **Docker:** `ghcr.io/mohdzain98/gnost`, built from the exact PyPI release for amd64 and arm64. It includes git for the change analysis planned in 0.6.0.
 - **Standalone binaries** built with PyInstaller and attached to each GitHub Release with `SHA256SUMS`. The analyzers (bandit, radon, mypy, ruff) run from inside the binary, so `gnost analyze` needs no other installation.
 - **Offline `gnost open` pages:** the browser libraries are embedded in the page, so it works without internet and can be sent as a file.
 - **Install guide** in the docs, with a tab per channel.
-- **Release pipeline:** one workflow publishes to PyPI (trusted publishing), GHCR and npm; release candidates go to TestPyPI and npm `next`. A separate workflow installs every channel and checks the version, after each release and weekly.
+- **Release pipeline:** one workflow publishes to PyPI (trusted publishing), GHCR, npm and the Maven Central Portal; release candidates go to TestPyPI and npm `next`. A separate workflow installs every channel and checks the version, after each release and weekly.
 
 ### Fixed
 - **Windows:** the console no longer crashes on non-ASCII characters (it used cp1252), and reports show project-relative paths with forward slashes. Windows is now tested in CI.

@@ -18,20 +18,55 @@ VENDOR = Path(__file__).resolve().parent.parent / "gnost" / "reporters" / "vendo
 
 # One place for the pinned versions. Upgrading a library is a reviewed change here.
 LIBS: List[Dict[str, str]] = [
-    {"name": "mermaid", "version": "11.4.1", "license": "MIT", "file": "mermaid.min.js",
-     "url": "https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"},
-    {"name": "marked", "version": "12.0.2", "license": "MIT", "file": "marked.min.js",
-     "url": "https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"},
-    {"name": "svg-pan-zoom", "version": "3.6.1", "license": "BSD-2-Clause", "file": "svg-pan-zoom.min.js",
-     "url": "https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"},
-    {"name": "cytoscape", "version": "3.30.2", "license": "MIT", "file": "cytoscape.min.js",
-     "url": "https://cdn.jsdelivr.net/npm/cytoscape@3.30.2/dist/cytoscape.min.js"},
-    {"name": "layout-base", "version": "2.0.1", "license": "MIT", "file": "layout-base.js",
-     "url": "https://cdn.jsdelivr.net/npm/layout-base@2.0.1/layout-base.js"},
-    {"name": "cose-base", "version": "2.2.0", "license": "MIT", "file": "cose-base.js",
-     "url": "https://cdn.jsdelivr.net/npm/cose-base@2.2.0/cose-base.js"},
-    {"name": "cytoscape-fcose", "version": "2.2.0", "license": "MIT", "file": "cytoscape-fcose.js",
-     "url": "https://cdn.jsdelivr.net/npm/cytoscape-fcose@2.2.0/cytoscape-fcose.js"},
+    {
+        "name": "mermaid",
+        "version": "11.4.1",
+        "license": "MIT",
+        "file": "mermaid.min.js",
+        "url": "https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js",
+    },
+    {
+        "name": "marked",
+        "version": "12.0.2",
+        "license": "MIT",
+        "file": "marked.min.js",
+        "url": "https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js",
+    },
+    {
+        "name": "svg-pan-zoom",
+        "version": "3.6.1",
+        "license": "BSD-2-Clause",
+        "file": "svg-pan-zoom.min.js",
+        "url": "https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js",
+    },
+    {
+        "name": "cytoscape",
+        "version": "3.30.2",
+        "license": "MIT",
+        "file": "cytoscape.min.js",
+        "url": "https://cdn.jsdelivr.net/npm/cytoscape@3.30.2/dist/cytoscape.min.js",
+    },
+    {
+        "name": "layout-base",
+        "version": "2.0.1",
+        "license": "MIT",
+        "file": "layout-base.js",
+        "url": "https://cdn.jsdelivr.net/npm/layout-base@2.0.1/layout-base.js",
+    },
+    {
+        "name": "cose-base",
+        "version": "2.2.0",
+        "license": "MIT",
+        "file": "cose-base.js",
+        "url": "https://cdn.jsdelivr.net/npm/cose-base@2.2.0/cose-base.js",
+    },
+    {
+        "name": "cytoscape-fcose",
+        "version": "2.2.0",
+        "license": "MIT",
+        "file": "cytoscape-fcose.js",
+        "url": "https://cdn.jsdelivr.net/npm/cytoscape-fcose@2.2.0/cytoscape-fcose.js",
+    },
 ]
 
 
@@ -72,10 +107,16 @@ def main(argv: List[str]) -> int:
             status = 1
             continue
         (VENDOR / lib["file"]).write_bytes(data)
-        manifest[lib["name"]] = {"version": lib["version"], "license": lib["license"],
-                                 "file": lib["file"], "sha256": digest}
+        manifest[lib["name"]] = {
+            "version": lib["version"],
+            "license": lib["license"],
+            "file": lib["file"],
+            "sha256": digest,
+        }
         lic = fetch_license(lib)
-        notices.append(f"\n## {lib['name']} {lib['version']} ({lib['license']})\n\n```\n{lic.strip()}\n```\n")
+        notices.append(
+            f"\n## {lib['name']} {lib['version']} ({lib['license']})\n\n```\n{lic.strip()}\n```\n"
+        )
     if status == 0:
         manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
         (VENDOR / "THIRD_PARTY_NOTICES.md").write_text("".join(notices))

@@ -47,22 +47,48 @@ Pick the channel you already use.
 
       Use the same ``--user`` option so the files it writes belong to you.
 
-.. tab-set::
-
    .. tab-item:: Maven
 
-      Coming in 0.5.x. Until then use Docker, or ``uvx`` / ``npx`` if you have
-      Python or Node.
+      Needs Java 8 or newer and Maven 3.6.3 or newer. **No Python or Node needed**:
+      the plugin fetches the standalone binary for your machine from Maven Central
+      (macOS Apple silicon, Linux x86_64, Windows x86_64) and checks its checksum.
 
-   .. tab-item:: Gradle
+      Run it without editing your ``pom.xml``:
 
-      Planned for later. Use Docker, ``uvx`` or ``npx`` meanwhile.
+      .. code-block:: bash
+
+         mvn io.github.mohdzain98:gnost-maven-plugin:0.5.0:onboard
+
+      Or add the plugin once and use the short form:
+
+      .. code-block:: xml
+
+         <plugin>
+           <groupId>io.github.mohdzain98</groupId>
+           <artifactId>gnost-maven-plugin</artifactId>
+           <version>0.5.0</version>
+         </plugin>
+
+      .. code-block:: bash
+
+         mvn gnost:onboard
+         mvn gnost:analyze -Dgnost.out=true
+         mvn gnost:summary
+
+      Options are ``-Dgnost.*`` properties that mirror the command-line flags, for
+      example ``-Dgnost.mermaid=true``, ``-Dgnost.depth=2``, ``-Dgnost.out=true``.
+      Use ``-Dgnost.path=DIR`` to scan another folder and ``-Dgnost.args="..."`` to
+      pass any other flag. Output is written to the project folder (``docs/``), not
+      ``target/``.
+
+Gradle is planned for later. Use Docker, ``uvx`` or ``npx`` in Gradle projects meanwhile.
 
 Which channel should I use?
 ---------------------------
 
 * You have Python: ``pip install gnost`` or ``uvx gnost``.
 * You work in JavaScript or TypeScript: ``npx gnost-cli``.
+* You work in Java: ``mvn gnost:onboard`` (the Maven plugin).
 * You want nothing installed, or a CI job: the Docker image.
 
 First run

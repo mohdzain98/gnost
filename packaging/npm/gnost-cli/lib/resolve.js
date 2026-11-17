@@ -5,6 +5,16 @@ const path = require("path");
 
 const SUPPORTED = ["darwin-arm64", "linux-x64", "win32-x64"];
 
+// Platform key (process.platform-process.arch) -> npm package name.
+// Windows is not called "win32" because npm's spam filter rejected that name.
+const PACKAGE_NAMES = {
+  "darwin-arm64": "gnost-cli-darwin-arm64",
+  "darwin-x64": "gnost-cli-darwin-x64",
+  "linux-x64": "gnost-cli-linux-x64",
+  "linux-arm64": "gnost-cli-linux-arm64",
+  "win32-x64": "gnost-cli-windows-x64",
+};
+
 function platformKey(platform = process.platform, arch = process.arch) {
   return `${platform}-${arch}`;
 }
@@ -39,7 +49,7 @@ function resolveBinary(opts = {}) {
   const built = Object.keys(checksums);
   const supported = built.length ? built : SUPPORTED;
   if (!supported.includes(key)) throw new Error(unsupportedMessage(key, supported));
-  const pkg = `gnost-cli-${key}`;
+  const pkg = PACKAGE_NAMES[key] || `gnost-cli-${key}`;
   const resolver = opts.resolver || ((p) => require.resolve(p, { paths: [__dirname] }));
   let pkgJson;
   try {
@@ -63,4 +73,4 @@ function resolveBinary(opts = {}) {
   return { exe };
 }
 
-module.exports = { resolveBinary, platformKey, SUPPORTED };
+module.exports = { resolveBinary, platformKey, SUPPORTED, PACKAGE_NAMES };

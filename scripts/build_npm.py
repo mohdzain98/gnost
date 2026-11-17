@@ -21,6 +21,13 @@ from channel_versions import read_version, to_npm  # noqa: E402
 ROOT = Path(__file__).resolve().parent.parent
 MAIN = ROOT / "packaging" / "npm" / "gnost-cli"
 PLATFORMS = ("darwin-arm64", "linux-x64", "win32-x64")
+# Windows is not called "win32": npm's spam filter rejected gnost-cli-win32-x64.
+PACKAGE_NAMES = {"win32-x64": "gnost-cli-windows-x64"}
+
+
+def package_name(key: str) -> str:
+    """npm package name for a platform key (must match the launcher's table)."""
+    return PACKAGE_NAMES.get(key, f"gnost-cli-{key}")
 
 
 def sha256(path: Path) -> str:
@@ -46,13 +53,13 @@ def unpack(archive: Path, dest: Path) -> None:
 def build_platform(key: str, archive: Path, out: Path, version: str) -> str:
     """Create gnost-cli-<key>; return the SHA-256 of its executable."""
     os_name, cpu = key.split("-")
-    pkg = out / f"gnost-cli-{key}"
+    pkg = out / package_name(key)
     pkg.mkdir(parents=True)
     unpack(archive, pkg)
     exe = pkg / "bundle" / ("gnost.exe" if os_name == "win32" else "gnost")
     exe.chmod(0o755)
     meta: Dict[str, object] = {
-        "name": f"gnost-cli-{key}",
+        "name": package_name(key),
         "version": version,
         "description": f"GNOST standalone binary for {key}",
         "license": "MIT",
@@ -91,7 +98,7 @@ def main(argv: List[str]) -> int:
     )
     meta = json.loads((main_pkg / "package.json").read_text())
     meta["version"] = version
-    meta["optionalDependencies"] = {f"gnost-cli-{k}": version for k in checksums}
+    meta["optionalDependencies"] = {package_name(k): version for k in checksums}
     (main_pkg / "package.json").write_text(json.dumps(meta, indent=2) + "\n")
     (main_pkg / "checksums.json").write_text(json.dumps(checksums, indent=2) + "\n")
     (main_pkg / "README.md").write_text(
