@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Optional
 from pathlib import Path
+from gnost.utils.paths import shorten
 from gnost.config.languages import LANGUAGES
 from gnost.scanner.models import ScanResult
 from gnost.core.flow import FlowResult
@@ -368,4 +369,4 @@ class MarkdownReporter:
     # -------------------------
 
     def _shorten(self, path: str) -> str:
-        return path.replace(self.scan.root + "/", "")
+        return shorten(path, self.scan.root)

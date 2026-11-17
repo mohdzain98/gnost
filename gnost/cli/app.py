@@ -227,6 +227,9 @@ def _print_analysis_scores(report: ConsolidatedReport) -> None:
 
 
 def main():
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
     if len(sys.argv) > 2 and sys.argv[1] == RUN_TOOL_FLAG:
         raise SystemExit(run_tool_entry(sys.argv[2:]))
     parser = argparse.ArgumentParser(

@@ -85,7 +85,7 @@ def test_flow_paths_edges_and_layers(fixture_repo):
     paths = {tuple(_rel(root, [n]).pop() for n in p.path) for p in flow.paths}
     assert ("main.py", "app/services/users.py", "app/services/db.py") in paths
     # Every dependency edge is kept even when a path does not walk it.
-    edges = {(a[len(str(root)) + 1 :], b[len(str(root)) + 1 :]) for a, b in flow.edges}
+    edges = {tuple(_rel(root, [n]).pop() for n in e) for e in flow.edges}
     assert ("app/api.py", "app/services/users.py") in edges
     assert flow.depths[str(Path(root, "main.py"))] == 0
     assert flow.depths[str(Path(root, "app/services/db.py"))] == 2
@@ -125,7 +125,7 @@ def test_flow_terminates_on_cycle(fixture_repo):
     chains = {tuple(_rel(root, [n]).pop() for n in p.path) for p in flow.paths}
     assert chains == {("main.py", "pkg/a.py", "pkg/b.py")}
     # The edge that closes the cycle is still reported.
-    edges = {(a[len(str(root)) + 1 :], b[len(str(root)) + 1 :]) for a, b in flow.edges}
+    edges = {tuple(_rel(root, [n]).pop() for n in e) for e in flow.edges}
     assert ("pkg/b.py", "pkg/a.py") in edges
     # The file where the branch stopped is not mislabelled as a leaf.
     assert flow.layers["leaf"] == set()

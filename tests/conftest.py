@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import shutil
 from pathlib import Path
 from typing import Callable
@@ -21,6 +22,21 @@ def fixture_repo(tmp_path: Path) -> Callable[[str], Path]:
     def _make(name: str) -> Path:
         dest = tmp_path / name
         shutil.copytree(FIXTURES / name, dest)
+        if os.environ.get("GNOST_TEST_CRLF"):
+            for p in dest.rglob("*"):
+                if p.is_file() and p.suffix in {
+                    ".py",
+                    ".js",
+                    ".ts",
+                    ".tsx",
+                    ".java",
+                    ".json",
+                    ".toml",
+                    ".jsx",
+                }:
+                    p.write_bytes(
+                        p.read_bytes().replace(b"\r\n", b"\n").replace(b"\n", b"\r\n")
+                    )
         (dest / ".git").mkdir()
         return dest
 
