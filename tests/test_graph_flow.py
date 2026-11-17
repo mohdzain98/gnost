@@ -176,7 +176,7 @@ def test_entry_reachable_from_another_entry_is_not_a_root(fixture_repo):
     """main.tsx imports App.tsx; only main.tsx should start the flow."""
     root = fixture_repo("react_app")
     scan = _scan(root)
-    assert {e.file.rsplit("/", 1)[-1] for e in scan.entry_points} == {
+    assert {Path(e.file).name for e in scan.entry_points} == {
         "main.tsx",
         "App.tsx",
     }
