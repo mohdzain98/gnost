@@ -223,11 +223,13 @@ def test_caution_in_json_and_markdown(fixture_repo):
 
     root = fixture_repo("cyclic_py")
     run(path=str(root), json_out="")
-    payload = json.loads((root / "docs/insights/gnost_insights.json").read_text())
+    payload = json.loads(
+        (root / "docs/insights/gnost_insights.json").read_text(encoding="utf-8")
+    )
     jsonschema.validate(payload, load_schema())
     assert payload["schema_version"] == "1.3"
     area = payload["caution_areas"][0]
     assert area["category"] == "circular_dependency" and area["score"] == 90
     assert area["factors"][0]["name"] == "cycles" and area["partial"] is False
-    md = (root / "ONBOARD.md").read_text()
+    md = (root / "ONBOARD.md").read_text(encoding="utf-8")
     assert "**Caution score:** 90/100" in md

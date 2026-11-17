@@ -4,6 +4,7 @@ import os
 import re
 from typing import Optional
 
+from gnost.utils.paths import shorten
 from gnost.languages.python import PythonAdapter
 from gnost.languages.javascript import JavaScriptAdapter
 from gnost.languages.typescript import TypeScriptAdapter
@@ -358,14 +359,14 @@ def run(
         )
 
         for idx, p in enumerate(sorted_paths[:MAX_PATHS], start=1):
-            entry = p.path[0].replace(scan_result.root + "/", "")
+            entry = shorten(p.path[0], scan_result.root)
             lines.append(f"## Path {idx} — `{entry}`\n")
 
             diagram = reporter.render_path(p.path, markdown=True)
             lines.append(diagram)
             lines.append("")  # spacing
 
-            chain = " → ".join(x.replace(scan_result.root + "/", "") for x in p.path)
+            chain = " → ".join(shorten(x, scan_result.root) for x in p.path)
             lines.append(f"**Execution chain:** {chain}\n")
 
         with open(os.path.join(flow_dir, "entry-paths.md"), "w", encoding="utf-8") as f:
@@ -448,9 +449,7 @@ def run(
                 lines.append(f"#### Path Group {idx}\n")
                 lines.append(diagram)
 
-                chain = " → ".join(
-                    x.replace(scan_result.root + "/", "") for x in group[0]
-                )
+                chain = " → ".join(shorten(x, scan_result.root) for x in group[0])
                 lines.append(f"**Execution chain:** {chain}\n")
 
             # -------------------------

@@ -47,7 +47,7 @@ def scan(path=".", include=None, exclude=None, progress=False):
                     continue
 
                 try:
-                    with open(full_path, "r", errors="ignore") as f:
+                    with open(full_path, "r", encoding="utf-8", errors="ignore") as f:
                         lines = f.readlines()
                 except Exception:
                     continue

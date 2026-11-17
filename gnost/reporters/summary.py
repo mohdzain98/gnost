@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from gnost.utils.paths import shorten
 from gnost.scanner.models import ScanResult
 from gnost.core.flow import FlowResult
 from gnost.core.graph import DependencyGraph
@@ -219,4 +220,4 @@ class SummaryReporter:
         """
         Shorten long paths for readability.
         """
-        return path.replace(self.scan.root + "/", "")
+        return shorten(path, self.scan.root)

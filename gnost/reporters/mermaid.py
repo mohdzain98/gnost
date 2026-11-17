@@ -5,6 +5,7 @@ from __future__ import annotations
 import re
 from typing import Dict, List, Optional, Set, Tuple
 
+from gnost.utils.paths import shorten
 from gnost.core.flow import FlowResult
 from gnost.reporters.mermaid_graph import (
     CYCLE,
@@ -471,7 +472,7 @@ class MermaidFlowReporter:
         return self._node_layer(node).lower()
 
     def _shorten(self, path: str) -> str:
-        return path.replace(self.root + "/", "")
+        return shorten(path, self.root)
 
 
 def render_call_tree(tree, root: str, direction: str = "LR") -> str:
