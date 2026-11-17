@@ -17,3 +17,13 @@ def shorten(path: str, root: str) -> str:
             path = path[len(prefix) :]
             break
     return path.replace(os.sep, "/")
+
+
+def tail(path: str, parts: int = 2) -> str:
+    """Last `parts` path components, joined with forward slashes (for display)."""
+    return "/".join(path.replace("\\", "/").split("/")[-parts:])
+
+
+def base(path: str) -> str:
+    """File name of a path written with either separator."""
+    return path.replace("\\", "/").split("/")[-1]

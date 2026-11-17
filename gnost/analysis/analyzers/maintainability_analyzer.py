@@ -11,6 +11,7 @@ import hashlib
 import traceback
 from typing import List, Dict, Any
 from collections import defaultdict, Counter
+from gnost.utils.paths import base, tail
 from gnost.analysis.core.tool_runner import ToolRunner
 from gnost.analysis.core.file_utils import find_python_files
 from gnost.analysis.core.interfaces import QualityAnalyzer
@@ -314,7 +315,7 @@ class MaintainabilityAnalyzer(QualityAnalyzer):
                             {
                                 "type": "cyclomatic_complexity",
                                 "severity": severity,
-                                "file": "/".join(file_path.split("/")[-2:]),
+                                "file": tail(file_path),
                                 "line": line,
                                 "function": func_name,
                                 "complexity": complexity,
@@ -322,7 +323,7 @@ class MaintainabilityAnalyzer(QualityAnalyzer):
                                 "description": (
                                     f"Function {func_name} has {self._cc_rank_mapping(rank)} "
                                     f"cyclomatic complexity ({complexity}, rank {rank}) in "
-                                    f"{file_path.split('/')[-1]}."
+                                    f"{base(file_path)}."
                                 ),
                                 "suggestion": suggestion,
                             }
@@ -581,7 +582,7 @@ class MaintainabilityAnalyzer(QualityAnalyzer):
                         f"Very High: {percent['very_high']:.1f}%. "
                         f"Reason: {reason}."
                     ),
-                    "file": "/".join(file_path.split("/")[-2:]),
+                    "file": tail(file_path),
                     "details": details,
                     "rank": system_rank,
                     "suggestion": "Refactor high and very high complexity code to improve maintainability.",
@@ -614,12 +615,12 @@ class MaintainabilityAnalyzer(QualityAnalyzer):
                 else:
                     severity = SeverityLevel.INFO
                     continue
-                file = file_path.split("/")[-1]
+                file = base(file_path)
                 self.findings.append(
                     {
                         "type": "maintainability_index",
                         "severity": severity,
-                        "file": "/".join(file_path.split("/")[-2:]),
+                        "file": tail(file_path),
                         "mi_score": mi_score,
                         "details": {
                             **response["stats"],
@@ -819,8 +820,8 @@ class MaintainabilityAnalyzer(QualityAnalyzer):
                 lines = x["lines"] - 1
                 ffile = x["firstFile"]
                 sfile = x["secondFile"]
-                fname = ffile["name"].split("/")[-1]
-                sname = sfile["name"].split("/")[-1]
+                fname = base(ffile["name"])
+                sname = base(sfile["name"])
                 fstart = ffile["start"]
                 sstart = sfile["start"]
                 fend = ffile["end"]

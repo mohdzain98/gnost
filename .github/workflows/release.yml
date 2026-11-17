@@ -30,6 +30,37 @@ jobs:
           echo "npm=$(python3 scripts/channel_versions.py npm)" >> "$GITHUB_OUTPUT"
           if echo "$VERSION" | grep -Eq '(a|b|rc)[0-9]+$'; then echo "is_rc=true" >> "$GITHUB_OUTPUT"; else echo "is_rc=false" >> "$GITHUB_OUTPUT"; fi
 
+  windows-tests:
+    # Windows has had real bugs. A release candidate may go out without it passing
+    # (the Windows npm package is then left out); a final release may not.
+    needs: meta
+    runs-on: windows-2022
+    outputs:
+      passed: ${{ steps.t.outputs.passed }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e ".[test]"
+      - id: t
+        shell: bash
+        run: |
+          if pytest -q; then echo "passed=true" >> "$GITHUB_OUTPUT"; else echo "passed=false" >> "$GITHUB_OUTPUT"; fi
+
+  gate:
+    needs: [meta, windows-tests]
+    runs-on: ubuntu-24.04
+    steps:
+      - env:
+          IS_RC: ${{ needs.meta.outputs.is_rc }}
+          WINDOWS: ${{ needs.windows-tests.outputs.passed }}
+        run: |
+          if [ "$IS_RC" = "false" ] && [ "$WINDOWS" != "true" ]; then
+            echo "Windows tests must pass before a final release."; exit 1
+          fi
+          [ "$WINDOWS" = "true" ] || echo "::warning::Windows tests failed; the Windows npm package is skipped for this release candidate."
+
   dist:
     needs: meta
     runs-on: ubuntu-24.04
@@ -50,7 +81,7 @@ jobs:
     uses: ./.github/workflows/build-binaries.yml
 
   github-release:
-    needs: [meta, dist, binaries]
+    needs: [meta, gate, dist, binaries]
     runs-on: ubuntu-24.04
     permissions:
       contents: write
@@ -75,7 +106,7 @@ jobs:
           fi
 
   publish-pypi:
-    needs: [meta, dist, binaries]
+    needs: [meta, gate, dist, binaries]
     runs-on: ubuntu-24.04
     environment: ${{ needs.meta.outputs.is_rc == 'true' && 'testpypi' || 'pypi' }}
     permissions:
@@ -142,7 +173,7 @@ jobs:
             PIP_EXTRA=${{ steps.tags.outputs.pip_extra }}
 
   publish-npm:
-    needs: [meta, binaries, publish-pypi]
+    needs: [meta, gate, windows-tests, binaries, publish-pypi]
     runs-on: ubuntu-24.04
     environment: npm
     permissions:
@@ -163,8 +194,12 @@ jobs:
         with:
           path: artifacts
           pattern: gnost-*
-      - name: Assemble packages
-        run: python scripts/build_npm.py artifacts npm-out
+      - name: Assemble packages (skip Windows if its tests failed)
+        env:
+          WINDOWS: ${{ needs.windows-tests.outputs.passed }}
+        run: |
+          if [ "$WINDOWS" != "true" ]; then export GNOST_NPM_EXCLUDE=win32-x64; fi
+          python scripts/build_npm.py artifacts npm-out
       - name: Publish (platform packages first, then gnost-cli)
         env:
           IS_RC: ${{ needs.meta.outputs.is_rc }}

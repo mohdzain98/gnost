@@ -3,7 +3,6 @@
 ![Python](https://img.shields.io/pypi/pyversions/gnost)
 [![Tests](https://github.com/mohdzain98/gnost/actions/workflows/tests.yml/badge.svg)](https://github.com/mohdzain98/gnost/actions/workflows/tests.yml)
 ![License](https://img.shields.io/pypi/l/gnost)
-![Downloads](https://static.pepy.tech/badge/gnost)
 
 GNOST is a lightweight static analysis CLI tool that helps developers understand unfamiliar codebases in minutes.<br>
 It automatically detects entry points, maps execution flow, identifies critical files, and generates onboarding documentation and Mermaid diagrams.  
@@ -30,15 +29,18 @@ Perfect for first-day onboarding, audits, and codebase exploration.
 
 ## Install
 
-```bash
-pip install gnost
-# or without installing into a project:
-uvx gnost onboard .
-pipx run gnost onboard .
-```
+Pick the channel you already use. The same version is published to all of them.
 
-No Python? Use `npx gnost-cli onboard .` or the Docker image
-`ghcr.io/mohdzain98/gnost`. See the [install guide](https://gnost.readthedocs.io/en/latest/install.html).
+| Channel | Command | Needs |
+|---|---|---|
+| pip | `pip install gnost` | Python 3.9+ |
+| uv / pipx | `uvx gnost onboard .` or `pipx run gnost onboard .` | Python 3.9+ |
+| npm | `npx gnost-cli onboard .` | Node 18+ (no Python) |
+| Docker | `docker run --rm --user "$(id -u):$(id -g)" -v "$PWD":/repo ghcr.io/mohdzain98/gnost onboard /repo` | Docker (no Python) |
+| Maven | coming in 0.5.x | |
+
+The npm package carries a standalone binary for macOS (Apple silicon), Linux (x86_64) and Windows (x86_64).
+See the [install guide](https://gnost.readthedocs.io/en/latest/install.html) for details.
 
 Run the onboarding scan:
 
@@ -116,6 +118,16 @@ gnost open report
 - Legacy system analysis
 - Rapid technical due diligence
 
+
+## 📦 Get GNOST
+[![PyPI](https://img.shields.io/pypi/v/gnost?label=PyPI)](https://pypi.org/project/gnost/)
+[![npm](https://img.shields.io/npm/v/gnost-cli?label=npm)](https://www.npmjs.com/package/gnost-cli)
+[![Docker](https://img.shields.io/badge/docker-ghcr.io%2Fmohdzain98%2Fgnost-blue)](https://github.com/mohdzain98/gnost/pkgs/container/gnost)
+![Maven](https://img.shields.io/badge/maven-coming%20in%200.5.x-lightgrey)
+
+[![PyPI downloads](https://static.pepy.tech/badge/gnost)](https://pepy.tech/project/gnost)
+[![npm downloads](https://img.shields.io/npm/dt/gnost-cli?label=npm%20downloads)](https://www.npmjs.com/package/gnost-cli)
+[![GitHub downloads](https://img.shields.io/github/downloads/mohdzain98/gnost/total?label=release%20downloads)](https://github.com/mohdzain98/gnost/releases)
 
 ## 📚 Documentation:
 [![Docs](https://img.shields.io/readthedocs/gnost?label=docs)](https://gnost.readthedocs.io)

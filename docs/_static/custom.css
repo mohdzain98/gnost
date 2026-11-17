@@ -1,0 +1,11 @@
+/* Tabs on the Install page: start at the left edge of the text column. */
+.sd-tab-set > label.sd-tab-label {
+  padding-left: 0;
+  padding-right: 1.5em;
+}
+.sd-tab-set > label.sd-tab-label:first-of-type {
+  margin-left: 0;
+}
+.sd-tab-content {
+  padding-left: 0;
+}

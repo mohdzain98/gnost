@@ -7,6 +7,7 @@ Writes <out-dir>/gnost-cli and one gnost-cli-<platform> folder per archive found
 from __future__ import annotations
 
 import json
+import os
 import shutil
 import sys
 import tarfile
@@ -75,7 +76,10 @@ def main(argv: List[str]) -> int:
     shutil.rmtree(out, ignore_errors=True)
     out.mkdir(parents=True)
     checksums: Dict[str, str] = {}
+    excluded = set(filter(None, os.environ.get("GNOST_NPM_EXCLUDE", "").split(",")))
     for key in PLATFORMS:
+        if key in excluded:
+            continue
         found = [
             p for p in archives.rglob(f"gnost-*-{key}.*") if p.suffix in (".gz", ".zip")
         ]

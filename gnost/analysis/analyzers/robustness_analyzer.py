@@ -12,6 +12,7 @@ import ast
 from pathlib import Path
 from typing import List, Dict, Any, Optional, Tuple
 from collections import defaultdict, Counter
+from gnost.utils.paths import tail
 from gnost.analysis.utils.tool_command import tool_command
 from gnost.utils.logger import AppLogger
 from gnost.analysis.utils.df_handling import collect_pandas_info, is_dataframe_expr
@@ -641,7 +642,7 @@ class RobustnessAnalyzer(QualityAnalyzer):
                         anchor_line = (
                             suffix_items_sorted[0][1] if suffix_items_sorted else 1
                         )
-                        short_fp = "/".join(fp.split("/")[-2:])
+                        short_fp = tail(fp)
                         finding = self._create_dict_access_finding(
                             file_path=short_fp,
                             line_num=anchor_line,
@@ -679,7 +680,7 @@ class RobustnessAnalyzer(QualityAnalyzer):
             severity=self._map_bandit_severity(severity),
             confidence_score=self._map_bandit_confidence(confidence),
             location=CodeLocation(
-                file_path="/".join(file_path.split("/")[-2:]),
+                file_path=tail(file_path),
                 line_number=line_number,
                 column=issue.get("col_offset", 0),
             ),
@@ -720,7 +721,7 @@ class RobustnessAnalyzer(QualityAnalyzer):
             severity=self._get_mypy_severity_mapping(codes[0]),
             confidence_score=0.9,  # MyPy is quite reliable
             location=CodeLocation(
-                file_path="/".join(filepath.split("/")[-2:]),
+                file_path=tail(filepath),
                 line_number=line_num,
             ),
             rule_id=(
@@ -765,7 +766,7 @@ class RobustnessAnalyzer(QualityAnalyzer):
             severity=SeverityLevel.LOW if not is_df else SeverityLevel.INFO,
             confidence_score=0.7,  # Could be intentional
             location=CodeLocation(
-                file_path="/".join(file_path.split("/")[-2:]),
+                file_path=tail(file_path),
                 line_number=line_num,
             ),
             rule_id="dict-access-without-get".upper(),
@@ -793,7 +794,7 @@ class RobustnessAnalyzer(QualityAnalyzer):
             category=FindingCategory.SECURITY,
             severity=SeverityLevel.MEDIUM,
             confidence_score=0.6,
-            location=CodeLocation(file_path="/".join(file_path.split("/")[-2:])),
+            location=CodeLocation(file_path=tail(file_path)),
             source_analyzer=self.name,
             extra_data={"bandit_output": output},
         )

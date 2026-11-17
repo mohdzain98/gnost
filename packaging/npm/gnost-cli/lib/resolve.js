@@ -9,10 +9,10 @@ function platformKey(platform = process.platform, arch = process.arch) {
   return `${platform}-${arch}`;
 }
 
-function unsupportedMessage(key) {
+function unsupportedMessage(key, supported = SUPPORTED) {
   return (
     `gnost-cli has no prebuilt binary for ${key}.\n` +
-    `Supported: ${SUPPORTED.join(", ")}.\n` +
+    `Supported: ${supported.join(", ")}.\n` +
     `Use "pipx install gnost" or the Docker image ghcr.io/mohdzain98/gnost instead.`
   );
 }
@@ -32,7 +32,13 @@ function sha256File(file) {
 // Returns {exe} or throws Error with a user-facing message.
 function resolveBinary(opts = {}) {
   const key = opts.key || platformKey();
-  if (!SUPPORTED.includes(key)) throw new Error(unsupportedMessage(key));
+  const checksums = opts.checksums || JSON.parse(
+    fs.readFileSync(path.join(__dirname, "..", "checksums.json"), "utf8"),
+  );
+  // checksums.json lists the platforms this release was built for.
+  const built = Object.keys(checksums);
+  const supported = built.length ? built : SUPPORTED;
+  if (!supported.includes(key)) throw new Error(unsupportedMessage(key, supported));
   const pkg = `gnost-cli-${key}`;
   const resolver = opts.resolver || ((p) => require.resolve(p, { paths: [__dirname] }));
   let pkgJson;
@@ -44,9 +50,6 @@ function resolveBinary(opts = {}) {
   const exeName = key.startsWith("win32") ? "gnost.exe" : "gnost";
   const exe = path.join(path.dirname(pkgJson), "bundle", exeName);
   if (!fs.existsSync(exe)) throw new Error(missingMessage(pkg));
-  const checksums = opts.checksums || JSON.parse(
-    fs.readFileSync(path.join(__dirname, "..", "checksums.json"), "utf8"),
-  );
   const expected = checksums[key];
   if (expected) {
     const actual = sha256File(exe);

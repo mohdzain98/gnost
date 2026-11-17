@@ -10,6 +10,7 @@ import asyncio
 import traceback
 from pathlib import Path
 from typing import List, Dict, Any, Optional, Tuple
+from gnost.utils.paths import tail
 from gnost.analysis.core.interfaces import QualityAnalyzer
 from gnost.analysis.core.file_utils import find_python_files
 from gnost.analysis.core.models import (
@@ -429,9 +430,7 @@ class ObservabilityAnalyzer(QualityAnalyzer):
                         severity=SeverityLevel.HIGH,
                         confidence_score=0.8,
                         location=CodeLocation(
-                            file_path="/".join(
-                                str(file_result["file_path"]).split("/")[-2:]
-                            )
+                            file_path=tail(str(file_result["file_path"]))
                         ),
                         rule_id="CRITICAL_FUNCTIONS_NO_LOGGING",
                         remediation_guidance="Add logging to critical functions for better debugging and monitoring",
@@ -463,7 +462,7 @@ class ObservabilityAnalyzer(QualityAnalyzer):
             ]
 
             file_info = {
-                "file_path": "/".join(str(file_result["file_path"]).split("/")[-2:]),
+                "file_path": tail(str(file_result["file_path"])),
                 "score": score,
                 "total_functions": total_funcs,
                 "functions_without_logging": [
@@ -564,9 +563,7 @@ class ObservabilityAnalyzer(QualityAnalyzer):
                     category=FindingCategory.OBSERVABILITY,
                     severity=SeverityLevel.LOW,
                     confidence_score=0.6,
-                    location=CodeLocation(
-                        file_path="/".join(str(target_path).split("/")[-2:])
-                    ),
+                    location=CodeLocation(file_path=tail(str(target_path))),
                     rule_id="MISSING_STRUCTURED_LOGGING",
                     remediation_guidance="Consider using structured logging with extra parameters or structured logging libraries",
                     remediation_complexity=ComplexityLevel.MODERATE,

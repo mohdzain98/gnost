@@ -19,7 +19,7 @@ DEFAULT_EXCLUDES = {
 
 
 def should_skip(path, include, exclude):
-    parts = set(path.split("/"))
+    parts = set(path.replace("\\", "/").split("/"))
 
     if parts & exclude:
         return True
@@ -114,7 +114,7 @@ def should_ignore(path: str) -> bool:
     if is_virtualenv_dir(path):
         return True
 
-    for part in path.split("/"):
+    for part in path.replace("\\", "/").split("/"):
         if part in IGNORE_DIRS:
             return True
 
