@@ -1,8 +1,8 @@
 # GNOST — Codebase Knowledge
 [![PyPI](https://img.shields.io/pypi/v/gnost?label=PyPI)](https://pypi.org/project/gnost/)
-![npm](https://img.shields.io/badge/npm-coming%20in%200.5.0-lightgrey)
-![Docker](https://img.shields.io/badge/docker-coming%20in%200.5.0-lightgrey)
-![Maven](https://img.shields.io/badge/maven-coming%20in%200.5.0-lightgrey)
+[![npm](https://img.shields.io/npm/v/gnost-cli?label=npm)](https://www.npmjs.com/package/gnost-cli)
+[![Docker](https://img.shields.io/badge/docker-ghcr.io-2496ED?logo=docker&logoColor=white)](https://github.com/mohdzain98/gnost/pkgs/container/gnost)
+[![Maven](https://img.shields.io/maven-central/v/io.github.mohdzain98/gnost-maven-plugin?label=Maven)](https://central.sonatype.com/artifact/io.github.mohdzain98/gnost-maven-plugin)
 [![Tests](https://github.com/mohdzain98/gnost/actions/workflows/tests.yml/badge.svg)](https://github.com/mohdzain98/gnost/actions/workflows/tests.yml)
 [![License](https://img.shields.io/github/license/mohdzain98/gnost)](./LICENSE)
 
@@ -123,9 +123,9 @@ gnost open report
 
 ## 📦 Details
 ![Python](https://img.shields.io/pypi/pyversions/gnost?label=pip%3A%20Python)
-![Node](https://img.shields.io/badge/npm%3A%20Node-18%2B-lightgrey)
+![Node](https://img.shields.io/node/v/gnost-cli?label=npm%3A%20Node)
 [![PyPI downloads](https://static.pepy.tech/badge/gnost)](https://pepy.tech/project/gnost)
-![npm downloads](https://img.shields.io/badge/npm%20downloads-after%200.5.0-lightgrey)
+[![npm downloads](https://img.shields.io/npm/dt/gnost-cli?label=npm%20downloads)](https://www.npmjs.com/package/gnost-cli)
 
 Install commands for every channel are in the [Install](#install) table above.
 

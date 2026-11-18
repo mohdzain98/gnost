@@ -138,17 +138,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Wait until the release is visible on the index
-        env:
-          VERSION: ${{ needs.meta.outputs.version }}
-          IS_RC: ${{ needs.meta.outputs.is_rc }}
-        run: |
-          HOST=pypi.org; [ "$IS_RC" = "true" ] && HOST=test.pypi.org
-          for i in $(seq 1 30); do
-            curl -fsS "https://$HOST/pypi/gnost/$VERSION/json" >/dev/null && exit 0
-            sleep 10
-          done
-          echo "gnost $VERSION not visible on $HOST"; exit 1
       - name: Tags
         id: tags
         env:
@@ -164,6 +153,17 @@ jobs:
             echo "list=$IMG:$VERSION,$IMG:$MINOR,$IMG:latest" >> "$GITHUB_OUTPUT"
             echo "pip_extra=" >> "$GITHUB_OUTPUT"
           fi
+      - name: Wait until pip can install this release
+        # The JSON page and the simple index are cached separately; pip reads the index.
+        env:
+          VERSION: ${{ needs.meta.outputs.version }}
+          PIP_EXTRA: ${{ steps.tags.outputs.pip_extra }}
+        run: |
+          for i in $(seq 1 60); do
+            python3 -m pip download "gnost==$VERSION" --no-deps -d "$RUNNER_TEMP/wait" $PIP_EXTRA >/dev/null 2>&1 && exit 0
+            sleep 15
+          done
+          echo "pip cannot see gnost $VERSION yet"; exit 1
       - uses: docker/build-push-action@v6
         with:
           context: .
@@ -218,8 +218,8 @@ jobs:
 
   publish-maven:
     # Goes out last. Uploads to the Central Portal and waits for validation, but
-    # never publishes: a release candidate's upload is dropped again, and a final
-    # release stays "validated" until a person presses Publish in the Portal.
+    # never publishes: a person drops a release candidate's upload and presses
+    # Publish (or Drop) for a final release in the Portal.
     needs: [meta, gate, windows-tests, binaries, publish-npm, publish-docker]
     runs-on: ubuntu-24.04
     environment: maven
@@ -263,28 +263,12 @@ jobs:
           CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
         run: ./mvnw -B -Prelease deploy | tee "$RUNNER_TEMP/deploy.log"
-      - name: Release candidate - drop the validated upload
+      - name: Release candidate - the upload must be dropped by hand
         if: needs.meta.outputs.is_rc == 'true'
-        env:
-          CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
-          CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
         run: |
-          ID="$(grep -Eio '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' "$RUNNER_TEMP/deploy.log" | head -1 || true)"
-          if [ -z "$ID" ]; then
-            echo "::warning::No deployment id in the log. Drop the validated upload by hand: https://central.sonatype.com/publishing/deployments"; exit 0
-          fi
-          TOKEN="$(printf '%s:%s' "$CENTRAL_USERNAME" "$CENTRAL_PASSWORD" | base64 | tr -d '\n')"
-          echo "::add-mask::$TOKEN"
-          # The Portal expects the same "UserToken" scheme the Maven plugin uses.
-          CODE="$(curl -sS -o "$RUNNER_TEMP/drop.txt" -w '%{http_code}' -X DELETE \
-            -H "Authorization: UserToken $TOKEN" \
-            "https://central.sonatype.com/api/v1/publisher/deployment/$ID" || true)"
-          echo "drop $ID: HTTP $CODE"
-          cat "$RUNNER_TEMP/drop.txt" 2>/dev/null | head -c 300; echo
-          case "$CODE" in
-            2*) ;;
-            *) echo "::warning::Could not drop deployment $ID (HTTP $CODE). Drop it by hand: https://central.sonatype.com/publishing/deployments" ;;
-          esac
+          echo "::notice::Validated on the Central Portal but NOT published. Press Drop at https://central.sonatype.com/publishing/deployments (never Publish for a release candidate)."
+          echo "### Maven Central: release candidate validated" >> "$GITHUB_STEP_SUMMARY"
+          echo "Drop the deployment for ${{ needs.meta.outputs.maven }} at https://central.sonatype.com/publishing/deployments. Do not press Publish." >> "$GITHUB_STEP_SUMMARY"
       - name: Final release - leave it for a person to publish
         if: needs.meta.outputs.is_rc != 'true'
         run: |

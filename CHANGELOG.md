@@ -6,7 +6,7 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
-## [0.5.0] — Distribution — unreleased
+## [0.5.0] — Distribution — 2026-11-18
 
 GNOST is now installable without Python and without a global tool: from PyPI, npm, Maven and Docker.
 
