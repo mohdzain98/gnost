@@ -208,9 +208,9 @@ class ImportResolver:
                 if not target.startswith(prefix):
                     continue
                 rest = target[len(prefix) :]
-                bases += [d.replace("*", rest) for d in directories]
+                bases += [os.path.normpath(d.replace("*", rest)) for d in directories]
             elif target == pattern:
-                bases += list(directories)
+                bases += [os.path.normpath(d) for d in directories]
         bases += [os.path.normpath(os.path.join(b, target)) for b in self.js_base_urls]
         return bases
 

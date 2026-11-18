@@ -6,6 +6,28 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
+## [0.5.0] — Distribution — 2026-11-18
+
+GNOST is now installable without Python and without a global tool: from PyPI, npm, Maven and Docker.
+
+### Added
+- **npm:** `npx gnost-cli onboard .` runs a standalone binary (macOS Apple silicon, Linux x86_64, Windows x86_64). The `gnost-cli` package picks the matching platform package and checks its checksum before running.
+- **Maven:** `mvn io.github.mohdzain98:gnost-maven-plugin:0.5.0:onboard` (also `analyze` and `summary`) runs the standalone binary for your platform from Maven Central, no Python or Node needed. Targets Java 8+ and Maven 3.6.3+; options are `-Dgnost.*` properties and output goes to the project folder. The binaries are the `gnost-binary` artifact with `darwin-arm64`, `linux-x64` and `windows-x64` classifiers.
+- **Docker:** `ghcr.io/mohdzain98/gnost`, built from the exact PyPI release for amd64 and arm64. It includes git for the change analysis planned in 0.6.0.
+- **Standalone binaries** built with PyInstaller and attached to each GitHub Release with `SHA256SUMS`. The analyzers (bandit, radon, mypy, ruff) run from inside the binary, so `gnost analyze` needs no other installation.
+- **Offline `gnost open` pages:** the browser libraries are embedded in the page, so it works without internet and can be sent as a file.
+- **Install guide** in the docs, with a tab per channel.
+- **Release pipeline:** one workflow publishes to PyPI (trusted publishing), GHCR, npm and the Maven Central Portal; release candidates go to TestPyPI and npm `next`. A separate workflow installs every channel and checks the version, after each release and weekly.
+
+### Fixed
+- **Standalone binaries:** the Linux binary is built on Ubuntu 22.04 so it starts on Debian 12 and newer systems, and the macOS binary keeps its Python library in the npm and Maven packages (symlinks are replaced by real files).
+- **Windows:** the console no longer crashes on non-ASCII characters (it used cp1252), and reports show project-relative paths with forward slashes. Windows is now tested in CI.
+
+### Changed
+- The version is written in one place (`gnost/__init__.py`); packaging and the docs read it from there.
+- The old PyPI-token workflow is replaced by `release.yml`.
+
+---
 ## [0.4.0] — Structural Intelligence — 2026-11-15
 
 Onboard now builds a correct dependency graph, understands frameworks, routes, cycles and risky files, and ships an interactive flow explorer.
@@ -28,7 +50,7 @@ Onboard now builds a correct dependency graph, understands frameworks, routes, c
 - **Drill-down:** when `FLOW-full.md` had to be grouped, it adds a detailed file-level diagram for each of the biggest folders.
 - **Cycle highlighting:** import-time circular imports are thick red, cycles that only close through a deferred import are orange, and imports that do not run at load time are dotted; a legend line explains what is shown.
 - **Readable nodes:** boxes are labelled with the file path (or folder and file count) instead of the mangled id.
-- `gnost open flow` / `gnost open FILE` (and `gnost show FILE`, the same command): opens a `.mmd`, `.md` or `.html` file in the browser with diagrams rendered. Big diagrams open as an interactive explorer: a folder overview first, click a folder to open its files, click a file (or pick it from the list) to see what it imports and what imports it. Dark theme by default (light on a button), outlined folder boxes, and a hint line at the bottom that describes whatever you hover over, hover focus (everything not connected fades) and zoom +/- buttons. Needs internet for the scripts.
+- `gnost open flow` / `gnost open FILE` (and `gnost show FILE`, the same command): opens a `.mmd`, `.md` or `.html` file in the browser with diagrams rendered. Big diagrams open as an interactive explorer: a folder overview first, click a folder to open its files, click a file (or pick it from the list) to see what it imports and what imports it. Dark theme by default (light on a button), outlined folder boxes, and a hint line at the bottom that describes whatever you hover over, hover focus (everything not connected fades) and zoom +/- buttons. Needs internet for the scripts (offline since 0.5.0).
 - `docs/flow/flow-complete.mmd`: every file and every import, ungrouped, for tools and AI (too big to read or render on GitHub for large projects).
 - Shared folders (imported by most others, e.g. utilities or db) are no longer drawn as arrows in grouped diagrams; they are listed in a note, so large projects stay readable.
 - New `onboard` options: `--max-edges N` (default 80; the overview uses at most 60) and `--collapse [LEVEL]` to force folder grouping. `--depth` now limits every diagram consistently.

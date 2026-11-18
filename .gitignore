@@ -18,3 +18,4 @@ docs/_build/
 test-results/
 .codegraph/
 .claude/worktrees/
+dist-binary/

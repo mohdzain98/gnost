@@ -79,16 +79,16 @@ def test_filters_noise_and_test_files(tmp_path):
     from gnost.scanner.filters import is_noise_file, is_test_file
 
     root = str(tmp_path)
-    assert is_noise_file(f"{root}/a/lib.min.js", root)
-    assert is_noise_file(f"{root}/types.d.ts", root)
-    assert is_noise_file(f"{root}/web/vendor/x.js", root)
-    assert not is_noise_file(f"{root}/pkg/vendor/x.py", root)
-    assert is_test_file(f"{root}/tests/a.py", root)
-    assert is_test_file(f"{root}/src/a.test.ts", root)
-    assert is_test_file(f"{root}/pkg/test_a.py", root)
-    assert not is_test_file(f"{root}/pkg/specs/models.py", root)
+    assert is_noise_file(str(Path(root, "a/lib.min.js")), root)
+    assert is_noise_file(str(Path(root, "types.d.ts")), root)
+    assert is_noise_file(str(Path(root, "web/vendor/x.js")), root)
+    assert not is_noise_file(str(Path(root, "pkg/vendor/x.py")), root)
+    assert is_test_file(str(Path(root, "tests/a.py")), root)
+    assert is_test_file(str(Path(root, "src/a.test.ts")), root)
+    assert is_test_file(str(Path(root, "pkg/test_a.py")), root)
+    assert not is_test_file(str(Path(root, "pkg/specs/models.py")), root)
     # a test-like directory above the scan root does not matter
-    assert not is_test_file(f"{root}/pkg/a.py", root)
+    assert not is_test_file(str(Path(root, "pkg/a.py")), root)
 
 
 def test_scan_respects_gitignore_and_builtin_ignores(fixture_repo):

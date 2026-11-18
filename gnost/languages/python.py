@@ -5,6 +5,7 @@ import os
 import re
 from typing import List, Optional
 
+from gnost.utils.paths import base
 from gnost.languages.base import LanguageAdapter, EntryPoint, ImportEdge
 from gnost.languages.manifests import find_manifests, read_text
 
@@ -305,7 +306,7 @@ class PythonAdapter(LanguageAdapter):
     # -------------------------
 
     def is_entry_file_name(self, file_path: str) -> bool:
-        file_name = file_path.split("/")[-1].lower()
+        file_name = base(file_path).lower()
         return file_name in {
             "app.py",
             "main.py",

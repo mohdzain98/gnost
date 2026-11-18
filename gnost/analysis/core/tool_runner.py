@@ -7,6 +7,12 @@ import asyncio
 import subprocess
 import os
 import shutil
+
+from gnost.analysis.utils.tool_command import (
+    bundled_tool_available,
+    is_frozen,
+    tool_command,
+)
 from gnost.utils.logger import AppLogger
 from typing import List, Optional, Dict
 from pathlib import Path
@@ -43,7 +49,11 @@ class ToolRunner:
         ]
 
         for tool in tools_to_check:
-            self.tool_cache[tool] = shutil.which(tool) is not None
+            self.tool_cache[tool] = (
+                bundled_tool_available(tool)
+                if is_frozen()
+                else shutil.which(tool) is not None
+            )
 
     def is_tool_available(self, tool_name: str) -> bool:
         """
@@ -88,7 +98,7 @@ class ToolRunner:
             raise ToolNotFoundError(f"Tool '{tool_name}' is not available")
 
         # Prepare command
-        cmd = [tool_name] + args
+        cmd = tool_command(tool_name) + args
 
         # Set up environment
         if env is None:

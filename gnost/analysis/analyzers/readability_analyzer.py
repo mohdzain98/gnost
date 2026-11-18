@@ -12,6 +12,8 @@ from collections import Counter
 from collections import defaultdict
 from typing import List, Dict, Any, Tuple
 
+from gnost.utils.paths import tail
+from gnost.analysis.utils.tool_command import tool_command
 from gnost.analysis.core.interfaces import QualityAnalyzer
 from gnost.analysis.core.file_utils import find_python_files
 from gnost.analysis.core.models import (
@@ -235,7 +237,7 @@ class ReadabilityAnalyzer(QualityAnalyzer):
         #  Check if ruff is available
         try:
             proc = await asyncio.create_subprocess_exec(
-                "ruff",
+                *tool_command("ruff"),
                 "--version",
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
@@ -555,7 +557,7 @@ class ReadabilityAnalyzer(QualityAnalyzer):
                 scores.append(ruff_data.get("score", 100.0))
                 overall_details.update(ruff_data.get("counts", {}))
                 file_issues = ruff_data.get("issues", [])
-                spf = "/".join(file_path.split("/")[-2:])
+                spf = tail(file_path)
                 for issue in file_issues:
                     issue["file_path"] = spf or file_path
                     all_issues.append(issue)
@@ -603,7 +605,7 @@ class ReadabilityAnalyzer(QualityAnalyzer):
 
             # Run Ruff with JSON output
             proc = await asyncio.create_subprocess_exec(
-                "ruff",
+                *tool_command("ruff"),
                 "check",
                 os.fspath(file_path),
                 "--select",
@@ -699,7 +701,7 @@ class ReadabilityAnalyzer(QualityAnalyzer):
                     "complexity": ComplexityLevel.SIMPLE,
                 },
             )
-            spf = "/".join(file_path.split("/")[-2:])
+            spf = tail(file_path)
             processed_issue = {
                 "symbol": symbol,
                 "message_id": symbol,
@@ -853,7 +855,7 @@ class ReadabilityAnalyzer(QualityAnalyzer):
         overall_details = analysis_results["overall_readability_details"]
         minimum_threshold = config.get("minimum_readability_score", 75.0)
         target_path = str(target_path)
-        spf = "/".join(target_path.split("/")[-2:])
+        spf = tail(target_path)
 
         if overall_score < minimum_threshold:
             severity = (

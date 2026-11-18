@@ -168,7 +168,7 @@ def test_fixture_import_time_cycle(fixture_repo):
 def test_deferred_edges_are_recorded_on_the_graph(fixture_repo):
     root = fixture_repo("deferred_cycle")
     graph = _scan_graph(root)
-    a, b = f"{root}/svc/a.py", f"{root}/svc/b.py"
+    a, b = str(Path(root, "svc/a.py")), str(Path(root, "svc/b.py"))
     assert (b, a) in graph.deferred_edges
     assert (a, b) not in graph.deferred_edges
     assert graph.eager_dependencies_of(b) == set()

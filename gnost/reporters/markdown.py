@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Optional
 from pathlib import Path
+from gnost.utils.paths import base, shorten
 from gnost.config.languages import LANGUAGES
 from gnost.scanner.models import ScanResult
 from gnost.core.flow import FlowResult
@@ -82,7 +83,7 @@ class MarkdownReporter:
 
     def _header(self) -> str:
         return (
-            f"# {self.scan.root.split('/')[-1]} — Project Onboarding Guide\n\n"
+            f"# {base(self.scan.root)} — Project Onboarding Guide\n\n"
             "_Generated automatically by <a href='https://gnost.readthedocs.io'>GNOST</a>._"
         )
 
@@ -368,4 +369,4 @@ class MarkdownReporter:
     # -------------------------
 
     def _shorten(self, path: str) -> str:
-        return path.replace(self.scan.root + "/", "")
+        return shorten(path, self.scan.root)

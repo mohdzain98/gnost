@@ -1,0 +1,13 @@
+{
+  "name": "gnost-cli",
+  "version": "0.0.0",
+  "description": "GNOST codebase knowledge CLI (standalone binary, no Python needed)",
+  "license": "MIT",
+  "homepage": "https://gnost.readthedocs.io",
+  "repository": { "type": "git", "url": "git+https://github.com/mohdzain98/gnost.git" },
+  "bin": { "gnost": "bin/gnost.js" },
+  "files": ["bin", "lib", "checksums.json"],
+  "engines": { "node": ">=18" },
+  "scripts": { "test": "node --test" },
+  "optionalDependencies": {}
+}

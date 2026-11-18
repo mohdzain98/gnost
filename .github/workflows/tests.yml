@@ -24,3 +24,81 @@ jobs:
       - run: pip install -e ".[test]" "ruff==0.15.4"
       - run: ruff check .
       - run: pytest -q
+
+  installed-package:
+    # Builds the wheel, installs it non-editable outside the repo, and runs the CLI.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip build
+      - run: python -m build --wheel
+      - name: Install and smoke-test outside the repo
+        run: |
+          WHEEL="$PWD/$(ls dist/*.whl | head -n1)"
+          FIXTURE="$PWD/tests/fixtures/python_app"
+          WORK="$(mktemp -d)"
+          cd "$WORK"
+          python -m venv venv
+          . venv/bin/activate
+          pip install "$WHEEL"
+          cp -r "$FIXTURE" app
+          cd app
+          gnost version
+          gnost onboard
+          gnost analyze
+          gnost open flow --no-open
+
+  other-os:
+    # Windows and macOS are green; keep them required (branch protection on main).
+    strategy:
+      matrix:
+        os: [windows-2022, macos-15]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[test]"
+      - run: pytest -q
+
+  npm-launcher:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm test
+        working-directory: packaging/npm/gnost-cli
+
+  maven-plugin:
+    # The plugin targets Java 8 and Maven 3.6.3 (the wrapper pins that Maven).
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        java: ["8", "11", "17", "21"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+      - run: ./mvnw -B verify
+        working-directory: packaging/maven
+
+  vendored-libraries:
+    # The embedded browser libraries must still match the pinned checksums.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/vendor_js.py
+      - run: git diff --exit-code gnost/reporters/vendor

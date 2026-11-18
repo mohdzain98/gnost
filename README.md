@@ -1,9 +1,10 @@
 # GNOST — Codebase Knowledge
-![PyPI](https://img.shields.io/pypi/v/gnost)
-![Python](https://img.shields.io/pypi/pyversions/gnost)
+[![PyPI](https://img.shields.io/pypi/v/gnost?label=PyPI)](https://pypi.org/project/gnost/)
+[![npm](https://img.shields.io/npm/v/gnost-cli?label=npm)](https://www.npmjs.com/package/gnost-cli)
+[![Docker](https://img.shields.io/badge/docker-ghcr.io-2496ED?logo=docker&logoColor=white)](https://github.com/mohdzain98/gnost/pkgs/container/gnost)
+[![Maven](https://img.shields.io/maven-central/v/io.github.mohdzain98/gnost-maven-plugin?label=Maven)](https://central.sonatype.com/artifact/io.github.mohdzain98/gnost-maven-plugin)
 [![Tests](https://github.com/mohdzain98/gnost/actions/workflows/tests.yml/badge.svg)](https://github.com/mohdzain98/gnost/actions/workflows/tests.yml)
-![License](https://img.shields.io/pypi/l/gnost)
-![Downloads](https://static.pepy.tech/badge/gnost)
+[![License](https://img.shields.io/github/license/mohdzain98/gnost)](./LICENSE)
 
 GNOST is a lightweight static analysis CLI tool that helps developers understand unfamiliar codebases in minutes.<br>
 It automatically detects entry points, maps execution flow, identifies critical files, and generates onboarding documentation and Mermaid diagrams.  
@@ -30,9 +31,18 @@ Perfect for first-day onboarding, audits, and codebase exploration.
 
 ## Install
 
-```bash
-pip install gnost
-```
+Pick the channel you already use. The same version is published to all of them.
+
+| Channel | Command | Needs |
+|---|---|---|
+| pip | `pip install gnost` | Python 3.9+ |
+| uv / pipx | `uvx gnost onboard .` or `pipx run gnost onboard .` | Python 3.9+ |
+| npm | `npx gnost-cli onboard .` | Node 18+ (no Python) |
+| Docker | `docker run --rm --user "$(id -u):$(id -g)" -v "$PWD":/repo ghcr.io/mohdzain98/gnost onboard /repo` | Docker (no Python) |
+| Maven | `mvn io.github.mohdzain98:gnost-maven-plugin:0.5.0:onboard` | Java 8+, Maven 3.6.3+ (no Python) |
+
+The npm package and the Maven plugin carry a standalone binary for macOS (Apple silicon), Linux (x86_64) and Windows (x86_64).
+See the [install guide](https://gnost.readthedocs.io/en/latest/install.html) for details.
 
 Run the onboarding scan:
 
@@ -110,6 +120,14 @@ gnost open report
 - Legacy system analysis
 - Rapid technical due diligence
 
+
+## 📦 Details
+![Python](https://img.shields.io/pypi/pyversions/gnost?label=pip%3A%20Python)
+![Node](https://img.shields.io/node/v/gnost-cli?label=npm%3A%20Node)
+[![PyPI downloads](https://static.pepy.tech/badge/gnost)](https://pepy.tech/project/gnost)
+[![npm downloads](https://img.shields.io/npm/dt/gnost-cli?label=npm%20downloads)](https://www.npmjs.com/package/gnost-cli)
+
+Install commands for every channel are in the [Install](#install) table above.
 
 ## 📚 Documentation:
 [![Docs](https://img.shields.io/readthedocs/gnost?label=docs)](https://gnost.readthedocs.io)

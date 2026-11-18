@@ -3,19 +3,11 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Literal
 
-MERMAID_URL = "https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"
-MARKED_URL = "https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"
-PANZOOM_URL = "https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"
-
-CYTOSCAPE_URL = (
-    "https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.30.2/cytoscape.min.js"
-)
-LAYOUT_BASE_URL = "https://unpkg.com/layout-base@2.0.1/layout-base.js"
-COSE_BASE_URL = "https://unpkg.com/cose-base@2.2.0/cose-base.js"
-FCOSE_URL = "https://unpkg.com/cytoscape-fcose@2.2.0/cytoscape-fcose.js"
+VENDOR_DIR = Path(__file__).parent / "vendor"
 
 Kind = Literal["mermaid", "markdown", "graph"]
 
@@ -54,9 +46,7 @@ _TEMPLATE = """<!doctype html>
 <button onclick="fit()">Fit</button></header>
 <main id="out" class="__WIDE__"></main>
 <div id="err"></div>
-<script src="__MERMAID__"></script>
-<script src="__MARKED__"></script>
-<script src="__PANZOOM__"></script>
+__LIBS__
 <script>
 const KIND = __KIND__;
 const SOURCE = __SOURCE__;
@@ -82,7 +72,7 @@ async function drawAll(nodes) {
 async function main() {
   if (typeof mermaid === "undefined") {
     document.getElementById("err").textContent =
-      "Could not load Mermaid from the CDN. Check your internet connection.";
+      "Mermaid is missing from this page.";
     return;
   }
   mermaid.initialize({ startOnLoad: false, theme: "dark", securityLevel: "loose",
@@ -115,29 +105,49 @@ def _js_string(text: str) -> str:
     return json.dumps(text).replace("</", "<\\/")
 
 
+def _fill(template: str, values: dict) -> str:
+    """Replace every placeholder in one pass, so inserted text is never re-scanned."""
+    pattern = re.compile("|".join(re.escape(k) for k in values))
+    return pattern.sub(lambda m: values[m.group(0)], template)
+
+
+def _inline(*files: str) -> str:
+    """Return the named vendored libraries as inline <script> blocks."""
+    parts = []
+    for name in files:
+        code = (VENDOR_DIR / name).read_text(encoding="utf-8")
+        parts.append("<script>" + code.replace("</script", "<\\/script") + "</script>")
+    return "\n".join(parts)
+
+
 def render_viewer_html(source: str, title: str, kind: Kind) -> str:
-    """HTML page that draws `source` with Mermaid (zoom and pan included)."""
+    """Self-contained HTML page that draws `source`; it needs no network."""
+    safe_title = title.replace("<", "&lt;")
     if kind == "graph":
         html = (Path(__file__).parent / "templates" / "graph_viewer.html").read_text(
             encoding="utf-8"
         )
-        for key, value in {
-            "__TITLE__": title.replace("<", "&lt;"),
-            "__CYTO__": CYTOSCAPE_URL,
-            "__LB__": LAYOUT_BASE_URL,
-            "__CB__": COSE_BASE_URL,
-            "__FCOSE__": FCOSE_URL,
-        }.items():
-            html = html.replace(key, value)
-        return html.replace("__SOURCE__", _js_string(source))
-    html = _TEMPLATE
-    for key, value in {
-        "__TITLE__": title.replace("<", "&lt;"),
-        "__WIDE__": "wide" if kind == "mermaid" else "",
-        "__MERMAID__": MERMAID_URL,
-        "__MARKED__": MARKED_URL,
-        "__PANZOOM__": PANZOOM_URL,
-        "__KIND__": _js_string(kind),
-    }.items():
-        html = html.replace(key, value)
-    return html.replace("__SOURCE__", _js_string(source))
+        libs = _inline(
+            "cytoscape.min.js", "layout-base.js", "cose-base.js", "cytoscape-fcose.js"
+        )
+        return _fill(
+            html,
+            {
+                "__TITLE__": safe_title,
+                "__LIBS__": libs,
+                "__SOURCE__": _js_string(source),
+            },
+        )
+    files = ["mermaid.min.js", "svg-pan-zoom.min.js"]
+    if kind == "markdown":
+        files.insert(1, "marked.min.js")
+    return _fill(
+        _TEMPLATE,
+        {
+            "__TITLE__": safe_title,
+            "__WIDE__": "wide" if kind == "mermaid" else "",
+            "__KIND__": _js_string(kind),
+            "__LIBS__": _inline(*files),
+            "__SOURCE__": _js_string(source),
+        },
+    )

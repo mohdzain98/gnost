@@ -1,0 +1,144 @@
+name: Verify installs
+
+# Installs the released version through each channel and checks it reports that version.
+on:
+  workflow_call:
+    inputs:
+      version:
+        type: string
+        required: true
+      npm_version:
+        type: string
+        required: true
+      is_rc:
+        type: boolean
+        default: false
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+jobs:
+  resolve:
+    runs-on: ubuntu-24.04
+    outputs:
+      version: ${{ steps.r.outputs.version }}
+      npm_version: ${{ steps.r.outputs.npm }}
+      is_rc: ${{ steps.r.outputs.is_rc }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: r
+        env:
+          IN_VERSION: ${{ inputs.version }}
+          IN_NPM: ${{ inputs.npm_version }}
+          IN_RC: ${{ inputs.is_rc }}
+        run: |
+          if [ -n "$IN_VERSION" ]; then
+            V="$IN_VERSION"; N="$IN_NPM"; RC="$IN_RC"
+          else
+            V="$(curl -fsS https://pypi.org/pypi/gnost/json | python3 -c 'import json,sys;print(json.load(sys.stdin)["info"]["version"])')"
+            N="$(python3 scripts/channel_versions.py npm "$V")"; RC=false
+          fi
+          echo "version=$V" >> "$GITHUB_OUTPUT"
+          echo "npm=$N" >> "$GITHUB_OUTPUT"
+          echo "is_rc=$RC" >> "$GITHUB_OUTPUT"
+
+  pip-and-uvx:
+    needs: resolve
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-15, windows-2022]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    env:
+      VERSION: ${{ needs.resolve.outputs.version }}
+      IS_RC: ${{ needs.resolve.outputs.is_rc }}
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@v5
+      - name: pip install, retrying while the index catches up
+        run: |
+          python -m venv v
+          if [ "$RUNNER_OS" = "Windows" ]; then PY=v/Scripts/python; BIN=v/Scripts/gnost; else PY=v/bin/python; BIN=v/bin/gnost; fi
+          EXTRA=""; [ "$IS_RC" = "true" ] && EXTRA="--pre --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/"
+          for i in 1 2 3 4 5 6; do $PY -m pip install $EXTRA "gnost==$VERSION" && break; sleep 20; done
+          [ "$($BIN version)" = "gnost $VERSION" ]
+      - name: uvx
+        run: |
+          EXTRA=""; [ "$IS_RC" = "true" ] && EXTRA="--index-url https://test.pypi.org/simple/ --index-strategy unsafe-best-match --extra-index-url https://pypi.org/simple/ --prerelease allow"
+          [ "$(uvx $EXTRA --from "gnost==$VERSION" gnost version)" = "gnost $VERSION" ]
+
+  npm-node-only:
+    needs: resolve
+    runs-on: ubuntu-24.04
+    env:
+      NPM_VERSION: ${{ needs.resolve.outputs.npm_version }}
+    steps:
+      - name: Wait until every npm package is visible
+        run: |
+          for pkg in gnost-cli gnost-cli-linux-x64 gnost-cli-darwin-arm64 gnost-cli-windows-x64; do
+            for i in $(seq 1 30); do
+              npm view "$pkg@$NPM_VERSION" version >/dev/null 2>&1 && break
+              sleep 10
+            done
+          done
+      - name: Run npx inside a container that has Node but no Python
+        run: |
+          # A fresh npm cache for each try: a half-installed copy must not be reused.
+          for i in 1 2 3 4 5 6; do
+            OUT="$(docker run --rm -e npm_config_cache="/tmp/npm-$i" node:22-slim npx -y "gnost-cli@$NPM_VERSION" version)" && break
+            sleep 20
+          done
+          echo "$OUT"
+          VERSION="${{ needs.resolve.outputs.version }}"
+          [ "$OUT" = "gnost $VERSION" ]
+
+  npm-macos-windows:
+    needs: resolve
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-15, windows-2022]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: npx with Python hidden from PATH
+        env:
+          NPM_VERSION: ${{ needs.resolve.outputs.npm_version }}
+          VERSION: ${{ needs.resolve.outputs.version }}
+        run: |
+          for pkg in gnost-cli gnost-cli-darwin-arm64 gnost-cli-windows-x64; do
+            for i in $(seq 1 30); do
+              npm view "$pkg@$NPM_VERSION" version >/dev/null 2>&1 && break
+              sleep 10
+            done
+          done
+          CLEAN="$(echo "$PATH" | tr ':' '\n' | grep -vi python | paste -sd: -)"
+          for i in 1 2 3 4 5 6; do
+            # A fresh npm cache for each try: a half-installed copy must not be reused.
+            OUT="$(PATH="$CLEAN" npm_config_cache="$RUNNER_TEMP/npm-$i" npx -y "gnost-cli@$NPM_VERSION" version)" && break
+            sleep 20
+          done
+          echo "$OUT"
+          [ "$OUT" = "gnost $VERSION" ]
+
+  docker:
+    needs: resolve
+    runs-on: ubuntu-24.04
+    steps:
+      - env:
+          VERSION: ${{ needs.resolve.outputs.version }}
+        run: |
+          OWNER="${GITHUB_REPOSITORY_OWNER,,}"
+          OUT="$(docker run --rm "ghcr.io/$OWNER/gnost:$VERSION" version)"
+          echo "$OUT"
+          [ "$OUT" = "gnost $VERSION" ]

@@ -168,7 +168,7 @@ Run with all analyzers and write report files::
 
     gnost analyze . --parallel -o
 
-Available findings output::
+Available findings output:
 
 - Terminal rich table with analyzer score and severity counts
 - ``docs/analysis/gnost_analysis.json`` for CI or scripting
@@ -193,6 +193,7 @@ Use dedicated pages for details:
    :maxdepth: 2
    :caption: Contents
 
+   install
    onboard
    analyze
    analyzer_guide

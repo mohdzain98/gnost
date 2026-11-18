@@ -57,8 +57,7 @@
   <div id="pick"><input id="q" type="search" placeholder="Search files..."><div id="tree"></div></div>
 </div>
 <div id="err"></div>
-<script src="__CYTO__"></script>
-<script src="__LB__"></script><script src="__CB__"></script><script src="__FCOSE__"></script>
+__LIBS__
 <script>
 const SOURCE = __SOURCE__;
 const RED = "#d32f2f", ORANGE = "#f57c00", GREEN = "#2da44e", BLUE = "#0969da", GREY = "#8b949e";
@@ -79,7 +78,7 @@ function parse(src) {
 
 if (typeof cytoscape === "undefined") {
   document.getElementById("err").textContent =
-    "Could not load the graph library from the CDN. Check your internet connection.";
+    "The graph library is missing from this page.";
 } else {
   const FCOSE = typeof cytoscapeFcose !== "undefined";
   if (FCOSE) cytoscape.use(cytoscapeFcose);
