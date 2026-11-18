@@ -1,0 +1,20 @@
+{
+  "name": "@gnost-cli/linux-arm64",
+  "version": "0.0.1",
+  "description": "Internal binary for gnost-cli. Do not install directly. (Name reserved; real releases start with 0.5.1.)",
+  "license": "MIT",
+  "homepage": "https://gnost.readthedocs.io",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mohdzain98/gnost.git"
+  },
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

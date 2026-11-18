@@ -2,6 +2,7 @@ name: Release
 
 # v0.5.0     -> PyPI, GHCR (latest), npm (latest), GitHub Release
 # v0.5.0rc1  -> TestPyPI, GHCR (rc tag), npm (next), GitHub pre-release
+# Maven Central runs last; the repository variable SKIP_MAVEN=true skips it.
 on:
   push:
     tags:
@@ -208,7 +209,7 @@ jobs:
           NPM_VERSION: ${{ needs.meta.outputs.npm }}
         run: |
           TAG=latest; [ "$IS_RC" = "true" ] && TAG=next
-          for d in npm-out/gnost-cli-* npm-out/gnost-cli; do
+          for d in npm-out/@gnost-cli/* npm-out/gnost-cli; do
             NAME="$(node -p "require('./$d/package.json').name")"
             if npm view "$NAME@$NPM_VERSION" version >/dev/null 2>&1; then
               echo "$NAME@$NPM_VERSION already published, skipping"; continue
@@ -220,6 +221,10 @@ jobs:
     # Goes out last. Uploads to the Central Portal and waits for validation, but
     # never publishes: a person drops a release candidate's upload and presses
     # Publish (or Drop) for a final release in the Portal.
+    # Set the repository variable SKIP_MAVEN to "true" (Settings > Secrets and variables
+    # > Actions > Variables) to skip this job, e.g. when a release does not touch the
+    # plugin. Delete the variable again afterwards.
+    if: ${{ vars.SKIP_MAVEN != 'true' }}
     needs: [meta, gate, windows-tests, binaries, publish-npm, publish-docker]
     runs-on: ubuntu-24.04
     environment: maven

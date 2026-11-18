@@ -1,7 +1,7 @@
 """Assemble the npm packages from built binary archives.
 
 Usage: build_npm.py <archive-dir> <out-dir> [version]
-Writes <out-dir>/gnost-cli and one gnost-cli-<platform> folder per archive found.
+Writes <out-dir>/gnost-cli and one @gnost-cli/<platform> folder per archive found.
 """
 
 from __future__ import annotations
@@ -22,13 +22,14 @@ from channel_versions import read_version, to_npm  # noqa: E402
 ROOT = Path(__file__).resolve().parent.parent
 MAIN = ROOT / "packaging" / "npm" / "gnost-cli"
 PLATFORMS = ("darwin-arm64", "linux-x64", "win32-x64")
-# Windows is not called "win32": npm's spam filter rejected gnost-cli-win32-x64.
-PACKAGE_NAMES = {"win32-x64": "gnost-cli-windows-x64"}
+# Platform packages live in the @gnost-cli scope. Windows is "windows", not "win32":
+# npm's spam filter rejected the unscoped name gnost-cli-win32-x64.
+PACKAGE_NAMES = {"win32-x64": "@gnost-cli/windows-x64"}
 
 
 def package_name(key: str) -> str:
     """npm package name for a platform key (must match the launcher's table)."""
-    return PACKAGE_NAMES.get(key, f"gnost-cli-{key}")
+    return PACKAGE_NAMES.get(key, f"@gnost-cli/{key}")
 
 
 def sha256(path: Path) -> str:
@@ -46,14 +47,17 @@ def unpack(archive: Path, dest: Path) -> None:
             z.extractall(tmp)
     else:
         with tarfile.open(archive) as t:
-            t.extractall(tmp)
+            if hasattr(tarfile, "data_filter"):
+                t.extractall(tmp, filter="data")
+            else:
+                t.extractall(tmp)
     shutil.move(str(tmp / "gnost"), str(dest / "bundle"))
     shutil.rmtree(tmp)
     dereference(dest / "bundle")
 
 
 def build_platform(key: str, archive: Path, out: Path, version: str) -> str:
-    """Create gnost-cli-<key>; return the SHA-256 of its executable."""
+    """Create the @gnost-cli/<key> package; return the SHA-256 of its executable."""
     os_name, cpu = key.split("-")
     pkg = out / package_name(key)
     pkg.mkdir(parents=True)
@@ -63,18 +67,22 @@ def build_platform(key: str, archive: Path, out: Path, version: str) -> str:
     meta: Dict[str, object] = {
         "name": package_name(key),
         "version": version,
-        "description": f"GNOST standalone binary for {key}",
+        "description": "Internal binary for gnost-cli. Do not install directly.",
         "license": "MIT",
         "os": [os_name],
         "cpu": [cpu],
+        "homepage": "https://gnost.readthedocs.io",
         "files": ["bundle"],
+        "publishConfig": {"access": "public"},
         "repository": {
             "type": "git",
             "url": "git+https://github.com/mohdzain98/gnost.git",
         },
     }
     (pkg / "package.json").write_text(json.dumps(meta, indent=2) + "\n")
-    (pkg / "README.md").write_text(f"Binary for {key}. Install `gnost-cli` instead.\n")
+    (pkg / "README.md").write_text(
+        f"# {package_name(key)}\n\nInternal binary for gnost-cli. Do not install directly: `npx gnost-cli`.\n"
+    )
     return sha256(exe)
 
 
@@ -103,10 +111,6 @@ def main(argv: List[str]) -> int:
     meta["optionalDependencies"] = {package_name(k): version for k in checksums}
     (main_pkg / "package.json").write_text(json.dumps(meta, indent=2) + "\n")
     (main_pkg / "checksums.json").write_text(json.dumps(checksums, indent=2) + "\n")
-    (main_pkg / "README.md").write_text(
-        "# gnost-cli\n\nGNOST codebase knowledge CLI as a standalone binary (no Python needed).\n\n"
-        "```\nnpx gnost-cli onboard .\n```\n\nDocs: https://gnost.readthedocs.io\n"
-    )
     print(f"built {len(checksums)} platform package(s) + gnost-cli {version} in {out}")
     return 0
 
