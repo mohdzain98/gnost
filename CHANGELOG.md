@@ -6,6 +6,12 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
+## [0.5.2] — Unreleased
+
+### Fixed
+- **Standalone binary (npm, Maven, GitHub Release):** `gnost onboard . --progress` on macOS printed "resource_tracker: process died unexpectedly" and a usage error after finishing. The progress bar library created a multiprocessing lock, which relaunched the binary with arguments it did not understand. The bar now uses a thread lock, and the binary runs such helper launches instead of rejecting them. The binary smoke test now covers `--progress`.
+
+---
 ## [0.5.1] — Distribution fixes — 2026-11-19
 
 ### Changed
