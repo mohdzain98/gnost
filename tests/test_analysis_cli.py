@@ -26,6 +26,29 @@ def test_analysis_output_paths_are_under_docs_analysis(tmp_path: Path):
     )
 
 
+def test_analysis_output_stays_in_the_project_without_a_repo_marker(
+    tmp_path: Path, monkeypatch
+):
+    """No .git or pyproject.toml anywhere above: never write to the filesystem root."""
+    project = tmp_path / "app"
+    project.mkdir()
+    real_isdir, real_isfile = app.os.path.isdir, app.os.path.isfile
+    marker = ("/.git", "/pyproject.toml")
+    monkeypatch.setattr(
+        app.os.path,
+        "isdir",
+        lambda p: False if str(p).endswith(marker) else real_isdir(p),
+    )
+    monkeypatch.setattr(
+        app.os.path,
+        "isfile",
+        lambda p: False if str(p).endswith(marker) else real_isfile(p),
+    )
+    assert app._analysis_output_path(str(project)) == str(
+        project / "docs" / "analysis" / "gnost_analysis.json"
+    )
+
+
 def test_analyze_list_analyzers(monkeypatch, tmp_path, capsys):
     monkeypatch.chdir(tmp_path)
 

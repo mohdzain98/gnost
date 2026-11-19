@@ -104,9 +104,11 @@ def _risk_to_score(risk_score: float) -> float:
 
 
 def _resolve_repo_root(path: str) -> str:
+    """Nearest parent with .git or pyproject.toml; the project folder if none."""
     current = os.path.abspath(path)
     if os.path.isfile(current):
         current = os.path.dirname(current)
+    start = current
 
     while True:
         if os.path.isdir(os.path.join(current, ".git")) or os.path.isfile(
@@ -116,7 +118,7 @@ def _resolve_repo_root(path: str) -> str:
 
         parent = os.path.dirname(current)
         if parent == current:
-            return current
+            return start
         current = parent
 
 
