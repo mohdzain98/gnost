@@ -4,7 +4,7 @@ Analyze
 ``gnost analyze`` runs quality analyzers and reports scores plus findings.
 
 Current implementation target
-----------------------------
+-----------------------------
 
 - ``Python`` (for now)
 - JavaScript / TypeScript / Java support is planned in upcoming releases.
@@ -45,7 +45,7 @@ Key options
   Print analyzer names and exit.
 
 Output behavior
---------------
+---------------
 
 - Terminal: table with analyzer scores and severity counts.
 - JSON: machine-readable results for CI or pipelines.
