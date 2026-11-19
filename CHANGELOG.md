@@ -6,7 +6,7 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
-## [0.5.1] — Unreleased
+## [0.5.1] — Distribution fixes — 2026-11-19
 
 ### Changed
 - **npm:** the platform binaries moved to the `@gnost-cli` scope (`@gnost-cli/darwin-arm64`, `@gnost-cli/linux-x64`, `@gnost-cli/windows-x64`). `npx gnost-cli` is unchanged. The old `gnost-cli-<platform>` packages are deprecated.
