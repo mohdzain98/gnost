@@ -257,7 +257,13 @@ jobs:
       - name: Fetch Maven (the download is flaky, so retry it)
         working-directory: packaging/maven
         run: |
-          for i in 1 2 3 4 5; do ./mvnw -B -v && exit 0; sleep $((i * 10)); done
+          export MVNW_VERBOSE=true
+          for i in 1 2 3 4 5; do
+            # From the third try, use the other Maven Central host.
+            if [ "$i" -ge 3 ]; then export MVNW_REPOURL=https://repo1.maven.org/maven2; fi
+            ./mvnw -B -v && exit 0
+            sleep $((i * 10))
+          done
           exit 1
       - name: Set the release version
         working-directory: packaging/maven
