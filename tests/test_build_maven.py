@@ -1,6 +1,5 @@
+import hashlib
 import importlib.util
-import tarfile
-import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -13,40 +12,43 @@ def _load(name):
     return mod
 
 
-def _archive(tmp_path, key, exe):
-    src = tmp_path / "src" / "gnost"
-    src.mkdir(parents=True)
-    (src / exe).write_text("bin")
-    (src / "_internal").mkdir()
-    (src / "_internal" / "lib.so").write_text("x")
-    archives = tmp_path / "archives"
-    archives.mkdir()
-    with tarfile.open(archives / f"gnost-0.5.0-{key}.tar.gz", "w:gz") as t:
-        t.add(src, arcname="gnost")
-    return archives
+def _archive(directory, key, version="0.5.3"):
+    directory.mkdir(parents=True, exist_ok=True)
+    ext = "zip" if key.startswith("win32") else "tar.gz"
+    path = directory / f"gnost-{version}-{key}.{ext}"
+    path.write_bytes(f"archive {key}".encode())
+    return path
 
 
-def test_zip_holds_bundle_and_checksum(tmp_path):
-    archives = _archive(tmp_path, "linux-x64", "gnost")
-    out = tmp_path / "out"
-    assert _load("build_maven").main(["x", str(archives), str(out)]) == 0
-    with zipfile.ZipFile(out / "linux-x64.zip") as z:
-        names = set(z.namelist())
-        assert {"gnost/gnost", "gnost/gnost.sha256", "gnost/_internal/lib.so"} <= names
-        assert len(z.read("gnost/gnost.sha256").split()[0]) == 64
+def test_options_carry_the_version_and_each_checksum(tmp_path, capsys):
+    linux = _archive(tmp_path, "linux-x64")
+    win = _archive(tmp_path, "win32-x64")
+    assert _load("build_maven").main(["x", str(tmp_path), "0.5.3"]) == 0
+    out = capsys.readouterr().out.split()
+    assert out[0] == "-Dgnost.release.version=0.5.3"
+    sums = dict(o[len("-Dgnost.sha.") :].split("=") for o in out[1:])
+    assert sums["linux-x64"] == hashlib.sha256(linux.read_bytes()).hexdigest()
+    assert sums["win32-x64"] == hashlib.sha256(win.read_bytes()).hexdigest()
+    assert "darwin-arm64" not in sums
 
 
-def test_windows_classifier_is_not_win32(tmp_path):
-    archives = _archive(tmp_path, "win32-x64", "gnost.exe")
-    out = tmp_path / "out"
-    assert _load("build_maven").main(["x", str(archives), str(out)]) == 0
-    assert [p.name for p in out.iterdir()] == ["windows-x64.zip"]
+def test_release_candidate_names_are_matched_exactly(tmp_path, capsys):
+    _archive(tmp_path, "linux-x64", "0.5.3rc1")
+    assert _load("build_maven").main(["x", str(tmp_path), "0.5.3"]) == 1
+    assert _load("build_maven").main(["x", str(tmp_path), "0.5.3rc1"]) == 0
+    assert "-Dgnost.release.version=0.5.3rc1" in capsys.readouterr().out
 
 
-def test_excluded_platform_is_left_out(tmp_path, monkeypatch):
-    archives = _archive(tmp_path, "win32-x64", "gnost.exe")
-    monkeypatch.setenv("GNOST_MAVEN_EXCLUDE", "windows-x64")
-    assert _load("build_maven").main(["x", str(archives), str(tmp_path / "o")]) == 1
+def test_excluded_platform_is_left_out(tmp_path, monkeypatch, capsys):
+    _archive(tmp_path, "linux-x64")
+    _archive(tmp_path, "win32-x64")
+    monkeypatch.setenv("GNOST_MAVEN_EXCLUDE", "win32-x64")
+    assert _load("build_maven").main(["x", str(tmp_path), "0.5.3"]) == 0
+    assert "win32-x64" not in capsys.readouterr().out
+
+
+def test_nothing_found_fails(tmp_path):
+    assert _load("build_maven").main(["x", str(tmp_path), "0.5.3"]) == 1
 
 
 def test_maven_version_strings():
@@ -56,18 +58,13 @@ def test_maven_version_strings():
 
 
 def test_symlinked_library_is_stored_as_a_file(tmp_path):
+    """npm packs no symlinks; the shared helper replaces them with copies."""
     import os
 
-    src = tmp_path / "src" / "gnost"
-    (src / "_internal" / "fw").mkdir(parents=True)
-    (src / "gnost").write_text("bin")
-    (src / "_internal" / "fw" / "Python").write_text("lib")
-    os.symlink("fw/Python", src / "_internal" / "Python")
-    archives = tmp_path / "archives"
-    archives.mkdir()
-    with tarfile.open(archives / "gnost-0.5.0-darwin-arm64.tar.gz", "w:gz") as t:
-        t.add(src, arcname="gnost")
-    out = tmp_path / "out"
-    assert _load("build_maven").main(["x", str(archives), str(out)]) == 0
-    with zipfile.ZipFile(out / "darwin-arm64.zip") as z:
-        assert z.read("gnost/_internal/Python") == b"lib"
+    root = tmp_path / "gnost"
+    (root / "_internal").mkdir(parents=True)
+    (root / "_internal" / "real.dylib").write_text("lib")
+    os.symlink("real.dylib", root / "_internal" / "Python")
+    _load("archive_utils").dereference(root)
+    assert not (root / "_internal" / "Python").is_symlink()
+    assert (root / "_internal" / "Python").read_text() == "lib"

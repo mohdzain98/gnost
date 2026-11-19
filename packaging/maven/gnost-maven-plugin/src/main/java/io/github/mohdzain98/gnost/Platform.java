@@ -2,14 +2,14 @@ package io.github.mohdzain98.gnost;
 
 import java.util.Locale;
 
-/** Maps the JVM's operating system and CPU names to a GNOST binary classifier. */
+/** Maps the JVM's operating system and CPU names to a GNOST release platform key. */
 final class Platform {
 
     private Platform() {
     }
 
-    /** The classifier of the binary for this platform, or null if there is none. */
-    static String classifier(String osName, String osArch) {
+    /** The key of the binary for this platform (as in the release file names), or null. */
+    static String key(String osName, String osArch) {
         String os = osName == null ? "" : osName.toLowerCase(Locale.ROOT);
         String arch = osArch == null ? "" : osArch.toLowerCase(Locale.ROOT);
         boolean arm64 = arch.equals("aarch64") || arch.equals("arm64");
@@ -21,7 +21,7 @@ final class Platform {
             return "linux-x64";
         }
         if (os.contains("windows") && x64) {
-            return "windows-x64";
+            return "win32-x64";
         }
         return null;
     }
@@ -30,8 +30,18 @@ final class Platform {
         return osName != null && osName.toLowerCase(Locale.ROOT).contains("windows");
     }
 
-    /** The classifier for the JVM this code is running in. */
+    /** The key for the JVM this code is running in. */
     static String current() {
-        return classifier(System.getProperty("os.name"), System.getProperty("os.arch"));
+        return key(System.getProperty("os.name"), System.getProperty("os.arch"));
+    }
+
+    /** Release archive extension: zip on Windows, tar.gz elsewhere. */
+    static String archiveExtension(String key) {
+        return key.startsWith("win32") ? "zip" : "tar.gz";
+    }
+
+    /** File name of the release archive, such as gnost-0.5.3-linux-x64.tar.gz. */
+    static String archiveName(String releaseVersion, String key) {
+        return "gnost-" + releaseVersion + "-" + key + "." + archiveExtension(key);
     }
 }

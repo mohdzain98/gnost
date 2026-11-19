@@ -39,9 +39,22 @@ Pick the channel you already use. The same version is published to all of them.
 | uv / pipx | `uvx gnost onboard .` or `pipx run gnost onboard .` | Python 3.9+ |
 | npm | `npx gnost-cli onboard .` | Node 18+ (no Python) |
 | Docker | `docker run --rm --user "$(id -u):$(id -g)" -v "$PWD":/repo ghcr.io/mohdzain98/gnost onboard /repo` | Docker (no Python) |
-| Maven | `mvn io.github.mohdzain98:gnost-maven-plugin:0.5.0:onboard` | Java 8+, Maven 3.6.3+ (no Python) |
+| Maven | `mvn io.github.mohdzain98:gnost-maven-plugin:0.5.3:onboard` | Java 8+, Maven 3.6.3+ (no Python) |
 
-The npm package and the Maven plugin carry a standalone binary for macOS (Apple silicon), Linux (x86_64) and Windows (x86_64).
+The npm package carries a standalone binary for macOS (Apple silicon), Linux (x86_64) and Windows (x86_64).
+The Maven plugin is small: it uses a matching `gnost` found on your `PATH`, or downloads the same binary once from the
+GitHub Release (checked against a SHA-256 built into the plugin) and keeps it in `~/.gnost`.
+
+The Maven goals run the same commands as the CLI:
+
+| Maven goal | Runs |
+|---|---|
+| `mvn gnost:onboard` | `gnost onboard` |
+| `mvn gnost:analyze` | `gnost analyze` |
+| `mvn gnost:summary` | `gnost summary` |
+| `mvn gnost:help` | lists the goals and their options |
+
+Options are `-Dgnost.*` properties, for example `mvn gnost:analyze -Dgnost.out=true`.
 See the [install guide](https://gnost.readthedocs.io/en/latest/install.html) for details.
 
 Run the onboarding scan:

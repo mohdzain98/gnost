@@ -2,7 +2,8 @@ name: Release
 
 # v0.5.0     -> PyPI, GHCR (latest), npm (latest), GitHub Release
 # v0.5.0rc1  -> TestPyPI, GHCR (rc tag), npm (next), GitHub pre-release
-# Maven Central runs last; the repository variable SKIP_MAVEN=true skips it.
+# The Maven plugin is smoke-tested on every tag and uploaded to Central (validated, not
+# published) on final tags only; the repository variable SKIP_MAVEN=true skips both.
 on:
   push:
     tags:
@@ -217,15 +218,57 @@ jobs:
             (cd "$d" && npm publish --provenance --access public --tag "$TAG")
           done
 
-  publish-maven:
-    # Goes out last. Uploads to the Central Portal and waits for validation, but
-    # never publishes: a person drops a release candidate's upload and presses
-    # Publish (or Drop) for a final release in the Portal.
-    # Set the repository variable SKIP_MAVEN to "true" (Settings > Secrets and variables
-    # > Actions > Variables) to skip this job, e.g. when a release does not touch the
-    # plugin. Delete the variable again afterwards.
+  smoke-maven:
+    # The Maven plugin is small: it finds gnost on PATH or downloads the archive for its
+    # own version from the GitHub Release, and checks the SHA-256 it was built with.
+    # This job builds the plugin, runs its tests, and runs it against the real GitHub
+    # Release (so the download path is tested). It has no secrets and uploads nothing,
+    # so a release candidate never reaches Maven Central.
+    # Set the repository variable SKIP_MAVEN to "true" to skip it (and publish-maven).
     if: ${{ vars.SKIP_MAVEN != 'true' }}
-    needs: [meta, gate, windows-tests, binaries, publish-npm, publish-docker]
+    needs: [meta, gate, windows-tests, binaries, github-release, publish-npm, publish-docker]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          pattern: gnost-*
+      - name: Fetch Maven (the download is flaky, so retry it)
+        working-directory: packaging/maven
+        run: |
+          export MVNW_VERBOSE=true
+          for i in 1 2 3 4 5; do
+            # From the third try, use the other Maven Central host.
+            if [ "$i" -ge 3 ]; then export MVNW_REPOURL=https://repo1.maven.org/maven2; fi
+            ./mvnw -B -v && exit 0
+            sleep $((i * 10))
+          done
+          exit 1
+      - name: Set the release version
+        working-directory: packaging/maven
+        env:
+          MAVEN_VERSION: ${{ needs.meta.outputs.maven }}
+        run: ./mvnw -B -q org.codehaus.mojo:versions-maven-plugin:2.17.1:set -DnewVersion="$MAVEN_VERSION" -DgenerateBackupPoms=false
+      - name: Smoke test the plugin against the GitHub Release
+        env:
+          RELEASE: ${{ needs.meta.outputs.version }}
+        run: scripts/smoke_maven.sh artifacts "$RELEASE" github
+
+  publish-maven:
+    # Final tags only. Uploads the signed plugin to the Central Portal and waits for
+    # validation, but never publishes: a person presses Publish in the Portal.
+    if: ${{ vars.SKIP_MAVEN != 'true' && needs.meta.outputs.is_rc != 'true' }}
+    needs: [meta, smoke-maven]
     runs-on: ubuntu-24.04
     environment: maven
     permissions:
@@ -248,12 +291,6 @@ jobs:
         with:
           path: artifacts
           pattern: gnost-*
-      - name: Package the binaries (skip Windows if its tests failed)
-        env:
-          WINDOWS: ${{ needs.windows-tests.outputs.passed }}
-        run: |
-          if [ "$WINDOWS" != "true" ]; then export GNOST_MAVEN_EXCLUDE=windows-x64; fi
-          python scripts/build_maven.py artifacts packaging/maven/gnost-binary/binaries
       - name: Fetch Maven (the download is flaky, so retry it)
         working-directory: packaging/maven
         run: |
@@ -270,23 +307,18 @@ jobs:
         env:
           MAVEN_VERSION: ${{ needs.meta.outputs.maven }}
         run: ./mvnw -B -q org.codehaus.mojo:versions-maven-plugin:2.17.1:set -DnewVersion="$MAVEN_VERSION" -DgenerateBackupPoms=false
-      - name: Smoke test the plugin with the Linux binary
-        run: scripts/smoke_maven.sh packaging/maven/gnost-binary/binaries
       - name: Sign, upload and wait for Portal validation
         working-directory: packaging/maven
         env:
+          RELEASE: ${{ needs.meta.outputs.version }}
           CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
-        run: ./mvnw -B -Prelease deploy | tee "$RUNNER_TEMP/deploy.log"
-      - name: Release candidate - the upload must be dropped by hand
-        if: needs.meta.outputs.is_rc == 'true'
         run: |
-          echo "::notice::Validated on the Central Portal but NOT published. Press Drop at https://central.sonatype.com/publishing/deployments (never Publish for a release candidate)."
-          echo "### Maven Central: release candidate validated" >> "$GITHUB_STEP_SUMMARY"
-          echo "Drop the deployment for ${{ needs.meta.outputs.maven }} at https://central.sonatype.com/publishing/deployments. Do not press Publish." >> "$GITHUB_STEP_SUMMARY"
-      - name: Final release - leave it for a person to publish
-        if: needs.meta.outputs.is_rc != 'true'
+          OPTS="$(python3 ../../scripts/build_maven.py ../../artifacts "$RELEASE")"
+          # shellcheck disable=SC2086
+          ./mvnw -B -Prelease $OPTS deploy | tee "$RUNNER_TEMP/deploy.log"
+      - name: Leave it for a person to publish
         run: |
           echo "::notice::Validated on the Central Portal. Press Publish at https://central.sonatype.com/publishing/deployments"
           echo "### Maven Central: validated, not published" >> "$GITHUB_STEP_SUMMARY"

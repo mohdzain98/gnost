@@ -11,6 +11,9 @@ __pycache__/
 .mypy_cache/
 .DS_Store
 test/
+# The Maven plugin's unit tests live in src/test (the rule above would hide them).
+!packaging/maven/gnost-maven-plugin/src/test/
+!packaging/npm/gnost-cli/test/
 planners/
 setup.md
 project-docs/tasks
