@@ -111,12 +111,12 @@ class ScannerEngine:
                 if not is_virtualenv_dir(os.path.join(dirpath, d))
                 and not is_gitignored(os.path.join(dirpath, d), root, gitignore)
             ]
-            if should_ignore(dirpath) or is_gitignored(dirpath, root, gitignore):
+            if should_ignore(dirpath, root) or is_gitignored(dirpath, root, gitignore):
                 continue
 
             for file in filenames:
                 full_path = os.path.join(dirpath, file)
-                if should_ignore(full_path) or is_gitignored(
+                if should_ignore(full_path, root) or is_gitignored(
                     full_path, root, gitignore
                 ):
                     continue

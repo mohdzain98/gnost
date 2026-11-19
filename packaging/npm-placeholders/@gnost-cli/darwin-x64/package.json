@@ -1,7 +1,7 @@
 {
-  "name": "gnost-cli-linux-x64",
+  "name": "@gnost-cli/darwin-x64",
   "version": "0.0.1",
-  "description": "Placeholder. GNOST codebase knowledge CLI; real releases start with 0.5.0.",
+  "description": "Internal binary for gnost-cli. Do not install directly. (Name reserved; real releases start with 0.5.1.)",
   "license": "MIT",
   "homepage": "https://gnost.readthedocs.io",
   "repository": {
@@ -9,9 +9,12 @@
     "url": "git+https://github.com/mohdzain98/gnost.git"
   },
   "os": [
-    "linux"
+    "darwin"
   ],
   "cpu": [
     "x64"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

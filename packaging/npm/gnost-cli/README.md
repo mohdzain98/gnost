@@ -1,0 +1,69 @@
+# gnost-cli
+
+[![npm](https://img.shields.io/npm/v/gnost-cli)](https://www.npmjs.com/package/gnost-cli)
+[![License](https://img.shields.io/github/license/mohdzain98/gnost)](https://github.com/mohdzain98/gnost/blob/main/LICENSE)
+
+GNOST is a static analysis CLI that turns an unfamiliar codebase into an onboarding guide in minutes. This package is the npm build: it ships a standalone binary, so **you do not need Python** (or anything but Node 18+).
+
+## What you get
+
+- **Where execution starts:** entry points and HTTP routes (Flask, FastAPI, Django, Express, NestJS, Spring).
+- **How it flows:** Mermaid diagrams of imports and calls, plus function-level flow for Python.
+- **What matters most:** hotspot files and caution areas (risky files to read carefully).
+- **Circular imports**, listed and drawn.
+- **`ONBOARD.md`**: a written guide to the repository, and optional JSON for tools and AI.
+- **Quality report** (`gnost analyze`) for maintainability, robustness, observability and readability. Python projects only for now.
+- **Languages:** Python, JavaScript, TypeScript and Java.
+
+## Use without installing
+
+```bash
+npx gnost-cli onboard .
+```
+
+## Install globally
+
+```bash
+npm i -g gnost-cli
+gnost onboard .
+```
+
+## Commands
+
+```bash
+gnost onboard .                 # ONBOARD.md and Mermaid diagrams in docs/flow
+gnost onboard . --layered --depth 3
+gnost onboard . --json          # also write docs/insights/gnost_insights.json
+gnost summary .                 # languages, files and lines of code
+gnost stats .                   # detailed stats per language
+gnost folders .                 # lines of code by folder
+gnost files .                   # largest files
+gnost analyze .                 # quality report
+gnost open flow                 # interactive flow explorer in your browser
+gnost version
+```
+
+With `npx`, put `gnost-cli` in front of the same arguments: `npx gnost-cli analyze .`.
+
+Settings (excludes, weights, thresholds) go in an optional `.gnost.toml` at the repository root.
+
+## Supported platforms
+
+| Platform | Notes |
+|---|---|
+| macOS, Apple silicon (arm64) | |
+| Linux, x86_64 | glibc 2.35 or newer (Ubuntu 22.04+, Debian 12+) |
+| Windows, x86_64 | |
+
+The right binary comes from an optional dependency, `@gnost-cli/<platform>`. Do not install with `--omit=optional` or `--no-optional`. The launcher checks the binary's SHA-256 before every run.
+
+On another platform, use `pipx install gnost`, `uvx gnost onboard .` or the Docker image `ghcr.io/mohdzain98/gnost`.
+
+## Links
+
+- Documentation: https://gnost.readthedocs.io
+- Source: https://github.com/mohdzain98/gnost
+- Issues: https://github.com/mohdzain98/gnost/issues
+- Changelog: https://github.com/mohdzain98/gnost/blob/main/CHANGELOG.md
+
+MIT licensed.

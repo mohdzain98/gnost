@@ -112,6 +112,19 @@ def test_should_ignore_and_gitignore_rules():
     assert not is_gitignored("/r/a.log", "/r", ["*.log", "!a.log"])
 
 
+def test_should_ignore_matches_below_the_scan_root_only(tmp_path):
+    root = tmp_path / "build" / "proj"
+    (root / "src").mkdir(parents=True)
+    (root / "build").mkdir()
+    (root / "src" / "a.py").write_text("print(1)\n")
+    (root / "build" / "b.py").write_text("print(2)\n")
+    assert not should_ignore(str(root / "src" / "a.py"), str(root))
+    assert should_ignore(str(root / "build" / "b.py"), str(root))
+    names = {Path(f.path).name for f in _engine().scan(str(root)).files}
+    assert "a.py" in names
+    assert "b.py" not in names
+
+
 def test_classify_lines():
     lines = ["# c\n", "\n", "x = 1\n", "   \n", "y = 2  # tail\n"]
     assert classify_lines(lines, "#") == (2, 1, 2)

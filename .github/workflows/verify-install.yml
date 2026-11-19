@@ -80,7 +80,7 @@ jobs:
     steps:
       - name: Wait until every npm package is visible
         run: |
-          for pkg in gnost-cli gnost-cli-linux-x64 gnost-cli-darwin-arm64 gnost-cli-windows-x64; do
+          for pkg in gnost-cli @gnost-cli/linux-x64 @gnost-cli/darwin-arm64 @gnost-cli/windows-x64; do
             for i in $(seq 1 30); do
               npm view "$pkg@$NPM_VERSION" version >/dev/null 2>&1 && break
               sleep 10
@@ -116,7 +116,7 @@ jobs:
           NPM_VERSION: ${{ needs.resolve.outputs.npm_version }}
           VERSION: ${{ needs.resolve.outputs.version }}
         run: |
-          for pkg in gnost-cli gnost-cli-darwin-arm64 gnost-cli-windows-x64; do
+          for pkg in gnost-cli @gnost-cli/darwin-arm64 @gnost-cli/windows-x64; do
             for i in $(seq 1 30); do
               npm view "$pkg@$NPM_VERSION" version >/dev/null 2>&1 && break
               sleep 10

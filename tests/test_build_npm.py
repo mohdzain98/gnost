@@ -30,11 +30,36 @@ def test_assembles_platform_and_main_packages(tmp_path):
 
     main = json.loads((out / "gnost-cli" / "package.json").read_text())
     assert main["version"] == "0.5.0-rc.1"
-    assert main["optionalDependencies"] == {"gnost-cli-linux-x64": "0.5.0-rc.1"}
-    platform = json.loads((out / "gnost-cli-linux-x64" / "package.json").read_text())
+    assert main["optionalDependencies"] == {"@gnost-cli/linux-x64": "0.5.0-rc.1"}
+    platform = json.loads(
+        (out / "@gnost-cli" / "linux-x64" / "package.json").read_text()
+    )
     assert platform["os"] == ["linux"] and platform["cpu"] == ["x64"]
     sums = json.loads((out / "gnost-cli" / "checksums.json").read_text())
     assert len(sums["linux-x64"]) == 64
+
+
+def test_platform_packages_are_scoped_and_internal(tmp_path):
+    import json
+
+    src = tmp_path / "src" / "gnost"
+    src.mkdir(parents=True)
+    (src / "gnost").write_text("bin")
+    archives = tmp_path / "archives"
+    archives.mkdir()
+    with tarfile.open(archives / "gnost-0.5.1-linux-x64.tar.gz", "w:gz") as t:
+        t.add(src, arcname="gnost")
+    out = tmp_path / "out"
+    assert _load().main(["x", str(archives), str(out), "0.5.1"]) == 0
+    pkg = json.loads((out / "@gnost-cli" / "linux-x64" / "package.json").read_text())
+    assert pkg["description"].startswith(
+        "Internal binary for gnost-cli. Do not install directly."
+    )
+    assert (out / "@gnost-cli" / "linux-x64" / "README.md").read_text().strip()
+    main = json.loads((out / "gnost-cli" / "package.json").read_text())
+    for key in ("keywords", "repository", "homepage", "bugs", "license"):
+        assert main[key]
+    assert (out / "gnost-cli" / "README.md").read_text().startswith("# gnost-cli")
 
 
 def test_windows_package_is_not_named_win32(tmp_path):
@@ -49,11 +74,11 @@ def test_windows_package_is_not_named_win32(tmp_path):
         t.add(src, arcname="gnost")
     out = tmp_path / "out"
     assert _load().main(["x", str(archives), str(out), "0.5.0"]) == 0
-    pkg = json.loads((out / "gnost-cli-windows-x64" / "package.json").read_text())
-    assert pkg["name"] == "gnost-cli-windows-x64"
+    pkg = json.loads((out / "@gnost-cli" / "windows-x64" / "package.json").read_text())
+    assert pkg["name"] == "@gnost-cli/windows-x64"
     assert pkg["os"] == ["win32"] and pkg["cpu"] == ["x64"]
     main = json.loads((out / "gnost-cli" / "package.json").read_text())
-    assert main["optionalDependencies"] == {"gnost-cli-windows-x64": "0.5.0"}
+    assert main["optionalDependencies"] == {"@gnost-cli/windows-x64": "0.5.0"}
 
 
 def test_symlinks_become_real_files(tmp_path):
@@ -73,7 +98,7 @@ def test_symlinks_become_real_files(tmp_path):
         t.add(src, arcname="gnost")
     out = tmp_path / "out"
     assert _load().main(["x", str(archives), str(out), "0.5.0"]) == 0
-    bundle = out / "gnost-cli-darwin-arm64" / "bundle" / "_internal"
+    bundle = out / "@gnost-cli" / "darwin-arm64" / "bundle" / "_internal"
     assert not any(p.is_symlink() for p in bundle.rglob("*"))
     assert (bundle / "Python").read_text() == "lib"
     assert (bundle / "Python.framework" / "Versions" / "Current" / "Python").is_file()
