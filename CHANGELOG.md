@@ -6,7 +6,7 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
-## [0.5.3] — Unreleased
+## [0.5.3] — Smaller Maven plugin — 2026-11-19
 
 ### Changed
 - **Maven plugin:** it is now small (about 0.1 MB instead of 146 MB per release, because Maven Central limits how much each month's releases may total). It no longer carries the binaries. It uses `-Dgnost.binary`, then a `gnost` on `PATH` of the same version (a different version is ignored with a warning), then a copy in `~/.gnost`, which it downloads once from the GitHub Release of the same version after checking a SHA-256 built into the plugin. `-Dgnost.home` and `-Dgnost.downloadUrl` (a mirror) are new. If the download fails, the error tells you to install gnost with `pipx` or `npm` so it is found on `PATH`.
