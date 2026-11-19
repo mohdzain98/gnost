@@ -1,9 +1,13 @@
 name: Tests
 
+# Tests run on every pull request. Merging does not run them again (the release
+# workflow has its own gate); a weekly run keeps the README badge and the
+# dependency check fresh.
 on:
-  push:
-    branches: [ main ]
   pull_request:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
 
 jobs:
   test:
@@ -89,6 +93,10 @@ jobs:
         with:
           distribution: temurin
           java-version: ${{ matrix.java }}
+      - uses: actions/cache@v4
+        with:
+          path: ~/.m2/wrapper
+          key: maven-wrapper-${{ hashFiles('packaging/maven/.mvn/wrapper/maven-wrapper.properties') }}
       - name: Fetch Maven (the download is flaky, so retry it)
         working-directory: packaging/maven
         run: |

@@ -7,7 +7,7 @@ One-time setup (done by the maintainer, not by CI)
 - npm: `gnost-cli` org created, placeholders published (`packaging/npm-placeholders/PUBLISH.md`), then per package (`gnost-cli` and each `@gnost-cli/<platform>`): trusted publisher = repo `mohdzain98/gnost`, workflow `release.yml`, environment `npm`.
 - Maven Central: Sonatype Central Portal account, namespace `io.github.mohdzain98` verified (via GitHub), a user token, and a GPG key (private key armored, public key on keyserver.ubuntu.com). Secrets in the `maven` environment: `MAVEN_CENTRAL_USERNAME`, `MAVEN_CENTRAL_PASSWORD` (the Portal user token), `MAVEN_GPG_PRIVATE_KEY`, `MAVEN_GPG_PASSPHRASE`.
 - GHCR: after the first image push, set the `gnost` package visibility to public.
-- Branch protection on `main`: require `test (3.9..3.12)`, `other-os (windows-2022)`, `other-os (macos-15)`, `installed-package`.
+- Branch protection on `main`: require `test (3.9..3.12)`, `other-os (windows-2022)`, `other-os (macos-15)`, `installed-package`, `npm-launcher`, `vendored-libraries`, `maven-plugin (8, 11, 17, 21)`, and require branches to be up to date before merging. Tests run on pull requests (and weekly), not again after the merge, so these checks are the gate.
 - After the first successful OIDC PyPI publish: delete the old `PYPI_API_TOKEN` secret.
 
 Each release
