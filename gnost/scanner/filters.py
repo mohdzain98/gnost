@@ -1,5 +1,6 @@
 import fnmatch
 import os
+from typing import Optional
 
 
 DEFAULT_EXCLUDES = {
@@ -110,7 +111,7 @@ def is_gitignored(path: str, root: str, patterns: list[str]) -> bool:
     return ignored
 
 
-def should_ignore(path: str, root: str | None = None) -> bool:
+def should_ignore(path: str, root: Optional[str] = None) -> bool:
     """True for ignored folders and files; with root, only the part below it counts."""
     if is_virtualenv_dir(path):
         return True
