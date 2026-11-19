@@ -10,7 +10,7 @@
   <packaging>pom</packaging>
 
   <name>GNOST parent</name>
-  <description>Maven channel for GNOST, a codebase knowledge CLI: the standalone binaries and a plugin that runs them.</description>
+  <description>Maven channel for GNOST, a codebase knowledge CLI: a plugin that runs gnost (found on PATH, or downloaded from the GitHub Release).</description>
   <url>https://github.com/mohdzain98/gnost</url>
 
   <licenses>
@@ -38,7 +38,6 @@
   </issueManagement>
 
   <modules>
-    <module>gnost-binary</module>
     <module>gnost-maven-plugin</module>
   </modules>
 

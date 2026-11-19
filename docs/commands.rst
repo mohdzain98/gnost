@@ -91,8 +91,8 @@ Running a command
          mvn io.github.mohdzain98:gnost-maven-plugin:<version>:<goal>
          mvn gnost:<goal>            # when the plugin is in your pom.xml
 
-      The goals are ``onboard``, ``analyze`` and ``summary``. There is no ``open``,
-      ``help`` or ``version`` goal yet. Use the latest version number from
+      The goals are ``onboard``, ``analyze``, ``summary`` and ``help`` (``mvn gnost:help``
+      lists them). There is no ``open`` or ``version`` goal yet. Use the latest version number from
       `Maven Central <https://central.sonatype.com/artifact/io.github.mohdzain98/gnost-maven-plugin>`_.
 
 Maven goals and options
@@ -100,6 +100,8 @@ Maven goals and options
 
 Options are Maven properties: ``-Dgnost.<name>=<value>``. They mirror the command-line flags.
 Output goes to your project folder (``ONBOARD.md``, ``docs/``), not to ``target/``.
+Each run prints the cache folder, the exact ``gnost`` command, its working directory and the
+files it wrote.
 The goals do not need a ``pom.xml``, and run once for the folder you start Maven in.
 
 Options for every goal:
@@ -121,8 +123,14 @@ Options for every goal:
      - ``false``
      - Skip the goal.
    * - ``gnost.binary``
-     - downloaded
-     - Path to a gnost executable to use instead of the one from Maven Central.
+     - none
+     - Path to a gnost executable. Skips the ``PATH`` lookup and the download.
+   * - ``gnost.home``
+     - ``~/.gnost``
+     - Where the downloaded binary is kept.
+   * - ``gnost.downloadUrl``
+     - GitHub Release
+     - Folder (or mirror) that holds ``gnost-VERSION-PLATFORM.tar.gz`` (``.zip`` on Windows).
 
 ``gnost:onboard`` (same as ``gnost onboard``)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -236,6 +244,6 @@ Examples
 Commands the plugin does not have yet
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``stats``, ``folders``, ``files`` and ``open`` are not Maven goals yet; they are planned for 0.6.0 together with a ``help`` goal. In a Java project
+``stats``, ``folders``, ``files`` and ``open`` are not Maven goals yet; they are planned for 0.6.0. In a Java project
 use another channel for them, for example ``npx gnost-cli open flow`` or
 ``uvx gnost files .``. ``open flow`` shows the diagrams that ``gnost:onboard`` wrote to ``docs/flow``.
