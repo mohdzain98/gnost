@@ -193,7 +193,9 @@ Use dedicated pages for details:
    :maxdepth: 2
    :caption: Contents
 
+   Home <self>
    install
+   commands
    onboard
    analyze
    analyzer_guide

@@ -17,6 +17,8 @@ extensions = [
 ]
 
 autosectionlabel_prefix_document = True
+# Only label top-level titles: analyzer_guide repeats its sub-headings per analyzer.
+autosectionlabel_maxdepth = 1
 
 templates_path = ["_templates"]
 exclude_patterns = []

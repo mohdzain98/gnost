@@ -15,6 +15,12 @@ GNOST is a static analysis CLI that turns an unfamiliar codebase into an onboard
 - **Quality report** (`gnost analyze`) for maintainability, robustness, observability and readability. Python projects only for now.
 - **Languages:** Python, JavaScript, TypeScript and Java.
 
+## Explore the flow in your browser
+
+`gnost open flow` opens the diagrams as an interactive explorer: a folder overview first, click a folder to see its files, click a file to see what it imports and what imports it. It works offline.
+
+![GNOST flow explorer: folder overview, open a folder, open a file, hover for details](https://raw.githubusercontent.com/mohdzain98/gnost/main/assets/viewer_demo.gif)
+
 ## Use without installing
 
 ```bash
