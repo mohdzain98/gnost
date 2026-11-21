@@ -14,6 +14,8 @@ import tempfile
 from pathlib import Path
 from typing import Dict, List
 
+from gnost.vcs.remote import RemoteUrl
+
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "docs" / "gallery"
 PROJECTS: Dict[str, str] = {
@@ -32,14 +34,17 @@ def build(name: str, url: str) -> bool:
             cwd=work,
             env=dict(os.environ, GNOST_NO_UPDATE_CHECK="1"),
         )
-        guide = Path(work) / ".gnost" / "ONBOARD.md"
+        folder = (
+            Path(work) / ".gnost" / RemoteUrl(url).slug
+        )  # one folder per repository
+        guide = folder / "ONBOARD.md"
         if done.returncode != 0 or not guide.is_file():
             return False
         target = OUT / name
         shutil.rmtree(target, ignore_errors=True)
         (target / "flow").mkdir(parents=True)
         shutil.copy(guide, target / "ONBOARD.md")
-        for page in (Path(work) / ".gnost" / "flow").iterdir():
+        for page in (folder / "flow").iterdir():
             if page.suffix in (".md", ".mmd"):  # the pages ONBOARD.md links to
                 shutil.copy(page, target / "flow" / page.name)
         return True

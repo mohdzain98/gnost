@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [0.6.1] — Unreleased
+## [0.6.1] — 2026-11-22
 
 ### Changed
 - **The flow explorer is always interactive.** `flow.html` and `gnost open flow` used to show a flat Mermaid picture for diagrams under about 150 arrows, which is hard to use. Every `.mmd` diagram now opens as the interactive explorer, whatever its size (`--view mermaid` still draws the flat picture).
