@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - The README link added by `--inject` points to `.gnost/ONBOARD.md`, and the Maven plugin reports files written to `.gnost/`.
 
 ### Fixed
+- The GitHub Action now has a unique name (`GNOST Codebase Onboarding and Quality Gate`), which the GitHub Marketplace requires. Use it as before: `uses: mohdzain98/gnost@v0.6.0`.
 - Temporary clones were not deleted on Windows, because git marks its object files read-only. They are now removed.
 - A very large `[history] days` crashed `gnost onboard` on Windows (a date before 1970).
 - The Maven plugin's project and source-control URLs on Maven Central ended in `/gnost-maven-plugin` (Maven appends the module name to inherited URLs), which is a 404 on GitHub. The plugin POM now states them explicitly.
