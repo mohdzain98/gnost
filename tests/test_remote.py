@@ -39,6 +39,20 @@ def test_https_and_ssh_addresses_are_accepted(text: str) -> None:
 @pytest.mark.parametrize(
     "text",
     [
+        "ssh://git@host:2222/owner/repo.git",
+        "https://user@host/owner/repo",
+        "https://host/owner/repo/",
+        "git@host:group/subgroup/repo.git",
+    ],
+)
+def test_additional_repository_address_forms_are_accepted(text: str) -> None:
+    assert RemoteUrl.parse(text).text == text
+    assert RemoteUrl.looks_remote(text)
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
         "http://example.com/r.git",
         "git://example.com/r.git",
         "ext::sh -c touch% /tmp/pwned",
@@ -60,6 +74,20 @@ def test_folders_are_not_mistaken_for_addresses(tmp_path: Path) -> None:
     assert not RemoteUrl.looks_remote("src/app")
     assert RemoteUrl("https://h/o/my-repo.git").name == "my-repo"
     assert RemoteUrl("git@h:o/r").name == "r"
+
+
+@pytest.mark.skipif(
+    os.name == "nt", reason="Windows paths cannot contain the SCP colon"
+)
+def test_existing_scp_style_folder_is_not_mistaken_for_an_address(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    address = Path("git@host:group/subgroup/repo.git")
+    monkeypatch.chdir(tmp_path)
+    address.mkdir(parents=True)
+
+    assert address.is_dir()
+    assert not RemoteUrl.looks_remote(str(address))
 
 
 class FakeRunner(GitRunner):
