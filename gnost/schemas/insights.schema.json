@@ -472,6 +472,159 @@
           "$ref": "#/definitions/paths"
         }
       }
+    },
+    "change_history": {
+      "type": "object",
+      "description": "Change hotspots from git history. `available` is false (with a `reason`) when there is no usable history.",
+      "required": [
+        "available",
+        "reason",
+        "window_days",
+        "commits_analyzed",
+        "files"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "window_days": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "commits_analyzed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "path",
+              "score",
+              "commits",
+              "authors",
+              "recent_commits",
+              "lines_added",
+              "lines_removed",
+              "last_changed"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "score": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "commits": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "authors": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "recent_commits": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "lines_added": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "lines_removed": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "last_changed": {
+                "type": "string",
+                "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+              }
+            }
+          }
+        }
+      }
+    },
+    "risk": {
+      "type": "object",
+      "description": "Files that are both fragile to change (caution score) and changing often (change hotspots). Empty without git history.",
+      "required": [
+        "threshold",
+        "files"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "threshold": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "path",
+              "risk",
+              "structural_score",
+              "change_score",
+              "commits",
+              "authors",
+              "recent_commits",
+              "reasons"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "risk": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "structural_score": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "change_score": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "commits": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "authors": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "recent_commits": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "reasons": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {

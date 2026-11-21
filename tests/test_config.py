@@ -136,7 +136,7 @@ def test_exclude_removes_files_from_onboard(fixture_repo, monkeypatch):
     root = fixture_repo("package_app")
     write(root, 'exclude = ["scripts", "notes.py"]\n')
     assert run_cli(monkeypatch, "onboard", str(root), "--insights-only") == 0
-    data = json.loads((root / "docs/insights/gnost_insights.json").read_text())
+    data = json.loads((root / ".gnost/insights.json").read_text())
     assert [e["file"] for e in data["entry_points"]] == ["app/main.py"]
     assert "app/api/v1/notes.py" not in data["graph"]["nodes"]
     assert not any("seed" in n for n in data["graph"]["nodes"])
@@ -146,22 +146,22 @@ def test_config_sets_diagram_size_and_cli_overrides_it(fixture_repo, monkeypatch
     root = fixture_repo("package_app")
     write(root, "[onboard]\nmax_edges = 4\n")
     run_cli(monkeypatch, "onboard", str(root))
-    assert "dir_" in (root / "docs/flow/FLOW-full.mmd").read_text()
+    assert "dir_" in (root / ".gnost/flow/FLOW-full.mmd").read_text()
 
     run_cli(monkeypatch, "onboard", str(root), "--max-edges", "500")
-    assert "dir_" not in (root / "docs/flow/FLOW-full.mmd").read_text()
+    assert "dir_" not in (root / ".gnost/flow/FLOW-full.mmd").read_text()
 
 
 def test_config_changes_what_counts_as_caution(fixture_repo, monkeypatch):
     root = fixture_repo("cyclic_py")
     write(root, "[caution]\nthreshold = 95\n")
     run_cli(monkeypatch, "onboard", str(root), "--insights-only")
-    data = json.loads((root / "docs/insights/gnost_insights.json").read_text())
+    data = json.loads((root / ".gnost/insights.json").read_text())
     assert data["caution_areas"] == []
 
     write(root, "[caution.weights]\ncycles = 0.5\n")
     run_cli(monkeypatch, "onboard", str(root), "--insights-only")
-    data = json.loads((root / "docs/insights/gnost_insights.json").read_text())
+    data = json.loads((root / ".gnost/insights.json").read_text())
     assert data["caution_areas"][0]["score"] == 50
 
 
@@ -172,7 +172,7 @@ def test_invalid_config_stops_the_command_with_exit_code_2(
     write(root, "[onboard]\nmax_edges = 'x'\n")
     assert run_cli(monkeypatch, "onboard", str(root)) == 2
     assert "gnost:" in capsys.readouterr().err
-    assert not (root / "ONBOARD.md").exists()
+    assert not (root / ".gnost/ONBOARD.md").exists()
 
 
 def test_unknown_key_warns_on_stderr_but_runs(fixture_repo, monkeypatch, capsys):

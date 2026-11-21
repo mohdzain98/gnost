@@ -1,0 +1,130 @@
+name: "GNOST"
+description: "Code quality gate and onboarding guide for your repository (runs GNOST from its Docker image)."
+author: "Mohd Zain"
+branding:
+  icon: "search"
+  color: "blue"
+
+inputs:
+  path:
+    description: "Folder to analyze, relative to the repository root."
+    default: "."
+  fail-under:
+    description: "Fail the job when the final score (0 to 10) is below this. Empty means no limit."
+    default: ""
+  baseline:
+    description: "Baseline file (see `gnost analyze --write-baseline`). Findings in it are not reported."
+    default: ""
+  fail-on-new:
+    description: "With a baseline, fail the job when there are findings that are not in it."
+    default: "false"
+  sarif:
+    description: "Upload the findings to GitHub code scanning (the job needs `security-events: write`)."
+    default: "true"
+  onboard:
+    description: "Also write the onboarding guide into .gnost/ (and upload it as an artifact)."
+    default: "false"
+  comment:
+    description: "On pull requests, post one comment (updated on each push) with what changed, the blast radius and the risk. Needs `fetch-depth: 0` and `pull-requests: write`."
+    default: "false"
+  version:
+    description: "GNOST version (Docker image tag). Defaults to the version of this action, or latest."
+    default: ""
+
+outputs:
+  exit-code:
+    description: "Exit code of `gnost analyze` (0 passed, 3 quality gate failed)."
+    value: ${{ steps.analyze.outputs.exit-code }}
+
+runs:
+  using: "composite"
+  steps:
+    - id: analyze
+      shell: bash
+      env:
+        INPUT_PATH: ${{ inputs.path }}
+        INPUT_FAIL_UNDER: ${{ inputs.fail-under }}
+        INPUT_BASELINE: ${{ inputs.baseline }}
+        INPUT_FAIL_ON_NEW: ${{ inputs.fail-on-new }}
+        INPUT_SARIF: ${{ inputs.sarif }}
+        INPUT_ONBOARD: ${{ inputs.onboard }}
+        INPUT_VERSION: ${{ inputs.version }}
+        INPUT_COMMENT: ${{ inputs.comment }}
+        BASE_REF: ${{ github.base_ref }}
+        ACTION_REF: ${{ github.action_ref }}
+      run: |
+        TAG="$INPUT_VERSION"
+        if [ -z "$TAG" ]; then
+          # An action pinned to v0.6.0 uses the 0.6.0 image; a branch uses the latest one.
+          if [[ "$ACTION_REF" =~ ^v[0-9] ]]; then TAG="${ACTION_REF#v}"; else TAG="latest"; fi
+        fi
+        IMAGE="ghcr.io/mohdzain98/gnost:$TAG"
+        gnost() { docker run --rm --user "$(id -u):$(id -g)" -v "$GITHUB_WORKSPACE":/repo -w /repo "$IMAGE" "$@"; }
+
+        ARGS=(analyze "/repo/$INPUT_PATH" -o --no-progress)
+        [ "$INPUT_SARIF" = "true" ] && ARGS+=(--sarif)
+        [ -n "$INPUT_FAIL_UNDER" ] && ARGS+=(--fail-under "$INPUT_FAIL_UNDER")
+        if [ -n "$INPUT_BASELINE" ]; then
+          ARGS+=(--baseline "/repo/$INPUT_BASELINE")
+          [ "$INPUT_FAIL_ON_NEW" = "true" ] && ARGS+=(--fail-on-new)
+        fi
+
+        if [ "$INPUT_COMMENT" = "true" ] && [ -n "$BASE_REF" ]; then
+          # A failed comment must never fail the job, so every error here is ignored.
+          gnost changes "origin/$BASE_REF" "/repo/$INPUT_PATH" --format markdown --no-write \
+            > "$RUNNER_TEMP/gnost-changes.md" 2> "$RUNNER_TEMP/gnost-changes.err" \
+            && echo "changes-file=$RUNNER_TEMP/gnost-changes.md" >> "$GITHUB_OUTPUT" \
+            || cat "$RUNNER_TEMP/gnost-changes.err" || true
+        fi
+
+        if [ "$INPUT_ONBOARD" = "true" ]; then gnost onboard "/repo/$INPUT_PATH"; fi
+        set +e
+        gnost "${ARGS[@]}" 2>&1 | tee "$RUNNER_TEMP/gnost-analyze.txt"
+        CODE="${PIPESTATUS[0]}"
+        set -e
+        echo "exit-code=$CODE" >> "$GITHUB_OUTPUT"
+        {
+          echo "### GNOST"
+          grep -E "final score|Quality gate failed|Baseline:" "$RUNNER_TEMP/gnost-analyze.txt" | sed 's/\x1b\[[0-9;]*m//g' | sed 's/^/- /'
+        } >> "$GITHUB_STEP_SUMMARY" || true
+
+    - name: Comment on the pull request
+      if: ${{ always() && inputs.comment == 'true' && steps.analyze.outputs.changes-file != '' }}
+      continue-on-error: true
+      uses: actions/github-script@v7
+      env:
+        CHANGES_FILE: ${{ steps.analyze.outputs.changes-file }}
+      with:
+        script: |
+          const body = require('fs').readFileSync(process.env.CHANGES_FILE, 'utf8');
+          const marker = '<!-- gnost-changes -->';
+          const {owner, repo} = context.repo;
+          const issue_number = context.issue.number;
+          const comments = await github.paginate(github.rest.issues.listComments, {owner, repo, issue_number});
+          const mine = comments.find(c => c.body && c.body.includes(marker));
+          if (mine) {
+            await github.rest.issues.updateComment({owner, repo, comment_id: mine.id, body});
+          } else {
+            await github.rest.issues.createComment({owner, repo, issue_number, body});
+          }
+
+    - name: Upload findings to code scanning
+      if: ${{ always() && inputs.sarif == 'true' && hashFiles('.gnost/analysis/analysis.sarif') != '' }}
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: .gnost/analysis/analysis.sarif
+        category: gnost
+
+    - name: Upload the onboarding guide
+      if: ${{ always() && inputs.onboard == 'true' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: gnost
+        path: .gnost
+
+    - name: Apply the quality gate
+      if: ${{ always() && steps.analyze.outputs.exit-code != '0' }}
+      shell: bash
+      env:
+        CODE: ${{ steps.analyze.outputs.exit-code }}
+      run: exit "${CODE:-1}"

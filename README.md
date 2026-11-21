@@ -14,11 +14,12 @@ It also performs quality analysis (`gnost analyze`) for maintainability, robustn
 Perfect for first-day onboarding, audits, and codebase exploration.
 
 ## 🚀 Why GNOST?
-- Quickly build a mental model of a new codebase
+- Quickly build a mental model of a new codebase, **even from a repository address** (`gnost onboard https://github.com/owner/repo`)
 - See how execution flows without reading everything
 - Generate onboarding docs and Mermaid diagrams with one command
 
 ## 🧠 What GNOST Does
+- Works on a folder **or a repository address** (`gnost onboard https://github.com/owner/repo`): read-only clone, nothing in it is run, deleted afterwards
 - Detects **where execution starts**
 - Infers **high-level execution flow**
 - Identifies **hotspot files** (most important code)
@@ -51,7 +52,9 @@ The Maven goals run the same commands as the CLI:
 |---|---|
 | `mvn gnost:onboard` | `gnost onboard` |
 | `mvn gnost:analyze` | `gnost analyze` |
-| `mvn gnost:summary` | `gnost summary` |
+| `mvn gnost:summary`, `gnost:stats`, `gnost:folders`, `gnost:files` | the same commands |
+| `mvn gnost:changes -Dgnost.refs=origin/main` | `gnost changes` |
+| `mvn gnost:open`, `gnost:init`, `gnost:version` | the same commands |
 | `mvn gnost:help` | lists the goals and their options |
 
 Options are `-Dgnost.*` properties, for example `mvn gnost:analyze -Dgnost.out=true`.
@@ -65,12 +68,13 @@ gnost onboard .
 
 ## Explore the flow in your browser (since 0.4.0)
 
-`gnost onboard .` writes Mermaid diagrams to `docs/flow/`. For big projects,
+`gnost onboard .` saves everything in a `.gnost/` folder in your project: the guide (`ONBOARD.md`),
+`insights.json`, Mermaid diagrams in `flow/` and the explorer page. For big projects,
 `gnost open` opens them as an interactive explorer instead of one tangled picture:
 
 ```bash
 gnost open flow
-# or any file: gnost open docs/flow/flow-complete.mmd   (gnost show FILE does the same)
+# or any file: gnost open .gnost/flow/flow-complete.mmd   (gnost show FILE does the same)
 ```
 
 ![GNOST flow explorer: folder overview, open a folder, open a file, hover for details](https://raw.githubusercontent.com/mohdzain98/gnost/main/assets/viewer_demo.gif)
@@ -107,6 +111,17 @@ gnost open report
 ### Analysis report preview
 
 ![GNOST analysis report](https://raw.githubusercontent.com/mohdzain98/gnost/main/assets/report_example.png)
+
+## What does my change touch? (since 0.6.0)
+
+```bash
+gnost changes origin/main                      # files, blast radius, risky files, routes, new cycles
+gnost analyze . --fail-under 7.5 --sarif       # quality gate for CI, SARIF for GitHub code scanning
+gnost onboard https://github.com/owner/repo    # a repository by address; nothing in it is run
+```
+
+The GitHub Action (`mohdzain98/gnost@v0.6.0`) can post the `changes` report as a pull request comment.
+See [Use GNOST in CI](https://gnost.readthedocs.io/en/latest/ci.html).
 
 ### Analysis scope
 

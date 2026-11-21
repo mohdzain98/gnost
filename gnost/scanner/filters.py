@@ -16,6 +16,7 @@ DEFAULT_EXCLUDES = {
     "target",
     ".gradle",
     "__pycache__",
+    ".gnost",
 }
 
 
@@ -46,6 +47,7 @@ IGNORE_DIRS = {
     ".gradle",
     ".idea",
     "out",
+    ".gnost",
 }
 
 IGNORE_FILES = {
@@ -85,27 +87,54 @@ def load_gitignore(root: str) -> list[str]:
     return patterns
 
 
+def _matches(pattern: str, rel_path: str, is_dir: bool) -> bool:
+    """Whether one .gitignore pattern covers rel_path, following git's rules.
+
+    No slash (but a trailing one): any depth. A slash: relative to the root. A trailing slash: folders only.
+    """
+    rule = pattern.replace("\\", "/")
+    dir_only = rule.endswith("/")
+    rule = rule.rstrip("/")
+    anchored = "/" in rule
+    rule = rule.lstrip("/")
+    parts = rel_path.split("/")
+
+    if not anchored:
+        for index, part in enumerate(parts):
+            is_last = index == len(parts) - 1
+            if dir_only and is_last and not is_dir:
+                continue
+            if fnmatch.fnmatch(part, rule):
+                return True
+        return False
+
+    if rule.startswith("**/"):
+        tail = rule[3:]
+        return any(
+            fnmatch.fnmatch("/".join(parts[i:]), tail)
+            or fnmatch.fnmatch("/".join(parts[i:]), tail + "/*")
+            for i in range(len(parts))
+        )
+    if fnmatch.fnmatch(rel_path, rule) or rel_path.startswith(rule + "/"):
+        return not (dir_only and rel_path == rule and not is_dir)
+    return any(
+        fnmatch.fnmatch("/".join(parts[: i + 1]), rule) for i in range(len(parts) - 1)
+    )
+
+
 def is_gitignored(path: str, root: str, patterns: list[str]) -> bool:
+    """True if the .gitignore patterns cover path (the last matching pattern wins)."""
     if not patterns:
         return False
 
     rel_path = os.path.relpath(path, root).replace(os.sep, "/")
+    is_dir = os.path.isdir(path)
     ignored = False
 
     for pat in patterns:
         negate = pat.startswith("!")
         rule = pat[1:] if negate else pat
-        rule = rule.replace("\\", "/")
-
-        if rule.endswith("/"):
-            rule = rule.rstrip("/")
-            match = rel_path == rule or rel_path.startswith(rule + "/")
-        else:
-            match = fnmatch.fnmatch(rel_path, rule) or fnmatch.fnmatch(
-                os.path.basename(rel_path), rule
-            )
-
-        if match:
+        if _matches(rule, rel_path, is_dir):
             ignored = not negate
 
     return ignored
@@ -185,7 +214,11 @@ def is_excluded(path: str, root: str, patterns: "list[str]") -> bool:
     rel = os.path.relpath(path, root).replace(os.sep, "/")
     parts = rel.split("/")
     for pattern in patterns:
-        pat = pattern.strip().rstrip("/").lstrip("./")
+        pat = pattern.strip().rstrip("/")
+        while pat.startswith(
+            "./"
+        ):  # not lstrip("./"): it would turn ".gnost" into "gnost"
+            pat = pat[2:]
         if not pat:
             continue
         if fnmatch.fnmatch(rel, pat) or fnmatch.fnmatch(parts[-1], pat):

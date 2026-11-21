@@ -10,6 +10,7 @@ from pathlib import Path
 
 import pytest
 
+from gnost import __version__
 from gnost.cli.commands.onboard import run
 
 SNAPSHOTS = Path(__file__).parent / "snapshots"
@@ -24,15 +25,15 @@ PROJECTS = [
     "deferred_cycle",
 ]
 OUTPUTS = [
-    "ONBOARD.md",
-    "docs/flow/FLOW-full.md",
-    "docs/flow/FLOW-full.mmd",
-    "docs/flow/FLOW-overview.mmd",
-    "docs/flow/entry-paths.md",
-    "docs/flow/folder-paths.md",
+    ".gnost/ONBOARD.md",
+    ".gnost/flow/FLOW-full.md",
+    ".gnost/flow/FLOW-full.mmd",
+    ".gnost/flow/FLOW-overview.mmd",
+    ".gnost/flow/entry-paths.md",
+    ".gnost/flow/folder-paths.md",
 ]
 # Written only when the project has something to show.
-OPTIONAL_OUTPUTS = ["docs/flow/function-flow.md"]
+OPTIONAL_OUTPUTS = [".gnost/flow/function-flow.md"]
 
 
 def _normalize(text: str, root: Path) -> str:
@@ -40,7 +41,10 @@ def _normalize(text: str, root: Path) -> str:
         text = text.replace(variant, "<ROOT>")
     # Known quirk: "First Files to Read" shortens absolute paths to their last
     # two parts, which can leak the parent (temp) directory name.
-    return text.replace(f"{root.parent.name}/", "")
+    text = text.replace(f"{root.parent.name}/", "")
+    return text.replace(
+        f" {__version__}.", " <VERSION>."
+    )  # the footer names the version
 
 
 @pytest.mark.parametrize("project", PROJECTS)
@@ -67,5 +71,5 @@ def test_onboard_snapshot(project, fixture_repo):
 def test_onboard_mermaid_only(fixture_repo):
     root = fixture_repo("python_app")
     run(path=str(root), diagram_only=True)
-    assert (root / "docs/flow/FLOW-full.mmd").exists()
-    assert not (root / "ONBOARD.md").exists()
+    assert (root / ".gnost/flow/FLOW-full.mmd").exists()
+    assert not (root / ".gnost/ONBOARD.md").exists()

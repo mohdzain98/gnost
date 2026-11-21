@@ -1,5 +1,6 @@
 import threading
 from contextlib import contextmanager
+from typing import Any, Iterator, Optional
 
 
 try:
@@ -13,8 +14,7 @@ _lock_ready = False
 def _use_thread_lock() -> None:
     """Keep tqdm from creating a multiprocessing lock.
 
-    That lock starts Python's resource tracker, which relaunches sys.executable.
-    In the standalone binary that is gnost itself, and it fails on the arguments.
+    That lock starts a helper that relaunches sys.executable, which breaks the standalone binary.
     """
     global _lock_ready
     if not _lock_ready:
@@ -23,7 +23,10 @@ def _use_thread_lock() -> None:
 
 
 @contextmanager
-def progress_bar(enabled=False, total=None, desc=None):
+def progress_bar(
+    enabled: bool = False, total: Optional[int] = None, desc: Optional[str] = None
+) -> Iterator[Any]:
+    """Yield a tqdm progress bar when enabled, else None; always closes the bar."""
     if not enabled or tqdm is None:
         yield None
         return

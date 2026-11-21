@@ -3,7 +3,7 @@ Commands by channel
 
 GNOST has one set of commands. Which ones you can run depends on how you installed it:
 the Python package, the npm package and the Docker image run **every** command, and the
-Maven plugin runs **three** of them for now.
+Maven plugin runs all of them.
 
 The commands do not change with the language you analyze. ``gnost onboard`` and
 ``gnost summary`` work the same on Python, JavaScript, TypeScript and Java projects.
@@ -36,21 +36,60 @@ What runs where
      - yes
      - yes
      - yes (``gnost:summary``)
+   * - ``changes``
+     - yes
+     - yes
+     - yes
+     - yes (``gnost:changes``)
+   * - ``init``
+     - yes
+     - yes
+     - yes
+     - yes (``gnost:init``)
    * - ``stats``, ``folders``, ``files``
      - yes
      - yes
      - yes
-     - not yet
+     - yes (``gnost:stats``, ``gnost:folders``, ``gnost:files``)
    * - ``open`` (report, flow), ``show``
      - yes
      - yes
      - yes, with ``--no-open``
-     - not yet
+     - yes (``gnost:open``; ``-Dgnost.open=false`` for CI)
    * - ``version``
      - yes
      - yes
      - yes
-     - not yet (the plugin version is in the command)
+     - yes (``gnost:version``)
+
+.. _remote-repositories:
+
+Repositories by address
+-----------------------
+
+``onboard``, ``analyze`` and ``changes`` accept a repository address instead of a folder:
+
+.. code-block:: bash
+
+   gnost onboard https://github.com/spring-projects/spring-petclinic
+   gnost analyze git@github.com:owner/repo.git --ref v1.2.0 -o
+   gnost changes origin/main https://github.com/owner/repo   # BASE first, then the address
+
+Only ``https://`` and ``ssh`` addresses work (``git@host:owner/repo`` too); plain ``http://``,
+``git://`` and ``file://`` are refused. ``--ref`` picks a branch or tag.
+
+* The repository is cloned into a temporary folder and **deleted afterwards**, also when you press
+  Ctrl+C. The clone is partial (history without file contents until needed); if the server cannot do
+  that, GNOST takes the last 500 commits instead and says the history is cut.
+* **The results go to the current folder** (``.gnost/``), not into the clone.
+* **Nothing in the repository is run.** Git hooks, submodules and symlinks are switched off. mypy,
+  ruff and the other analyzers use GNOST's own settings, so a repository cannot make them load
+  plugins from its ``mypy.ini`` or ``pyproject.toml``. The repository's own ``.gnost.toml`` is not
+  read either (use the one in your current folder). A test checks this with a repository that tries
+  to run a mypy plugin.
+* GNOST never asks for a password. Private repositories need ssh keys already set up, or clone them
+  yourself and give GNOST the folder.
+* Limits: 10 minutes to clone and 500 MB of files. Bigger repositories: clone them yourself.
 
 Running a command
 -----------------
@@ -91,15 +130,16 @@ Running a command
          mvn io.github.mohdzain98:gnost-maven-plugin:<version>:<goal>
          mvn gnost:<goal>            # when the plugin is in your pom.xml
 
-      The goals are ``onboard``, ``analyze``, ``summary`` and ``help`` (``mvn gnost:help``
-      lists them). There is no ``open`` or ``version`` goal yet. Use the latest version number from
+      There is a goal for every command: ``onboard``, ``analyze``, ``changes``, ``summary``,
+      ``stats``, ``folders``, ``files``, ``open``, ``init``, ``version`` and ``help`` (``mvn gnost:help``
+      lists them). Use the latest version number from
       `Maven Central <https://central.sonatype.com/artifact/io.github.mohdzain98/gnost-maven-plugin>`_.
 
 Maven goals and options
 -----------------------
 
 Options are Maven properties: ``-Dgnost.<name>=<value>``. They mirror the command-line flags.
-Output goes to your project folder (``ONBOARD.md``, ``docs/``), not to ``target/``.
+Output goes to the ``.gnost/`` folder in your project (``ONBOARD.md``, ``flow/``, ``insights.json``), not to ``target/``.
 Each run prints the cache folder, the exact ``gnost`` command, its working directory and the
 files it wrote.
 The goals do not need a ``pom.xml``, and run once for the folder you start Maven in.
@@ -182,7 +222,7 @@ Options for every goal:
      - What it does
    * - ``gnost.out``
      - ``-o, --out``
-     - Write ``docs/analysis/gnost_analysis.json`` and ``.html``.
+     - Write ``.gnost/analysis/analysis.json`` and ``analysis.html``.
    * - ``gnost.parallel``
      - ``--parallel``
      - Run the analyzers in parallel.
@@ -210,6 +250,21 @@ Options for every goal:
    * - ``gnost.maxFindings``
      - ``--max-findings N``
      - Findings limit per analyzer (default 1000).
+   * - ``gnost.failUnder``
+     - ``--fail-under SCORE``
+     - Fail the build when the final score (0-10) is lower. See :doc:`ci`.
+   * - ``gnost.baseline``
+     - ``--baseline [FILE]``
+     - Report only findings not in the baseline (``true`` = ``.gnost/baseline.json``).
+   * - ``gnost.writeBaseline``
+     - ``--write-baseline [FILE]``
+     - Save today's findings as the baseline.
+   * - ``gnost.failOnNew``
+     - ``--fail-on-new``
+     - With a baseline, fail the build on new findings.
+   * - ``gnost.sarif``
+     - ``--sarif [FILE]``
+     - Write the findings as SARIF (``true`` = ``.gnost/analysis/analysis.sarif``).
 
 ``gnost:summary`` (same as ``gnost summary``)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -231,6 +286,73 @@ Options for every goal:
      - ``--progress``
      - Show a progress bar.
 
+``gnost:stats``, ``gnost:folders``, ``gnost:files`` (same as the commands)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+These take the same ``gnost.include``, ``gnost.exclude`` and ``gnost.progress`` as ``gnost:summary``.
+``gnost:files`` also has ``gnost.top`` (``--top``): how many files to show.
+
+``gnost:changes`` (same as ``gnost changes``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 20 55
+
+   * - Property
+     - Flag
+     - What it does
+   * - ``gnost.refs`` (required)
+     - ``BASE[..HEAD]``
+     - What to compare, for example ``origin/main``.
+   * - ``gnost.depth``
+     - ``--depth``
+     - How far to follow importers (default 3).
+   * - ``gnost.format``
+     - ``--format``
+     - Print ``text``, ``markdown`` or ``json``.
+   * - ``gnost.findings``
+     - ``--findings``
+     - Also run the analyzers on the changed Python files.
+   * - ``gnost.noCycles``
+     - ``--no-cycles``
+     - Skip scanning the base commit.
+   * - ``gnost.noWrite``
+     - ``--no-write``
+     - Do not write ``.gnost/changes/``.
+
+``gnost:open``, ``gnost:init`` and ``gnost:version``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 20 55
+
+   * - Property
+     - Flag
+     - What it does
+   * - ``gnost.target``
+     - ``open`` argument
+     - ``open``: ``report`` (default), ``flow`` or a ``.mmd``, ``.md`` or ``.html`` file.
+   * - ``gnost.open``
+     - ``--no-open``
+     - ``open``: set ``-Dgnost.open=false`` to write the page without starting a browser (CI).
+   * - ``gnost.output``, ``gnost.file``, ``gnost.view``
+     - ``-o``, ``--path``, ``--view``
+     - ``open``: where to save the page, a custom report or diagram, and the viewer.
+   * - ``gnost.pom``, ``gnost.npm``, ``gnost.githubAction``, ``gnost.agents``
+     - ``--pom``, ``--npm``, ``--github-action``, ``--agents``
+     - ``init``: wire GNOST into the build.
+   * - ``gnost.force``, ``gnost.print``, ``gnost.dryRun``
+     - ``--force``, ``--print``, ``--dry-run``
+     - ``init``: overwrite, print only, or show what would change.
+
+``gnost:version`` takes no options. It prints the version of the binary the plugin would run.
+
+Repository addresses: ``onboard``, ``analyze`` and ``changes`` accept
+``-Dgnost.path=https://github.com/owner/repo`` (and ``-Dgnost.ref=BRANCH``); see
+:ref:`remote-repositories`.
+
 Examples
 ~~~~~~~~
 
@@ -240,10 +362,6 @@ Examples
    mvn gnost:onboard -Dgnost.layered=true -Dgnost.depth=3
    mvn gnost:analyze -Dgnost.out=true -Dgnost.parallel=true
    mvn gnost:summary -Dgnost.exclude=target,node_modules
-
-Commands the plugin does not have yet
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-``stats``, ``folders``, ``files`` and ``open`` are not Maven goals yet; they are planned for 0.6.0. In a Java project
-use another channel for them, for example ``npx gnost-cli open flow`` or
-``uvx gnost files .``. ``open flow`` shows the diagrams that ``gnost:onboard`` wrote to ``docs/flow``.
+   mvn gnost:changes -Dgnost.refs=origin/main -Dgnost.format=markdown
+   mvn gnost:open -Dgnost.target=flow -Dgnost.open=false
+   mvn gnost:init -Dgnost.pom=true -Dgnost.dryRun=true

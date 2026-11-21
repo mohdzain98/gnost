@@ -292,12 +292,12 @@ def test_onboard_diagrams_are_valid_mermaid(project, fixture_repo):
     root = fixture_repo(project)
     run(path=str(root))
     for rel in [
-        "ONBOARD.md",
-        "docs/flow/FLOW-full.md",
-        "docs/flow/FLOW-full.mmd",
-        "docs/flow/FLOW-overview.mmd",
-        "docs/flow/entry-paths.md",
-        "docs/flow/folder-paths.md",
+        ".gnost/ONBOARD.md",
+        ".gnost/flow/FLOW-full.md",
+        ".gnost/flow/FLOW-full.mmd",
+        ".gnost/flow/FLOW-overview.mmd",
+        ".gnost/flow/entry-paths.md",
+        ".gnost/flow/folder-paths.md",
     ]:
         text = (root / rel).read_text(encoding="utf-8")
         if "mermaid" in text or rel.endswith(".mmd"):
@@ -309,7 +309,7 @@ def test_cli_collapse_and_max_edges_options(fixture_repo):
 
     root = fixture_repo("package_app")
     run(path=str(root), collapse=1)
-    assert "dir_" in (root / "docs/flow/FLOW-full.mmd").read_text(encoding="utf-8")
+    assert "dir_" in (root / ".gnost/flow/FLOW-full.mmd").read_text(encoding="utf-8")
 
 
 def test_cli_passes_diagram_options_through(fixture_repo, monkeypatch):
@@ -320,4 +320,4 @@ def test_cli_passes_diagram_options_through(fixture_repo, monkeypatch):
         "sys.argv", ["gnost", "onboard", str(root), "--collapse", "--max-edges", "5"]
     )
     main()
-    assert "dir_" in (root / "docs/flow/FLOW-full.mmd").read_text(encoding="utf-8")
+    assert "dir_" in (root / ".gnost/flow/FLOW-full.mmd").read_text(encoding="utf-8")

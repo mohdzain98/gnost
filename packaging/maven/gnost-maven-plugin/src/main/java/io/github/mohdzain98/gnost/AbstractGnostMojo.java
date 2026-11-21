@@ -50,8 +50,18 @@ public abstract class AbstractGnostMojo extends AbstractMojo {
     /** The gnost sub-command, such as onboard. */
     abstract String subcommand();
 
-    /** Add this goal's options (after the path) to the command. */
+    /** Add this goal's options (after its arguments) to the command. */
     abstract void addOptions(List<String> cmd);
+
+    /** Add the positional arguments; most goals take the folder to scan. */
+    void addArguments(List<String> cmd) {
+        cmd.add(path != null && !path.isEmpty() ? path : ".");
+    }
+
+    /** True when the path is a repository address; results then go to the working directory. */
+    boolean pathIsAddress() {
+        return path != null && path.matches("(?i)^(https?|ssh|git)://.*|^[\\w.-]+@[\\w.-]+:.*");
+    }
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -62,7 +72,7 @@ public abstract class AbstractGnostMojo extends AbstractMojo {
         File dir = workingDirectory();
         File exe = locate();
         List<String> cmd = command(exe.getAbsolutePath());
-        File target = new File(path != null && !path.isEmpty() ? path : ".");
+        File target = new File(path != null && !path.isEmpty() && !pathIsAddress() ? path : ".");
         if (!target.isAbsolute()) {
             target = new File(dir, target.getPath());
         }
@@ -90,7 +100,7 @@ public abstract class AbstractGnostMojo extends AbstractMojo {
         List<String> cmd = new ArrayList<String>();
         cmd.add(exe);
         cmd.add(subcommand());
-        cmd.add(path != null && !path.isEmpty() ? path : ".");
+        addArguments(cmd);
         addOptions(cmd);
         if (args != null && !args.trim().isEmpty()) {
             for (String a : args.trim().split("\\s+")) {
@@ -194,6 +204,8 @@ public abstract class AbstractGnostMojo extends AbstractMojo {
         return "gnost was not found on PATH and could not be downloaded (" + reason + ").\n"
                 + "If this network only reaches Maven Central, install gnost where Maven can find it, then run Maven again:\n"
                 + "  " + installHint() + "\n"
+                + "Or download the file yourself (for example with curl) and run Maven with\n"
+                + "  -Dgnost.downloadUrl=file:///folder/that/holds/it\n"
                 + "Download address tried: " + url;
     }
 
@@ -225,6 +237,17 @@ public abstract class AbstractGnostMojo extends AbstractMojo {
     static void flag(List<String> cmd, boolean on, String name) {
         if (on) {
             cmd.add(name);
+        }
+    }
+
+    /** An option whose value is a file: "true" means the flag alone (its default file). */
+    static void optionalValue(List<String> cmd, String value, String name) {
+        if (value == null || value.trim().isEmpty() || value.trim().equalsIgnoreCase("false")) {
+            return;
+        }
+        cmd.add(name);
+        if (!value.trim().equalsIgnoreCase("true")) {
+            cmd.add(value.trim());
         }
     }
 

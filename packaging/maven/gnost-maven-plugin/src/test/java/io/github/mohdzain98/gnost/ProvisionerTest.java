@@ -41,6 +41,7 @@ public class ProvisionerTest {
     @Before
     public void setUp() {
         messages.clear();
+        Provisioner.RETRY_PAUSE_MS = 1;
     }
 
     @After
@@ -194,12 +195,63 @@ public class ProvisionerTest {
     }
 
     @Test
-    public void unreachableHostsGiveAClearError() throws Exception {
+    public void unreachableHostsAreRetriedThenReported() throws Exception {
         try {
             provisioner(tmp.newFolder("home"), "win32-x64", "http://127.0.0.1:1", "ab", true).ensure();
             fail("expected a download failure");
         } catch (IOException e) {
-            assertTrue(e.getMessage(), e.getMessage().contains("could not download"));
+            assertTrue(e.getMessage(), e.getMessage().contains("after 3 attempts"));
         }
+        int tries = 0;
+        for (String m : messages) {
+            if (m.startsWith("Download attempt")) {
+                tries++;
+            }
+        }
+        assertEquals(2, tries);
+    }
+
+    @Test
+    public void aSlowFirstAttemptIsRetriedAndSucceeds() throws Exception {
+        File rel = release("0.5.3", "win32-x64", true);
+        final byte[] zip = Files.readAllBytes(new File(rel, "gnost-0.5.3-win32-x64.zip").toPath());
+        String sha = Downloader.sha256(new File(rel, "gnost-0.5.3-win32-x64.zip"));
+        final java.util.concurrent.atomic.AtomicInteger calls = new java.util.concurrent.atomic.AtomicInteger();
+        server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
+        server.createContext("/gnost-0.5.3-win32-x64.zip", ex -> {
+            if (calls.incrementAndGet() == 1) {
+                ex.close(); // drops the connection without an answer
+                return;
+            }
+            ex.sendResponseHeaders(200, zip.length);
+            try (OutputStream os = ex.getResponseBody()) {
+                os.write(zip);
+            }
+        });
+        server.start();
+        String base = "http://127.0.0.1:" + server.getAddress().getPort();
+        File exe = provisioner(tmp.newFolder("home"), "win32-x64", base, sha, true).ensure();
+        assertTrue(exe.isFile());
+        assertEquals(2, calls.get());
+    }
+
+    @Test
+    public void anHttpErrorAnswerIsNotRetried() throws Exception {
+        server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
+        final java.util.concurrent.atomic.AtomicInteger calls = new java.util.concurrent.atomic.AtomicInteger();
+        server.createContext("/", ex -> {
+            calls.incrementAndGet();
+            ex.sendResponseHeaders(404, -1);
+            ex.close();
+        });
+        server.start();
+        String base = "http://127.0.0.1:" + server.getAddress().getPort();
+        try {
+            provisioner(tmp.newFolder("home"), "win32-x64", base, "ab", true).ensure();
+            fail("expected a download failure");
+        } catch (IOException e) {
+            assertTrue(e.getMessage(), e.getMessage().contains("HTTP 404"));
+        }
+        assertEquals(1, calls.get());
     }
 }

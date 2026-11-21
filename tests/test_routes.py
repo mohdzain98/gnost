@@ -276,7 +276,7 @@ def test_routes_in_json_match_schema_and_are_relative(fixture_repo):
     root = fixture_repo("package_app")
     payload = _payload(root)
     jsonschema.validate(payload, load_schema())
-    assert payload["schema_version"] == "1.3"
+    assert payload["schema_version"] == "1.4"
     assert payload["stats"]["routes"] == len(payload["routes"]) == 7
     assert all(not r["file"].startswith("/") for r in payload["routes"])
     assert {"method", "path", "handler", "file", "line", "framework"} == set(
@@ -289,7 +289,7 @@ def test_routes_section_in_onboard_md_and_terminal(fixture_repo, capsys):
 
     root = fixture_repo("package_app")
     run(path=str(root))
-    md = (root / "ONBOARD.md").read_text(encoding="utf-8")
+    md = (root / ".gnost/ONBOARD.md").read_text(encoding="utf-8")
     assert (
         "## Routes" in md and "| GET | `/health` | `health` | `app/main.py:13` |" in md
     )
@@ -301,4 +301,4 @@ def test_no_routes_section_when_there_are_none(fixture_repo):
 
     root = fixture_repo("cyclic_py")
     run(path=str(root))
-    assert "## Routes" not in (root / "ONBOARD.md").read_text(encoding="utf-8")
+    assert "## Routes" not in (root / ".gnost/ONBOARD.md").read_text(encoding="utf-8")

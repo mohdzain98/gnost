@@ -45,4 +45,4 @@ def test_markdown_reporter_writes_to_output_root_and_includes_tables(tmp_path: P
     assert "## Summary Table" in content
     assert "## Stats Table" in content
     assert "| Python | 1 | 42 |" in content
-    assert "docs/flow/FLOW-full.md" in content
+    assert "(flow/FLOW-full.md)" in content

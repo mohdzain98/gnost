@@ -93,6 +93,8 @@ jobs:
         with:
           distribution: temurin
           java-version: ${{ matrix.java }}
+          cache: maven
+          cache-dependency-path: packaging/maven/**/pom.xml
       - uses: actions/cache@v4
         with:
           path: ~/.m2/wrapper

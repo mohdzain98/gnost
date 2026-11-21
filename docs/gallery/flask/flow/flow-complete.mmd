@@ -1,0 +1,154 @@
+flowchart TD
+  examples_celery_src_task_app___init___py["examples/celery/src/task_app/__init__.py"]
+  examples_celery_src_task_app_tasks_py["examples/celery/src/task_app/tasks.py"]
+  examples_celery_src_task_app_views_py["examples/celery/src/task_app/views.py"]
+  examples_javascript_js_example___init___py["examples/javascript/js_example/__init__.py"]
+  examples_javascript_js_example_views_py["examples/javascript/js_example/views.py"]
+  examples_tutorial_flaskr___init___py["examples/tutorial/flaskr/__init__.py"]
+  examples_tutorial_flaskr_auth_py["examples/tutorial/flaskr/auth.py"]
+  examples_tutorial_flaskr_blog_py["examples/tutorial/flaskr/blog.py"]
+  examples_tutorial_flaskr_db_py["examples/tutorial/flaskr/db.py"]
+  src_flask___init___py["src/flask/__init__.py"]
+  src_flask_app_py["src/flask/app.py"]
+  src_flask_blueprints_py["src/flask/blueprints.py"]
+  src_flask_cli_py["src/flask/cli.py"]
+  src_flask_config_py["src/flask/config.py"]
+  src_flask_ctx_py["src/flask/ctx.py"]
+  src_flask_debughelpers_py["src/flask/debughelpers.py"]
+  src_flask_globals_py["src/flask/globals.py"]
+  src_flask_helpers_py["src/flask/helpers.py"]
+  src_flask_json___init___py["src/flask/json/__init__.py"]
+  src_flask_json_provider_py["src/flask/json/provider.py"]
+  src_flask_json_tag_py["src/flask/json/tag.py"]
+  src_flask_logging_py["src/flask/logging.py"]
+  src_flask_sansio_app_py["src/flask/sansio/app.py"]
+  src_flask_sansio_blueprints_py["src/flask/sansio/blueprints.py"]
+  src_flask_sansio_scaffold_py["src/flask/sansio/scaffold.py"]
+  src_flask_sessions_py["src/flask/sessions.py"]
+  src_flask_signals_py["src/flask/signals.py"]
+  src_flask_templating_py["src/flask/templating.py"]
+  src_flask_testing_py["src/flask/testing.py"]
+  src_flask_typing_py["src/flask/typing.py"]
+  src_flask_wrappers_py["src/flask/wrappers.py"]
+  examples_celery_src_task_app___init___py -.-> examples_celery_src_task_app_views_py
+  examples_celery_src_task_app___init___py --> src_flask___init___py
+  examples_celery_src_task_app_views_py --> examples_celery_src_task_app___init___py
+  examples_celery_src_task_app_views_py --> examples_celery_src_task_app_tasks_py
+  examples_celery_src_task_app_views_py --> src_flask___init___py
+  examples_javascript_js_example___init___py ==> examples_javascript_js_example_views_py
+  examples_javascript_js_example___init___py --> src_flask___init___py
+  examples_javascript_js_example_views_py ==> examples_javascript_js_example___init___py
+  examples_javascript_js_example_views_py --> src_flask___init___py
+  examples_tutorial_flaskr___init___py -.-> examples_tutorial_flaskr_auth_py
+  examples_tutorial_flaskr___init___py -.-> examples_tutorial_flaskr_blog_py
+  examples_tutorial_flaskr___init___py -.-> examples_tutorial_flaskr_db_py
+  examples_tutorial_flaskr___init___py --> src_flask___init___py
+  examples_tutorial_flaskr_auth_py --> examples_tutorial_flaskr_db_py
+  examples_tutorial_flaskr_auth_py --> src_flask___init___py
+  examples_tutorial_flaskr_blog_py --> examples_tutorial_flaskr_auth_py
+  examples_tutorial_flaskr_blog_py --> examples_tutorial_flaskr_db_py
+  examples_tutorial_flaskr_blog_py --> src_flask___init___py
+  examples_tutorial_flaskr_db_py --> src_flask___init___py
+  src_flask___init___py ==> src_flask_app_py
+  src_flask___init___py ==> src_flask_blueprints_py
+  src_flask___init___py --> src_flask_config_py
+  src_flask___init___py ==> src_flask_ctx_py
+  src_flask___init___py --> src_flask_globals_py
+  src_flask___init___py --> src_flask_helpers_py
+  src_flask___init___py --> src_flask_json___init___py
+  src_flask___init___py --> src_flask_signals_py
+  src_flask___init___py ==> src_flask_templating_py
+  src_flask___init___py ==> src_flask_wrappers_py
+  src_flask_app_py ==> src_flask___init___py
+  src_flask_app_py --> src_flask_cli_py
+  src_flask_app_py ==> src_flask_ctx_py
+  src_flask_app_py -.-> src_flask_debughelpers_py
+  src_flask_app_py --> src_flask_globals_py
+  src_flask_app_py --> src_flask_helpers_py
+  src_flask_app_py ==> src_flask_sansio_app_py
+  src_flask_app_py --> src_flask_sessions_py
+  src_flask_app_py --> src_flask_signals_py
+  src_flask_app_py ==> src_flask_templating_py
+  src_flask_app_py -.-> src_flask_testing_py
+  src_flask_app_py --> src_flask_typing_py
+  src_flask_app_py ==> src_flask_wrappers_py
+  src_flask_blueprints_py --> src_flask_cli_py
+  src_flask_blueprints_py --> src_flask_globals_py
+  src_flask_blueprints_py --> src_flask_helpers_py
+  src_flask_blueprints_py ==> src_flask_sansio_blueprints_py
+  src_flask_blueprints_py ==> src_flask_sansio_scaffold_py
+  src_flask_blueprints_py -.-> src_flask_wrappers_py
+  src_flask_cli_py -.-> src_flask___init___py
+  src_flask_cli_py -.-> src_flask_app_py
+  src_flask_cli_py --> src_flask_globals_py
+  src_flask_cli_py --> src_flask_helpers_py
+  src_flask_config_py -.-> src_flask_sansio_app_py
+  src_flask_ctx_py ==> src_flask___init___py
+  src_flask_ctx_py -.-> src_flask_app_py
+  src_flask_ctx_py --> src_flask_globals_py
+  src_flask_ctx_py --> src_flask_helpers_py
+  src_flask_ctx_py -.-> src_flask_sessions_py
+  src_flask_ctx_py --> src_flask_signals_py
+  src_flask_ctx_py --> src_flask_typing_py
+  src_flask_ctx_py -.-> src_flask_wrappers_py
+  src_flask_debughelpers_py --> src_flask_blueprints_py
+  src_flask_debughelpers_py --> src_flask_globals_py
+  src_flask_debughelpers_py --> src_flask_sansio_app_py
+  src_flask_debughelpers_py -.-> src_flask_sansio_scaffold_py
+  src_flask_debughelpers_py -.-> src_flask_wrappers_py
+  src_flask_globals_py -.-> src_flask_app_py
+  src_flask_globals_py -.-> src_flask_ctx_py
+  src_flask_globals_py -.-> src_flask_sessions_py
+  src_flask_globals_py -.-> src_flask_wrappers_py
+  src_flask_helpers_py --> src_flask_globals_py
+  src_flask_helpers_py --> src_flask_signals_py
+  src_flask_helpers_py -.-> src_flask_wrappers_py
+  src_flask_json___init___py --> src_flask_globals_py
+  src_flask_json___init___py --> src_flask_json_provider_py
+  src_flask_json___init___py -.-> src_flask_wrappers_py
+  src_flask_json_provider_py -.-> src_flask_sansio_app_py
+  src_flask_json_tag_py --> src_flask_json___init___py
+  src_flask_logging_py --> src_flask_globals_py
+  src_flask_logging_py -.-> src_flask_sansio_app_py
+  src_flask_sansio_app_py ==> src_flask___init___py
+  src_flask_sansio_app_py --> src_flask_config_py
+  src_flask_sansio_app_py ==> src_flask_ctx_py
+  src_flask_sansio_app_py --> src_flask_helpers_py
+  src_flask_sansio_app_py --> src_flask_json_provider_py
+  src_flask_sansio_app_py --> src_flask_logging_py
+  src_flask_sansio_app_py -.-> src_flask_sansio_blueprints_py
+  src_flask_sansio_app_py ==> src_flask_sansio_scaffold_py
+  src_flask_sansio_app_py ==> src_flask_templating_py
+  src_flask_sansio_app_py -.-> src_flask_testing_py
+  src_flask_sansio_app_py --> src_flask_typing_py
+  src_flask_sansio_blueprints_py ==> src_flask___init___py
+  src_flask_sansio_blueprints_py -.-> src_flask_sansio_app_py
+  src_flask_sansio_blueprints_py ==> src_flask_sansio_scaffold_py
+  src_flask_sansio_blueprints_py --> src_flask_typing_py
+  src_flask_sansio_scaffold_py ==> src_flask___init___py
+  src_flask_sansio_scaffold_py --> src_flask_helpers_py
+  src_flask_sansio_scaffold_py ==> src_flask_templating_py
+  src_flask_sansio_scaffold_py --> src_flask_typing_py
+  src_flask_sessions_py -.-> src_flask_app_py
+  src_flask_sessions_py --> src_flask_json_tag_py
+  src_flask_sessions_py -.-> src_flask_wrappers_py
+  src_flask_templating_py ==> src_flask_ctx_py
+  src_flask_templating_py -.-> src_flask_debughelpers_py
+  src_flask_templating_py --> src_flask_globals_py
+  src_flask_templating_py --> src_flask_helpers_py
+  src_flask_templating_py -.-> src_flask_sansio_app_py
+  src_flask_templating_py -.-> src_flask_sansio_scaffold_py
+  src_flask_templating_py --> src_flask_signals_py
+  src_flask_testing_py -.-> src_flask_app_py
+  src_flask_testing_py --> src_flask_cli_py
+  src_flask_testing_py --> src_flask_sessions_py
+  src_flask_wrappers_py ==> src_flask___init___py
+  src_flask_wrappers_py -.-> src_flask_debughelpers_py
+  src_flask_wrappers_py --> src_flask_globals_py
+  src_flask_wrappers_py --> src_flask_helpers_py
+  src_flask_wrappers_py --> src_flask_json___init___py
+  linkStyle 0,32,39,47,48,49,52,54,57,60,64,65,66,67,68,69,72,75,76,79,86,89,92,99,101,103,106,107,109,113 stroke:#f57c00,stroke-width:2px
+  linkStyle 2,21,23,24,25,30,33,34,36,42,43,44,50,51,55,56,61,62,63,70,73,74,77,78,81,83,84,85,96,100,104,105,110,111,114,115,116 stroke:#f57c00,stroke-width:2px
+  linkStyle 5,7,19,20,22,27,28,29,31,35,38,41,45,46,53,80,82,87,88,91,93,95,97,102,112 stroke:#d32f2f,stroke-width:3px
+  classDef cycle stroke:#d32f2f,stroke-width:3px
+  class examples_javascript_js_example___init___py,examples_javascript_js_example_views_py,src_flask___init___py,src_flask_app_py,src_flask_blueprints_py,src_flask_ctx_py,src_flask_sansio_app_py,src_flask_sansio_blueprints_py,src_flask_sansio_scaffold_py,src_flask_templating_py,src_flask_wrappers_py cycle

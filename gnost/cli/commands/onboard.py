@@ -16,6 +16,7 @@ from gnost.core.callgraph import build_call_graph, find_flows
 from gnost.core.caution import CautionSettings
 from gnost.core.resolver import ImportResolver
 from gnost.core.insight_builder import InsightBuilder
+from gnost.core.risk import RiskCalculator, RiskSettings
 from gnost.core.graph import DependencyGraph
 from gnost.core.flow import FlowBuilder
 from gnost.reporters.summary import SummaryReporter
@@ -27,7 +28,10 @@ from gnost.reporters.mermaid import (
 )
 from gnost.reporters.readme import ReadmeInjector
 from gnost.reporters.insights_json import build_payload, write_payload
+from gnost.utils.footer import Footer
+from gnost.utils.layout import LEGACY_OUTPUT_PATHS, OutputLayout
 from gnost.utils.progress import progress_bar
+from gnost.vcs.history import HistoryReader, HistorySettings
 
 
 def resolve_repo_root(path: str) -> str:
@@ -136,24 +140,34 @@ def run(
     collapse: Optional[int] = None,
     exclude: Optional[list] = None,
     caution: Optional[CautionSettings] = None,
-):
-    """
-    gnost onboard [path] [--mermaid] [--json [FILE]] [--insights-only]
-    Generates a high-level onboarding summary for a codebase.
+    output_dir: Optional[str] = None,
+    html: bool = True,
+    history: Optional[HistorySettings] = None,
+    risk: Optional[RiskSettings] = None,
+    output_root: Optional[str] = None,
+    source: Optional[str] = None,
+    footer: bool = True,
+) -> None:
+    """Onboard a codebase: write the guide, diagrams, insights JSON and explorer page.
 
-    `json_out` writes the insights as JSON: "" means the default path
-    (docs/insights/gnost_insights.json), anything else is the file to write.
-    `insights_only` writes only that JSON, skipping ONBOARD.md and the diagrams.
+    Everything goes into the output folder (`.gnost/`, see OutputLayout). `diagram_only` writes only the diagram.
     """
     scan_root = os.path.abspath(path or ".")
-    output_root = resolve_repo_root(scan_root)
-    docs_dir = os.path.join(output_root, "docs")
-    flow_dir = os.path.join(docs_dir, "flow")
+    # A remote clone passes output_root so the files land in the current folder.
+    output_root = output_root or resolve_repo_root(scan_root)
+    layout = OutputLayout(output_root, output_dir)
+    flow_dir = layout.flow_dir
     write_documents = not insights_only
     if insights_only and json_out is None:
         json_out = ""
+    stamp = Footer(footer)
+    first_run = not os.path.isdir(layout.folder)
+    # The scanners must never read GNOST's own output.
+    own_output = [layout.relative_name] + list(LEGACY_OUTPUT_PATHS)
+    exclude = list(exclude or []) + own_output
+    if json_out is not None or write_documents:
+        layout.prepare()
     if write_documents:
-        os.makedirs(docs_dir, exist_ok=True)
         os.makedirs(flow_dir, exist_ok=True)
 
     with progress_bar(enabled=progress, total=4, desc="Onboarding") as bar:
@@ -214,12 +228,24 @@ def run(
         insights = insight_builder.build()
 
         # -------------------------
+        # 4.55 Change history (git), if there is any
+        # -------------------------
+        scanned = {
+            os.path.relpath(f.path, scan_root).replace(os.sep, "/")
+            for f in scan_result.files
+        }
+        changes = HistoryReader(history or HistorySettings()).analyze(
+            scan_root, scanned
+        )
+        risks = RiskCalculator(risk or RiskSettings()).report(
+            insight_builder.caution_scores, changes.hotspots, scan_root
+        )
+
+        # -------------------------
         # 4.6 Insights JSON (optional)
         # -------------------------
-        if json_out is not None:
-            json_path = json_out or os.path.join(
-                docs_dir, "insights", "gnost_insights.json"
-            )
+        if json_out is not None or not diagram_only:
+            json_path = json_out or layout.insights_json
             payload = build_payload(
                 scan_result,
                 flow_result,
@@ -227,6 +253,8 @@ def run(
                 insights,
                 flows=function_flows,
                 call_graph=call_graph,
+                changes=changes,
+                risks=risks,
             )
             write_payload(payload, json_path)
             print(f"Insights JSON written to {json_path}")
@@ -300,19 +328,25 @@ def run(
 
         with open(os.path.join(flow_dir, "FLOW-full.md"), "w", encoding="utf-8") as f:
             f.write(
-                "# Full Execution Flow\n\n" + full_md + "\n\n"
-                "> ℹ️ This file renders the complete Mermaid diagram on GitHub.\n"
-                "> For raw Mermaid source, see "
-                "[**FLOW-full.mmd**](./FLOW-full.mmd). Every file and import, "
-                "ungrouped and nothing omitted: "
-                "[**flow-complete.mmd**](./flow-complete.mmd)\n"
+                stamp.append(
+                    "# Full Execution Flow\n\n" + full_md + "\n\n"
+                    "> ℹ️ This file renders the complete Mermaid diagram on GitHub.\n"
+                    "> For raw Mermaid source, see "
+                    "[**FLOW-full.mmd**](./FLOW-full.mmd). Every file and import, "
+                    "ungrouped and nothing omitted: "
+                    "[**flow-complete.mmd**](./flow-complete.mmd)\n"
+                )
             )
 
         if function_flows:
             with open(
                 os.path.join(flow_dir, "function-flow.md"), "w", encoding="utf-8"
             ) as f:
-                f.write(render_function_flows(function_flows, scan_result.root))
+                f.write(
+                    stamp.append(
+                        render_function_flows(function_flows, scan_result.root)
+                    )
+                )
 
         # Overview diagram (optional standalone file)
         overview_diagram = MermaidFlowReporter(
@@ -370,7 +404,7 @@ def run(
             lines.append(f"**Execution chain:** {chain}\n")
 
         with open(os.path.join(flow_dir, "entry-paths.md"), "w", encoding="utf-8") as f:
-            f.write("\n".join(lines))
+            f.write(stamp.append("\n".join(lines)))
 
         # -------------------------
         # 5.7 Keyword-based paths
@@ -468,7 +502,7 @@ def run(
         with open(
             os.path.join(flow_dir, "folder-paths.md"), "w", encoding="utf-8"
         ) as f:
-            f.write("\n".join(lines))
+            f.write(stamp.append("\n".join(lines)))
 
         # -------------------------
         # 6. Normal onboarding
@@ -478,13 +512,16 @@ def run(
             flow=flow_result,
             graph=graph,
             insights=insights,
+            changes=changes,
+            risks=risks,
+            root_label=source,
         ).render()
 
         MarkdownReporter(
             scan=scan_result,
             flow=flow_result,
             output_file="ONBOARD.md",
-            output_root=output_root,
+            output_root=layout.folder,
             loc_data=loc_data,
             mermaid_depth=depth,
             mermaid_layered=layered,
@@ -492,10 +529,22 @@ def run(
             mermaid_collapse=collapse,
             insights=insights,
             function_flows=function_flows,
+            changes=changes,
+            risks=risks,
+            root_label=source,
+            footer=stamp,
         ).write()
 
+        if html:
+            from gnost.cli.commands.show import build_page
+
+            with open(layout.flow_html, "w", encoding="utf-8") as f:
+                f.write(build_page(os.path.join(flow_dir, "flow-complete.mmd")))
+
         if inject:
-            injector = ReadmeInjector(output_root)
+            injector = ReadmeInjector(
+                output_root, link=f"./{layout.relative_name}/ONBOARD.md"
+            )
             changed = injector.inject()
 
             if changed:
@@ -505,3 +554,10 @@ def run(
 
         if bar is not None:
             bar.update(1)
+
+    print(f"\nGNOST wrote its files to {layout.folder}")
+    print(f"  Guide: {layout.relative_name}/ONBOARD.md")
+    if html:
+        print("  Open the explorer: gnost open flow")
+    if first_run and layout.has_legacy_output():
+        print(f"\nNote: {layout.moved_notice()}")

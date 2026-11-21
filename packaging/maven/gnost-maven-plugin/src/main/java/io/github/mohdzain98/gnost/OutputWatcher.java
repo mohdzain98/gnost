@@ -8,10 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/** Notes which of the files GNOST writes (ONBOARD.md, docs/...) were created or changed by a run. */
+/** Notes which of the files GNOST writes (the .gnost folder, or the old ONBOARD.md and docs/) were created or changed by a run. */
 final class OutputWatcher {
 
-    static final String[] LOCATIONS = {"ONBOARD.md", "docs/flow", "docs/insights", "docs/analysis"};
+    static final String[] LOCATIONS = {
+        ".gnost/ONBOARD.md", ".gnost/insights.json", ".gnost/flow.html", ".gnost/flow", ".gnost/analysis",
+        "ONBOARD.md", "docs/flow", "docs/insights", "docs/analysis"
+    };
 
     private final List<File> roots;
     private Map<String, String> before = new LinkedHashMap<String, String>();

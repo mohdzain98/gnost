@@ -22,7 +22,13 @@ class SummaryReporter:
         graph: DependencyGraph,
         printer: Optional[Printer] = None,
         insights: OnboardingInsights = None,
+        changes=None,
+        risks=None,
+        root_label: Optional[str] = None,
     ):
+        self.root_label = root_label or scan.root
+        self.changes = changes
+        self.risks = risks
         self.scan = scan
         self.flow = flow
         self.graph = graph
@@ -45,11 +51,52 @@ class SummaryReporter:
         if self.insights:
             self._first_files()
             self._caution_areas()
+            self._change_hotspots()
+            self._risk()
             self._cycles()
 
     # -------------------------
     # Sections
     # -------------------------
+
+    CHANGE_HOTSPOT_LIMIT = 5
+
+    def _change_hotspots(self) -> None:
+        """Print the most-changed files, or why there is no history worth mentioning."""
+        changes = self.changes
+        if changes is None:
+            return
+        if not changes.history.available:
+            if changes.note_worth_showing:
+                self.printer.section("Change Hotspots")
+                self.printer.text(f"Not available: {changes.history.reason}")
+                self.printer.newline()
+            return
+        if not changes.hotspots:
+            return
+        self.printer.section(
+            f"Change Hotspots (last {changes.history.window_days} days)"
+        )
+        for h in changes.hotspots[: self.CHANGE_HOTSPOT_LIMIT]:
+            c = h.change
+            self.printer.bullet(
+                f"{c.path}  ({c.commits} commits, {c.author_count} authors, "
+                f"{c.recent_commits} recent)"
+            )
+        self.printer.newline()
+
+    def _risk(self) -> None:
+        """Print the files that are both fragile and changing."""
+        risks = self.risks
+        if risks is None or not risks.items:
+            return
+        self.printer.section("Risky and Changing")
+        for i in risks.items[: self.CHANGE_HOTSPOT_LIMIT]:
+            self.printer.bullet(
+                f"{i.path}  (risk {i.risk:g}: caution {i.structural:g}, "
+                f"change {i.churn:g}; {i.why})"
+            )
+        self.printer.newline()
 
     def _header(self):
         self.printer.title("GNOST — Project Onboarding Summary")
@@ -61,7 +108,7 @@ class SummaryReporter:
             f"{lang} ({count})" for lang, count in self.scan.languages.items()
         )
 
-        self.printer.kv("Root", self.scan.root)
+        self.printer.kv("Root", self.root_label)
         self.printer.kv("Languages", languages or "Unknown")
         self.printer.kv("Framework", self.scan.framework or "Not detected")
         self.printer.newline()

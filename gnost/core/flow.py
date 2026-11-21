@@ -84,6 +84,8 @@ class FlowBuilder:
 
         for entry in entry_files:
             self._walk(entry, paths, depths)
+        for extra in self._unreached_roots(depths):
+            self._walk(extra, paths, depths)
 
         edges = sorted(
             (src, dst)
@@ -133,6 +135,31 @@ class FlowBuilder:
             visited.update(unvisited)
             for dep in unvisited:
                 queue.append(path + [dep])
+
+    COVERAGE_FLOOR = (
+        0.5  # below this share of connected files, the entry misses the app
+    )
+
+    def _unreached_roots(self, depths: Dict[str, int]) -> List[str]:
+        """Top-level importers to walk too, when the entry points reach little of the graph.
+
+        Frameworks that wire code by scanning (Spring Boot, for one) have an entry class
+        that imports nothing from the project, which would leave every diagram empty.
+        """
+        connected = {
+            n
+            for n in self.graph.all_nodes()
+            if self.graph.dependencies_of(n) or self.graph.dependents_of(n)
+        }
+        if not connected or len(connected & set(depths)) >= self.COVERAGE_FLOOR * len(
+            connected
+        ):
+            return []
+        return sorted(
+            r
+            for r in self.graph.roots()
+            if r not in depths and self.graph.dependencies_of(r)
+        )
 
     def _resolve_entry_files(self) -> List[str]:
         """

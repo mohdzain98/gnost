@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import pytest
+
 import gnost.cli.app as app
 from gnost.analysis.core.models import (
     ConsolidatedReport,
@@ -9,7 +11,7 @@ from gnost.analysis.core.models import (
 )
 
 
-def test_analysis_output_paths_are_under_docs_analysis(tmp_path: Path):
+def test_analysis_output_paths_are_under_the_gnost_folder(tmp_path: Path):
     repo_root = tmp_path / "repo"
     repo_root.mkdir()
     (repo_root / "pyproject.toml").write_text("[project]\nname='x'\n", encoding="utf-8")
@@ -19,16 +21,16 @@ def test_analysis_output_paths_are_under_docs_analysis(tmp_path: Path):
     target.write_text("x = 1\n", encoding="utf-8")
 
     assert app._analysis_output_path(str(target)) == str(
-        repo_root / "docs" / "analysis" / "gnost_analysis.json"
+        repo_root / ".gnost" / "analysis" / "analysis.json"
     )
     assert app._analysis_html_output_path(str(target)) == str(
-        repo_root / "docs" / "analysis" / "gnost_analysis.html"
+        repo_root / ".gnost" / "analysis" / "analysis.html"
     )
 
 
 def test_analysis_output_stays_in_the_project_without_a_repo_marker(
-    tmp_path: Path, monkeypatch
-):
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     """No .git or pyproject.toml anywhere above: never write to the filesystem root."""
     project = tmp_path / "app"
     project.mkdir()
@@ -45,7 +47,7 @@ def test_analysis_output_stays_in_the_project_without_a_repo_marker(
         lambda p: False if str(p).endswith(marker) else real_isfile(p),
     )
     assert app._analysis_output_path(str(project)) == str(
-        project / "docs" / "analysis" / "gnost_analysis.json"
+        project / ".gnost" / "analysis" / "analysis.json"
     )
 
 
@@ -137,11 +139,7 @@ def test_analyze_out_writes_json_and_html_files(monkeypatch, tmp_path):
 
     result = app.main()
     assert result == 0
-    assert captured["json"] == str(
-        repo_root / "docs" / "analysis" / "gnost_analysis.json"
-    )
-    assert captured["html"] == str(
-        repo_root / "docs" / "analysis" / "gnost_analysis.html"
-    )
+    assert captured["json"] == str(repo_root / ".gnost" / "analysis" / "analysis.json")
+    assert captured["html"] == str(repo_root / ".gnost" / "analysis" / "analysis.html")
     assert captured["compact"] is True
     assert "findings" in captured["payload"]

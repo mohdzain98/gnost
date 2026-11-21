@@ -21,6 +21,19 @@ GRAPH_EDGE_THRESHOLD = 150
 _ARROW = re.compile(r"^\s*\w+\s+(?:-->|==>|-\.->)", re.MULTILINE)
 
 
+def build_page(path: str, mode: str = "auto") -> str:
+    """The self-contained HTML page for a .mmd or .md file."""
+    ext = os.path.splitext(path)[1].lower()
+    kind = "mermaid" if ext in _MERMAID_EXT else "markdown"
+    with open(path, encoding="utf-8") as f:
+        source = f.read()
+    if kind == "mermaid":
+        big = len(_ARROW.findall(source)) > GRAPH_EDGE_THRESHOLD
+        if mode == "graph" or (mode == "auto" and big):
+            kind = "graph"
+    return render_viewer_html(source, os.path.basename(path), kind)  # type: ignore[arg-type]
+
+
 def run(
     path: str,
     output: Optional[str] = None,
@@ -39,25 +52,13 @@ def run(
         if open_browser and not webbrowser.open(pathlib.Path(path).resolve().as_uri()):
             print("Could not open a browser; open the file above manually.")
         return 0
-    if ext in _MERMAID_EXT:
-        kind = "mermaid"
-    elif ext in _MARKDOWN_EXT:
-        kind = "markdown"
-    else:
+    if ext not in _MERMAID_EXT and ext not in _MARKDOWN_EXT:
         print(
             "gnost: supported files are .mmd, .mermaid, .md and .html", file=sys.stderr
         )
         return 2
 
-    with open(path, encoding="utf-8") as f:
-        source = f.read()
-
-    if kind == "mermaid":
-        big = len(_ARROW.findall(source)) > GRAPH_EDGE_THRESHOLD
-        if mode == "graph" or (mode == "auto" and big):
-            kind = "graph"
-
-    html = render_viewer_html(source, os.path.basename(path), kind)  # type: ignore[arg-type]
+    html = build_page(path, mode)
     if output is None:
         fd, output = tempfile.mkstemp(prefix="gnost-show-", suffix=".html")
         os.close(fd)

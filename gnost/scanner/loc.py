@@ -5,6 +5,7 @@ from gnost.scanner.classify import classify_lines
 from gnost.scanner.filters import (
     DEFAULT_EXCLUDES,
     is_gitignored,
+    is_noise_file,
     is_virtualenv_dir,
     load_gitignore,
     should_skip,
@@ -44,6 +45,10 @@ def scan(path=".", include=None, exclude=None, progress=False):
                 full_path = os.path.join(root, name)
 
                 if is_gitignored(full_path, path, gitignore):
+                    continue
+
+                # Vendored libraries and minified bundles are not the project's code.
+                if is_noise_file(full_path, path):
                     continue
 
                 try:

@@ -112,7 +112,7 @@ def test_should_ignore_and_gitignore_rules():
     assert not is_gitignored("/r/a.log", "/r", ["*.log", "!a.log"])
 
 
-def test_should_ignore_matches_below_the_scan_root_only(tmp_path):
+def test_should_ignore_matches_below_the_scan_root_only(tmp_path: Path) -> None:
     root = tmp_path / "build" / "proj"
     (root / "src").mkdir(parents=True)
     (root / "build").mkdir()
@@ -168,3 +168,74 @@ def test_declared_dependencies_override_a_source_guess(tmp_path):
     (tmp_path / "requirements.txt").write_text("rich\n")
     (tmp_path / "a.py").write_text("app = Flask(__name__)\n")
     assert _engine().scan(str(tmp_path)).framework is None
+
+
+def test_gitignore_patterns_match_like_git(tmp_path: Path) -> None:
+    root = tmp_path
+    for rel in (
+        "test/a.py",
+        "pkg/test/b.py",
+        "pkg/src/c.py",
+        "build/d.py",
+        "pkg/build/e.py",
+        "x.log",
+        "pkg/y.log",
+    ):
+        f = root / rel
+        f.parent.mkdir(parents=True, exist_ok=True)
+        f.write_text("x\n")
+    patterns = ["test/", "/build", "*.log", "!pkg/y.log"]
+
+    def ignored(rel):
+        return is_gitignored(str(root / rel), str(root), patterns)
+
+    # "test/" has no other slash, so it matches a folder of that name at any depth.
+    assert (
+        ignored("test/a.py")
+        and ignored("pkg/test/b.py")
+        and not ignored("pkg/src/c.py")
+    )
+    # "/build" is relative to the root only.
+    assert ignored("build/d.py") and not ignored("pkg/build/e.py")
+    # Later negations win.
+    assert ignored("x.log") and not ignored("pkg/y.log")
+
+
+def test_folder_only_pattern_does_not_match_a_file_of_that_name(tmp_path: Path) -> None:
+    (tmp_path / "test").write_text("a file called test\n")
+    assert not is_gitignored(str(tmp_path / "test"), str(tmp_path), ["test/"])
+
+
+def test_summary_scan_skips_vendored_and_minified_js(tmp_path: Path) -> None:
+    from gnost.scanner.loc import scan
+
+    (tmp_path / "src").mkdir()
+    (tmp_path / "src" / "app.js").write_text("const a = 1;\n")
+    (tmp_path / "vendor").mkdir()
+    (tmp_path / "vendor" / "big.js").write_text("const b = 2;\n" * 50)
+    (tmp_path / "src" / "bundle.min.js").write_text("x\n" * 10)
+    result = scan(str(tmp_path))
+    assert [f["path"] for f in result["files"]] == [str(Path("src") / "app.js")]
+
+
+def test_one_row_per_language() -> None:
+    from gnost.config.languages import by_language_name
+
+    merged = by_language_name(
+        {
+            "js": {"files": 2, "loc": 10, "code": 8},
+            "jsx": {"files": 1, "loc": 5, "code": 4},
+            "py": {"files": 3, "loc": 30, "code": 25},
+        }
+    )
+    assert merged["JavaScript"] == {"files": 3, "loc": 15, "code": 12}
+    assert list(merged) == ["JavaScript", "Python"]
+
+
+def test_exclude_keeps_the_dot_of_hidden_folder_patterns(tmp_path) -> None:
+    from gnost.scanner.filters import is_excluded
+
+    root = str(tmp_path)
+    assert is_excluded(str(tmp_path / ".gnost" / "a.py"), root, [".gnost"])
+    assert not is_excluded(str(tmp_path / "gnost" / "a.py"), root, [".gnost"])
+    assert is_excluded(str(tmp_path / "legacy" / "a.py"), root, ["./legacy"])

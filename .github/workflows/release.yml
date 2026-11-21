@@ -239,6 +239,8 @@ jobs:
         with:
           distribution: temurin
           java-version: "17"
+          cache: maven
+          cache-dependency-path: packaging/maven/**/pom.xml
       - uses: actions/download-artifact@v4
         with:
           path: artifacts

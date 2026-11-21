@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.Proxy;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
@@ -15,8 +17,18 @@ import java.security.NoSuchAlgorithmException;
 /** Downloads one file over http, https or file URLs and computes SHA-256 sums. */
 final class Downloader {
 
-    private static final int CONNECT_TIMEOUT_MS = 20000;
+    private static final int CONNECT_TIMEOUT_MS = 60000;
     private static final int READ_TIMEOUT_MS = 120000;
+
+    /** The server answered, but not with the file (404, 403, ...). Retrying will not help. */
+    static final class HttpStatusException extends IOException {
+        final int code;
+
+        HttpStatusException(int code, String url) {
+            super("HTTP " + code + " from " + url);
+            this.code = code;
+        }
+    }
 
     private Downloader() {
     }
@@ -32,7 +44,15 @@ final class Downloader {
                 HttpURLConnection h = (HttpURLConnection) c;
                 h.setInstanceFollowRedirects(false);
                 h.setRequestProperty("User-Agent", "gnost-maven-plugin");
-                int code = h.getResponseCode();
+                int code;
+                try {
+                    code = h.getResponseCode();
+                } catch (SocketTimeoutException e) {
+                    // Name the host: GitHub redirects downloads to another host, and that is the one that may fail.
+                    throw new IOException("timed out connecting to " + current.getHost(), e);
+                } catch (UnknownHostException e) {
+                    throw new IOException("cannot find the host " + current.getHost(), e);
+                }
                 if (code == 301 || code == 302 || code == 303 || code == 307 || code == 308) {
                     String next = h.getHeaderField("Location");
                     h.disconnect();
@@ -44,15 +64,15 @@ final class Downloader {
                 }
                 if (code != 200) {
                     h.disconnect();
-                    throw new IOException("HTTP " + code + " from " + current);
+                    throw new HttpStatusException(code, current.toString());
                 }
             }
-            return copy(c, out);
+            return copy(c, out, current);
         }
         throw new IOException("too many redirects from " + url);
     }
 
-    private static long copy(URLConnection c, File out) throws IOException {
+    private static long copy(URLConnection c, File out, URL from) throws IOException {
         long total = 0;
         try (InputStream in = c.getInputStream(); OutputStream os = Files.newOutputStream(out.toPath())) {
             byte[] buf = new byte[65536];
@@ -61,6 +81,8 @@ final class Downloader {
                 os.write(buf, 0, n);
                 total += n;
             }
+        } catch (SocketTimeoutException e) {
+            throw new IOException("timed out while downloading from " + from.getHost(), e);
         }
         return total;
     }

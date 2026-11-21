@@ -29,8 +29,9 @@ class InsightBuilder:
         flow: FlowResult,
         graph: DependencyGraph,
         caution: Optional[CautionSettings] = None,
-    ):
+    ) -> None:
         self.caution = caution or CautionSettings()
+        self.caution_scores: List[CautionScore] = []
         self.scan = scan
         self.flow = flow
         self.graph = graph
@@ -104,6 +105,7 @@ class InsightBuilder:
     def _build_caution_areas(self) -> List[CautionInsight]:
         """Files that are risky to change, from the rule-based caution score."""
         ranked = rank_files(self.scan, self.graph, self.flow.cycles, self.caution)
+        self.caution_scores = ranked  # every file's score, for the risk calculation
         reported = [s for s in ranked if s.score >= self.caution.threshold]
         return [self._to_insight(s) for s in reported[: self.caution.limit]]
 

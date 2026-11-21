@@ -13,7 +13,7 @@ from collections import defaultdict
 from typing import List, Dict, Any, Tuple
 
 from gnost.utils.paths import tail
-from gnost.analysis.utils.tool_command import tool_command
+from gnost.analysis.utils.tool_command import tool_command, untrusted_repo
 from gnost.analysis.core.interfaces import QualityAnalyzer
 from gnost.analysis.core.file_utils import find_python_files
 from gnost.analysis.core.models import (
@@ -607,6 +607,9 @@ class ReadabilityAnalyzer(QualityAnalyzer):
             proc = await asyncio.create_subprocess_exec(
                 *tool_command("ruff"),
                 "check",
+                *(
+                    ["--isolated"] if untrusted_repo() else []
+                ),  # ignore the repo's ruff config
                 os.fspath(file_path),
                 "--select",
                 ",".join(selected),

@@ -112,7 +112,7 @@ Which channel should I use?
 First run
 ---------
 
-``gnost onboard`` writes into your project: ``ONBOARD.md`` and ``docs/flow/``.
+``gnost onboard`` writes one folder into your project: ``.gnost/`` (the guide, diagrams, JSON and the explorer page).
 ``gnost analyze`` runs bandit, radon, mypy and ruff for you; the binary and the
 Docker image already carry them. ``jscpd`` (duplicate code) is optional and is
 used only if it is on your ``PATH``.

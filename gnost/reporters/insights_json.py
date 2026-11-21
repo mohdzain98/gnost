@@ -23,11 +23,12 @@ from gnost.core.ranker import HotspotRanker
 from gnost.models.insights import OnboardingInsights
 from gnost.scanner.models import ScanResult
 
-SCHEMA_VERSION = "1.3"
+SCHEMA_VERSION = "1.4"
 SCHEMA_PATH = os.path.join(
     os.path.dirname(os.path.dirname(__file__)), "schemas", "insights.schema.json"
 )
 HOTSPOT_LIMIT = 20
+CHANGE_HISTORY_LIMIT = 50
 
 
 def build_payload(
@@ -37,6 +38,8 @@ def build_payload(
     insights: OnboardingInsights,
     flows: Optional[list] = None,
     call_graph: Any = None,
+    changes: Any = None,
+    risks: Any = None,
 ) -> Dict[str, Any]:
     root = scan.root
 
@@ -82,6 +85,8 @@ def build_payload(
             }
             for r in scan.routes
         ],
+        "change_history": _change_history(changes),
+        "risk": _risk(risks),
         "flows": [_flow(f, rel) for f in (flows or [])],
         "callgraph": {
             "functions": len(call_graph.functions) if call_graph else 0,
@@ -187,3 +192,62 @@ def load_schema() -> Optional[Dict[str, Any]]:
             return json.load(f)
     except OSError:
         return None
+
+
+def _change_history(changes: Any) -> Dict[str, Any]:
+    """Change hotspots from git history (paths relative to the scanned folder)."""
+    if changes is None or not changes.history.available:
+        history = changes.history if changes is not None else None
+        return {
+            "available": False,
+            "reason": history.reason if history else "not collected",
+            "window_days": history.window_days if history else 0,
+            "commits_analyzed": 0,
+            "files": [],
+        }
+    return {
+        "available": True,
+        "reason": None,
+        "window_days": changes.history.window_days,
+        "commits_analyzed": changes.history.commits,
+        "files": [
+            {
+                "path": h.change.path,
+                "score": h.score,
+                "commits": h.change.commits,
+                "authors": h.change.author_count,
+                "recent_commits": h.change.recent_commits,
+                "lines_added": h.change.added,
+                "lines_removed": h.change.removed,
+                "last_changed": _date(h.change.last_changed),
+            }
+            for h in changes.hotspots[:CHANGE_HISTORY_LIMIT]
+        ],
+    }
+
+
+def _date(stamp: int) -> str:
+    from datetime import datetime, timezone
+
+    return datetime.fromtimestamp(stamp, tz=timezone.utc).strftime("%Y-%m-%d")
+
+
+def _risk(risks: Any) -> Dict[str, Any]:
+    """Files that are fragile to change and changing often (caution score x change activity)."""
+    items = risks.items[: risks.settings.limit] if risks is not None else []
+    return {
+        "threshold": risks.settings.threshold if risks is not None else 0,
+        "files": [
+            {
+                "path": i.path,
+                "risk": i.risk,
+                "structural_score": i.structural,
+                "change_score": i.churn,
+                "commits": i.commits,
+                "authors": i.authors,
+                "recent_commits": i.recent_commits,
+                "reasons": list(i.reasons),
+            }
+            for i in items
+        ],
+    }

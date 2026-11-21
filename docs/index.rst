@@ -4,6 +4,10 @@ GNOST — Codebase Knowledge
 GNOST helps developers understand unfamiliar codebases by identifying
 entry points, execution flow, and core logic automatically.
 
+It works on a folder **or straight from a repository address**
+(``gnost onboard https://github.com/owner/repo``): the repository is cloned read only into a temporary
+folder, nothing in it is run, and the clone is deleted afterwards.
+
 It also supports code quality analysis through ``gnost analyze`` to score and flag
 maintainability, robustness, observability, and readability issues.
 
@@ -37,8 +41,10 @@ Complete CLI usage::
         version   Display gnost version
         onboard   Onboard a new codebase
         analyze   Analyze the codebase
+        changes   What a change touches: blast radius, risk, new cycles
         open      Open a report or diagram in the browser
         show      Same as `open FILE` (shorter name)
+        init      Write a complete .gnost.toml and optionally add GNOST to your build
 
     Command Options:
     summary|stats|folders|files:
@@ -52,10 +58,21 @@ Complete CLI usage::
         --inject   Inject onboarding link into README.md files
         --layered  Produce Layered mermaid as Entry -> Core -> Leaf
         --depth    Limit execution flow depth (e.g. --depth 2)
-        --json [FILE]    Also write insights as JSON (default: docs/insights/gnost_insights.json)
+        --json FILE      Write the insights JSON to FILE instead of .gnost/insights.json
+        --no-html        Do not write the flow explorer page (.gnost/flow.html)
         --insights-only  Write only the insights JSON
         --max-edges N    Largest diagram drawn file by file (default 80)
         --collapse [LEVEL]  Group diagrams by folder
+
+    init:
+        path             Project folder (default: .)
+        --print          Print the default settings instead of writing .gnost.toml
+        --force          Overwrite files that already exist
+        --dry-run        Show what would change, write nothing
+        --pom            Add gnost-maven-plugin to pom.xml
+        --npm            Add a "gnost" script to package.json
+        --github-action  Write .github/workflows/gnost.yml
+        --agents         Write AGENTS.md pointing coding agents to the .gnost/ folder
 
     open|show:
         target                  report (default), flow, or a .mmd / .md / .html file
@@ -69,7 +86,7 @@ Complete CLI usage::
         path                    File or directory to analyze (default: .)
         -a, --analyzer          Enable only specific analyzers
         --parallel              Run analyzers in parallel
-        -o, --out               Write JSON and HTML report to docs/analysis/gnost_analysis.json|html
+        -o, --out               Write JSON and HTML report to .gnost/analysis/analysis.json|html
         -v, --verbose           Show traceback on failures
         --quiet                 Reduce logs; keep warnings/errors only
         --list-analyzers        List available analyzers and exit
@@ -77,9 +94,11 @@ Complete CLI usage::
         --compact               Write compact JSON when --out is used
         --no-progress           Hide progress updates
         --max-findings N        Per-analyzer findings limit (default: 1000)
-
-    open:
-        report|rpt              Open the generated report in browser
+        --fail-under SCORE      Exit with code 3 when the final score (0-10) is below SCORE
+        --baseline [FILE]       Report only findings that are not in the baseline
+        --write-baseline [FILE] Save today's findings as the baseline
+        --fail-on-new           With a baseline, exit with code 3 on new findings
+        --sarif [FILE]          Write the findings as SARIF (for GitHub code scanning)
 
     files:
         --top      Number of files to show (default: 5)
@@ -94,6 +113,8 @@ Run GNOST commands from the root of a repository::
     gnost files [path] --top 10
     gnost onboard [path]
     gnost analyze [path] --parallel -o
+    gnost changes origin/main
+    gnost onboard https://github.com/owner/repo
     gnost open report
 
 Subcommand usage::
@@ -104,6 +125,7 @@ Subcommand usage::
     gnost files [path] [--include INCLUDE] [--exclude EXCLUDE] [--progress] [--top TOP]
     gnost onboard [path] [--mermaid] [--progress] [--inject] [--layered] [--depth DEPTH] [--json [FILE]] [--insights-only] [--max-edges N] [--collapse [LEVEL]]
     gnost analyze [path] [--parallel] [--out] [--list-analyzers] [--no-progress]
+    gnost changes BASE[..HEAD] [path] [--depth N] [--format text|markdown|json] [--findings] [--no-cycles] [--no-write]
     gnost open report|rpt
     gnost version
 
@@ -128,8 +150,14 @@ Key Commands
 ``analyze``
     Analyze code quality and generate JSON/HTML findings report.
 
+``changes``
+    Show what a change touches: changed files, blast radius, risky files, routes, new cycles.
+
 ``open``
-    Open the generated analysis report from terminal.
+    Open the analysis report, the flow explorer or a diagram in the browser.
+
+``init``
+    Write a complete ``.gnost.toml`` and optionally add GNOST to your build.
 
 ``version``
     Display GNOST version.
@@ -142,13 +170,19 @@ Generate onboarding documentation::
 
     gnost onboard .
 
+Onboard any public repository without cloning it yourself (read only; the results land in the
+current folder, see :ref:`remote-repositories`)::
+
+    gnost onboard https://github.com/owner/repo
+    gnost analyze git@github.com:owner/repo.git --ref v1.2.0
+
 Generate only a Mermaid flow diagram::
 
     gnost onboard . --mermaid
 
 This produces:
 
-- **ONBOARD.md** — onboarding guide for new contributors
+- **.gnost/ONBOARD.md** — onboarding guide for new contributors
 - **flow folder** — pure Mermaid execution flow diagrams
 
   - *flow-full.md* — Full Flow diagram
@@ -171,8 +205,8 @@ Run with all analyzers and write report files::
 Available findings output:
 
 - Terminal rich table with analyzer score and severity counts
-- ``docs/analysis/gnost_analysis.json`` for CI or scripting
-- ``docs/analysis/gnost_analysis.html`` for interactive inspection
+- ``.gnost/analysis/analysis.json`` for CI or scripting
+- ``.gnost/analysis/analysis.html`` for interactive inspection
 
 Example report:
 
@@ -196,10 +230,14 @@ Use dedicated pages for details:
    Home <self>
    install
    commands
+   ci
+   changes
    onboard
+   folder
    analyze
    analyzer_guide
    configuration
+   gallery
 
 Options
 -------
@@ -235,7 +273,7 @@ Options
     Alias for ``--analyzer``.
 
 ``-o``
-    Save analysis results in ``docs/analysis`` (JSON + HTML).
+    Save analysis results in ``.gnost/analysis`` (JSON + HTML).
 
 ``--timeout``
     Time limit for analyzer runs.
@@ -313,3 +351,7 @@ Links
 - Source Code: https://github.com/mohdzain98/gnost
 - Documentation: https://gnost.readthedocs.io
 - PyPI: https://pypi.org/project/gnost/
+- npm: https://www.npmjs.com/package/gnost-cli
+- Maven Central: https://central.sonatype.com/artifact/io.github.mohdzain98/gnost-maven-plugin
+- Docker: https://github.com/mohdzain98/gnost/pkgs/container/gnost
+- Changelog: https://github.com/mohdzain98/gnost/blob/main/CHANGELOG.md

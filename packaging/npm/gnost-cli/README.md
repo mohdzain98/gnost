@@ -11,8 +11,9 @@ GNOST is a static analysis CLI that turns an unfamiliar codebase into an onboard
 - **How it flows:** Mermaid diagrams of imports and calls, plus function-level flow for Python.
 - **What matters most:** hotspot files and caution areas (risky files to read carefully).
 - **Circular imports**, listed and drawn.
-- **`ONBOARD.md`**: a written guide to the repository, and optional JSON for tools and AI.
+- **`ONBOARD.md`**: a written guide to the repository, and the same facts as JSON for tools and AI, all saved in a `.gnost/` folder.
 - **Quality report** (`gnost analyze`) for maintainability, robustness, observability and readability. Python projects only for now.
+- **Any repository by address:** `npx gnost-cli onboard https://github.com/owner/repo` clones it read only, writes the results to your current folder and deletes the clone.
 - **Languages:** Python, JavaScript, TypeScript and Java.
 
 ## Explore the flow in your browser
@@ -25,7 +26,10 @@ GNOST is a static analysis CLI that turns an unfamiliar codebase into an onboard
 
 ```bash
 npx gnost-cli onboard .
+npx gnost-cli onboard https://github.com/owner/repo   # any public repository, read only
 ```
+
+A repository address is cloned into a temporary folder (nothing in it is run), the results are written to your current folder, and the clone is deleted.
 
 ## Install globally
 
@@ -37,9 +41,8 @@ gnost onboard .
 ## Commands
 
 ```bash
-gnost onboard .                 # ONBOARD.md and Mermaid diagrams in docs/flow
+gnost onboard .                 # writes the .gnost/ folder: guide, diagrams, JSON, explorer
 gnost onboard . --layered --depth 3
-gnost onboard . --json          # also write docs/insights/gnost_insights.json
 gnost summary .                 # languages, files and lines of code
 gnost stats .                   # detailed stats per language
 gnost folders .                 # lines of code by folder

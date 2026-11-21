@@ -32,6 +32,10 @@ final class Provisioner {
         }
     }
 
+    static final int ATTEMPTS = 3;
+    /** Pause before attempt n+1 is n times this; tests shorten it. */
+    static long RETRY_PAUSE_MS = 2000;
+
     private final File home;
     private final String release;
     private final String key;
@@ -119,12 +123,7 @@ final class Provisioner {
             }
             String url = url();
             log.info("Downloading " + url);
-            long bytes;
-            try {
-                bytes = Downloader.download(url, archive, proxy);
-            } catch (IOException e) {
-                throw new FetchException("could not download " + url + ": " + e.getMessage(), e);
-            }
+            long bytes = downloadWithRetries(url, archive);
             String actual = Downloader.sha256(archive);
             if (!actual.equals(expectedSha)) {
                 throw new FetchException("checksum mismatch for " + url + " (expected " + expectedSha
@@ -150,6 +149,34 @@ final class Provisioner {
             return executable(cacheDir());
         } finally {
             deleteTree(work);
+        }
+    }
+
+    /** Three attempts for a slow or flaky network; an HTTP error answer is final. */
+    private long downloadWithRetries(String url, File archive) throws FetchException {
+        IOException last = null;
+        for (int attempt = 1; attempt <= ATTEMPTS; attempt++) {
+            try {
+                return Downloader.download(url, archive, proxy);
+            } catch (Downloader.HttpStatusException e) {
+                throw new FetchException("could not download " + url + ": " + e.getMessage(), e);
+            } catch (IOException e) {
+                last = e;
+                if (attempt < ATTEMPTS) {
+                    log.info("Download attempt " + attempt + " failed (" + e.getMessage() + "), trying again");
+                    pause(attempt * RETRY_PAUSE_MS);
+                }
+            }
+        }
+        throw new FetchException("could not download " + url + " after " + ATTEMPTS + " attempts: "
+                + (last == null ? "unknown error" : last.getMessage()), last);
+    }
+
+    private static void pause(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 

@@ -14,8 +14,9 @@ Good for first-day onboarding, audits and exploring code you did not write.
 - **Execution flow:** Mermaid diagrams of imports, plus function-level flow for Python.
 - **Hotspot files and caution areas:** the files most worth reading first, and the risky ones to read carefully.
 - **Circular imports**, listed and drawn.
-- **`ONBOARD.md`:** a written guide to the repository, with optional JSON output for tools and AI.
+- **`ONBOARD.md`:** a written guide to the repository, plus the same facts as JSON for tools and AI, all saved in a `.gnost/` folder.
 - **Quality analysis:** maintainability, robustness, observability and readability, with a score and prioritized findings (Python projects).
+- **Any repository by address:** `gnost onboard https://github.com/owner/repo` clones it read only, writes the results to your current folder and deletes the clone. Nothing in the repository is run.
 - **Languages:** Python, JavaScript, TypeScript and Java.
 
 ## Install
@@ -42,9 +43,8 @@ Requires Python 3.9 or newer.
 ## Usage
 
 ```bash
-gnost onboard .                  # ONBOARD.md and Mermaid diagrams in docs/flow
+gnost onboard .                  # writes the .gnost/ folder: guide, diagrams, JSON, explorer
 gnost onboard . --layered --depth 3
-gnost onboard . --json           # also write docs/insights/gnost_insights.json
 gnost summary .                  # languages, files and lines of code
 gnost stats .                    # detailed stats per language
 gnost folders .                  # lines of code by folder
@@ -52,6 +52,9 @@ gnost files .                    # largest files
 gnost analyze .                  # quality report
 gnost analyze . --parallel -o    # run analyzers in parallel and open the report
 gnost open flow                  # interactive flow explorer in your browser
+gnost changes origin/main        # what your change touches: blast radius, risk, new cycles
+gnost onboard https://github.com/owner/repo   # any public repository (read only)
+gnost init                       # write a complete .gnost.toml
 ```
 
 Add an optional `.gnost.toml` at the repository root for excludes, weights and thresholds. Command-line flags win over the file.
