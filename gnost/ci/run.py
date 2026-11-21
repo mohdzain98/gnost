@@ -42,7 +42,9 @@ class CiOptions:
         baseline = cls._path(
             getattr(args, "baseline", None),
             layout.baseline_json,
-            os.path.join(layout.root, configured) if configured else None,
+            os.path.normpath(os.path.join(layout.root, configured))
+            if configured
+            else None,
         )
         return cls(
             fail_under=config.pick(

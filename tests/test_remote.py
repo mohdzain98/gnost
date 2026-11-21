@@ -155,7 +155,7 @@ def test_a_checkout_over_the_size_limit_is_refused_and_removed() -> None:
 @needs_git
 def test_a_real_clone_through_git(tmp_path: Path) -> None:
     source = make_repo(tmp_path / "src", [("Ada", {"m.py": "x = 1\n"}, D1)])
-    with RemoteClone(RemoteUrl(f"file://{source}"), protocols=("file",)) as folder:
+    with RemoteClone(RemoteUrl(source.as_uri()), protocols=("file",)) as folder:
         assert (Path(folder) / "m.py").read_text() == "x = 1\n"
     assert not os.path.exists(folder)
 
@@ -163,7 +163,7 @@ def test_a_real_clone_through_git(tmp_path: Path) -> None:
 def test_a_file_address_is_not_allowed_by_default(tmp_path: Path) -> None:
     source = make_repo(tmp_path / "src", [("Ada", {"m.py": "x = 1\n"}, D1)])
     with pytest.raises(RemoteError):
-        with RemoteClone(RemoteUrl(f"file://{source}")):
+        with RemoteClone(RemoteUrl(source.as_uri())):
             pass
 
 
@@ -248,7 +248,7 @@ def test_analyzing_a_remote_repository_never_runs_its_code_or_reads_its_config(
     monkeypatch.setattr(remote_module, "RemoteUrl", FileUrl)
     monkeypatch.setattr(remote_module, "RemoteClone", FileClone)
     monkeypatch.setattr(
-        sys, "argv", ["gnost", "analyze", f"file://{repo}", "--no-progress", "-o"]
+        sys, "argv", ["gnost", "analyze", repo.as_uri(), "--no-progress", "-o"]
     )
 
     app.main()

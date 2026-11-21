@@ -366,7 +366,10 @@ class HistoryReader:
 
     def _log_command(self, now: float) -> List[str]:
         """The one git log call: numstat, renames, mailmap, relative to the scanned folder."""
-        since = datetime.fromtimestamp(now - self.settings.days * DAY, tz=timezone.utc)
+        # clamped: Windows cannot build a date before 1970 (a huge `days` would crash)
+        since = datetime.fromtimestamp(
+            max(0.0, now - self.settings.days * DAY), tz=timezone.utc
+        )
         return [
             "log",
             "--no-merges",
