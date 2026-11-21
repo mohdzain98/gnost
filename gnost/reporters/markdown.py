@@ -245,7 +245,9 @@ class MarkdownReporter:
             "To understand specific scenarios, see the entry-based execution paths:\n\n"
             "- 📍 [Entry-based Paths](flow/entry-paths.md)\n\n"
             "- 🧭 [folder-based Paths](flow/folder-paths.md)\n\n"
-            "(Complete system flow: [flow/flow-full.md](flow/FLOW-full.md))\n"
+            "(Whole system: [flow/FLOW-full.md](flow/FLOW-full.md). For a small project it is the same as "
+            "[flow/flow-complete.mmd](flow/flow-complete.mmd), every file and import; for a big one "
+            "FLOW-full groups them by folder to stay readable. Interactive: `gnost open flow`.)\n"
         )
 
     def _mermaid_flow(self) -> str:

@@ -78,7 +78,7 @@ Complete CLI usage::
         target                  report (default), flow, or a .mmd / .md / .html file
                                 (`show` takes only a file)
         --path FILE             Custom report or diagram path
-        --view auto|graph|mermaid  Interactive graph for big diagrams (auto), or force one
+        --view auto|graph|mermaid  Interactive explorer (default); mermaid draws one flat picture
         -o, --output FILE       Where to save the HTML page (default: a temp file)
         --no-open               Write the HTML but do not open a browser
 
@@ -170,8 +170,8 @@ Generate onboarding documentation::
 
     gnost onboard .
 
-Onboard any public repository without cloning it yourself (read only; the results land in the
-current folder, see :ref:`remote-repositories`)::
+Onboard any public repository without cloning it yourself (read only; the results land in
+``.gnost/<repo-name>/`` of the current folder, see :ref:`remote-repositories`)::
 
     gnost onboard https://github.com/owner/repo
     gnost analyze git@github.com:owner/repo.git --ref v1.2.0

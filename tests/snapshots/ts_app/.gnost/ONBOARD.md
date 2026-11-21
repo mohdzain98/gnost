@@ -75,7 +75,7 @@ To understand specific scenarios, see the entry-based execution paths:
 
 - 🧭 [folder-based Paths](flow/folder-paths.md)
 
-(Complete system flow: [flow/flow-full.md](flow/FLOW-full.md))
+(Whole system: [flow/FLOW-full.md](flow/FLOW-full.md). For a small project it is the same as [flow/flow-complete.mmd](flow/flow-complete.mmd), every file and import; for a big one FLOW-full groups them by folder to stay readable. Interactive: `gnost open flow`.)
 
 ---
 

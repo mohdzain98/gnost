@@ -16,7 +16,7 @@ Good for first-day onboarding, audits and exploring code you did not write.
 - **Circular imports**, listed and drawn.
 - **`ONBOARD.md`:** a written guide to the repository, plus the same facts as JSON for tools and AI, all saved in a `.gnost/` folder.
 - **Quality analysis:** maintainability, robustness, observability and readability, with a score and prioritized findings (Python projects).
-- **Any repository by address:** `gnost onboard https://github.com/owner/repo` clones it read only, writes the results to your current folder and deletes the clone. Nothing in the repository is run.
+- **Any repository by address:** `gnost onboard https://github.com/owner/repo` clones it read only, writes the results to `.gnost/<repo-name>/` in your current folder and deletes the clone. Nothing in the repository is run.
 - **Languages:** Python, JavaScript, TypeScript and Java.
 
 ## Install

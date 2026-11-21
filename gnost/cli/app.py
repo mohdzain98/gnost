@@ -346,8 +346,8 @@ def main():
             )
             + "\n"
             "  onboard|analyze|changes also take an https:// or ssh repository address\n"
-            "    in place of the folder (cloned to a temporary folder, results go to the\n"
-            "    current folder), and --ref BRANCH to pick a branch or tag.\n\n"
+            "    in place of the folder (cloned to a temporary folder, results go to\n"
+            "    .gnost/<repo-name>/ in the current folder), and --ref BRANCH to pick a branch or tag.\n\n"
             "  changes:\n"
             "    refs             BASE or BASE..HEAD, compared like a pull request\n"
             "    --depth N        How far to follow importers (default 3)\n"
@@ -359,7 +359,7 @@ def main():
             "                            flow: the flow explorer; or a .mmd, .md or .html file\n"
             "                            (`show` takes only a file)\n"
             "    --path FILE             Custom report or diagram path\n"
-            "    --view auto|graph|mermaid  Interactive graph for big diagrams (auto), or force one\n"
+            "    --view auto|graph|mermaid  Interactive explorer (default); mermaid draws one flat picture\n"
             "    -o, --output FILE       Where to save the HTML page (default: a temp file)\n"
             "    --no-open               Write the HTML but do not open a browser\n\n"
             "Use `gnost <command> --help` for full command options."
@@ -589,7 +589,7 @@ def main():
         "--view",
         choices=["auto", "graph", "mermaid"],
         default="auto",
-        help="auto: interactive graph for big diagrams, Mermaid otherwise",
+        help="auto and graph: the interactive explorer (default); mermaid: one flat Mermaid picture",
     )
     open_cmd.add_argument("-o", "--output", help="Where to save the HTML page")
     open_cmd.add_argument(
@@ -670,7 +670,7 @@ def main():
         "--view",
         choices=["auto", "graph", "mermaid"],
         default="auto",
-        help="auto: interactive graph for big diagrams, Mermaid otherwise",
+        help="auto and graph: the interactive explorer (default); mermaid: one flat Mermaid picture",
     )
     show_cmd.add_argument(
         "--no-open", action="store_true", help="Write the HTML page but do not open it"
@@ -693,6 +693,7 @@ def _run_remote_or_local(args: argparse.Namespace) -> int:
             )  # results go to the current folder, not the clone
             args.remote = True
             args.source = target.url.text
+            args.repo_slug = target.url.slug  # results go to .gnost/<repo-name>/
             return _dispatch(args)
     except RemoteError as exc:
         print(f"gnost: {exc}", file=sys.stderr)
@@ -703,6 +704,7 @@ def _dispatch(args: argparse.Namespace) -> int:
     """Run one parsed command."""
     output_root = getattr(args, "output_root", None)
     remote = getattr(args, "remote", False)
+    repo_slug = getattr(args, "repo_slug", None)
     if args.cmd == "init":
         from gnost.cli.commands.init import run as init_run
 
@@ -727,6 +729,7 @@ def _dispatch(args: argparse.Namespace) -> int:
             write=not args.no_write,
             output_root=output_root,
             remote=remote,
+            output_subdir=repo_slug,
         )
 
     if args.cmd == "show":
@@ -747,6 +750,12 @@ def _dispatch(args: argparse.Namespace) -> int:
             print(f"gnost: {exc}", file=sys.stderr)
             return 2
         report_warnings(config)
+        # one folder per remote repository, so several runs do not overwrite each other
+        output_dir = (
+            os.path.join(config.output_dir, repo_slug)
+            if repo_slug
+            else config.output_dir
+        )
 
     if args.cmd == "onboard":
         onboard_run(
@@ -769,7 +778,7 @@ def _dispatch(args: argparse.Namespace) -> int:
             ),
             exclude=config.exclude,
             caution=config.caution_settings(),
-            output_dir=config.output_dir,
+            output_dir=output_dir,
             html=not getattr(args, "no_html", False),
             history=(
                 dataclasses.replace(config.history_settings(), allow_shallow=True)
@@ -797,7 +806,7 @@ def _dispatch(args: argparse.Namespace) -> int:
             return ExitCode.USAGE
 
         ci_options = CiOptions.from_args(
-            args, config, _layout(target_path, config.output_dir, output_root)
+            args, config, _layout(target_path, output_dir, output_root)
         )
         if ci_options.problem():
             logger.error(f"Error: {ci_options.problem()}")
@@ -870,21 +879,19 @@ def _dispatch(args: argparse.Namespace) -> int:
         payload = _to_dict_payload(outcome.report)
         if outcome.baseline_summary():
             payload["baseline"] = outcome.baseline_summary()
-        html_output = _analysis_html_output_path(
-            target_path, config.output_dir, output_root
-        )
+        html_output = _analysis_html_output_path(target_path, output_dir, output_root)
         if args.out:
             try:
-                _layout(target_path, config.output_dir, output_root).prepare()
+                _layout(target_path, output_dir, output_root).prepare()
                 output_file = _analysis_output_path(
-                    target_path, config.output_dir, output_root
+                    target_path, output_dir, output_root
                 )
                 analysis.write_json_file(output_file, payload, compact=args.compact)
                 logger.info(f"✅ Findings saved to {output_file}")
                 if args.quiet:
                     cprint(f"✅ Findings saved to {output_file}", "green")
                 html_output = _analysis_html_output_path(
-                    target_path, config.output_dir, output_root
+                    target_path, output_dir, output_root
                 )
                 render_analysis_html(payload, html_output)
                 logger.info(f"✅ Interactive HTML report saved to {html_output}")
@@ -894,7 +901,7 @@ def _dispatch(args: argparse.Namespace) -> int:
                     )
             except Exception as e:
                 logger.error(
-                    f"❌ Failed to write output file '{_analysis_output_path(target_path, config.output_dir, output_root)}': {e}, use verbose to check"
+                    f"❌ Failed to write output file '{_analysis_output_path(target_path, output_dir, output_root)}': {e}, use verbose to check"
                 )
                 if args.verbose:
                     traceback.print_exc()
@@ -910,10 +917,15 @@ def _dispatch(args: argparse.Namespace) -> int:
             open_cmd = _analysis_open_command(html_output)
             console = Console()
             console.print("[blue]To open the findings report in browser:[/blue]")
-            console.print(
-                "  Either run: [cyan]gnost open report[/cyan] (or [cyan]gnost open rpt[/cyan])"
-            )
-            console.print(f"  or run: [cyan]{open_cmd}[/cyan]")
+            if (
+                repo_slug
+            ):  # plain `open report` does not look in the repository's subfolder
+                console.print(f"  Run: [cyan]gnost open {html_output}[/cyan]")
+            else:
+                console.print(
+                    "  Either run: [cyan]gnost open report[/cyan] (or [cyan]gnost open rpt[/cyan])"
+                )
+                console.print(f"  or run: [cyan]{open_cmd}[/cyan]")
         if not args.out:
             msg = "To see the findings, use the -o/--out argument."
             if args.quiet:

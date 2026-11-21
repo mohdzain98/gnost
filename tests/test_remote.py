@@ -282,8 +282,10 @@ def test_analyzing_a_remote_repository_never_runs_its_code_or_reads_its_config(
     app.main()
 
     assert not canary.exists(), "the repository's mypy plugin ran"
-    report = work / ".gnost" / "analysis" / "analysis.json"
-    assert report.is_file()  # outputs: the current folder
+    report = work / ".gnost" / "evil" / "analysis" / "analysis.json"
+    assert (
+        report.is_file()
+    )  # outputs: the current folder, in a folder named after the repository
     assert (
         "Missing Function Annotations" in report.read_text()
     )  # mypy did run, with our config
@@ -323,3 +325,10 @@ def test_remove_tree_deletes_read_only_files(tmp_path: Path) -> None:
     locked.chmod(stat.S_IREAD)
     remove_tree(str(tmp_path / "clone"))
     assert not (tmp_path / "clone").exists()
+
+
+def test_the_slug_is_a_safe_folder_name() -> None:
+    assert RemoteUrl("https://github.com/o/jev-use").slug == "jev-use"
+    assert RemoteUrl("git@github.com:o/my repo.git".replace(" ", "")).slug == "myrepo"
+    assert RemoteUrl("https://h/o/..").slug == "repository"
+    assert "/" not in RemoteUrl("https://h/o/a%2Fb").slug

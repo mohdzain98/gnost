@@ -88,6 +88,7 @@ gnost open flow
 - **Hover anything** and everything not connected to it fades, so its boxes and arrows stand out; the line at the bottom
   tells you its connections (for example `gnost/core/resolver.py: imports 2 files · imported by 6 files`).
 - **Zoom** with the magnifier `+` / `-` buttons, the mouse wheel, or the Fit button.
+- **Download** what is drawn as a PNG with the arrow button under the zoom buttons.
 - Dark by default, with a light theme button. Circular imports are red and orange.
 
 | Folder overview (hovering a folder) | A file and what connects to it |
