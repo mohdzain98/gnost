@@ -29,16 +29,16 @@ lint: ## Lint with ruff (same as CI)
 	$(PYTHON) -m ruff check .
 
 format: ## Format code with ruff
-	$(PYTHON) -m ruff format gnost tests
+	$(PYTHON) -m ruff format gnost tests scripts
 
 hooks: ## Install the git pre-commit hook (.pre-commit-config.yaml)
 	$(PYTHON) -m pip install pre-commit
 	$(PYTHON) -m pre_commit install
 
 format-check: ## Check formatting without changing files
-	$(PYTHON) -m ruff format --check gnost tests
+	$(PYTHON) -m ruff format --check --diff gnost tests scripts
 
-check: lint test ## Run everything CI runs (lint + tests)
+check: lint format-check test ## Run everything CI runs (lint, formatting, tests)
 
 docs: ## Build the Sphinx docs into docs/_build/html
 	$(PYTHON) -m sphinx -b html docs docs/_build/html

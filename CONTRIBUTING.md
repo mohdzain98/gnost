@@ -45,12 +45,17 @@ GNOST follows a clear separation of concerns:
 
 `Please avoid mixing analysis logic into reporters or CLI commands.`
 
-## Testing
-If you add behavior, add or update tests when possible.
+## Testing and style
+If you add behavior, add or update tests when possible. Before you push, run what CI runs:
 
 ```bash
-pytest
+make check          # ruff lint, ruff format check, and the tests
+make format         # fixes formatting for you (ruff format; there is no separate black)
+make hooks          # optional: runs the style checks on every commit
 ```
+
+CI uses ruff 0.15.4 (the same version as `.pre-commit-config.yaml`). A newer ruff on your machine can report
+different lint results, so if CI disagrees with you, run `pip install ruff==0.15.4` and try again.
 
 ## Documentation
 - User-facing changes should update docs or README when needed.
