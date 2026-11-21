@@ -4,6 +4,7 @@
 [![Docker](https://img.shields.io/badge/docker-ghcr.io-2496ED?logo=docker&logoColor=white)](https://github.com/mohdzain98/gnost/pkgs/container/gnost)
 [![Maven](https://img.shields.io/maven-central/v/io.github.mohdzain98/gnost-maven-plugin?label=Maven)](https://central.sonatype.com/artifact/io.github.mohdzain98/gnost-maven-plugin)
 [![Tests](https://github.com/mohdzain98/gnost/actions/workflows/tests.yml/badge.svg)](https://github.com/mohdzain98/gnost/actions/workflows/tests.yml)
+[![GitHub Action](https://img.shields.io/badge/GitHub_Action-GNOST-2088FF?logo=githubactions&logoColor=white)](https://github.com/marketplace/actions/gnost-codebase-onboarding-and-quality-gate)
 [![License](https://img.shields.io/github/license/mohdzain98/gnost)](./LICENSE)
 
 GNOST is a lightweight static analysis CLI tool that helps developers understand unfamiliar codebases in minutes.<br>
@@ -12,6 +13,10 @@ It automatically detects entry points, maps execution flow, identifies critical 
 It also performs quality analysis (`gnost analyze`) for maintainability, robustness, observability, and readability to provide a fast quality score and prioritized findings.
 
 Perfect for first-day onboarding, audits, and codebase exploration.
+
+![GNOST flow explorer: folder overview, open a folder, open a file, hover for details](https://raw.githubusercontent.com/mohdzain98/gnost/main/assets/viewer_demo.gif)
+
+**See real output before you install anything:** the [gallery](https://gnost.readthedocs.io/en/latest/gallery.html) has guides for flask, fastapi, express and spring-petclinic.
 
 ## 🚀 Why GNOST?
 - Quickly build a mental model of a new codebase, **even from a repository address** (`gnost onboard https://github.com/owner/repo`)
@@ -77,8 +82,6 @@ gnost open flow
 # or any file: gnost open .gnost/flow/flow-complete.mmd   (gnost show FILE does the same)
 ```
 
-![GNOST flow explorer: folder overview, open a folder, open a file, hover for details](https://raw.githubusercontent.com/mohdzain98/gnost/main/assets/viewer_demo.gif)
-
 - **Folder overview first.** Each outlined box is a folder; arrows show how many imports go between them.
 - **Click a folder** to see its files and the files it touches, with one arrow per neighbouring folder.
 - **Click a file** (or pick it from the list) to see what it imports and what imports it.
@@ -120,8 +123,16 @@ gnost analyze . --fail-under 7.5 --sarif       # quality gate for CI, SARIF for 
 gnost onboard https://github.com/owner/repo    # a repository by address; nothing in it is run
 ```
 
-The GitHub Action (`mohdzain98/gnost@v0.6.0`) can post the `changes` report as a pull request comment.
-See [Use GNOST in CI](https://gnost.readthedocs.io/en/latest/ci.html).
+Run it on every pull request with the GitHub Action (a comment with the blast radius and risk, plus a quality gate):
+
+```yaml
+- uses: actions/checkout@v4
+  with: { fetch-depth: 0 }        # full history, for hotspots and `gnost changes`
+- uses: mohdzain98/gnost@v0.6.0
+  with: { comment: "true", fail-under: "7.5" }   # needs `pull-requests: write`
+```
+
+See [Use GNOST in CI](https://gnost.readthedocs.io/en/latest/ci.html), or run `gnost init --github-action` to write the workflow for you.
 
 ### Analysis scope
 
