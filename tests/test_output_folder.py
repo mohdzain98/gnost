@@ -226,3 +226,24 @@ def test_the_footer_class_is_empty_when_disabled() -> None:
         .append("x\n")
         .endswith("9.9.9. Try it on your own code: `npx gnost-cli onboard .`</sub>\n")
     )
+
+
+def test_the_footer_command_fits_the_main_language() -> None:
+    from gnost.utils.footer import Footer
+
+    base = Footer(True, "1.0")
+    assert (
+        "uvx gnost onboard ."
+        in base.for_languages({"python": 30, "javascript": 2}).line()
+    )
+    assert (
+        "mvn io.github.mohdzain98:gnost-maven-plugin:onboard"
+        in base.for_languages({"java": 12}).line()
+    )
+    assert (
+        "npx gnost-cli onboard ."
+        in base.for_languages({"typescript": 9, "python": 1}).line()
+    )
+    assert base.for_languages({}).line() == base.line()  # unknown: the default
+    assert base.for_languages({"rust": 5}).line() == base.line()
+    assert Footer(False).for_languages({"java": 3}).line() == ""

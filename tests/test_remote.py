@@ -280,3 +280,18 @@ def test_a_plain_http_address_is_a_usage_error_not_a_crash(
     monkeypatch.setattr(sys, "argv", ["gnost", "onboard", "http://github.com/a/b"])
     assert app.main() == 2
     assert "use the https:// address" in capsys.readouterr().err
+
+
+def test_remove_tree_deletes_read_only_files(tmp_path: Path) -> None:
+    """git marks object files read-only; Windows refuses to delete those without a chmod."""
+    import stat
+
+    from gnost.utils.fs import remove_tree
+
+    folder = tmp_path / "clone" / ".git" / "objects"
+    folder.mkdir(parents=True)
+    locked = folder / "pack.idx"
+    locked.write_text("x")
+    locked.chmod(stat.S_IREAD)
+    remove_tree(str(tmp_path / "clone"))
+    assert not (tmp_path / "clone").exists()

@@ -187,6 +187,7 @@ def run(
         scanner = ScannerEngine(adapters=adapters, exclude=exclude)
         scan_result = scanner.scan(scan_root)
         scan_result.routes = find_routes(scan_result)
+        stamp = stamp.for_languages(scan_result.languages)
         # The line-count tables only understand plain folder names, not globs.
         loc_exclude = [p for p in (exclude or []) if not re.search(r"[*?\[/]", p)]
         loc_data = loc_scan(scan_root, exclude=loc_exclude)

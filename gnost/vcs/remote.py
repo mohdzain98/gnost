@@ -9,12 +9,12 @@ from __future__ import annotations
 
 import os
 import re
-import shutil
 import tempfile
 from dataclasses import dataclass
 from types import TracebackType
 from typing import Dict, List, Optional, Sequence, Type
 
+from gnost.utils.fs import remove_tree
 from gnost.vcs.git import GitError, GitRunner
 
 SCP_STYLE = re.compile(r"^[\w.-]+@[\w.-]+:[\w./~-]+$")  # git@github.com:owner/repo.git
@@ -112,7 +112,7 @@ class RemoteClone:
         tb: Optional[TracebackType],
     ) -> None:
         if self._temp:
-            shutil.rmtree(self._temp, ignore_errors=True)
+            remove_tree(self._temp)
             self._temp = None
 
     # ------------------------------------------------------------ steps
@@ -122,7 +122,7 @@ class RemoteClone:
         try:
             self._git(["--filter=blob:none"])
         except GitError as first:
-            shutil.rmtree(self.folder, ignore_errors=True)
+            remove_tree(self.folder)
             try:
                 self._git([f"--depth={FALLBACK_DEPTH}"])
             except GitError as second:

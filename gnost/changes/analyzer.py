@@ -67,6 +67,7 @@ class ChangeAnalyzer:
             affected=self._affected(head, base, files),
             depth=self.depth,
             cycles_compared=base is not None,
+            languages=dict(head.scan.languages),
         )
         report.risks = self._risks(head, changed_now)
         report.routes = self._routes(head, base, files, report.affected)

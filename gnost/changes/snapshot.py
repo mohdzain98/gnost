@@ -8,7 +8,6 @@ without touching the working tree.
 from __future__ import annotations
 
 import os
-import shutil
 import tempfile
 from dataclasses import dataclass
 from types import TracebackType
@@ -25,6 +24,7 @@ from gnost.languages.typescript import TypeScriptAdapter
 from gnost.routes import Route, find_routes
 from gnost.scanner.engine import ScannerEngine
 from gnost.scanner.models import ScanResult
+from gnost.utils.fs import remove_tree
 from gnost.vcs.git import GitRepository
 
 
@@ -105,5 +105,5 @@ class RefCheckout:
         tb: Optional[TracebackType],
     ) -> None:
         if self._temp:
-            shutil.rmtree(self._temp, ignore_errors=True)
+            remove_tree(self._temp)
             self._temp = None

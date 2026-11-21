@@ -35,7 +35,7 @@ class MarkdownRenderer:
             self._findings(report),
             self._files(report),
             "\n".join(f"> {n}" for n in report.notes),
-            self.footer.line(),
+            self.footer.for_languages(report.languages).line(),
         ]
         return "\n\n".join(p for p in parts if p).strip() + "\n"
 

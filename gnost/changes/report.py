@@ -79,6 +79,7 @@ class ChangeReport:
     fixed_cycles: List[CycleChange] = field(default_factory=list)
     findings: Optional[List[FindingInChange]] = None  # None: not asked for
     cycles_compared: bool = True
+    languages: Dict[str, int] = field(default_factory=dict)  # files per language
     notes: List[str] = field(default_factory=list)
 
     @property
