@@ -6,7 +6,7 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
-## [0.6.0] — Unreleased
+## [0.6.0] — 2026-11-21
 
 ### Added
 - **`gnost init`** writes a complete `.gnost.toml` with every setting at its default and a comment on each, so you never need the docs to start (`--print` shows it, `--force` overwrites). It can also wire GNOST into the build with small edits that keep your formatting and comments: `--pom` adds `gnost-maven-plugin` to `pom.xml`, `--npm` adds a `gnost` script to `package.json`, `--github-action` writes `.github/workflows/gnost.yml` (it runs the GNOST action: pull request comment, the `.gnost/` guide as an artifact, optional quality gate and code scanning). `--dry-run` shows what would change.

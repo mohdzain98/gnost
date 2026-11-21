@@ -166,7 +166,7 @@ def _plugins_of(xml: str) -> List[str]:
 def test_the_plugin_goes_into_the_real_build_plugins_only() -> None:
     out = ig.PomIntegration().edit(POM_WITH_PLUGINS)
     assert _plugins_of(out) == ["maven-compiler-plugin", "gnost-maven-plugin"]
-    assert "<version>0.5.3</version>" in out
+    assert "<version>0.6.0</version>" in out
     # Only additions: every original line is still there, in order.
     import difflib
 
