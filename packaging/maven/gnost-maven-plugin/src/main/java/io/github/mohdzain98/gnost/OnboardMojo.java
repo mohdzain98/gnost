@@ -6,7 +6,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 
 /** Writes onboarding docs and flow diagrams (gnost onboard). Output goes in docs/. */
 @Mojo(name = "onboard", requiresProject = false, aggregator = true, threadSafe = true)
-public class OnboardMojo extends AbstractGnostMojo {
+public class OnboardMojo extends RepositoryMojo {
 
     /** Write only the Mermaid flow diagram. */
     @Parameter(property = "gnost.mermaid", defaultValue = "false")
@@ -51,6 +51,7 @@ public class OnboardMojo extends AbstractGnostMojo {
 
     @Override
     void addOptions(List<String> cmd) {
+        super.addOptions(cmd);
         flag(cmd, mermaid, "--mermaid");
         flag(cmd, layered, "--layered");
         flag(cmd, inject, "--inject");

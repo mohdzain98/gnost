@@ -1,0 +1,99 @@
+# Full Execution Flow
+
+```mermaid
+flowchart TD
+  examples_auth_index_js["examples/auth/index.js"]
+  examples_content_negotiation_db_js["examples/content-negotiation/db.js"]
+  examples_content_negotiation_index_js["examples/content-negotiation/index.js"]
+  examples_cookie_sessions_index_js["examples/cookie-sessions/index.js"]
+  examples_cookies_index_js["examples/cookies/index.js"]
+  examples_downloads_index_js["examples/downloads/index.js"]
+  examples_ejs_index_js["examples/ejs/index.js"]
+  examples_error_pages_index_js["examples/error-pages/index.js"]
+  examples_error_index_js["examples/error/index.js"]
+  examples_hello_world_index_js["examples/hello-world/index.js"]
+  examples_markdown_index_js["examples/markdown/index.js"]
+  examples_multi_router_controllers_api_v1_js["examples/multi-router/controllers/api_v1.js"]
+  examples_multi_router_controllers_api_v2_js["examples/multi-router/controllers/api_v2.js"]
+  examples_multi_router_index_js["examples/multi-router/index.js"]
+  examples_mvc_index_js["examples/mvc/index.js"]
+  examples_mvc_lib_boot_js["examples/mvc/lib/boot.js"]
+  examples_online_index_js["examples/online/index.js"]
+  examples_params_index_js["examples/params/index.js"]
+  examples_resource_index_js["examples/resource/index.js"]
+  examples_route_map_index_js["examples/route-map/index.js"]
+  examples_route_middleware_index_js["examples/route-middleware/index.js"]
+  examples_route_separation_index_js["examples/route-separation/index.js"]
+  examples_route_separation_post_js["examples/route-separation/post.js"]
+  examples_route_separation_site_js["examples/route-separation/site.js"]
+  examples_route_separation_user_js["examples/route-separation/user.js"]
+  examples_search_index_js["examples/search/index.js"]
+  examples_session_index_js["examples/session/index.js"]
+  examples_session_redis_js["examples/session/redis.js"]
+  examples_static_files_index_js["examples/static-files/index.js"]
+  examples_vhost_index_js["examples/vhost/index.js"]
+  examples_view_constructor_github_view_js["examples/view-constructor/github-view.js"]
+  examples_view_constructor_index_js["examples/view-constructor/index.js"]
+  examples_view_locals_index_js["examples/view-locals/index.js"]
+  examples_view_locals_user_js["examples/view-locals/user.js"]
+  examples_web_service_index_js["examples/web-service/index.js"]
+  index_js["index.js"]
+  lib_application_js["lib/application.js"]
+  lib_express_js["lib/express.js"]
+  lib_request_js["lib/request.js"]
+  lib_response_js["lib/response.js"]
+  lib_utils_js["lib/utils.js"]
+  lib_view_js["lib/view.js"]
+  examples_auth_index_js --> index_js
+  examples_content_negotiation_index_js --> examples_content_negotiation_db_js
+  examples_content_negotiation_index_js --> index_js
+  examples_cookie_sessions_index_js --> index_js
+  examples_cookies_index_js --> index_js
+  examples_downloads_index_js --> index_js
+  examples_ejs_index_js --> index_js
+  examples_error_pages_index_js --> index_js
+  examples_error_index_js --> index_js
+  examples_hello_world_index_js --> index_js
+  examples_markdown_index_js --> index_js
+  examples_multi_router_controllers_api_v1_js --> index_js
+  examples_multi_router_controllers_api_v2_js --> index_js
+  examples_multi_router_index_js --> examples_multi_router_controllers_api_v1_js
+  examples_multi_router_index_js --> examples_multi_router_controllers_api_v2_js
+  examples_multi_router_index_js --> index_js
+  examples_mvc_index_js --> examples_mvc_lib_boot_js
+  examples_mvc_index_js --> index_js
+  examples_mvc_lib_boot_js --> index_js
+  examples_online_index_js --> index_js
+  examples_params_index_js --> index_js
+  examples_resource_index_js --> index_js
+  examples_route_map_index_js --> lib_express_js
+  examples_route_middleware_index_js --> lib_express_js
+  examples_route_separation_index_js --> examples_route_separation_post_js
+  examples_route_separation_index_js --> examples_route_separation_site_js
+  examples_route_separation_index_js --> examples_route_separation_user_js
+  examples_route_separation_index_js --> index_js
+  examples_search_index_js --> index_js
+  examples_session_index_js --> index_js
+  examples_session_redis_js --> index_js
+  examples_static_files_index_js --> index_js
+  examples_vhost_index_js --> index_js
+  examples_view_constructor_index_js --> examples_view_constructor_github_view_js
+  examples_view_constructor_index_js --> index_js
+  examples_view_locals_index_js --> examples_view_locals_user_js
+  examples_view_locals_index_js --> index_js
+  examples_web_service_index_js --> index_js
+  index_js --> lib_express_js
+  lib_application_js --> lib_utils_js
+  lib_application_js --> lib_view_js
+  lib_express_js --> lib_application_js
+  lib_express_js --> lib_request_js
+  lib_express_js --> lib_response_js
+  lib_response_js --> lib_utils_js
+```
+
+> ℹ️ This file renders the complete Mermaid diagram on GitHub.
+> For raw Mermaid source, see [**FLOW-full.mmd**](./FLOW-full.mmd). Every file and import, ungrouped and nothing omitted: [**flow-complete.mmd**](./flow-complete.mmd)
+
+---
+
+<sub>Generated by [GNOST](https://gnost.readthedocs.io) 0.6.0. Try it on your own code: `npx gnost-cli onboard .`</sub>

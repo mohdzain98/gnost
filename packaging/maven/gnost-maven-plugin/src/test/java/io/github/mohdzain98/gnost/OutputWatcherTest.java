@@ -21,15 +21,17 @@ public class OutputWatcherTest {
         File project = tmp.newFolder("proj");
         OutputWatcher w = new OutputWatcher(project);
         w.snapshot();
-        Files.write(new File(project, "ONBOARD.md").toPath(), "x".getBytes(StandardCharsets.UTF_8));
-        File flow = new File(project, "docs/flow");
+        File folder = new File(project, ".gnost");
+        assertTrue(folder.mkdirs());
+        Files.write(new File(folder, "ONBOARD.md").toPath(), "x".getBytes(StandardCharsets.UTF_8));
+        File flow = new File(folder, "flow");
         assertTrue(flow.mkdirs());
         Files.write(new File(flow, "a.mmd").toPath(), "a".getBytes(StandardCharsets.UTF_8));
         Files.write(new File(flow, "b.mmd").toPath(), "b".getBytes(StandardCharsets.UTF_8));
         List<String> changes = w.changes();
         assertEquals(2, changes.size());
-        assertEquals(new File(project, "ONBOARD.md").getPath(), changes.get(0));
-        assertEquals(new File(project, "docs/flow").getPath() + " (2 files)", changes.get(1));
+        assertEquals(new File(folder, "ONBOARD.md").getPath(), changes.get(0));
+        assertEquals(flow.getPath() + " (2 files)", changes.get(1));
     }
 
     @Test
@@ -48,7 +50,18 @@ public class OutputWatcherTest {
         assertTrue(sub.mkdirs());
         OutputWatcher w = new OutputWatcher(sub);
         w.snapshot();
-        Files.write(new File(repo, "ONBOARD.md").toPath(), "x".getBytes(StandardCharsets.UTF_8));
+        File folder = new File(repo, ".gnost");
+        assertTrue(folder.mkdirs());
+        Files.write(new File(folder, "ONBOARD.md").toPath(), "x".getBytes(StandardCharsets.UTF_8));
+        assertEquals(1, w.changes().size());
+    }
+
+    @Test
+    public void stillWatchesTheOldLocationsFromBeforeThe060Layout() throws Exception {
+        File project = tmp.newFolder("old");
+        OutputWatcher w = new OutputWatcher(project);
+        w.snapshot();
+        Files.write(new File(project, "ONBOARD.md").toPath(), "x".getBytes(StandardCharsets.UTF_8));
         assertEquals(1, w.changes().size());
     }
 }

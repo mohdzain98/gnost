@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from gnost.core.flow import FlowBuilder
 from gnost.core.graph import DependencyGraph
@@ -198,3 +199,18 @@ def test_unreachable_files_do_not_get_negative_hotspot_scores(tmp_path):
     flow = FlowBuilder(DependencyGraph.from_scan(scan), scan).build()
     ranked = HotspotRanker(DependencyGraph.from_scan(scan), flow).rank()
     assert all(h.score >= 0 for h in ranked)
+
+
+def test_flow_still_shows_the_project_when_the_entry_point_imports_nothing(
+    tmp_path,
+) -> None:
+    """Frameworks that wire code by scanning (Spring Boot) leave the entry class import-free."""
+    from gnost.changes.snapshot import ProjectSnapshot
+
+    (tmp_path / "app.py").write_text('if __name__ == "__main__":\n    print("hi")\n')
+    (tmp_path / "a.py").write_text("import b\n")
+    (tmp_path / "b.py").write_text("import c\n")
+    (tmp_path / "c.py").write_text("X = 1\n")
+    flow = ProjectSnapshot.scan_folder(str(tmp_path)).flow
+    names = {(os.path.basename(s), os.path.basename(d)) for s, d in flow.edges}
+    assert names == {("a.py", "b.py"), ("b.py", "c.py")}

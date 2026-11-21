@@ -249,9 +249,9 @@ def test_insights_only_writes_only_the_json(fixture_repo):
 
     root = fixture_repo("python_app")
     run(path=str(root), insights_only=True)
-    assert (root / "docs/insights/gnost_insights.json").is_file()
-    assert not (root / "ONBOARD.md").exists()
-    assert not (root / "docs/flow").exists()
+    assert (root / ".gnost/insights.json").is_file()
+    assert not (root / ".gnost/ONBOARD.md").exists()
+    assert not (root / ".gnost/flow").exists()
 
 
 def test_json_flag_writes_json_next_to_the_normal_output(fixture_repo):
@@ -259,9 +259,9 @@ def test_json_flag_writes_json_next_to_the_normal_output(fixture_repo):
 
     root = fixture_repo("python_app")
     run(path=str(root), json_out="")
-    assert (root / "docs/insights/gnost_insights.json").is_file()
-    assert (root / "ONBOARD.md").is_file()
-    assert (root / "docs/flow/FLOW-full.mmd").is_file()
+    assert (root / ".gnost/insights.json").is_file()
+    assert (root / ".gnost/ONBOARD.md").is_file()
+    assert (root / ".gnost/flow/FLOW-full.mmd").is_file()
 
 
 def test_json_flag_accepts_a_custom_path(fixture_repo, tmp_path):
@@ -280,5 +280,5 @@ def test_cli_parses_json_and_insights_only(fixture_repo, monkeypatch):
     root = fixture_repo("python_app")
     monkeypatch.setattr("sys.argv", ["gnost", "onboard", str(root), "--insights-only"])
     main()
-    assert (root / "docs/insights/gnost_insights.json").is_file()
-    assert not (root / "ONBOARD.md").exists()
+    assert (root / ".gnost/insights.json").is_file()
+    assert not (root / ".gnost/ONBOARD.md").exists()

@@ -65,7 +65,7 @@ Pick the channel you already use.
 
       .. code-block:: bash
 
-         mvn io.github.mohdzain98:gnost-maven-plugin:0.5.3:onboard
+         mvn io.github.mohdzain98:gnost-maven-plugin:0.6.0:onboard
 
       Or add the plugin once and use the short form:
 
@@ -74,7 +74,7 @@ Pick the channel you already use.
          <plugin>
            <groupId>io.github.mohdzain98</groupId>
            <artifactId>gnost-maven-plugin</artifactId>
-           <version>0.5.3</version>
+           <version>0.6.0</version>
          </plugin>
 
       .. code-block:: bash
@@ -112,7 +112,7 @@ Which channel should I use?
 First run
 ---------
 
-``gnost onboard`` writes into your project: ``ONBOARD.md`` and ``docs/flow/``.
+``gnost onboard`` writes one folder into your project: ``.gnost/`` (the guide, diagrams, JSON and the explorer page).
 ``gnost analyze`` runs bandit, radon, mypy and ruff for you; the binary and the
 Docker image already carry them. ``jscpd`` (duplicate code) is optional and is
 used only if it is on your ``PATH``.

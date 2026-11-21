@@ -3,9 +3,10 @@ import json
 import logging
 import asyncio
 import argparse
+import dataclasses
 import traceback
 import sys
-from typing import Set
+from typing import Any, Optional, Set
 import datetime
 import enum
 import pathlib
@@ -13,7 +14,6 @@ import shlex
 import webbrowser
 from termcolor import cprint
 from dataclasses import is_dataclass, asdict
-from collections import defaultdict
 from rich.console import Console
 from rich.table import Table
 
@@ -24,28 +24,31 @@ from gnost.reporters.analysis_html import render_analysis_html
 from gnost.analysis.core.models import (
     AnalysisConfiguration,
     SeverityLevel,
-    UnifiedFinding,
-    ConsolidatedReport,
 )
+from gnost.cli.commands.init import InitCommand
+from gnost.cli.commands.remote import RemoteTarget
+from gnost.vcs.remote import RemoteError
 from gnost.cli.commands.onboard import run as onboard_run
-from gnost.config.settings import ConfigError, load_config, report_warnings
+from gnost.config.settings import (
+    ANALYZE_MAX_FINDINGS,
+    ANALYZE_TIMEOUT,
+    ConfigError,
+    load_config,
+    report_warnings,
+)
 from gnost.reporters.mermaid import DEFAULT_MAX_EDGES
 from gnost.cli.commands.analysis import Analysis
+from gnost.ci.baseline import BaselineError
+from gnost.ci.exit_codes import ExitCode
+from gnost.ci.run import CiOptions, CiRun
+from gnost.ci.scorecard import ScoreCard
 from gnost.analysis.utils.tool_command import RUN_TOOL_FLAG, run_tool_entry
 from gnost.utils.logger import AppLogger
+from gnost.utils.layout import OutputLayout
 
 AppLogger.init(level=logging.INFO)
 logger = AppLogger.get_logger(__name__)
 analysis = Analysis()
-
-
-SEVERITY_WEIGHTS = {
-    SeverityLevel.CRITICAL: 1.0,
-    SeverityLevel.HIGH: 0.6,
-    SeverityLevel.MEDIUM: 0.3,
-    SeverityLevel.LOW: 0.1,
-    SeverityLevel.INFO: 0.05,
-}
 
 
 def _to_dict_payload(report):
@@ -98,11 +101,6 @@ def _normalize_for_json(value):
     return value
 
 
-def _risk_to_score(risk_score: float) -> float:
-    clamped = max(0.0, min(100.0, risk_score))
-    return round(10.0 * (1.0 - clamped / 100.0), 2)
-
-
 def _resolve_repo_root(path: str) -> str:
     """Nearest parent with .git or pyproject.toml; the project folder if none."""
     current = os.path.abspath(path)
@@ -122,9 +120,21 @@ def _resolve_repo_root(path: str) -> str:
         current = parent
 
 
-def _analysis_output_path(target_path: str) -> str:
-    repo_root = _resolve_repo_root(target_path)
-    return os.path.join(repo_root, "docs", "analysis", "gnost_analysis.json")
+def _layout(
+    target_path: str,
+    output_dir: Optional[str] = None,
+    output_root: Optional[str] = None,
+) -> OutputLayout:
+    """Output paths; `output_root` replaces the project root (used for remote repositories)."""
+    return OutputLayout(output_root or _resolve_repo_root(target_path), output_dir)
+
+
+def _analysis_output_path(
+    target_path: str,
+    output_dir: Optional[str] = None,
+    output_root: Optional[str] = None,
+) -> str:
+    return _layout(target_path, output_dir, output_root).analysis_json
 
 
 def _analysis_open_command(report_path: str) -> str:
@@ -148,49 +158,17 @@ def _open_analysis_report(report_path: str) -> bool:
         return False
 
 
-def _analysis_html_output_path(target_path: str) -> str:
-    return _analysis_output_path(target_path).replace(".json", ".html")
+def _analysis_html_output_path(
+    target_path: str,
+    output_dir: Optional[str] = None,
+    output_root: Optional[str] = None,
+) -> str:
+    return _layout(target_path, output_dir, output_root).analysis_html
 
 
-def _score_style(score: float) -> str:
-    if score >= 8.0:
-        return "green"
-    if score >= 6.0:
-        return "yellow"
-    return "red"
-
-
-def _analyzer_risk(findings: list[UnifiedFinding]) -> float:
-    if not findings:
-        return 0.0
-    total_weight = sum(SEVERITY_WEIGHTS.get(f.severity, 0.2) for f in findings)
-    max_weight = max(SEVERITY_WEIGHTS.values())
-    return round((total_weight / (len(findings) * max_weight)) * 100.0, 2)
-
-
-def _severity_counts(findings: list[UnifiedFinding]) -> dict[str, int]:
-    counts = {"high": 0, "medium": 0, "low": 0, "info": 0}
-    for finding in findings:
-        sev = str(finding.severity).split(".")[-1].lower()
-        if sev not in counts:
-            sev = "info"
-        counts[sev] += 1
-    return counts
-
-
-def _print_analysis_scores(report: ConsolidatedReport) -> None:
-    metrics = getattr(report, "analysis_metrics", [])
-    findings_by_analyzer = defaultdict(list)
-    for finding in getattr(report, "findings", []):
-        findings_by_analyzer[finding.source_analyzer].append(finding)
-
-    analyzer_scores = {}
-    for metric in metrics:
-        analyzer_scores[metric.analyzer_name] = _risk_to_score(
-            _analyzer_risk(findings_by_analyzer.get(metric.analyzer_name, []))
-        )
-
-    if not analyzer_scores:
+def _print_analysis_scores(card: ScoreCard) -> None:
+    """Print the per-analyzer score table and the final score."""
+    if not card.analyzers:
         return
 
     table = Table(title="Analysis Scores")
@@ -201,31 +179,119 @@ def _print_analysis_scores(report: ConsolidatedReport) -> None:
     table.add_column("Medium", justify="right", style="yellow")
     table.add_column("Low", justify="right", style="green")
 
-    for name in sorted(analyzer_scores.keys()):
-        score = analyzer_scores[name]
-        findings_count = len(findings_by_analyzer.get(name, []))
-        severity_summary = _severity_counts(findings_by_analyzer.get(name, []))
-        score_style = _score_style(score)
+    for item in card.analyzers:
+        style = ScoreCard.style(item.score)
         table.add_row(
-            name,
-            f"[{score_style}]{score:.2f}[/]",
-            f"{findings_count}",
-            f"{severity_summary['high']}",
-            f"{severity_summary['medium']}",
-            f"{severity_summary['low']}",
+            item.name,
+            f"[{style}]{item.score:.2f}[/]",
+            f"{item.findings}",
+            f"{item.high}",
+            f"{item.medium}",
+            f"{item.low}",
         )
 
     console = Console()
     console.print(table)
+    style = ScoreCard.style(card.final_score)
+    console.print(f"[bold]final score:[/]  [{style}]{card.final_score:.2f}[/] / 10.00")
 
-    final_score = 0.0
-    summary = getattr(report, "summary", {})
-    if isinstance(summary, dict):
-        final_score = _risk_to_score(summary.get("risk_score", 0.0))
+
+def _update_notice() -> None:
+    """Say on stderr if a newer gnost exists (silent offline, in CI and in scripts)."""
+    from gnost.utils.update_check import UpdateNotifier
+
+    try:
+        allowed = load_config(os.getcwd()).check_updates
+    except ConfigError:
+        allowed = True
+    UpdateNotifier.standard(__version__, config_allows=allowed).notify()
+
+
+class _VersionAction(argparse.Action):
+    """`gnost --version`: print the version, then the update notice, then exit."""
+
+    def __call__(
+        self,
+        parser: argparse.ArgumentParser,
+        namespace: argparse.Namespace,
+        values: Any,
+        option_string: Optional[str] = None,
+    ) -> None:
+        """Print the version and the notice, then exit."""
+        print(f"gnost {__version__}")
+        _update_notice()
+        parser.exit()
+
+
+def _open(args: argparse.Namespace) -> int:
+    """gnost open: the flow explorer, the analysis report or a file."""
+    from gnost.cli.commands.onboard import resolve_repo_root
+    from gnost.cli.commands.show import run as show_run
+
+    try:
+        config = load_config(os.getcwd())
+    except ConfigError:
+        config = None
+    layout = OutputLayout(
+        resolve_repo_root(os.getcwd()), config.output_dir if config else None
+    )
+    target = str(args.target).lower()
+
+    if target == "flow":
+        flow_file = args.path
+        explicit_view = args.view != "auto"
+        if not flow_file:
+            candidates = [
+                layout.flow_html if not explicit_view else None,
+                os.path.join(layout.flow_dir, "flow-complete.mmd"),
+            ]
+            flow_file = next((c for c in candidates if c and os.path.isfile(c)), None)
+        if not flow_file:
+            legacy = os.path.join(layout.legacy_flow_dir, "flow-complete.mmd")
+            if os.path.isfile(legacy):
+                print(f"gnost: {layout.moved_notice()}", file=sys.stderr)
+                flow_file = legacy
+        if not flow_file or not os.path.isfile(flow_file):
+            logger.error(f"Flow diagram not found in {layout.folder}")
+            logger.error("Run `gnost onboard .` first")
+            return 1
+        return show_run(flow_file, args.output, not args.no_open, args.view)
+
+    if target not in {"report", "rpt"}:
+        if not os.path.isfile(args.target):
+            logger.error(
+                f"Unsupported target: {args.target}. Use report, flow, "
+                "or the path of a .mmd, .md or .html file"
+            )
+            return 2
+        return show_run(args.target, args.output, not args.no_open, args.view)
+
+    if getattr(args, "path", None):
+        report_path = os.path.abspath(args.path)
     else:
-        final_score = 0.0
-    final_style = _score_style(final_score)
-    console.print(f"[bold]final score:[/]  [{final_style}]{final_score:.2f}[/] / 10.00")
+        report_path = layout.analysis_html
+        if not os.path.isfile(report_path) and os.path.isfile(
+            layout.legacy_analysis_html
+        ):
+            print(f"gnost: {layout.moved_notice()}", file=sys.stderr)
+            report_path = layout.legacy_analysis_html
+    if not os.path.isfile(report_path):
+        logger.error(f"Report not found: {report_path}")
+        logger.error(
+            "Run `gnost analyze -o` first to generate "
+            f"{layout.relative_name}/analysis/analysis.html"
+        )
+        return 1
+
+    if not _open_analysis_report(report_path):
+        fallback = _analysis_open_command(report_path)
+        logger.error(
+            f"Unable to open report automatically using webbrowser. Use: {fallback}"
+        )
+        return 1
+
+    cprint(f"Opened report: {report_path}", "green")
+    return 0
 
 
 def main():
@@ -251,7 +317,8 @@ def main():
             "    --inject       Inject onboarding link into README.md\n"
             "    --layered      Produce Layered mermaid as Entry -> Core -> Leaf\n"
             "    --depth DEPTH  Limit execution flow depth (e.g. --depth 2)\n"
-            "    --json [FILE]  Also write insights as JSON (default: docs/insights/gnost_insights.json)\n"
+            "    --json FILE    Write the insights JSON to FILE instead of .gnost/insights.json\n"
+            "    --no-html      Do not write the flow explorer page (.gnost/flow.html)\n"
             "    --insights-only  Write only the insights JSON\n"
             "    --max-edges N  Largest diagram drawn file by file (default 80); bigger ones group by folder\n"
             "    --collapse [LEVEL]  Group diagrams by folder, LEVEL folders deep (default 1)\n\n"
@@ -259,7 +326,7 @@ def main():
             "    path                 File or directory to analyze (default: .)\n"
             "    -a, --analyzer       Enable only specific analyzers\n"
             "    --parallel           Run analyzers in parallel\n"
-            "    -o, --out            Write report to docs/analysis/gnost_analysis.json and gnost_analysis.html\n"
+            "    -o, --out            Write the report to .gnost/analysis/analysis.json and analysis.html\n"
             "    -v, --verbose        Show traceback on failures\n"
             "    --quiet              Reduce logs; keep warnings/errors only\n"
             "    --list-analyzers     List available analyzers and exit\n"
@@ -268,14 +335,37 @@ def main():
             "    --no-progress        Hide progress updates\n"
             "    --max-findings N     Per-analyzer findings limit (default: 1000)\n\n"
             "  files:\n"
-            "    --top          Number of files to show (default: 5)\n"
-            "  open:\n"
-            "    report|rpt        Open the generated report in browser\n"
-            "                      Shortcut alias: gnost open rpt\n"
+            "    --top          Number of files to show (default: 5)\n\n"
+            "  init:\n"
+            "    path             Project folder (default: .)\n"
+            "    --print          Print the default settings instead of writing .gnost.toml\n"
+            "    --force          Overwrite files that already exist\n"
+            "    --dry-run        Show what would change, write nothing\n"
+            + "".join(
+                f"    {'--' + i.flag:<16} {i.help}\n" for i in InitCommand.available()
+            )
+            + "\n"
+            "  onboard|analyze|changes also take an https:// or ssh repository address\n"
+            "    in place of the folder (cloned to a temporary folder, results go to the\n"
+            "    current folder), and --ref BRANCH to pick a branch or tag.\n\n"
+            "  changes:\n"
+            "    refs             BASE or BASE..HEAD, compared like a pull request\n"
+            "    --depth N        How far to follow importers (default 3)\n"
+            "    --format text|markdown|json  What to print (files go to .gnost/changes/)\n"
+            "    --findings       Also run the analyzers on the changed Python files\n"
+            "    --no-cycles      Skip scanning the base commit\n\n"
+            "  open|show:\n"
+            "    target                  report|rpt (default): the analysis report;\n"
+            "                            flow: the flow explorer; or a .mmd, .md or .html file\n"
+            "                            (`show` takes only a file)\n"
+            "    --path FILE             Custom report or diagram path\n"
+            "    --view auto|graph|mermaid  Interactive graph for big diagrams (auto), or force one\n"
+            "    -o, --output FILE       Where to save the HTML page (default: a temp file)\n"
+            "    --no-open               Write the HTML but do not open a browser\n\n"
             "Use `gnost <command> --help` for full command options."
         ),
     )
-    parser.add_argument("--version", action="version", version=f"gnost {__version__}")
+    parser.add_argument("--version", action=_VersionAction, nargs=0)
 
     sub = parser.add_subparsers(
         dest="cmd",
@@ -349,13 +439,18 @@ def main():
         const="",
         default=None,
         metavar="FILE",
-        help="Also write the insights as JSON "
-        "(default: docs/insights/gnost_insights.json)",
+        help="Write the insights JSON to FILE instead of the default "
+        "(.gnost/insights.json, which is always written)",
+    )
+    onboard.add_argument(
+        "--no-html",
+        action="store_true",
+        help="Do not write the flow explorer page (.gnost/flow.html)",
     )
     onboard.add_argument(
         "--insights-only",
         action="store_true",
-        help="Write only the insights JSON; skip ONBOARD.md and the diagrams",
+        help="Write only the insights JSON; skip ONBOARD.md, the diagrams and the page",
     )
     onboard.add_argument(
         "--max-edges",
@@ -430,6 +525,43 @@ def main():
         help="Hide progress updates while analysis is running.",
     )
     analyze.add_argument(
+        "--fail-under",
+        type=float,
+        default=None,
+        metavar="SCORE",
+        help="Exit with code 3 when the final score (0 to 10) is below SCORE",
+    )
+    analyze.add_argument(
+        "--baseline",
+        nargs="?",
+        const="",
+        default=None,
+        metavar="FILE",
+        help="Report only findings that are not in this baseline "
+        "(default file: .gnost/baseline.json)",
+    )
+    analyze.add_argument(
+        "--write-baseline",
+        nargs="?",
+        const="",
+        default=None,
+        metavar="FILE",
+        help="Save today's findings as the baseline (default file: .gnost/baseline.json)",
+    )
+    analyze.add_argument(
+        "--fail-on-new",
+        action="store_true",
+        help="Exit with code 3 when there are findings that are not in the baseline",
+    )
+    analyze.add_argument(
+        "--sarif",
+        nargs="?",
+        const="",
+        default=None,
+        metavar="FILE",
+        help="Write the findings as SARIF 2.1.0 (default file: .gnost/analysis/analysis.sarif)",
+    )
+    analyze.add_argument(
         "--max-findings",
         type=int,
         default=None,
@@ -445,7 +577,7 @@ def main():
         default="report",
         help=(
             "report (default, alias: rpt): the analysis report; "
-            "flow: the flow explorer (docs/flow/flow-complete.mmd); "
+            "flow: the flow explorer (.gnost/flow.html); "
             "or a .mmd, .md or .html file"
         ),
     )
@@ -464,6 +596,71 @@ def main():
         "--no-open", action="store_true", help="Write the HTML page but do not open it"
     )
 
+    changes_cmd = sub.add_parser(
+        "changes",
+        help="What a change touches: files, blast radius, risk, routes, cycles",
+    )
+    changes_cmd.add_argument(
+        "refs", help="BASE or BASE..HEAD (for example origin/main or v0.5.3..HEAD)"
+    )
+    changes_cmd.add_argument(
+        "path", nargs="?", default=".", help="Project folder or repository address"
+    )
+    changes_cmd.add_argument(
+        "--depth", type=int, default=3, help="How far to follow importers (default 3)"
+    )
+    changes_cmd.add_argument(
+        "--format",
+        choices=["text", "markdown", "json"],
+        default="text",
+        help="What to print (the files in .gnost/changes/ are always written)",
+    )
+    changes_cmd.add_argument(
+        "--findings",
+        action="store_true",
+        help="Also run the analyzers on the changed Python files (slower)",
+    )
+    changes_cmd.add_argument(
+        "--no-cycles",
+        action="store_true",
+        help="Skip scanning the base commit (no new-cycle or removed-route comparison)",
+    )
+    changes_cmd.add_argument(
+        "--no-write", action="store_true", help="Do not write .gnost/changes/"
+    )
+
+    for command in (onboard, analyze, changes_cmd):
+        command.add_argument(
+            "--ref",
+            help="For a repository address: the branch or tag to clone (default: its default branch)",
+        )
+
+    init_cmd = sub.add_parser(
+        "init",
+        help="Write a complete .gnost.toml, and optionally add GNOST to your build",
+    )
+    init_cmd.add_argument("path", nargs="?", default=".", help="Project folder")
+    init_cmd.add_argument(
+        "--force", action="store_true", help="Overwrite files that already exist"
+    )
+    init_cmd.add_argument(
+        "--print",
+        dest="print_only",
+        action="store_true",
+        help="Print the default settings instead of writing the file",
+    )
+    init_cmd.add_argument(
+        "--dry-run", action="store_true", help="Show what would change, write nothing"
+    )
+    for integration in InitCommand.available():
+        init_cmd.add_argument(
+            f"--{integration.flag}",
+            action="append_const",
+            const=integration.flag,
+            dest="integrations",
+            help=integration.help,
+        )
+
     show_cmd = sub.add_parser(
         "show", help="Same as `gnost open FILE` (kept as a shorter name)"
     )
@@ -480,6 +677,57 @@ def main():
     )
 
     args = parser.parse_args()
+    return _run_remote_or_local(args)
+
+
+def _run_remote_or_local(args: argparse.Namespace) -> int:
+    """Run the command; if the path is a repository address, clone it first (and clean up)."""
+    try:
+        target = RemoteTarget.from_args(args)
+        if target is None:
+            return _dispatch(args)
+        with target.open() as folder:
+            args.path = folder
+            args.output_root = (
+                os.getcwd()
+            )  # results go to the current folder, not the clone
+            args.remote = True
+            args.source = target.url.text
+            return _dispatch(args)
+    except RemoteError as exc:
+        print(f"gnost: {exc}", file=sys.stderr)
+        return ExitCode.USAGE
+
+
+def _dispatch(args: argparse.Namespace) -> int:
+    """Run one parsed command."""
+    output_root = getattr(args, "output_root", None)
+    remote = getattr(args, "remote", False)
+    if args.cmd == "init":
+        from gnost.cli.commands.init import run as init_run
+
+        return init_run(
+            args.path,
+            selected=args.integrations or [],
+            force=args.force,
+            print_only=args.print_only,
+            dry_run=args.dry_run,
+        )
+
+    if args.cmd == "changes":
+        from gnost.cli.commands.changes import run as changes_run
+
+        return changes_run(
+            args.path,
+            args.refs,
+            depth=args.depth,
+            output_format=args.format,
+            findings=args.findings,
+            compare_base=not args.no_cycles,
+            write=not args.no_write,
+            output_root=output_root,
+            remote=remote,
+        )
 
     if args.cmd == "show":
         from gnost.cli.commands.show import run as show_run
@@ -488,11 +736,13 @@ def main():
 
     if args.cmd == "version":
         print(f"gnost {__version__}")
+        _update_notice()
         return 0
 
     if args.cmd in ("onboard", "analyze"):
         try:
-            config = load_config(args.path)
+            # A remote repository's own .gnost.toml is never read (output_dir could point anywhere).
+            config = load_config(output_root if remote else args.path)
         except ConfigError as exc:
             print(f"gnost: {exc}", file=sys.stderr)
             return 2
@@ -519,6 +769,17 @@ def main():
             ),
             exclude=config.exclude,
             caution=config.caution_settings(),
+            output_dir=config.output_dir,
+            html=not getattr(args, "no_html", False),
+            history=(
+                dataclasses.replace(config.history_settings(), allow_shallow=True)
+                if remote
+                else config.history_settings()
+            ),
+            risk=config.risk_settings(),
+            output_root=output_root,
+            source=args.source if remote else None,
+            footer=config.footer,
         )
         return 0
 
@@ -533,7 +794,14 @@ def main():
         target_path = os.path.abspath(args.path)
         if not os.path.exists(target_path):
             logger.error(f"Error: path not found: {target_path}")
-            return 2
+            return ExitCode.USAGE
+
+        ci_options = CiOptions.from_args(
+            args, config, _layout(target_path, config.output_dir, output_root)
+        )
+        if ci_options.problem():
+            logger.error(f"Error: {ci_options.problem()}")
+            return ExitCode.USAGE
 
         if not args.verbose:
             logging.getLogger("asyncio").setLevel(logging.CRITICAL)
@@ -551,7 +819,7 @@ def main():
 
         if not reader_files:
             logger.warning("⚠️ No Python files found after filtering.")
-            return 0
+            return ExitCode.OK
 
         enabled_analyzers: Set[str] = set(
             args.analyzer or config.get("analyze", "analyzers", [])
@@ -564,9 +832,13 @@ def main():
                 args.parallel or config.get("analyze", "parallel", False)
             ),
             include_low_confidence=False,
-            timeout_seconds=int(config.pick("analyze", "timeout", args.timeout, 900)),
+            timeout_seconds=int(
+                config.pick("analyze", "timeout", args.timeout, ANALYZE_TIMEOUT)
+            ),
             max_findings_per_analyzer=int(
-                config.pick("analyze", "max_findings", args.max_findings, 1000)
+                config.pick(
+                    "analyze", "max_findings", args.max_findings, ANALYZE_MAX_FINDINGS
+                )
             ),
             files=reader_files,
         )
@@ -580,23 +852,40 @@ def main():
             )
         except (KeyboardInterrupt, asyncio.CancelledError):
             logger.info("Interrupted.")
-            return 130
+            return ExitCode.INTERRUPTED
         except Exception as e:
             logger.error(f"Error during analysis: {e}")
             if args.verbose:
                 traceback.print_exc()
-            return 1
+            return ExitCode.ERROR
 
-        payload = _to_dict_payload(report)
-        html_output = _analysis_html_output_path(target_path)
+        try:
+            outcome = CiRun(
+                ci_options, _resolve_repo_root(target_path), reader_files
+            ).process(report)
+        except BaselineError as exc:
+            logger.error(f"Error: {exc}")
+            return ExitCode.USAGE
+
+        payload = _to_dict_payload(outcome.report)
+        if outcome.baseline_summary():
+            payload["baseline"] = outcome.baseline_summary()
+        html_output = _analysis_html_output_path(
+            target_path, config.output_dir, output_root
+        )
         if args.out:
             try:
-                output_file = _analysis_output_path(target_path)
+                _layout(target_path, config.output_dir, output_root).prepare()
+                output_file = _analysis_output_path(
+                    target_path, config.output_dir, output_root
+                )
                 analysis.write_json_file(output_file, payload, compact=args.compact)
                 logger.info(f"✅ Findings saved to {output_file}")
                 if args.quiet:
                     cprint(f"✅ Findings saved to {output_file}", "green")
-                html_output = _analysis_html_output_path(target_path)
+                html_output = _analysis_html_output_path(
+                    target_path, config.output_dir, output_root
+                )
                 render_analysis_html(payload, html_output)
                 logger.info(f"✅ Interactive HTML report saved to {html_output}")
                 if args.quiet:
@@ -605,13 +894,18 @@ def main():
                     )
             except Exception as e:
                 logger.error(
-                    f"❌ Failed to write output file '{_analysis_output_path(target_path)}': {e}, use verbose to check"
+                    f"❌ Failed to write output file '{_analysis_output_path(target_path, config.output_dir, output_root)}': {e}, use verbose to check"
                 )
                 if args.verbose:
                     traceback.print_exc()
-                return 1
+                return ExitCode.ERROR
 
-        _print_analysis_scores(report)
+        _print_analysis_scores(outcome.card)
+        for note in outcome.notes:
+            if args.quiet:
+                cprint(note, "green")
+            else:
+                logger.info(note)
         if args.out:
             open_cmd = _analysis_open_command(html_output)
             console = Console()
@@ -626,57 +920,14 @@ def main():
                 cprint(msg, "yellow")
             else:
                 logger.info(msg)
-        return 0
+        if not outcome.gate.passed:
+            for message in outcome.gate.messages:
+                logger.error(f"Quality gate failed: {message}")
+            return ExitCode.GATE_FAILED
+        return ExitCode.OK
 
     if args.cmd == "open":
-        normalized_target = str(args.target).lower()
-        if normalized_target == "flow" or (
-            normalized_target not in {"report", "rpt"}
-            and not os.path.isfile(args.target)
-        ):
-            if normalized_target != "flow":
-                logger.error(
-                    f"Unsupported target: {args.target}. Use report, flow, "
-                    "or the path of a .mmd, .md or .html file"
-                )
-                return 2
-            from gnost.cli.commands.show import run as show_run
-
-            flow_file = args.path or os.path.join(
-                os.getcwd(), "docs", "flow", "flow-complete.mmd"
-            )
-            if not os.path.isfile(flow_file):
-                logger.error(f"Flow diagram not found: {flow_file}")
-                logger.error("Run `gnost onboard .` first")
-                return 1
-            return show_run(flow_file, args.output, not args.no_open, args.view)
-        if normalized_target not in {"report", "rpt"}:
-            from gnost.cli.commands.show import run as show_run
-
-            return show_run(args.target, args.output, not args.no_open, args.view)
-
-        report_path = (
-            os.path.abspath(args.path)
-            if getattr(args, "path", None)
-            else _analysis_html_output_path(os.getcwd())
-        )
-        if not os.path.isfile(report_path):
-            logger.error(f"Report not found: {report_path}")
-            logger.error(
-                "Run `gnost analyze -o` first to generate "
-                "docs/analysis/gnost_analysis.html"
-            )
-            return 1
-
-        if not _open_analysis_report(report_path):
-            fallback = _analysis_open_command(report_path)
-            logger.error(
-                f"Unable to open report automatically using webbrowser. Use: {fallback}"
-            )
-            return 1
-
-        cprint(f"Opened report: {report_path}", "green")
-        return 0
+        return _open(args)
 
     include = args.include.split(",") if args.include else []
     exclude = args.exclude.split(",") if args.exclude else []

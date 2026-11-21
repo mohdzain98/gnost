@@ -3,11 +3,12 @@ from __future__ import annotations
 from typing import Optional
 from pathlib import Path
 from gnost.utils.paths import base, shorten
-from gnost.config.languages import LANGUAGES
+from gnost.config.languages import by_language_name
 from gnost.scanner.models import ScanResult
 from gnost.core.flow import FlowResult
 from gnost.reporters.mermaid import DEFAULT_MAX_EDGES, MermaidFlowReporter
 from gnost.models.insights import OnboardingInsights
+from gnost.utils.footer import Footer
 
 
 class MarkdownReporter:
@@ -28,7 +29,15 @@ class MarkdownReporter:
         mermaid_max_edges: int = DEFAULT_MAX_EDGES,
         mermaid_collapse: Optional[int] = None,
         function_flows: Optional[list] = None,
+        changes=None,
+        risks=None,
+        root_label: Optional[str] = None,
+        footer: Optional[Footer] = None,
     ):
+        self.footer = footer or Footer(False)
+        self.root_label = root_label or scan.root
+        self.changes = changes
+        self.risks = risks
         self.scan = scan
         self.flow = flow
         self.insights = insights
@@ -48,6 +57,8 @@ class MarkdownReporter:
     def write(self):
         content = self._render()
         content += self._path_specific_flows()
+        content = self.footer.append(content)
+        self.output_file.parent.mkdir(parents=True, exist_ok=True)
         self.output_file.write_text(content, encoding="utf-8")
 
     # -------------------------
@@ -71,6 +82,8 @@ class MarkdownReporter:
                 [
                     self._first_files_md(),
                     self._caution_areas_md(),
+                    self._change_hotspots_md(),
+                    self._risk_md(),
                     self._cycles_md(),
                 ]
             )
@@ -99,7 +112,7 @@ class MarkdownReporter:
 
         return (
             "## Project Overview\n\n"
-            f"- **Root:** `{self.scan.root}`\n"
+            f"- **Root:** `{self.root_label}`\n"
             f"- **Languages:** {languages}\n"
             f"- **Framework:** {framework}"
         )
@@ -126,7 +139,7 @@ class MarkdownReporter:
             "## Function-level Flow\n",
             "What each entry point calls, function by function (Python only; "
             "calls through other objects such as `self.client.send()` are not "
-            "followed). Full diagrams: [function-flow.md](docs/flow/function-flow.md).\n",
+            "followed). Full diagrams: [function-flow.md](flow/function-flow.md).\n",
         ]
         for flow in self.function_flows[: self.FLOW_ENTRIES]:
             entry = flow.entry
@@ -230,9 +243,9 @@ class MarkdownReporter:
         return (
             "## Key Execution Paths\n\n"
             "To understand specific scenarios, see the entry-based execution paths:\n\n"
-            "- 📍 [Entry-based Paths](docs/flow/entry-paths.md)\n\n"
-            "- 🧭 [folder-based Paths](docs/flow/folder-paths.md)\n\n"
-            "(Complete system flow: [flow/flow-full.md](docs/flow/FLOW-full.md))\n"
+            "- 📍 [Entry-based Paths](flow/entry-paths.md)\n\n"
+            "- 🧭 [folder-based Paths](flow/folder-paths.md)\n\n"
+            "(Complete system flow: [flow/flow-full.md](flow/FLOW-full.md))\n"
         )
 
     def _mermaid_flow(self) -> str:
@@ -259,8 +272,12 @@ class MarkdownReporter:
             f"{overview_diagram}\n\n"
             "> 📌 This diagram shows the high-level execution flow.<br>"
             "For the complete flow, see "
-            "[**flow/flow-full.md**](./docs/flow/FLOW-full.md)<br>"
-            "Raw Mermaid: [flow/flow-full.mmd](./docs/flow/FLOW-full.mmd)"
+            "[**flow/flow-full.md**](./flow/FLOW-full.md)<br>"
+            "Raw Mermaid: [flow/flow-full.mmd](./flow/FLOW-full.mmd)<br>"
+            "Every file and import, ungrouped (for tools and AI): "
+            "[flow/flow-complete.mmd](./flow/flow-complete.mmd)<br>"
+            "Interactive explorer: run `gnost open flow` "
+            "(the page is `flow.html` in this folder; it is rebuilt, not committed)"
         )
 
     def _summary_and_stats_tables(self) -> str:
@@ -268,8 +285,7 @@ class MarkdownReporter:
             return ""
 
         rows = []
-        for ext, stats in self.loc_data["by_language"].items():
-            language = LANGUAGES.get(ext, {}).get("name", ext.upper())
+        for language, stats in by_language_name(self.loc_data["by_language"]).items():
             rows.append((language, stats))
 
         rows.sort(key=lambda item: item[0].lower())
@@ -305,6 +321,69 @@ class MarkdownReporter:
             lines.append(f"- **`{short_path}`**")
             lines.append(f"  - {item.reason}")
 
+        return "\n".join(lines)
+
+    def _change_hotspots_md(self) -> str:
+        """Files that change most often (from git history); empty when there is no history to report."""
+        changes = self.changes
+        if changes is None:
+            return ""
+        history = changes.history
+        if not history.available:
+            if not changes.note_worth_showing:
+                return ""
+            return f"## Change Hotspots\n\n_Not available: {history.reason}_"
+        if not changes.hotspots:
+            return (
+                "## Change Hotspots\n\n"
+                f"_No file changed more than once in the last {history.window_days} days._"
+            )
+        recent = changes.settings.recent_days
+        lines = [
+            "## Change Hotspots",
+            "",
+            f"Files that changed most in the last {history.window_days} days "
+            f"({history.commits} commits). A file that changes often and is touched by "
+            "many people is where merge conflicts and regressions tend to start.",
+            "",
+            f"| File | Commits | Authors | Last {recent} days | Lines changed | Last change |",
+            "|---|---:|---:|---:|---|---|",
+        ]
+        from gnost.reporters.insights_json import _date
+
+        for h in changes.hotspots[: changes.settings.top]:
+            c = h.change
+            lines.append(
+                f"| `{c.path}` | {c.commits} | {c.author_count} | {c.recent_commits} "
+                f"| +{c.added} / -{c.removed} | {_date(c.last_changed)} |"
+            )
+        return "\n".join(lines)
+
+    def _risk_md(self) -> str:
+        """Files that are both fragile and changing; empty when there is no history."""
+        risks, changes = self.risks, self.changes
+        if risks is None or changes is None or not changes.history.available:
+            return ""
+        if not risks.items:
+            return (
+                "## Risky and Changing\n\n"
+                "_No file is both fragile to change and changing often._"
+            )
+        lines = [
+            "## Risky and Changing",
+            "",
+            "Files that are fragile to change (high caution score) and also change often. "
+            "Start here when adding tests or reviewing changes. "
+            "Risk = caution score scaled by how much the file changes.",
+            "",
+            "| File | Risk | Caution | Change activity | Why fragile | Commits | Authors |",
+            "|---|---:|---:|---:|---|---:|---:|",
+        ]
+        for i in risks.items[: risks.settings.limit]:
+            lines.append(
+                f"| `{i.path}` | {i.risk:g} | {i.structural:g} | {i.churn:g} "
+                f"| {i.why} | {i.commits} | {i.authors} |"
+            )
         return "\n".join(lines)
 
     def _caution_areas_md(self) -> str:

@@ -89,7 +89,9 @@ jobs:
       - name: Run npx inside a container that has Node but no Python
         run: |
           # A fresh npm cache for each try: a half-installed copy must not be reused.
-          for i in 1 2 3 4 5 6; do
+          # New platform packages can take several minutes to become installable, so
+          # keep trying for about ten minutes before failing.
+          for i in $(seq 1 30); do
             OUT="$(docker run --rm -e npm_config_cache="/tmp/npm-$i" node:22-slim npx -y "gnost-cli@$NPM_VERSION" version)" && break
             sleep 20
           done
@@ -123,7 +125,8 @@ jobs:
             done
           done
           CLEAN="$(echo "$PATH" | tr ':' '\n' | grep -vi python | paste -sd: -)"
-          for i in 1 2 3 4 5 6; do
+          # Keep trying for about ten minutes: new platform packages can take a while.
+          for i in $(seq 1 30); do
             # A fresh npm cache for each try: a half-installed copy must not be reused.
             OUT="$(PATH="$CLEAN" npm_config_cache="$RUNNER_TEMP/npm-$i" npx -y "gnost-cli@$NPM_VERSION" version)" && break
             sleep 20

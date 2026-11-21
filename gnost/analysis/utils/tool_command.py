@@ -8,7 +8,15 @@ from pathlib import Path
 from typing import List, Optional
 
 RUN_TOOL_FLAG = "--run-tool"
+UNTRUSTED_ENV = (
+    "GNOST_UNTRUSTED_REPO"  # set when the code being read is not the user's own
+)
 PYTHON_TOOLS = ("radon", "bandit", "mypy")
+
+
+def untrusted_repo() -> bool:
+    """True when the analyzed code comes from a remote repository nobody has reviewed."""
+    return os.environ.get(UNTRUSTED_ENV) == "1"
 
 
 def is_frozen() -> bool:

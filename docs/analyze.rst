@@ -26,8 +26,8 @@ Key options
 - ``-o`` / ``--out``
   Write artifacts to:
 
-  - ``docs/analysis/gnost_analysis.json``
-  - ``docs/analysis/gnost_analysis.html``
+  - ``.gnost/analysis/analysis.json``
+  - ``.gnost/analysis/analysis.html``
 
 - ``--max-findings N``
   Limit findings collected per analyzer.
@@ -43,6 +43,12 @@ Key options
   Print tracebacks for failures.
 - ``--list-analyzers``
   Print analyzer names and exit.
+
+CI options
+----------
+
+``--fail-under SCORE``, ``--baseline`` / ``--write-baseline`` / ``--fail-on-new`` and ``--sarif`` make
+``analyze`` usable as a quality gate and a code scanning source. See :doc:`ci`.
 
 Output behavior
 ---------------
@@ -61,9 +67,9 @@ After analysis output, use:
 
 If needed, also use OS command directly:
 
-- macOS: ``open docs/analysis/gnost_analysis.html``
-- Linux: ``xdg-open docs/analysis/gnost_analysis.html``
-- Windows: ``start "" docs\analysis\gnost_analysis.html``
+- macOS: ``open .gnost/analysis/analysis.html``
+- Linux: ``xdg-open .gnost/analysis/analysis.html``
+- Windows: ``start "" .gnost\analysis\analysis.html``
 
 Example
 -------

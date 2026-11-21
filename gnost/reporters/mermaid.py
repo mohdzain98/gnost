@@ -383,6 +383,13 @@ class MermaidFlowReporter:
             if allowed_nodes and (src not in allowed_nodes or dst not in allowed_nodes):
                 continue
             edges.add((src, dst))
+        if not edges and allowed_nodes:
+            # No core files (a flat project): show the whole flow rather than an empty overview.
+            return {
+                (s, d)
+                for s, d in flow.edges
+                if not (self.depth and flow.depths.get(s, 0) >= self.depth)
+            }
         return edges
 
     def _overview_nodes(self) -> Set[str]:

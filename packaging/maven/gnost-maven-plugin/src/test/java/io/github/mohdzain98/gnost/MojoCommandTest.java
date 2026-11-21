@@ -40,6 +40,28 @@ public class MojoCommandTest {
     }
 
     @Test
+    public void analyzeCiOptionsMirrorTheCommandLine() {
+        AnalyzeMojo m = new AnalyzeMojo();
+        m.failUnder = 7.5;
+        m.baseline = "true"; // the flag alone: the default file
+        m.writeBaseline = "ci/base.json";
+        m.failOnNew = true;
+        m.sarif = "true";
+        assertEquals(
+                Arrays.asList("g", "analyze", ".", "--fail-under", "7.5", "--baseline", "--write-baseline",
+                        "ci/base.json", "--fail-on-new", "--sarif"),
+                m.command("g"));
+    }
+
+    @Test
+    public void emptyAndFalseValuesAddNothing() {
+        AnalyzeMojo m = new AnalyzeMojo();
+        m.baseline = "";
+        m.sarif = "false";
+        assertEquals(Arrays.asList("g", "analyze", "."), m.command("g"));
+    }
+
+    @Test
     public void summaryUsesIncludeAndExclude() {
         SummaryMojo m = new SummaryMojo();
         m.exclude = "build,out";
@@ -53,10 +75,79 @@ public class MojoCommandTest {
         assertTrue(m, m.contains("npm install --global gnost-cli"));
         assertTrue(m, m.contains("Maven Central"));
         assertTrue(m, m.contains("https://example.org/g.tar.gz"));
+        assertTrue(m, m.contains("-Dgnost.downloadUrl=file:///"));
     }
 
     @Test
     public void spacesInArgumentsAreQuotedForDisplay() {
         assertEquals(Arrays.asList("g", "\"my dir\"", "x"), AbstractGnostMojo.quoted(Arrays.asList("g", "my dir", "x")));
+    }
+
+    @Test
+    public void statsFoldersAndFilesShareTheScanOptions() {
+        StatsMojo stats = new StatsMojo();
+        stats.exclude = "target";
+        assertEquals(Arrays.asList("g", "stats", ".", "--exclude", "target"), stats.command("g"));
+        FoldersMojo folders = new FoldersMojo();
+        folders.include = "src";
+        assertEquals(Arrays.asList("g", "folders", ".", "--include", "src"), folders.command("g"));
+        FilesMojo files = new FilesMojo();
+        files.top = 10;
+        files.progress = true;
+        assertEquals(Arrays.asList("g", "files", ".", "--progress", "--top", "10"), files.command("g"));
+    }
+
+    @Test
+    public void versionTakesNoFolder() {
+        assertEquals(Arrays.asList("g", "version"), new VersionMojo().command("g"));
+    }
+
+    @Test
+    public void openTakesATargetAndCanSkipTheBrowser() {
+        OpenMojo m = new OpenMojo();
+        m.target = "flow";
+        m.open = false;
+        assertEquals(Arrays.asList("g", "open", "flow", "--no-open"), m.command("g"));
+        OpenMojo d = new OpenMojo();
+        d.open = true;
+        assertEquals(Arrays.asList("g", "open", "report"), d.command("g"));
+    }
+
+    @Test
+    public void initMirrorsTheIntegrationFlags() {
+        InitMojo m = new InitMojo();
+        m.pom = true;
+        m.githubAction = true;
+        m.dryRun = true;
+        m.agents = true;
+        assertEquals(
+                Arrays.asList("g", "init", ".", "--dry-run", "--pom", "--github-action", "--agents"), m.command("g"));
+    }
+
+    @Test
+    public void changesPutsTheRefsBeforeTheFolder() {
+        ChangesMojo m = new ChangesMojo();
+        m.refs = "origin/main";
+        m.depth = 2;
+        m.format = "markdown";
+        m.findings = true;
+        m.noWrite = true;
+        assertEquals(
+                Arrays.asList("g", "changes", "origin/main", ".", "--depth", "2", "--format", "markdown",
+                        "--findings", "--no-write"),
+                m.command("g"));
+    }
+
+    @Test
+    public void repositoryGoalsPassTheBranchOfARemoteAddress() {
+        OnboardMojo m = new OnboardMojo();
+        m.path = "https://github.com/owner/repo";
+        m.ref = "v1.0";
+        assertEquals(Arrays.asList("g", "onboard", "https://github.com/owner/repo", "--ref", "v1.0"), m.command("g"));
+        assertTrue(m.pathIsAddress());
+        m.path = "src";
+        assertTrue(!m.pathIsAddress());
+        m.path = "git@github.com:owner/repo.git";
+        assertTrue(m.pathIsAddress());
     }
 }

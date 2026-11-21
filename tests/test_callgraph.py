@@ -244,12 +244,12 @@ def test_markdown_json_and_diagram_output(fixture_repo):
     root = fixture_repo("package_app")
     run(path=str(root), json_out="")
 
-    md = (root / "ONBOARD.md").read_text(encoding="utf-8")
+    md = (root / ".gnost/ONBOARD.md").read_text(encoding="utf-8")
     assert "## Function-level Flow" in md
     assert "### `POST /chat/api/v1/messages` → `send`" in md
     assert "- `save` (`app/services/store.py:" in md
 
-    payload = json.loads((root / "docs/insights/gnost_insights.json").read_text())
+    payload = json.loads((root / ".gnost/insights.json").read_text())
     jsonschema.validate(payload, load_schema())
     assert (
         payload["callgraph"]["functions"] > 0
@@ -261,7 +261,7 @@ def test_markdown_json_and_diagram_output(fixture_repo):
     assert flow["entry"]["file"] == "app/api/v1/chat.py"
     assert not flow["entry"]["file"].startswith("/")
 
-    doc = (root / "docs/flow/function-flow.md").read_text(encoding="utf-8")
+    doc = (root / ".gnost/flow/function-flow.md").read_text(encoding="utf-8")
     check_mermaid(doc)
     assert "send<br/>app/api/v1/chat.py" in doc
 
@@ -271,7 +271,7 @@ def test_no_function_flow_section_without_python_entries(fixture_repo):
 
     root = fixture_repo("js_app")
     run(path=str(root))
-    assert "## Function-level Flow" not in (root / "ONBOARD.md").read_text(
+    assert "## Function-level Flow" not in (root / ".gnost/ONBOARD.md").read_text(
         encoding="utf-8"
     )
-    assert not (root / "docs/flow/function-flow.md").exists()
+    assert not (root / ".gnost/flow/function-flow.md").exists()

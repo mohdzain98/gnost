@@ -54,12 +54,28 @@ grep -q "Java" "$WORK/summary.txt"
 "${MVN[@]}" "$PLUGIN:onboard" -Dgnost.depth=2 | tee "$WORK/onboard.txt"
 ! grep -q "Downloading " "$WORK/onboard.txt"
 grep -q "gnost wrote:" "$WORK/onboard.txt"
-test -f docs/flow/FLOW-full.mmd
-test -f ONBOARD.md
+test -f .gnost/flow/FLOW-full.mmd
+test -f .gnost/ONBOARD.md
+test -f .gnost/insights.json
 
 # The help goal lists every goal.
 "${MVN[@]}" "$PLUGIN:help" | tee "$WORK/help.txt"
-for g in onboard analyze summary help; do grep -q "gnost:$g" "$WORK/help.txt"; done
+for g in onboard analyze changes summary stats folders files open init version help; do grep -q "gnost:$g" "$WORK/help.txt"; done
+
+# The other goals: version, open without a browser, init print, scan goals.
+# (Output goes to a file first: `grep -q` closing a pipe early would fail the step.)
+"${MVN[@]}" "$PLUGIN:version" > "$WORK/version.txt"
+grep -q "^gnost " "$WORK/version.txt"
+"${MVN[@]}" "$PLUGIN:open" -Dgnost.target=flow -Dgnost.open=false > "$WORK/open.txt"
+grep -q "Opened" "$WORK/open.txt"
+"${MVN[@]}" "$PLUGIN:init" -Dgnost.print=true > "$WORK/init.txt"
+grep -q "output_dir" "$WORK/init.txt"
+"${MVN[@]}" "$PLUGIN:stats" > "$WORK/stats.txt"
+grep -q "Java" "$WORK/stats.txt"
+"${MVN[@]}" "$PLUGIN:folders" > "$WORK/folders.txt"
+grep -q "src" "$WORK/folders.txt"
+"${MVN[@]}" "$PLUGIN:files" -Dgnost.top=2 > "$WORK/files.txt"
+grep -q "Greeter.java\|App.java" "$WORK/files.txt"
 
 # A broken mirror must give the install hint instead of a stack trace.
 if "${MVN[@]}" "$PLUGIN:summary" "-Dgnost.home=$WORK/empty" "-Dgnost.downloadUrl=file://$WORK/nowhere" > "$WORK/fail.txt" 2>&1; then

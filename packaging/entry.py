@@ -1,4 +1,9 @@
-"""PyInstaller entry point for the standalone gnost binary."""
+"""PyInstaller entry point for the standalone gnost binary.
+
+Runs the gnost command line and exits with its exit code (the pip console script does this
+for us; a frozen program must do it itself, or every failure would look like success).
+Also runs the multiprocessing helper that Python relaunches as `sys.executable -c ...`.
+"""
 
 import multiprocessing
 import sys
@@ -21,9 +26,16 @@ def run_python_helper(argv: List[str]) -> bool:
     return True
 
 
+def run(argv: List[str]) -> int:
+    """Run the helper or the gnost command line; returns the process exit code."""
+    if run_python_helper(argv):
+        return 0
+    from gnost.cli import main
+
+    result = main()
+    return result if isinstance(result, int) else 0
+
+
 if __name__ == "__main__":
     multiprocessing.freeze_support()
-    if not run_python_helper(sys.argv):
-        from gnost.cli import main
-
-        main()
+    raise SystemExit(run(sys.argv))
