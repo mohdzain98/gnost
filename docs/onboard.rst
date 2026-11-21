@@ -7,7 +7,7 @@ Onboard a repository by address
 -------------------------------
 
 You do not need a local copy. Give ``gnost onboard`` an ``https://`` or ssh address and it clones the
-repository into a temporary folder, writes the guide into the **current folder**, and deletes the clone:
+repository into a temporary folder, writes the guide into ``.gnost/<repo-name>/`` in the **current folder**, and deletes the clone:
 
 .. code-block:: bash
 
@@ -217,9 +217,8 @@ Viewing diagrams
 The example is GNOST analysing its own source code.
 
 ``gnost open flow`` (or ``gnost open .gnost/flow/flow-complete.mmd``, or the shorter
-``gnost show FILE``) opens a ``.mmd``, ``.md`` or ``.html`` file in your browser. Small diagrams are drawn with Mermaid (scroll to zoom, drag to
-pan). Diagrams with more than about 150 arrows open as an interactive explorer
-instead, so a big project never becomes one tangled picture:
+``gnost show FILE``) opens a ``.mmd``, ``.md`` or ``.html`` file in your browser. A ``.mmd`` diagram always opens as the interactive
+explorer, whatever its size (``--view mermaid`` draws one flat Mermaid picture instead):
 
 - It starts with a **folder overview**: outlined boxes for folders, arrows sized by the
   number of imports between them. Shared folders that most others import are
@@ -235,7 +234,7 @@ instead, so a big project never becomes one tangled picture:
 Use
 ``--view mermaid`` or ``--view graph`` to force one, ``--no-open`` to only write
 the HTML, and ``-o FILE`` to choose where it is saved. The page opens in a dark theme (a button switches to light, and the choice is
-remembered), and hovering anything fades everything not connected to it, and a line at the bottom describes it. The magnifier ``+`` / ``-`` buttons (or the mouse wheel) zoom, and ``Fit`` resets the view. The page loads its
+remembered), and hovering anything fades everything not connected to it, and a line at the bottom describes it. The magnifier ``+`` / ``-`` buttons (or the mouse wheel) zoom, and ``Fit`` resets the view. The arrow button under them saves what is drawn as a PNG image. The page loads its
 libraries from a CDN, so it needs an internet connection.
 
 Folder overview, hovering a folder (the line at the bottom describes it):

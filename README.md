@@ -45,7 +45,7 @@ Pick the channel you already use. The same version is published to all of them.
 | uv / pipx | `uvx gnost onboard .` or `pipx run gnost onboard .` | Python 3.9+ |
 | npm | `npx gnost-cli onboard .` | Node 18+ (no Python) |
 | Docker | `docker run --rm --user "$(id -u):$(id -g)" -v "$PWD":/repo ghcr.io/mohdzain98/gnost onboard /repo` | Docker (no Python) |
-| Maven | `mvn io.github.mohdzain98:gnost-maven-plugin:0.6.0:onboard` | Java 8+, Maven 3.6.3+ (no Python) |
+| Maven | `mvn io.github.mohdzain98:gnost-maven-plugin:0.6.1:onboard` | Java 8+, Maven 3.6.3+ (no Python) |
 
 The npm package carries a standalone binary for macOS (Apple silicon), Linux (x86_64) and Windows (x86_64).
 The Maven plugin is small: it uses a matching `gnost` found on your `PATH`, or downloads the same binary once from the
@@ -88,6 +88,7 @@ gnost open flow
 - **Hover anything** and everything not connected to it fades, so its boxes and arrows stand out; the line at the bottom
   tells you its connections (for example `gnost/core/resolver.py: imports 2 files · imported by 6 files`).
 - **Zoom** with the magnifier `+` / `-` buttons, the mouse wheel, or the Fit button.
+- **Download** what is drawn as a PNG with the arrow button under the zoom buttons.
 - Dark by default, with a light theme button. Circular imports are red and orange.
 
 | Folder overview (hovering a folder) | A file and what connects to it |
@@ -128,7 +129,7 @@ Run it on every pull request with the GitHub Action (a comment with the blast ra
 ```yaml
 - uses: actions/checkout@v4
   with: { fetch-depth: 0 }        # full history, for hotspots and `gnost changes`
-- uses: mohdzain98/gnost@v0.6.0
+- uses: mohdzain98/gnost@v0.6.1
   with: { comment: "true", fail-under: "7.5" }   # needs `pull-requests: write`
 ```
 

@@ -13,7 +13,7 @@ GNOST is a static analysis CLI that turns an unfamiliar codebase into an onboard
 - **Circular imports**, listed and drawn.
 - **`ONBOARD.md`**: a written guide to the repository, and the same facts as JSON for tools and AI, all saved in a `.gnost/` folder.
 - **Quality report** (`gnost analyze`) for maintainability, robustness, observability and readability. Python projects only for now.
-- **Any repository by address:** `npx gnost-cli onboard https://github.com/owner/repo` clones it read only, writes the results to your current folder and deletes the clone.
+- **Any repository by address:** `npx gnost-cli onboard https://github.com/owner/repo` clones it read only, writes the results to `.gnost/<repo-name>/` in your current folder and deletes the clone.
 - **Languages:** Python, JavaScript, TypeScript and Java.
 
 ## Explore the flow in your browser
@@ -29,7 +29,7 @@ npx gnost-cli onboard .
 npx gnost-cli onboard https://github.com/owner/repo   # any public repository, read only
 ```
 
-A repository address is cloned into a temporary folder (nothing in it is run), the results are written to your current folder, and the clone is deleted.
+A repository address is cloned into a temporary folder (nothing in it is run), the results are written to `.gnost/<repo-name>/` in your current folder, and the clone is deleted.
 
 ## Install globally
 

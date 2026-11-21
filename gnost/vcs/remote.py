@@ -58,6 +58,12 @@ class RemoteUrl:
         )
 
     @property
+    def slug(self) -> str:
+        """The repository name as a safe folder name (letters, digits, dot, dash, underscore)."""
+        cleaned = re.sub(r"[^A-Za-z0-9._-]+", "-", self.name).strip(".-")
+        return cleaned or "repository"
+
+    @property
     def name(self) -> str:
         """The repository name, for messages."""
         tail = re.split(r"[/:]", self.text.rstrip("/"))[-1]

@@ -559,6 +559,12 @@ def run(
     print(f"\nGNOST wrote its files to {layout.folder}")
     print(f"  Guide: {layout.relative_name}/ONBOARD.md")
     if html:
-        print("  Open the explorer: gnost open flow")
+        # a remote repository has its own subfolder, which plain `open flow` does not look in
+        command = (
+            f"gnost open {layout.relative_name}/flow.html"
+            if source
+            else "gnost open flow"
+        )
+        print(f"  Open the explorer: {command}")
     if first_run and layout.has_legacy_output():
         print(f"\nNote: {layout.moved_notice()}")

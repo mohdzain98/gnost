@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import os
 import pathlib
-import re
 import sys
 import tempfile
 import webbrowser
@@ -16,21 +15,14 @@ _MERMAID_EXT = {".mmd", ".mermaid"}
 _MARKDOWN_EXT = {".md", ".markdown"}
 
 
-# Mermaid layouts turn into an unreadable strip beyond roughly this many arrows.
-GRAPH_EDGE_THRESHOLD = 150
-_ARROW = re.compile(r"^\s*\w+\s+(?:-->|==>|-\.->)", re.MULTILINE)
-
-
 def build_page(path: str, mode: str = "auto") -> str:
     """The self-contained HTML page for a .mmd or .md file."""
     ext = os.path.splitext(path)[1].lower()
     kind = "mermaid" if ext in _MERMAID_EXT else "markdown"
     with open(path, encoding="utf-8") as f:
         source = f.read()
-    if kind == "mermaid":
-        big = len(_ARROW.findall(source)) > GRAPH_EDGE_THRESHOLD
-        if mode == "graph" or (mode == "auto" and big):
-            kind = "graph"
+    if kind == "mermaid" and mode != "mermaid":
+        kind = "graph"  # the interactive explorer for every size; --view mermaid draws it flat
     return render_viewer_html(source, os.path.basename(path), kind)  # type: ignore[arg-type]
 
 

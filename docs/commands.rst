@@ -81,7 +81,9 @@ Only ``https://`` and ``ssh`` addresses work (``git@host:owner/repo`` too); plai
 * The repository is cloned into a temporary folder and **deleted afterwards**, also when you press
   Ctrl+C. The clone is partial (history without file contents until needed); if the server cannot do
   that, GNOST takes the last 500 commits instead and says the history is cut.
-* **The results go to the current folder** (``.gnost/``), not into the clone.
+* **The results go to the current folder, in a folder named after the repository** (``.gnost/<repo-name>/``,
+  for example ``.gnost/flask/``), not into the clone. Several runs never overwrite each other. Open the page with
+  ``gnost open .gnost/<repo-name>/flow.html``; the command is printed at the end of the run.
 * **Nothing in the repository is run.** Git hooks, submodules and symlinks are switched off. mypy,
   ruff and the other analyzers use GNOST's own settings, so a repository cannot make them load
   plugins from its ``mypy.ini`` or ``pyproject.toml``. The repository's own ``.gnost.toml`` is not

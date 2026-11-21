@@ -39,6 +39,7 @@ class ChangesCommand:
         write: bool = True,
         output_root: Optional[str] = None,
         remote: bool = False,
+        output_subdir: Optional[str] = None,
     ) -> None:
         self.path = os.path.realpath(path)
         self.refs = refs
@@ -49,6 +50,7 @@ class ChangesCommand:
         self.write = write
         self.output_root = output_root
         self.remote = remote
+        self.output_subdir = output_subdir
 
     def run(self) -> int:
         """Run the analysis and report. 0 on success, 2 for a usage problem, 1 on errors."""
@@ -66,7 +68,10 @@ class ChangesCommand:
             )
         if self.depth < 1:
             return self._fail("--depth must be 1 or more", ExitCode.USAGE)
-        layout = OutputLayout(self.output_root or repo.root, config.output_dir)
+        folder = config.output_dir
+        if self.output_subdir:  # one folder per remote repository
+            folder = os.path.join(folder, self.output_subdir)
+        layout = OutputLayout(self.output_root or repo.root, folder)
         try:
             refs = RefRange.parse(self.refs, repo)
             analyzer = ChangeAnalyzer(
@@ -129,6 +134,7 @@ def run(
     write: bool = True,
     output_root: Optional[str] = None,
     remote: bool = False,
+    output_subdir: Optional[str] = None,
 ) -> int:
     """Entry point used by the CLI."""
     return ChangesCommand(

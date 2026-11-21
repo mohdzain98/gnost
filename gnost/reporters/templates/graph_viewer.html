@@ -35,6 +35,9 @@
   li.f:hover, .lnk:hover { background:var(--code); color:var(--hl); }
   .lnk { cursor:pointer; } details > summary { cursor:pointer; padding:2px 0; }
   details ul { margin:0 0 4px; padding-left:10px; }
+  #legend { flex:none; padding:8px 12px; font-size:12px; line-height:1.5;
+            border-bottom:1px solid var(--line); background:var(--bg); }
+  #legend h4 { margin:0 0 2px; font-size:12px; color:var(--muted); font-weight:600; }
   .k { display:inline-block; width:22px; border-top:3px solid; vertical-align:middle; }
   .muted { color:var(--muted); } #err { color:#d1242f; padding:16px; }
 </style>
@@ -50,9 +53,11 @@
 <div id="zoom">
   <button id="zin" title="Zoom in" aria-label="Zoom in"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21M10.5 7.5v6M7.5 10.5h6"/></svg></button>
   <button id="zout" title="Zoom out" aria-label="Zoom out"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21M7.5 10.5h6"/></svg></button>
+  <button id="png" title="Download what is shown as a PNG image" aria-label="Download PNG"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v10M7.5 10l4.5 4.5 4.5-4.5M5 19h14"/></svg></button>
 </div>
 <div id="hint"></div>
 <div id="side">
+  <div id="legend"></div>
   <div id="info"></div>
   <div id="pick"><input id="q" type="search" placeholder="Search files..."><div id="tree"></div></div>
 </div>
@@ -239,7 +244,7 @@ if (typeof cytoscape === "undefined") {
       "<b>Click a folder</b> to open its files." +
       (hide && names.length ? '<p class="muted">Arrows into these shared folders are hidden (grey boxes): ' +
         names.map(n => '<span class="lnk" data-folder="' + esc(n) + '">' + esc(n) + "</span>").join(", ") + ".</p>" : "") +
-      legend();
+      "";
     $("crumb").innerHTML = "<b>All folders</b>";
   }
 
@@ -317,9 +322,10 @@ if (typeof cytoscape === "undefined") {
         '<p class="muted">Green: imports going out of the folder. Blue: coming in. Purple dots are files from other folders. Click a file to focus on it.</p>' +
         list("Other files it touches", outside, "#a371f7");
     }
-    $("info").innerHTML = html + legend();
+    $("info").innerHTML = html;
   }
 
+  // Pinned at the top of the right panel, above the part that scrolls.
   const legend = () => '<h4>Legend</h4>' +
     '<div><span class="k" style="border-color:' + GREY + '"></span> import &nbsp;<span class="k" style="border-color:' + GREY + ';border-top-style:dashed"></span> deferred</div>' +
     '<div><span class="k" style="border-color:' + ORANGE + '"></span> circular, closes via a deferred import</div>' +
@@ -419,6 +425,25 @@ if (typeof cytoscape === "undefined") {
   $("theme").onclick = () => {
     theme = theme === "dark" ? "light" : "dark"; applyTheme(theme);
     try { localStorage.setItem("gnost-theme", theme); } catch (e) {}
+  };
+  $("legend").innerHTML = legend();
+  // Saves everything currently drawn (not just the zoomed part), with the theme's background
+  // and some margin around it.
+  $("png").onclick = () => {
+    const bg = document.documentElement.dataset.theme === "light" ? "#ffffff" : "#0d1117";
+    const pad = 48;
+    const img = new Image();
+    img.onload = () => {
+      const c = document.createElement("canvas");
+      c.width = img.width + 2 * pad; c.height = img.height + 2 * pad;
+      const g = c.getContext("2d");
+      g.fillStyle = bg; g.fillRect(0, 0, c.width, c.height);
+      g.drawImage(img, pad, pad);
+      const a = document.createElement("a");
+      a.href = c.toDataURL("image/png"); a.download = "gnost-flow.png";
+      document.body.appendChild(a); a.click(); a.remove();
+    };
+    img.src = cy.png({ full: true, scale: 2, maxWidth: 8000, maxHeight: 8000, bg, output: "base64uri" });
   };
   render();
 }

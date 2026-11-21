@@ -15,7 +15,9 @@ def test_show_writes_html_for_mmd_and_md(tmp_path: Path):
     mmd.write_text("flowchart TD\n  a --> b\n", encoding="utf-8")
     out = tmp_path / "f.html"
     assert run(str(mmd), str(out), open_browser=False) == 0
-    assert "mermaid" in out.read_text(encoding="utf-8")
+    assert "cytoscape" in out.read_text(
+        encoding="utf-8"
+    )  # interactive, even when small
 
     md = tmp_path / "f.md"
     md.write_text("# t\n", encoding="utf-8")
@@ -29,7 +31,7 @@ def test_show_rejects_missing_and_unknown(tmp_path: Path):
     assert run(str(other), open_browser=False) == 2
 
 
-def test_big_mermaid_uses_interactive_graph(tmp_path: Path):
+def test_every_diagram_is_interactive_unless_mermaid_is_asked_for(tmp_path: Path):
     lines = ["flowchart TD"] + [f"  n{i} --> n{i + 1}" for i in range(200)]
     mmd = tmp_path / "big.mmd"
     mmd.write_text("\n".join(lines), encoding="utf-8")
@@ -71,3 +73,12 @@ def test_open_command_handles_flow_files_and_bad_targets(tmp_path: Path, monkeyp
     assert app.main() == 2
     monkeypatch.setattr("sys.argv", ["gnost", "show", str(flow / "flow-complete.mmd")])
     assert app.main() == 0
+
+
+def test_the_explorer_has_a_png_download_button(tmp_path: Path):
+    mmd = tmp_path / "f.mmd"
+    mmd.write_text("flowchart TD\n  a --> b\n", encoding="utf-8")
+    out = tmp_path / "f.html"
+    assert run(str(mmd), str(out), open_browser=False) == 0
+    page = out.read_text(encoding="utf-8")
+    assert 'id="png"' in page and "cy.png(" in page

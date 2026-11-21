@@ -6,6 +6,23 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
+
+## [0.6.1] — 2026-11-22
+
+### Changed
+- **The flow explorer is always interactive.** `flow.html` and `gnost open flow` used to show a flat Mermaid picture for diagrams under about 150 arrows, which is hard to use. Every `.mmd` diagram now opens as the interactive explorer, whatever its size (`--view mermaid` still draws the flat picture).
+- **Results for a repository address go to `.gnost/<repo-name>/`** instead of `.gnost/`, so several repositories never overwrite each other. The end of the run prints the exact `gnost open` command.
+- `ONBOARD.md` now names `flow-complete.mmd` and says how it relates to `FLOW-full.md` (the same for a small project).
+
+### Added
+- A **download button** in the explorer saves the diagram on screen as a PNG (with a margin and the theme's background).
+- The explorer's **legend** is pinned at the top of the right panel, so it no longer scrolls out of view.
+
+### Fixed
+- The `git log` window used a date without a time, which git completes with the current time of day. A very large `[history] days` could return no history at some hours. It is now an exact timestamp (and no limit for a huge window).
+
+---
+
 ## [0.6.0] — 2026-11-21
 
 ### Added

@@ -104,14 +104,14 @@ The GitHub Action
          - uses: actions/checkout@v4
            with:
              fetch-depth: 0     # full history, for the change features
-         - uses: mohdzain98/gnost@v0.6.0
+         - uses: mohdzain98/gnost@v0.6.1
            with:
              fail-under: "7.5"
              baseline: .gnost/baseline.json
              fail-on-new: "true"
 
 The action runs GNOST's Docker image, writes the SARIF file and uploads it, adds the score to the job
-summary, and then fails the job if the gate failed. Pinning ``@v0.6.0`` also pins the GNOST version.
+summary, and then fails the job if the gate failed. Pinning ``@v0.6.1`` also pins the GNOST version.
 
 .. list-table::
    :header-rows: 1
