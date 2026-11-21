@@ -1,5 +1,5 @@
-name: "GNOST"
-description: "Code quality gate and onboarding guide for your repository (runs GNOST from its Docker image)."
+name: "GNOST Codebase Onboarding and Quality Gate"
+description: "Onboarding guide, quality gate and pull request change report for your repo, from the GNOST Docker image."
 author: "Mohd Zain"
 branding:
   icon: "search"
