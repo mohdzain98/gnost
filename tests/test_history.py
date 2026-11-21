@@ -446,3 +446,10 @@ def test_history_settings_come_from_the_config_over_the_defaults() -> None:
 def test_bad_history_settings_are_refused(bad: object) -> None:
     with pytest.raises(ConfigError):
         _validate({"history": bad}, GnostConfig())
+
+
+def test_the_window_start_is_an_exact_timestamp_and_absent_for_a_huge_window() -> None:
+    reader = HistoryReader(HistorySettings(days=10))
+    assert f"--max-age={NOW - 10 * DAY}" in reader._log_command(float(NOW))
+    forever = HistoryReader(HistorySettings(days=36500))._log_command(float(NOW))
+    assert not any(a.startswith(("--max-age", "--since")) for a in forever)

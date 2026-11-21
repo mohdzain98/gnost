@@ -13,7 +13,6 @@ import re
 import time
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
 from typing import Callable, Dict, Iterable, List, Optional, Sequence, Set, Tuple
 
 from gnost.vcs.git import GitError, GitRepository, GitRunner, GitUnavailable
@@ -366,10 +365,10 @@ class HistoryReader:
 
     def _log_command(self, now: float) -> List[str]:
         """The one git log call: numstat, renames, mailmap, relative to the scanned folder."""
-        # clamped: Windows cannot build a date before 1970 (a huge `days` would crash)
-        since = datetime.fromtimestamp(
-            max(0.0, now - self.settings.days * DAY), tz=timezone.utc
-        )
+        # An exact timestamp: a date without a time is completed with the current time of
+        # day by git, which gave different results at different hours near the epoch.
+        start = int(now - self.settings.days * DAY)
+        window = [f"--max-age={start}"] if start > 0 else []  # a huge `days`: no limit
         return [
             "log",
             "--no-merges",
@@ -377,7 +376,7 @@ class HistoryReader:
             "-M",
             "--numstat",
             "--relative",
-            f"--since={since:%Y-%m-%d}",
+            *window,
             "-n",
             str(self.settings.max_commits),
             LOG_FORMAT,
