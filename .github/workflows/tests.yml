@@ -10,6 +10,22 @@ on:
   workflow_dispatch:
 
 jobs:
+  lint:
+    # Style problems are found once and fast, before the long matrix below.
+    # `ruff format` is the project's formatter (it replaces black and isort, and
+    # produces black-compatible code), so there is no separate black step.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install "ruff==0.15.4"
+      - name: Lint
+        run: ruff check .
+      - name: Formatting
+        run: ruff format --check --diff gnost tests scripts
+
   test:
     runs-on: ubuntu-24.04
 
@@ -25,8 +41,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - run: python -m pip install --upgrade pip
-      - run: pip install -e ".[test]" "ruff==0.15.4"
-      - run: ruff check .
+      - run: pip install -e ".[test]"
       - run: pytest -q
 
   installed-package:

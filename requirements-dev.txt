@@ -1,0 +1,7 @@
+# Everything a contributor needs. Installed by `make install`.
+-e .[test]
+ruff==0.15.4            # the version CI and pre-commit use
+pre-commit
+pyyaml                  # some tests read YAML files
+build                   # `make build`
+-r docs/requirements.txt

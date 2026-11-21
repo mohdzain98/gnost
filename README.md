@@ -174,6 +174,20 @@ Install commands for every channel are in the [Install](#install) table above.
 ## 📜 Changelog:
 [![Changelog](https://img.shields.io/badge/changelog-CHANGELOG.md-blue)](./CHANGELOG.md)
 
+## 🤝 Contributing
+
+Contributions are welcome. Start with the issues labelled
+[good first issue](https://github.com/mohdzain98/gnost/labels/good%20first%20issue).
+
+```bash
+make setup      # once: .venv and the pre-commit hook
+make install    # GNOST and the development tools
+make check      # lint, formatting and tests (what CI runs)
+```
+
+`make help` lists every command. See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full guide.
+By taking part you agree to the [Code of Conduct](./CODE_OF_CONDUCT.md).
+
 ## 🧩 Philosophy
 GNOST prioritizes:
 - Fast insights over deep AST complexity

@@ -6,18 +6,19 @@ PATH_ARG ?= .
 
 .DEFAULT_GOAL := help
 
-.PHONY: help install install-docs test snapshots lint format hooks format-check check \
+.PHONY: help setup install test snapshots lint format hooks pre-commit format-check check \
         docs docs-open docs-clean build clean analyze onboard version
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-14s\033[0m %s\n", $$1, $$2}'
 
-install: ## Install gnost in editable mode with test and lint tools
-	$(PYTHON) -m pip install -e ".[test]" "ruff==0.15.4"
+setup: ## One-time: create .venv and install the git pre-commit hook
+	bash scripts/setup_dev.sh
 
-install-docs: ## Install Sphinx and the docs theme
-	$(PYTHON) -m pip install -r docs/requirements.txt
+install: ## Install GNOST (editable) and all development tools (tests, ruff, pre-commit, docs)
+	$(PYTHON) -m pip install --upgrade pip
+	$(PYTHON) -m pip install -r requirements-dev.txt
 
 test: ## Run the test suite
 	$(PYTHON) -m pytest -q
@@ -29,16 +30,19 @@ lint: ## Lint with ruff (same as CI)
 	$(PYTHON) -m ruff check .
 
 format: ## Format code with ruff
-	$(PYTHON) -m ruff format gnost tests
+	$(PYTHON) -m ruff format gnost tests scripts
 
-hooks: ## Install the git pre-commit hook (.pre-commit-config.yaml)
+hooks: ## Install the git pre-commit hook again (setup does this once)
 	$(PYTHON) -m pip install pre-commit
 	$(PYTHON) -m pre_commit install
 
-format-check: ## Check formatting without changing files
-	$(PYTHON) -m ruff format --check gnost tests
+pre-commit: ## Run every pre-commit check on all files
+	$(PYTHON) -m pre_commit run --all-files
 
-check: lint test ## Run everything CI runs (lint + tests)
+format-check: ## Check formatting without changing files
+	$(PYTHON) -m ruff format --check --diff gnost tests scripts
+
+check: lint format-check test ## Run everything CI runs (lint, formatting, tests)
 
 docs: ## Build the Sphinx docs into docs/_build/html
 	$(PYTHON) -m sphinx -b html docs docs/_build/html
