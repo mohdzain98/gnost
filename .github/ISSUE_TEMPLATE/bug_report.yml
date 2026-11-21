@@ -1,0 +1,62 @@
+name: Bug report
+description: Something does not work, crashes or gives a wrong result
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting this. The more exact the steps, the faster it gets fixed.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you expect, and what did you get instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The exact command you ran, and a public repository if you can share one.
+      placeholder: |
+        gnost onboard https://github.com/owner/repo
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: GNOST version
+      description: Output of `gnost --version`.
+      placeholder: gnost 0.6.0
+    validations:
+      required: true
+  - type: dropdown
+    id: channel
+    attributes:
+      label: How did you install it?
+      options:
+        - pip / pipx / uvx
+        - npm / npx
+        - Docker
+        - Maven plugin
+        - GitHub Action
+        - From source
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - macOS
+        - Linux
+        - Windows
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Output or error message
+      description: Paste it as text, not as a screenshot. It is rendered as code.
+      render: shell
