@@ -7,8 +7,9 @@ run the Docker image, and there is a ready-made GitHub Action.
 
 .. note::
 
-   ``gnost analyze`` supports **Python** code today, so these checks gate Python code. JavaScript,
-   TypeScript and Java analysis is planned for a later release. ``gnost onboard`` works for all of them.
+   ``gnost analyze`` supports **Python, JavaScript, TypeScript and Java** (JS/TS/Java since 0.7.0), so the
+   quality gate works for all of them. Architecture rules (``gnost changes --fail-on-violations``) work for
+   every language ``gnost onboard`` reads.
 
 Exit codes
 ----------
@@ -104,14 +105,14 @@ The GitHub Action
          - uses: actions/checkout@v4
            with:
              fetch-depth: 0     # full history, for the change features
-         - uses: mohdzain98/gnost@v0.6.1
+         - uses: mohdzain98/gnost@v0.7.0
            with:
              fail-under: "7.5"
              baseline: .gnost/baseline.json
              fail-on-new: "true"
 
 The action runs GNOST's Docker image, writes the SARIF file and uploads it, adds the score to the job
-summary, and then fails the job if the gate failed. Pinning ``@v0.6.1`` also pins the GNOST version.
+summary, and then fails the job if the gate failed. Pinning ``@v0.7.0`` also pins the GNOST version.
 
 .. list-table::
    :header-rows: 1

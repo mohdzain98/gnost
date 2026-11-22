@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [0.7.0] — Unreleased
+## [0.7.0] — 2026-11-22
 
 ### Changed
 - **JavaScript, TypeScript and Java are now read with tree-sitter** instead of text patterns. An `import` in a comment or a string is no longer counted, `require()` and dynamic `import()` are read exactly, `import type` and imports of only `type` names are deferred, and a syntax error in one place no longer hides the rest of the file. The old reader is kept as a fallback when a grammar cannot be loaded (`GNOST_PARSER=regex` forces it).

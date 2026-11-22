@@ -45,6 +45,7 @@ Complete CLI usage::
         open      Open a report or diagram in the browser
         show      Same as `open FILE` (shorter name)
         init      Write a complete .gnost.toml and optionally add GNOST to your build
+        mcp       Serve this project's GNOST facts to coding agents (MCP over stdio, read-only)
 
     Command Options:
     summary|stats|folders|files:
@@ -75,6 +76,9 @@ Complete CLI usage::
         --github-action  Write .github/workflows/gnost.yml
         --agents         Write AGENTS.md pointing coding agents to the .gnost/ folder
 
+    mcp:
+        path             Project folder (default: .); needs `gnost onboard` run first
+
     open|show:
         target                  report (default), flow, or a .mmd / .md / .html file
                                 (`show` takes only a file)
@@ -86,6 +90,7 @@ Complete CLI usage::
     analyze:
         path                    File or directory to analyze (default: .)
         -a, --analyzer          Enable only specific analyzers
+        --language NAME         Only python, javascript, typescript or java (default: all)
         --parallel              Run analyzers in parallel
         -o, --out               Write JSON and HTML report to .gnost/analysis/analysis.json|html
         -v, --verbose           Show traceback on failures
@@ -115,6 +120,7 @@ Run GNOST commands from the root of a repository::
     gnost onboard [path]
     gnost analyze [path] --parallel -o
     gnost changes origin/main
+    gnost mcp [path]
     gnost onboard https://github.com/owner/repo
     gnost open report
 
@@ -125,8 +131,9 @@ Subcommand usage::
     gnost folders [path] [--include INCLUDE] [--exclude EXCLUDE] [--progress]
     gnost files [path] [--include INCLUDE] [--exclude EXCLUDE] [--progress] [--top TOP]
     gnost onboard [path] [--mermaid] [--progress] [--no-progress] [--inject] [--layered] [--depth DEPTH] [--json [FILE]] [--insights-only] [--max-edges N] [--collapse [LEVEL]]
-    gnost analyze [path] [--parallel] [--out] [--list-analyzers] [--no-progress]
+    gnost analyze [path] [--parallel] [--out] [--language NAME] [--list-analyzers] [--no-progress]
     gnost changes BASE[..HEAD] [path] [--depth N] [--format text|markdown|json] [--findings] [--no-cycles] [--no-write] [--fail-on-violations]
+    gnost mcp [path]
     gnost open report|rpt
     gnost version
 
@@ -149,10 +156,13 @@ Key Commands
     Generate onboarding summary and execution flow outputs.
 
 ``analyze``
-    Analyze code quality and generate JSON/HTML findings report.
+    Analyze code quality (Python, JavaScript, TypeScript, Java) and generate JSON/HTML findings report.
 
 ``changes``
     Show what a change touches: changed files, blast radius, risky files, routes, new cycles.
+
+``mcp``
+    Serve project facts to coding agents over MCP (read-only); see :doc:`agents`.
 
 ``open``
     Open the analysis report, the flow explorer or a diagram in the browser.
