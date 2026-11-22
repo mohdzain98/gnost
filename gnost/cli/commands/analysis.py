@@ -7,8 +7,10 @@ from typing import Optional
 from pathlib import Path
 from termcolor import colored
 from gnost.analysis.core.interfaces import AnalyzerRegistry
+from gnost.analysis.rules.analyzer import PolyglotAnalyzer
 from gnost.analysis.utils.extract import Extract
-from gnost.scanner.filters import is_excluded
+from gnost.analysis.languages import AnalysisLanguages
+from gnost.scanner.filters import is_excluded, is_noise_file
 from gnost.analysis.core.models import AnalysisConfiguration
 from gnost.analysis.core.engine import (
     UnifiedAnalysisEngine as Engine,
@@ -72,10 +74,14 @@ class Analysis:
     def initialize_analyzers(self) -> None:
         """Register all analyzers in the global registry."""
         if not self.analyzer_registry.list_analyzer_names():
-            self.analyzer_registry.register(RobustnessAnalyzer())
-            self.analyzer_registry.register(MaintainabilityAnalyzer())
-            self.analyzer_registry.register(ObservabilityAnalyzer())
-            self.analyzer_registry.register(ReadabilityAnalyzer())
+            # Each analyzer keeps its Python tools and also covers JavaScript and TypeScript.
+            for analyzer in (
+                RobustnessAnalyzer(),
+                MaintainabilityAnalyzer(),
+                ObservabilityAnalyzer(),
+                ReadabilityAnalyzer(),
+            ):
+                self.analyzer_registry.register(PolyglotAnalyzer(analyzer))
 
     def get_analyzer_registry(
         self,
@@ -143,9 +149,11 @@ class Analysis:
         *,
         exts: Optional[set[str]] = None,
         exclude: Optional[list] = None,
+        languages: Optional[AnalysisLanguages] = None,
     ) -> list[str]:
         """Return a list of code files under target_path using Extract's filters."""
-        exts = exts or set(Extract.CODE_EXTS)
+        languages = languages or AnalysisLanguages()
+        exts = exts or set(languages.extensions())
         root = Path(target_path).resolve()
 
         # Let Extract decide the best project root (handles wrapper dirs)
@@ -163,8 +171,15 @@ class Analysis:
                         if not Extract.is_hidden_dir(entry):
                             stack.append(entry)
                     else:
-                        if Extract.is_code_file(entry, exts) and not is_excluded(
-                            str(entry), str(project_root), exclude or []
+                        if (
+                            Extract.is_code_file(entry, exts)
+                            and not is_excluded(
+                                str(entry), str(project_root), exclude or []
+                            )
+                            and not languages.is_generated(
+                                str(entry), str(project_root)
+                            )
+                            and not is_noise_file(str(entry), str(project_root))
                         ):
                             files.append(str(entry))
             except PermissionError:

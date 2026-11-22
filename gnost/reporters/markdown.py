@@ -8,6 +8,8 @@ from gnost.scanner.models import ScanResult
 from gnost.core.flow import FlowResult
 from gnost.reporters.mermaid import DEFAULT_MAX_EDGES, MermaidFlowReporter
 from gnost.models.insights import OnboardingInsights
+from gnost.core.architecture import ArchitectureReport
+from gnost.quickstart import GROUP_TITLES, GROUPS, Quickstart
 from gnost.utils.footer import Footer
 
 
@@ -33,7 +35,11 @@ class MarkdownReporter:
         risks=None,
         root_label: Optional[str] = None,
         footer: Optional[Footer] = None,
+        quickstart: Optional[Quickstart] = None,
+        architecture: Optional[ArchitectureReport] = None,
     ):
+        self.quickstart = quickstart
+        self.architecture = architecture
         self.footer = footer or Footer(False)
         self.root_label = root_label or scan.root
         self.changes = changes
@@ -70,6 +76,7 @@ class MarkdownReporter:
             self._header(),
             self._project_overview(),
             self._summary_and_stats_tables(),
+            self._quickstart_md(),
             self._entry_points(),
             self._routes_md(),
             self._execution_flow(),
@@ -85,6 +92,7 @@ class MarkdownReporter:
                     self._change_hotspots_md(),
                     self._risk_md(),
                     self._cycles_md(),
+                    self._architecture_md(),
                 ]
             )
 
@@ -237,6 +245,53 @@ class MarkdownReporter:
                     f"- _...and {len(files) - self.READING_LIMIT} more (closest to an entry point listed first)_"
                 )
 
+        return "\n".join(lines)
+
+    ARCHITECTURE_LIMIT = 30
+
+    def _architecture_md(self) -> str:
+        """The result of the `[architecture]` rules; nothing when none are configured."""
+        report = self.architecture
+        if report is None or not report.configured:
+            return ""
+        lines = ["## Architecture rules", ""]
+        if not report.violations:
+            lines.append(
+                f"_All {report.rules} rules pass ({report.edges_checked} imports checked)._"
+            )
+            return "\n".join(lines)
+        lines += [
+            f"**{len(report.violations)} imports break the rules** "
+            f"({report.rules} rules, {report.edges_checked} imports checked).",
+            "",
+            "| Rule | Importing file | Imported file |",
+            "|---|---|---|",
+        ]
+        for v in report.violations[: self.ARCHITECTURE_LIMIT]:
+            lines.append(f"| {v.rule} | `{v.source}` | `{v.target}` |")
+        extra = len(report.violations) - self.ARCHITECTURE_LIMIT
+        if extra > 0:
+            lines.append(f"\n_... and {extra} more (see insights.json)._")
+        return "\n".join(lines)
+
+    def _quickstart_md(self) -> str:
+        """How to install, build, run and test, as read from the project's own files."""
+        quickstart = self.quickstart
+        if quickstart is None or quickstart.is_empty:
+            return ""
+        lines = [
+            "## Get it running",
+            "",
+            "_Read from this project's own files. Each line names its source; nothing is guessed._",
+        ]
+        for group in GROUPS:
+            steps = getattr(quickstart, group)
+            if not steps:
+                continue
+            lines += ["", f"**{GROUP_TITLES[group]}**", ""]
+            for step in steps:
+                text = f"`{step.text}`" if step.command else step.text
+                lines.append(f"- {text} _({step.source})_")
         return "\n".join(lines)
 
     def _path_specific_flows(self) -> str:

@@ -150,4 +150,29 @@ public class MojoCommandTest {
         m.path = "git@github.com:owner/repo.git";
         assertTrue(m.pathIsAddress());
     }
+
+    @Test
+    public void onboardCanSwitchTheProgressBarOff() {
+        OnboardMojo m = new OnboardMojo();
+        m.noProgress = true;
+        assertEquals(Arrays.asList("g", "onboard", ".", "--no-progress"), m.command("g"));
+    }
+
+    @Test
+    public void analyzeRepeatsTheLanguageOption() {
+        AnalyzeMojo m = new AnalyzeMojo();
+        m.language = "typescript, javascript";
+        assertEquals(
+                Arrays.asList("g", "analyze", ".", "--language", "typescript", "--language", "javascript"),
+                m.command("g"));
+    }
+
+    @Test
+    public void changesCanFailOnArchitectureViolations() {
+        ChangesMojo m = new ChangesMojo();
+        m.refs = "origin/main";
+        m.failOnViolations = true;
+        assertEquals(
+                Arrays.asList("g", "changes", "origin/main", ".", "--fail-on-violations"), m.command("g"));
+    }
 }

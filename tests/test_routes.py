@@ -276,7 +276,7 @@ def test_routes_in_json_match_schema_and_are_relative(fixture_repo):
     root = fixture_repo("package_app")
     payload = _payload(root)
     jsonschema.validate(payload, load_schema())
-    assert payload["schema_version"] == "1.4"
+    assert payload["schema_version"] == "1.5"
     assert payload["stats"]["routes"] == len(payload["routes"]) == 7
     assert all(not r["file"].startswith("/") for r in payload["routes"])
     assert {"method", "path", "handler", "file", "line", "framework"} == set(

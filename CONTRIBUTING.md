@@ -81,6 +81,11 @@ CI uses ruff 0.15.4 (the same version as `.pre-commit-config.yaml`, and what `ma
 A newer ruff on your machine can report different lint results, so if CI disagrees with you, run
 `make install` again.
 
+## Binary size
+The standalone binary (npm and Maven download it) must stay small. CI fails a build whose archive is more than
+15 MiB larger than the 0.6.1 size in `packaging/binary-size-baseline.json`. A new dependency that grows it needs a
+reason in the pull request; raising the baseline is a deliberate, reviewed change.
+
 ## Documentation
 - User-facing changes should update docs or README when needed.
 - Longer docs belong in ReadTheDocs instead of README.

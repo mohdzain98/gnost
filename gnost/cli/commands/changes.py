@@ -40,6 +40,7 @@ class ChangesCommand:
         output_root: Optional[str] = None,
         remote: bool = False,
         output_subdir: Optional[str] = None,
+        fail_on_violations: bool = False,
     ) -> None:
         self.path = os.path.realpath(path)
         self.refs = refs
@@ -51,6 +52,7 @@ class ChangesCommand:
         self.output_root = output_root
         self.remote = remote
         self.output_subdir = output_subdir
+        self.fail_on_violations = fail_on_violations
 
     def run(self) -> int:
         """Run the analysis and report. 0 on success, 2 for a usage problem, 1 on errors."""
@@ -82,6 +84,7 @@ class ChangesCommand:
                 depth=self.depth,
                 compare_base=self.compare_base,
                 findings=self.findings,
+                architecture=config.architecture_settings(),
                 caution=config.caution_settings(),
                 history=config.history_settings(),  # a remote clone is complete enough
                 risk=config.risk_settings(),
@@ -96,6 +99,14 @@ class ChangesCommand:
         if self.write:
             self._write(layout, markdown, report.to_dict())
         self._print(report, markdown)
+        gate = self.fail_on_violations or config.architecture_settings().fail
+        if gate and report.architecture is not None and report.architecture.new:
+            print(
+                f"gnost: this change adds {len(report.architecture.new)} architecture "
+                "rule violation(s)",
+                file=sys.stderr,
+            )
+            return ExitCode.GATE_FAILED
         return ExitCode.OK
 
     def _write(self, layout: OutputLayout, markdown: str, data: Dict[str, Any]) -> None:
@@ -135,6 +146,7 @@ def run(
     output_root: Optional[str] = None,
     remote: bool = False,
     output_subdir: Optional[str] = None,
+    fail_on_violations: bool = False,
 ) -> int:
     """Entry point used by the CLI."""
     return ChangesCommand(
@@ -147,4 +159,6 @@ def run(
         write,
         output_root,
         remote,
+        output_subdir,
+        fail_on_violations,
     ).run()

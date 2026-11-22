@@ -7,6 +7,8 @@ from gnost.core.graph import DependencyGraph
 from gnost.utils.printer import Printer
 from gnost.core.ranker import HotspotRanker
 from gnost.models.insights import OnboardingInsights
+from gnost.core.architecture import ArchitectureReport
+from gnost.quickstart import GROUP_TITLES, Quickstart
 from typing import Optional
 
 
@@ -25,7 +27,11 @@ class SummaryReporter:
         changes=None,
         risks=None,
         root_label: Optional[str] = None,
+        quickstart: Optional[Quickstart] = None,
+        architecture: Optional[ArchitectureReport] = None,
     ):
+        self.quickstart = quickstart
+        self.architecture = architecture
         self.root_label = root_label or scan.root
         self.changes = changes
         self.risks = risks
@@ -42,6 +48,7 @@ class SummaryReporter:
     def render(self):
         self._header()
         self._project_overview()
+        self._quickstart()
         self._entry_points()
         self._routes()
         self._execution_flow()
@@ -54,12 +61,39 @@ class SummaryReporter:
             self._change_hotspots()
             self._risk()
             self._cycles()
+            self._architecture()
 
     # -------------------------
     # Sections
     # -------------------------
 
     CHANGE_HOTSPOT_LIMIT = 5
+
+    def _architecture(self) -> None:
+        """Architecture rule violations, when rules are configured."""
+        report = self.architecture
+        if report is None or not report.configured:
+            return
+        self.printer.section("Architecture Rules")
+        if not report.violations:
+            self.printer.text(f"All {report.rules} rules pass.")
+            return
+        self.printer.text(f"{len(report.violations)} imports break the rules:")
+        for v in report.violations[: self.CHANGE_HOTSPOT_LIMIT]:
+            self.printer.bullet(f"{v.rule}: {v.source} -> {v.target}")
+
+    def _quickstart(self) -> None:
+        """The first install, run and test command, when the project's files give them."""
+        quickstart = self.quickstart
+        if quickstart is None or quickstart.is_empty:
+            return
+        self.printer.section("Get it running")
+        for group in ("install", "run", "test"):
+            steps = getattr(quickstart, group)
+            if steps:
+                self.printer.kv(
+                    GROUP_TITLES[group], f"{steps[0].text}  ({steps[0].source})"
+                )
 
     def _change_hotspots(self) -> None:
         """Print the most-changed files, or why there is no history worth mentioning."""

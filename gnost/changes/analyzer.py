@@ -15,11 +15,13 @@ from gnost.changes.impact import DEFAULT_DEPTH, AffectedFile, BlastRadius
 from gnost.changes.refs import ChangedFile, DiffReader, RefRange
 from gnost.changes.report import (
     ChangeReport,
+    ArchitectureChange,
     CycleChange,
     FileRisk,
     RouteChange,
 )
 from gnost.changes.snapshot import ProjectSnapshot, RefCheckout
+from gnost.core.architecture import ArchitectureChecker, ArchitectureSettings
 from gnost.core.caution import CautionSettings, rank_files
 from gnost.core.risk import REASON_WORDS, RiskCalculator, RiskSettings
 from gnost.vcs.git import GitRepository
@@ -37,6 +39,7 @@ class ChangeAnalyzer:
         depth: int = DEFAULT_DEPTH,
         compare_base: bool = True,
         findings: bool = False,
+        architecture: Optional[ArchitectureSettings] = None,
         caution: Optional[CautionSettings] = None,
         history: Optional[HistorySettings] = None,
         risk: Optional[RiskSettings] = None,
@@ -47,6 +50,7 @@ class ChangeAnalyzer:
         self.depth = depth
         self.compare_base = compare_base
         self.findings = findings
+        self.architecture = architecture or ArchitectureSettings()
         self.caution = caution or CautionSettings()
         self.history = history or HistorySettings()
         self.risk = risk or RiskSettings()
@@ -77,6 +81,7 @@ class ChangeAnalyzer:
             report.notes.append(
                 "Circular dependencies were not compared (base scan failed)."
             )
+        report.architecture = self._architecture(head, base, files)
         if self.findings:
             absolute = [os.path.join(self.scan_root, p) for p in changed_now]
             report.findings = ChangedFindings(self.scan_root).run(absolute)
@@ -207,6 +212,30 @@ class ChangeAnalyzer:
                 report.fixed_cycles.append(
                     CycleChange(sorted(base.cycle_key(c)), c.kind)
                 )
+
+    def _architecture(
+        self,
+        head: ProjectSnapshot,
+        base: Optional[ProjectSnapshot],
+        files: Sequence[ChangedFile],
+    ) -> ArchitectureChange:
+        """Violations of the `[architecture]` rules that the change adds or removes."""
+        if not self.architecture.configured:
+            return ArchitectureChange(configured=False)
+        checker = ArchitectureChecker.for_settings(self.architecture)
+        now = checker.check(head.graph, head.relative)
+        if base is None:
+            changed = {f.path for f in files}
+            touching = [v for v in now if v.source in changed or v.target in changed]
+            return ArchitectureChange(
+                True, [v.to_dict() for v in touching], [], len(now), compared=False
+            )
+        before = checker.check(base.graph, base.relative)
+        renamed = {f.old_path: f.path for f in files if f.old_path}
+        new, fixed = ArchitectureChecker.compare(before, now, renamed)
+        return ArchitectureChange(
+            True, [v.to_dict() for v in new], [v.to_dict() for v in fixed], len(now)
+        )
 
     def _head_is_checked_out(self, refs: RefRange) -> bool:
         """Whether the head ref is the commit the working folder is on."""

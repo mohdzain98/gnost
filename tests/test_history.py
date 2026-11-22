@@ -386,7 +386,7 @@ def test_onboard_reports_change_hotspots_in_markdown_json_and_terminal(
     assert "Change Hotspots" in out and "app/service.py" in out
 
     data = json.loads((repo / ".gnost" / "insights.json").read_text())
-    assert data["schema_version"] == "1.4"
+    assert data["schema_version"] == "1.5"
     ch = data["change_history"]
     assert ch["available"] is True and ch["files"][0]["path"] == "app/service.py"
     assert ch["files"][0]["commits"] == 4 and ch["files"][0]["authors"] == 3

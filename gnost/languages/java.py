@@ -5,11 +5,17 @@ from typing import List, Optional
 
 from gnost.languages.base import LanguageAdapter, EntryPoint, ImportEdge
 from gnost.languages.manifests import find_manifests, read_text
+from gnost.parsing import ParserFactory, default_factory
+from gnost.parsing.queries import JavaQueries
 
 
 class JavaAdapter(LanguageAdapter):
     name = "java"
     extensions = [".java"]
+
+    def __init__(self, parser_factory: Optional[ParserFactory] = None) -> None:
+        self.parsers = parser_factory or default_factory()
+        self.queries = JavaQueries()
 
     # -------------------------
     # Entry Points
@@ -51,6 +57,33 @@ class JavaAdapter(LanguageAdapter):
     # -------------------------
 
     def detect_imports(self, file_path: str, content: str) -> List[ImportEdge]:
+        """Explicit imports plus references to classes of the same package.
+
+        Java needs no import for a class in the same package, so those are found from the
+        names the file uses (`package.Name` candidates; the resolver keeps the ones that are
+        real files). The text-based reader below is the fallback without a grammar.
+        """
+        tree = self.parsers.parse("java", content.encode("utf-8", "replace"))
+        if tree is None:
+            return self._regex_imports(file_path, content)
+        imported = self.queries.imports(tree)
+        targets = list(imported)
+        package = self.queries.package(tree)
+        if package:
+            known = {t.rsplit(".", 1)[-1] for t in imported}
+            known |= self.queries.declared_types(tree)
+            for name in sorted(self.queries.referenced_types(tree) - known):
+                targets.append(f"{package}.{name}")
+        seen: set = set()
+        edges: List[ImportEdge] = []
+        for target in targets:
+            if target not in seen:
+                seen.add(target)
+                edges.append(ImportEdge(source=file_path, target=target))
+        return edges
+
+    def _regex_imports(self, file_path: str, content: str) -> List[ImportEdge]:
+        """The text-based reader (fallback): explicit `import a.b.C;` lines only."""
         imports: List[ImportEdge] = []
 
         for match in re.findall(

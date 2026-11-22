@@ -53,7 +53,8 @@ Complete CLI usage::
         --progress Show a progress bar while scanning
 
     onboard:
-        --progress Show a progress bar while onboarding
+        --progress Always show the progress bar (default: in a terminal only)
+        --no-progress  Never show the progress bar
         --mermaid  Generate only Mermaid flow diagram (FLOW.mmd)
         --inject   Inject onboarding link into README.md files
         --layered  Produce Layered mermaid as Entry -> Core -> Leaf
@@ -123,9 +124,9 @@ Subcommand usage::
     gnost stats [path] [--include INCLUDE] [--exclude EXCLUDE] [--progress]
     gnost folders [path] [--include INCLUDE] [--exclude EXCLUDE] [--progress]
     gnost files [path] [--include INCLUDE] [--exclude EXCLUDE] [--progress] [--top TOP]
-    gnost onboard [path] [--mermaid] [--progress] [--inject] [--layered] [--depth DEPTH] [--json [FILE]] [--insights-only] [--max-edges N] [--collapse [LEVEL]]
+    gnost onboard [path] [--mermaid] [--progress] [--no-progress] [--inject] [--layered] [--depth DEPTH] [--json [FILE]] [--insights-only] [--max-edges N] [--collapse [LEVEL]]
     gnost analyze [path] [--parallel] [--out] [--list-analyzers] [--no-progress]
-    gnost changes BASE[..HEAD] [path] [--depth N] [--format text|markdown|json] [--findings] [--no-cycles] [--no-write]
+    gnost changes BASE[..HEAD] [path] [--depth N] [--format text|markdown|json] [--findings] [--no-cycles] [--no-write] [--fail-on-violations]
     gnost open report|rpt
     gnost version
 
@@ -232,9 +233,11 @@ Use dedicated pages for details:
    commands
    ci
    changes
+   agents
    onboard
    folder
    analyze
+   calibration
    analyzer_guide
    configuration
    gallery
@@ -252,7 +255,8 @@ Options
     Number of files to show with ``files``.
 
 ``--progress``
-    Show a progress bar while scanning or onboarding.
+    Show a progress bar while scanning or onboarding. ``onboard`` also shows it by default in a terminal
+    (never in CI or when output is piped); ``--no-progress`` turns it off.
 
 ``--mermaid``
     Generate only Mermaid flow diagram (FLOW.mmd) (onboard).

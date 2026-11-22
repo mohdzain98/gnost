@@ -24,6 +24,22 @@ cp -r "$REPO/tests/fixtures/react_app" "$WORK/react"
 if grep -qE "resource_tracker|invalid choice|usage:" "$WORK/progress.err"; then
   cat "$WORK/progress.err"; echo "progress bar relaunched the binary"; exit 1
 fi
+grep -q "Scanning files" "$WORK/progress.err" || { echo "progress bar shows no step names"; exit 1; }
+# The "Get it running" section comes from the project's own files (package.json here).
+grep -q "## Get it running" "$WORK/react/.gnost/ONBOARD.md" || { echo "missing Get it running"; exit 1; }
+grep -q '"quickstart"' "$WORK/react/.gnost/insights.json" || { echo "missing quickstart in the JSON"; exit 1; }
+# JavaScript, TypeScript and Java files are read with tree-sitter inside the frozen binary too.
+JAVA_APP="$WORK/javaapp"; cp -r "$REPO/tests/fixtures/java_app" "$JAVA_APP"
+(cd "$JAVA_APP" && "$BIN" onboard . > /dev/null)
+grep -q '"java": "tree-sitter"' "$JAVA_APP/.gnost/insights.json" || { echo "Java is not read with tree-sitter in the binary"; exit 1; }
+grep -q '"typescript": "tree-sitter"\|"javascript": "tree-sitter"' "$WORK/react/.gnost/insights.json" || { echo "JS/TS is not read with tree-sitter in the binary"; exit 1; }
+# `analyze` checks JavaScript, TypeScript and Java with the built-in rules (no Node or JDK needed).
+RULES="$WORK/rules"; mkdir -p "$RULES/src"
+printf 'function f(a) {\n  try { eval(a); } catch (e) {}\n  return a == 1;\n}\n' > "$RULES/src/app.js"
+printf 'class A {\n  void m() {\n    try { run(); } catch (Exception e) {}\n    System.out.println("x");\n  }\n}\n' > "$RULES/src/A.java"
+(cd "$RULES" && git init -q . && "$BIN" analyze . --no-progress --quiet -o > /dev/null)
+grep -q 'ROB-UNSAFE-EVAL' "$RULES/.gnost/analysis/analysis.json" || { echo "no JavaScript findings from the binary"; exit 1; }
+grep -q 'ROB-CATCH-GENERIC' "$RULES/.gnost/analysis/analysis.json" || { echo "no Java findings from the binary"; exit 1; }
 # gnost init writes a complete config (and --print shows it without writing).
 "$BIN" init --print | grep -q "output_dir"
 INIT_DIR="$WORK/initcheck"; mkdir "$INIT_DIR"

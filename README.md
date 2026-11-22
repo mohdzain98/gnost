@@ -25,6 +25,7 @@ Perfect for first-day onboarding, audits, and codebase exploration.
 
 ## 🧠 What GNOST Does
 - Works on a folder **or a repository address** (`gnost onboard https://github.com/owner/repo`): read-only clone, nothing in it is run, deleted afterwards
+- Writes a **"Get it running"** section: how to install, run and test the project and which environment variables it needs, read from its own files (`package.json`, `pyproject.toml`, `Makefile`, `Dockerfile`, `.env.example`, ...)
 - Detects **where execution starts**
 - Infers **high-level execution flow**
 - Identifies **hotspot files** (most important code)
@@ -137,7 +138,7 @@ See [Use GNOST in CI](https://gnost.readthedocs.io/en/latest/ci.html), or run `g
 
 ### Analysis scope
 
-- `gnost analyze` currently supports Python codebases only.
+- `gnost analyze` checks **Python, JavaScript, TypeScript and Java** (since 0.7.0). Python uses mypy, bandit, radon and ruff; the other languages use GNOST's own rules, so nothing else needs to be installed (no Node, no JDK).
 - JavaScript/TypeScript/Java analysis is planned for future releases.
 
 ## 🌍 Supported Languages
@@ -145,6 +146,8 @@ See [Use GNOST in CI](https://gnost.readthedocs.io/en/latest/ci.html), or run `g
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+
+GNOST reads Python with `ast` and JavaScript, TypeScript and Java with tree-sitter, so imports in comments and strings are never counted and Java's same-package references show up in the graph.
 
 ## 🎯 Who Is This For?
 - Developers joining a new team

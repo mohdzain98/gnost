@@ -47,6 +47,15 @@ With the GitHub Action, ``comment: "true"`` posts this report as one comment on 
 updates it on every push (see :doc:`ci`). The workflow needs ``fetch-depth: 0`` so the base branch is
 available, and ``pull-requests: write``.
 
+Architecture rules
+------------------
+
+If ``.gnost.toml`` has an ``[architecture]`` section (see :doc:`configuration`), the report lists the imports the
+change adds that break a rule, and those it removes. Only the change is judged: old violations are not blamed on
+it, and a renamed file keeps its history. ``gnost changes --fail-on-violations`` (or ``fail = true`` in the section)
+exits with code 3 when the change adds one, so it can gate a pull request. With ``--no-cycles`` the base is not
+scanned, so the report lists the violations in the changed files instead.
+
 Limits
 ------
 

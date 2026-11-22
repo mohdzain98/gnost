@@ -21,6 +21,12 @@ dependencies = [
     "radon",
     "mypy",
     "ruff",
+    # Pinned to the 0.23 line: newer tree-sitter releases need Python 3.10, and these
+    # have wheels for Python 3.9 to 3.13 on macOS, Linux and Windows.
+    "tree-sitter==0.23.2",
+    "tree-sitter-javascript==0.23.1",
+    "tree-sitter-typescript==0.23.2",
+    "tree-sitter-java==0.23.5",
     "tomli; python_version < '3.11'",
 ]
 

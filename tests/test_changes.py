@@ -265,3 +265,25 @@ def test_a_subfolder_project_uses_paths_relative_to_it(tmp_path: Path) -> None:
     )
     assert [f.path for f in sub.files] == ["b.py"]
     assert [a.path for a in sub.affected] == ["a.py"]
+
+
+def test_the_cli_entry_point_passes_every_option_to_the_command(monkeypatch) -> None:
+    """`run()` forgot to pass the per-repository folder once; every option must reach the command."""
+    import inspect
+
+    from gnost.cli.commands import changes as module
+
+    seen = {}
+    names = list(inspect.signature(module.ChangesCommand.__init__).parameters)[1:]
+
+    class Spy:
+        def __init__(self, *args) -> None:
+            seen["args"] = args
+
+        def run(self) -> int:
+            return 0
+
+    monkeypatch.setattr(module, "ChangesCommand", Spy)
+    module.run("p", "main", 4, "json", True, False, False, "/out", True, "slug", True)
+    assert len(seen["args"]) == len(names)
+    assert seen["args"][-2:] == ("slug", True)  # output_subdir, fail_on_violations

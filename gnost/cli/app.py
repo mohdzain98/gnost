@@ -6,7 +6,7 @@ import argparse
 import dataclasses
 import traceback
 import sys
-from typing import Any, Optional, Set
+from typing import Any, Dict, Optional, Set
 import datetime
 import enum
 import pathlib
@@ -25,6 +25,8 @@ from gnost.analysis.core.models import (
     AnalysisConfiguration,
     SeverityLevel,
 )
+from gnost.analysis.languages import AnalysisLanguages
+from gnost.utils.progress import ProgressPolicy
 from gnost.cli.commands.init import InitCommand
 from gnost.cli.commands.remote import RemoteTarget
 from gnost.vcs.remote import RemoteError
@@ -312,7 +314,8 @@ def main():
             "    --exclude      Comma-separated folder names to exclude\n"
             "    --progress     Show a progress bar while scanning\n\n"
             "  onboard:\n"
-            "    --progress     Show a progress bar while onboarding\n"
+            "    --progress     Always show the progress bar (default: in a terminal only)\n"
+            "    --no-progress  Never show the progress bar\n"
             "    --mermaid      Generate only Mermaid flow diagram\n"
             "    --inject       Inject onboarding link into README.md\n"
             "    --layered      Produce Layered mermaid as Entry -> Core -> Leaf\n"
@@ -353,7 +356,8 @@ def main():
             "    --depth N        How far to follow importers (default 3)\n"
             "    --format text|markdown|json  What to print (files go to .gnost/changes/)\n"
             "    --findings       Also run the analyzers on the changed Python files\n"
-            "    --no-cycles      Skip scanning the base commit\n\n"
+            "    --no-cycles      Skip scanning the base commit\n"
+            "    --fail-on-violations  Exit with code 3 when the change breaks an [architecture] rule\n\n"
             "  open|show:\n"
             "    target                  report|rpt (default): the analysis report;\n"
             "                            flow: the flow explorer; or a .mmd, .md or .html file\n"
@@ -415,7 +419,12 @@ def main():
     onboard.add_argument(
         "--progress",
         action="store_true",
-        help="Show a progress bar while onboarding",
+        help="Always show the progress bar (default: shown in a terminal, not in CI or pipes)",
+    )
+    onboard.add_argument(
+        "--no-progress",
+        action="store_true",
+        help="Never show the progress bar",
     )
     onboard.add_argument(
         "--inject",
@@ -482,6 +491,12 @@ def main():
         action="append",
         default=[],
         help="Enable only these analyzers (repeatable, by name).",
+    )
+    analyze.add_argument(
+        "--language",
+        action="append",
+        default=[],
+        help="Analyze only these languages (repeatable): python, javascript, typescript, java.",
     )
     analyze.add_argument(
         "--parallel",
@@ -628,6 +643,11 @@ def main():
     changes_cmd.add_argument(
         "--no-write", action="store_true", help="Do not write .gnost/changes/"
     )
+    changes_cmd.add_argument(
+        "--fail-on-violations",
+        action="store_true",
+        help="Exit with code 3 when the change breaks an [architecture] rule",
+    )
 
     for command in (onboard, analyze, changes_cmd):
         command.add_argument(
@@ -675,6 +695,12 @@ def main():
     show_cmd.add_argument(
         "--no-open", action="store_true", help="Write the HTML page but do not open it"
     )
+
+    mcp_cmd = sub.add_parser(
+        "mcp",
+        help="Serve this project's GNOST facts to coding agents (MCP over stdio, read-only)",
+    )
+    mcp_cmd.add_argument("path", nargs="?", default=".", help="Project folder")
 
     args = parser.parse_args()
     return _run_remote_or_local(args)
@@ -730,7 +756,13 @@ def _dispatch(args: argparse.Namespace) -> int:
             output_root=output_root,
             remote=remote,
             output_subdir=repo_slug,
+            fail_on_violations=args.fail_on_violations,
         )
+
+    if args.cmd == "mcp":
+        from gnost.cli.commands.mcp import run as mcp_run
+
+        return mcp_run(args.path)
 
     if args.cmd == "show":
         from gnost.cli.commands.show import run as show_run
@@ -761,7 +793,10 @@ def _dispatch(args: argparse.Namespace) -> int:
         onboard_run(
             args.path,
             diagram_only=getattr(args, "mermaid", False),
-            progress=getattr(args, "progress", False),
+            progress=ProgressPolicy().enabled(
+                force=getattr(args, "progress", False),
+                disabled=getattr(args, "no_progress", False),
+            ),
             inject=getattr(args, "inject", False),
             depth=config.pick("onboard", "depth", getattr(args, "depth", None), None),
             layered=getattr(args, "layered", False),
@@ -789,6 +824,7 @@ def _dispatch(args: argparse.Namespace) -> int:
             output_root=output_root,
             source=args.source if remote else None,
             footer=config.footer,
+            architecture=config.architecture_settings(),
         )
         return 0
 
@@ -815,19 +851,32 @@ def _dispatch(args: argparse.Namespace) -> int:
         if not args.verbose:
             logging.getLogger("asyncio").setLevel(logging.CRITICAL)
 
-        if config.exclude:
-            reader_files, count = analysis.collect_code_files(
-                target_path, exclude=config.exclude
+        wanted = args.language or config.get("analyze", "languages", [])
+        unknown = [n for n in wanted if n.lower() not in AnalysisLanguages.names()]
+        if unknown:
+            logger.error(
+                f"Error: unknown language {', '.join(unknown)}; "
+                f"choose from {', '.join(AnalysisLanguages.names())}"
             )
-        else:
-            reader_files, count = analysis.collect_code_files(target_path)
+            return ExitCode.USAGE
+        collect_options: Dict[str, Any] = {}
+        if config.exclude:
+            collect_options["exclude"] = config.exclude
+        if wanted:
+            collect_options["languages"] = AnalysisLanguages(wanted)
+        reader_files, count = analysis.collect_code_files(
+            target_path, **collect_options
+        )
         if args.quiet:
             cprint(f"Total Files for Analysis : {count}", "green")
             analysis.set_quiet_logging()
         logger.info(f"Total Files for Analysis : {count}")
 
         if not reader_files:
-            logger.warning("⚠️ No Python files found after filtering.")
+            logger.warning(
+                "⚠️ No supported source files found after filtering "
+                f"({', '.join(AnalysisLanguages.names())})."
+            )
             return ExitCode.OK
 
         enabled_analyzers: Set[str] = set(

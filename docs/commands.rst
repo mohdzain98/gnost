@@ -2,12 +2,12 @@ Commands by channel
 ===================
 
 GNOST has one set of commands. Which ones you can run depends on how you installed it:
-the Python package, the npm package and the Docker image run **every** command, and the
-Maven plugin runs all of them.
+the Python package, the npm package and the Docker image run **every** command; the Maven
+plugin runs all except ``mcp`` (a long-running process).
 
 The commands do not change with the language you analyze. ``gnost onboard`` and
 ``gnost summary`` work the same on Python, JavaScript, TypeScript and Java projects.
-Only ``gnost analyze`` is limited by language: it supports Python code today.
+``gnost analyze`` supports Python, JavaScript, TypeScript and Java; other languages are skipped.
 
 What runs where
 ---------------
@@ -56,6 +56,11 @@ What runs where
      - yes
      - yes, with ``--no-open``
      - yes (``gnost:open``; ``-Dgnost.open=false`` for CI)
+   * - ``mcp`` (:doc:`agents`)
+     - yes
+     - yes
+     - yes, with ``docker run -i``
+     - no (long-running process)
    * - ``version``
      - yes
      - yes
@@ -195,7 +200,10 @@ Options for every goal:
      - Add a link to ``ONBOARD.md`` in ``README.md``.
    * - ``gnost.progress``
      - ``--progress``
-     - Show a progress bar.
+     - Always show the progress bar.
+   * - ``gnost.noProgress``
+     - ``--no-progress``
+     - Never show the progress bar (``onboard`` shows it by default in a terminal).
    * - ``gnost.depth``
      - ``--depth N``
      - Limit the execution flow depth.
@@ -231,6 +239,9 @@ Options for every goal:
    * - ``gnost.analyzer``
      - ``-a, --analyzer``
      - Run only this analyzer.
+   * - ``gnost.language``
+     - ``--language``
+     - Comma-separated languages to analyze: ``python``, ``javascript``, ``typescript``, ``java`` (default: all).
    * - ``gnost.listAnalyzers``
      - ``--list-analyzers``
      - List the analyzers and stop.
@@ -322,6 +333,9 @@ These take the same ``gnost.include``, ``gnost.exclude`` and ``gnost.progress`` 
    * - ``gnost.noWrite``
      - ``--no-write``
      - Do not write ``.gnost/changes/``.
+   * - ``gnost.failOnViolations``
+     - ``--fail-on-violations``
+     - Fail the build (exit code 3) when the change breaks an ``[architecture]`` rule.
 
 ``gnost:open``, ``gnost:init`` and ``gnost:version``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

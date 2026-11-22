@@ -225,7 +225,7 @@ def test_caution_in_json_and_markdown(fixture_repo):
     run(path=str(root), json_out="")
     payload = json.loads((root / ".gnost/insights.json").read_text(encoding="utf-8"))
     jsonschema.validate(payload, load_schema())
-    assert payload["schema_version"] == "1.4"
+    assert payload["schema_version"] == "1.5"
     area = payload["caution_areas"][0]
     assert area["category"] == "circular_dependency" and area["score"] == 90
     assert area["factors"][0]["name"] == "cycles" and area["partial"] is False

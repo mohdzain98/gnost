@@ -74,6 +74,7 @@ A complete example
 
    [analyze]
    analyzers = ["maintainability", "readability"]
+   languages = ["python", "typescript"]   # default: python, javascript, typescript and java
    fail_under = 7.5     # CI: exit code 3 when the final score (0-10) is lower
    baseline = ".gnost/baseline.json"   # report only findings not in this file
    timeout = 600
@@ -136,6 +137,35 @@ are never listed.
 
 Each entry in the insights JSON includes the score and the ``factors`` behind it, so
 scripts can see why a file was flagged.
+
+Architecture rules
+------------------
+
+The ``[architecture]`` section says which parts of the code may import which. GNOST checks the rules on the
+import graph, so they work for every language that ``onboard`` reads. Violations are listed in ``ONBOARD.md``
+(section "Architecture rules"), in ``insights.json`` (``architecture``), and for a change by ``gnost changes``.
+
+.. code-block:: toml
+
+   [architecture]
+   layers = ["api", "service", "db"]    # top to bottom: a layer must not import a layer above it
+   fail = true                          # `gnost changes` exits with code 3 when a change adds a violation
+
+   [[architecture.rules]]
+   name = "the api must not use the database directly"
+   from = "src/api/**"                  # files these paths match ...
+   must_not_import = ["src/db/**"]      # ... must not import files these paths match
+   allow = ["src/db/models/**"]         # exceptions (optional)
+
+* **Paths** are relative to the project and use ``/``. ``api`` (a bare name) matches any folder called ``api``;
+  ``src/api/**`` matches everything under that folder; ``*`` and ``?`` work as in a shell.
+* **Layers** are listed from the top down. ``db`` importing ``service`` or ``api`` is a violation; ``api`` importing
+  ``db`` is not. Files that are in no layer are ignored.
+* ``from`` may be one path or a list. ``must_not_import`` is required.
+* A mistake in this section (a missing ``from``, a layer listed twice) is an error that names the key.
+
+Existing violations are not blamed on a change: ``gnost changes`` reports only those the change adds, and those it
+fixes (see :doc:`changes`).
 
 Update notice
 -------------

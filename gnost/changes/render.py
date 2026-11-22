@@ -30,6 +30,7 @@ class MarkdownRenderer:
             self._summary(report),
             self._risk(report),
             self._cycles(report),
+            self._architecture(report),
             self._routes(report),
             self._blast(report),
             self._findings(report),
@@ -71,6 +72,26 @@ class MarkdownRenderer:
             for c in r.fixed_cycles
         ]
         return "**Circular dependencies**\n\n" + "\n".join(lines) if lines else ""
+
+    def _architecture(self, r: ChangeReport) -> str:
+        change = r.architecture
+        if change is None or not change.configured:
+            return ""
+        lines = [
+            f"- Breaks `{v['rule']}`: `{v['source']}` imports `{v['target']}`"
+            for v in change.new
+        ] + [
+            f"- Fixed `{v['rule']}`: `{v['source']}` no longer imports `{v['target']}`"
+            for v in change.fixed
+        ]
+        if not lines:
+            return "**Architecture rules:** this change adds no violations."
+        title = (
+            "**Architecture rules**"
+            if change.compared
+            else "**Architecture rules** (base not scanned: violations in changed files)"
+        )
+        return title + "\n\n" + "\n".join(lines)
 
     def _routes(self, r: ChangeReport) -> str:
         if not r.routes:
@@ -149,6 +170,21 @@ class TextRenderer:
             "Fixed circular dependencies",
             (" -> ".join(c.files) for c in report.fixed_cycles),
         )
+        if report.architecture is not None and report.architecture.configured:
+            out += self._section(
+                "Architecture rules broken by this change",
+                (
+                    f"{v['rule']}: {v['source']} -> {v['target']}"
+                    for v in report.architecture.new
+                ),
+            )
+            out += self._section(
+                "Architecture rules fixed by this change",
+                (
+                    f"{v['rule']}: {v['source']} -> {v['target']}"
+                    for v in report.architecture.fixed
+                ),
+            )
         out += self._section(
             "Routes touched",
             (f"{x.method} {x.path} ({x.state})" for x in report.routes),

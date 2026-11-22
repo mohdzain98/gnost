@@ -95,10 +95,11 @@ def test_python_entry_file_name():
 
 def test_js_imports():
     src = "import a from './a';\nconst b = require('./b');\nimport {c} from \"pkg\";\n"
+    # source order, as the syntax tree gives it
     assert _targets(JavaScriptAdapter().detect_imports("f.js", src)) == [
         "./a",
-        "pkg",
         "./b",
+        "pkg",
     ]
 
 
@@ -188,8 +189,9 @@ def test_java_entry_points(tmp_path):
 
 def test_java_imports_and_framework(tmp_path):
     adapter = JavaAdapter()
-    src = "package p;\nimport a.b.C;\nimport static x.Y;\n"
-    assert _targets(adapter.detect_imports("A.java", src)) == ["a.b.C"]
+    src = "package p;\nimport a.b.C;\nimport static a.b.Util.helper;\nimport a.c.*;\n"
+    # a static import names its class; a wildcard import names only a package, so it is skipped
+    assert _targets(adapter.detect_imports("A.java", src)) == ["a.b.C", "a.b.Util"]
     spring = _write(tmp_path, "S.java", "import org.springframework.web.X;")
     boot = _write(tmp_path, "B.java", "@SpringBootApplication")
     plain = _write(tmp_path, "P.java", "class P {}")

@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.7.0] — Unreleased
+
+### Changed
+- **JavaScript, TypeScript and Java are now read with tree-sitter** instead of text patterns. An `import` in a comment or a string is no longer counted, `require()` and dynamic `import()` are read exactly, `import type` and imports of only `type` names are deferred, and a syntax error in one place no longer hides the rest of the file. The old reader is kept as a fallback when a grammar cannot be loaded (`GNOST_PARSER=regex` forces it).
+- **Java: same-package references are now edges** (issue #26). A class in the same package needs no import, so spring-petclinic had 10 edges for 30 files and thin diagrams; it now has 40. Static imports are attributed to their class, wildcard imports are skipped, and an import of a nested class points to its outer class's file. Larger Java projects can now show circular dependencies that were invisible before.
+- `insights.json` has `project.parsers` (how each language was read: `ast`, `tree-sitter` or `regex`).
+- The binary build fails when an archive grows more than 15 MiB over the 0.6.1 size (`scripts/check_binary_size.py`, baseline in `packaging/binary-size-baseline.json`). tree-sitter adds about 0.5 MiB.
+
+### Added
+- **Architecture rules.** An `[architecture]` section in `.gnost.toml` declares layers (`layers = ["api", "service", "db"]`: a layer must not import one above it) and forbidden imports (`[[architecture.rules]]` with `from`, `must_not_import` and `allow`). They are checked on the import graph, so they work for every language `onboard` reads. `ONBOARD.md` and `insights.json` (`architecture`) list the violations, and `gnost changes` reports only the ones a change adds or fixes (renames are followed). `gnost changes --fail-on-violations`, or `fail = true`, exits with code 3 when a change adds one (Maven: `-Dgnost.failOnViolations`).
+- **`gnost analyze` for JavaScript, TypeScript and Java.** `.js .jsx .mjs .cjs .ts .tsx .mts .cts` and `.java` files are now analyzed with GNOST's own rules (listed in the analyze docs), on top of tree-sitter, so nothing else has to be installed (no Node, no JDK). Twelve core rules mean the same in every language and have the same id and severity; each language adds a few of its own. The same four analyzers and the same score cover them, Python still uses mypy, bandit, radon and ruff and its results do not change, and mixed projects are scored together. Every finding has a rule id shared across languages (`ROB-EMPTY-CATCH`, `MNT-COMPLEXITY`, ...), so baselines, `--fail-under` and SARIF work as for Python. `node_modules`, build output, minified files and `.d.ts` are skipped; tests are exempt from rules that do not apply to them. New `--language` option and `[analyze] languages` setting (Maven: `-Dgnost.language`).
+- **"Get it running" section.** `ONBOARD.md`, the terminal summary and `insights.json` (`quickstart`, schema 1.5) say how to install, build, run and test the project and which environment variables it needs. It is read from `package.json`, `pyproject.toml`, `requirements.txt`, `pom.xml`, `build.gradle`, `Makefile`, `Dockerfile`, `docker-compose.yml`, `.env.example` and, as a last resort, GitHub Actions workflows. Every line names its source file; nothing is guessed, and `.env.example` values are never copied.
+- **`gnost mcp`: GNOST for coding agents.** A read-only Model Context Protocol server over stdio (no new dependency, no network). It answers from `.gnost/insights.json` with six tools: `gnost_overview`, `gnost_entry_points`, `gnost_hotspots`, `gnost_risk`, `gnost_file` (what a file imports and who imports it) and `gnost_changes` (impact of a change, computed from git, nothing written). Paths are kept inside the project and nothing in the repository is run. See the new "Use GNOST with coding agents" page.
+- **Progress feedback by default.** `gnost onboard` shows a progress bar with the step it is on (and a start line) when run in a terminal, so a long run is no longer a blank screen. It stays quiet in CI and pipes; `--progress` forces it and `--no-progress` (or `GNOST_NO_PROGRESS=1`) turns it off. Everything goes to stderr. Maven: `-Dgnost.noProgress`.
+
+---
+
 ## [0.6.1] — 2026-11-22
 
 ### Changed
