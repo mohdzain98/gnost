@@ -86,8 +86,19 @@ top = {history.top}               # most files listed in ONBOARD.md
 max_files_per_commit = {history.max_files_per_commit}   # bigger commits (mass reformat, vendoring) are ignored
 exclude_authors = [{authors}]   # patterns; bots do not count as people
 
+[architecture]
+# Rules about which code may import which. Checked by `onboard` and `gnost changes` (all optional).
+# layers = ["api", "service", "db"]   # top to bottom: a layer must not import a layer above it
+# fail = false   # `gnost changes` exits with code 3 when a change adds a violation
+# [[architecture.rules]]
+# name = "the api must not use the database directly"
+# from = "src/api/**"                  # files these paths match ...
+# must_not_import = ["src/db/**"]      # ... must not import files these paths match
+# allow = ["src/db/models/**"]         # exceptions
+
 [analyze]
 # analyzers = ["maintainability", "readability"]   # default: all of them
+# languages = ["python", "javascript", "typescript", "java"]   # default: all of them
 # fail_under = 7.5   # CI: exit with code 3 when the final score (0 to 10) is lower
 # baseline = ".gnost/baseline.json"   # report only findings that are not in this file
 timeout = {ANALYZE_TIMEOUT}          # seconds each analyzer may run

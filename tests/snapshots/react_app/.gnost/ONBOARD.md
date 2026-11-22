@@ -20,6 +20,14 @@ _Generated automatically by <a href='https://gnost.readthedocs.io'>GNOST</a>._
 |---|---:|---:|---:|---:|---:|
 | TypeScript | 10 | 34 | 0 | 6 | 40 |
 
+## Get it running
+
+_Read from this project's own files. Each line names its source; nothing is guessed._
+
+**Install**
+
+- `npm install` _(package.json)_
+
 ## Entry Points
 
 - `src/App.tsx` — Common JS entry filename

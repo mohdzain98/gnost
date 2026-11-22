@@ -3,6 +3,12 @@ Analyzer Guide
 
 This section documents how each analyzer works and what its findings mean.
 
+The four analyzers cover **Python, JavaScript, TypeScript and Java**. Python is checked by external tools
+(listed at the end); the other languages are checked by GNOST's own rules, which read the syntax tree
+(tree-sitter) and need nothing else installed. Twelve core rules have the same id, analyzer and severity in
+every language, so a score, a baseline or a SARIF file means the same everywhere. The rules per language are
+listed on the :doc:`analyze` page, and :doc:`calibration` shows how they were tested on real projects.
+
 Maintainability
 ---------------
 
@@ -16,7 +22,8 @@ What it reports
 
 - Cyclomatic complexity patterns
 - Maintainability scoring signals
-- Duplication and structural debt indicators
+- Long functions and files, deep nesting, too many parameters, very large classes
+- Duplication indicators (Python only for now)
 
 Severity meaning
 ~~~~~~~~~~~~~~~~
@@ -37,7 +44,7 @@ What it reports
 ~~~~~~~~~~~~~~~
 
 - Type mismatch and contract-safety patterns
-- Exception handling and runtime risk patterns
+- Exception handling and runtime risk patterns (empty or too broad ``catch`` / ``except``, ``eval``, string ``==`` in Java)
 - Critical correctness blind spots
 
 Severity meaning
@@ -60,7 +67,7 @@ What it reports
 
 - Missing or weak logging in critical execution paths
 - Incomplete structured logging and context
-- Observatory gaps that reduce incident traceability
+- Gaps that reduce incident traceability (print statements instead of logging, swallowed errors)
 
 Severity meaning
 ~~~~~~~~~~~~~~~~
@@ -93,6 +100,15 @@ Severity meaning
 Tools and scope
 ~~~~~~~~~~~~~~~
 
+**Python** uses external tools:
+
 - ``ruff`` for readability findings.
 - ``bandit`` and ``mypy`` for robustness findings.
 - ``radon`` for maintainability findings.
+
+**JavaScript, TypeScript and Java** use GNOST's own rules for all four analyzers. Test files are exempt from the
+rules that do not apply to them, and generated folders (``node_modules``, ``dist``, ``build``, ``target`` and
+others) are skipped. Duplicate-code detection is not available for these languages yet.
+
+The score is the average severity of an analyzer's findings, not their number, so it does not get worse with
+project size; track change with ``--baseline`` and ``--fail-on-new``.

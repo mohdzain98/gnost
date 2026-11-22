@@ -9,6 +9,7 @@ GNOST is a static analysis CLI that turns an unfamiliar codebase into an onboard
 
 - **Where execution starts:** entry points and HTTP routes (Flask, FastAPI, Django, Express, NestJS, Spring).
 - **How it flows:** Mermaid diagrams of imports and calls, plus function-level flow for Python.
+- **How to get it running:** install, run and test commands and the environment variable names, read from the project's own files (nothing guessed).
 - **What matters most:** hotspot files and caution areas (risky files to read carefully).
 - **Circular imports**, listed and drawn.
 - **`ONBOARD.md`**: a written guide to the repository, and the same facts as JSON for tools and AI, all saved in a `.gnost/` folder.

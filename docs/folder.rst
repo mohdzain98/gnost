@@ -61,5 +61,5 @@ What is in ``insights.json``
 
 ``project`` (name, languages), ``entry_points``, ``routes``, ``layers`` (entry, core, leaf), ``first_files``,
 ``hotspots``, ``caution_areas`` (fragile files with their scores), ``cycles``, ``graph`` (files and imports),
-``stats``, ``flows`` and ``callgraph`` (function level, Python), ``change_history`` (git history of each file)
+``stats``, ``quickstart`` (install, build, run and test steps read from the project's own files), ``flows`` and ``callgraph`` (function level, Python), ``change_history`` (git history of each file)
 and ``risk`` (fragile and changing files). Paths are relative to the scanned folder.

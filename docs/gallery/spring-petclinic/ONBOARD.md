@@ -20,6 +20,31 @@ _Generated automatically by <a href='https://gnost.readthedocs.io'>GNOST</a>._
 |---|---:|---:|---:|---:|---:|
 | Java | 50 | 3629 | 38 | 630 | 4297 |
 
+## Get it running
+
+_Read from this project's own files. Each line names its source; nothing is guessed._
+
+**Prerequisites**
+
+- Java 17 _(pom.xml)_
+- Docker _(docker-compose.yml)_
+
+**Build**
+
+- `./mvnw package` _(pom.xml)_
+- `./gradlew build` _(build.gradle)_
+
+**Run**
+
+- `./mvnw spring-boot:run` _(pom.xml)_
+- `./gradlew bootRun` _(build.gradle)_
+- `docker compose up` _(docker-compose.yml)_
+
+**Test**
+
+- `./mvnw test` _(pom.xml)_
+- `./gradlew test` _(build.gradle)_
+
 ## Entry Points
 
 - `src/main/java/org/springframework/samples/petclinic/PetClinicApplication.java` — @SpringBootApplication
@@ -52,38 +77,52 @@ _Generated automatically by <a href='https://gnost.readthedocs.io'>GNOST</a>._
 
 ## Execution Flow (High Level)
 
-- `src/main/java/org/springframework/samples/petclinic/PetClinicApplication.java`
-- `src/main/java/org/springframework/samples/petclinic/PetClinicRuntimeHints.java` → `src/main/java/org/springframework/samples/petclinic/model/BaseEntity.java`
-- `src/main/java/org/springframework/samples/petclinic/PetClinicRuntimeHints.java` → `src/main/java/org/springframework/samples/petclinic/model/Person.java`
-- `src/main/java/org/springframework/samples/petclinic/PetClinicRuntimeHints.java` → `src/main/java/org/springframework/samples/petclinic/vet/Vet.java` → `src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java`
-- `src/main/java/org/springframework/samples/petclinic/owner/Owner.java` → `src/main/java/org/springframework/samples/petclinic/model/Person.java`
+- `src/main/java/org/springframework/samples/petclinic/PetClinicApplication.java` → `src/main/java/org/springframework/samples/petclinic/PetClinicRuntimeHints.java` → `src/main/java/org/springframework/samples/petclinic/model/BaseEntity.java`
+- `src/main/java/org/springframework/samples/petclinic/PetClinicApplication.java` → `src/main/java/org/springframework/samples/petclinic/PetClinicRuntimeHints.java` → `src/main/java/org/springframework/samples/petclinic/model/Person.java`
+- `src/main/java/org/springframework/samples/petclinic/PetClinicApplication.java` → `src/main/java/org/springframework/samples/petclinic/PetClinicRuntimeHints.java` → `src/main/java/org/springframework/samples/petclinic/vet/Vet.java` → `src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java`
+- `src/main/java/org/springframework/samples/petclinic/PetClinicApplication.java` → `src/main/java/org/springframework/samples/petclinic/PetClinicRuntimeHints.java` → `src/main/java/org/springframework/samples/petclinic/vet/Vet.java` → `src/main/java/org/springframework/samples/petclinic/vet/Specialty.java`
+- `src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java` → `src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java`
 
-_(4 additional paths omitted for clarity.)_
+_(23 additional paths omitted for clarity.)_
 
 ## Execution Flow (Overview)
 
 ```mermaid
 flowchart TD
+  src_main_java_org_springframework_samples_petclinic_PetClinicApplication_java["src/main/java/org/springframework/samples/petclinic/PetClinicApplication.java"]
   src_main_java_org_springframework_samples_petclinic_PetClinicRuntimeHints_java["src/main/java/org/springframework/samples/petclinic/PetClinicRuntimeHints.java"]
-  src_main_java_org_springframework_samples_petclinic_model_BaseEntity_java["src/main/java/org/springframework/samples/petclinic/model/BaseEntity.java"]
   src_main_java_org_springframework_samples_petclinic_model_NamedEntity_java["src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java"]
   src_main_java_org_springframework_samples_petclinic_model_Person_java["src/main/java/org/springframework/samples/petclinic/model/Person.java"]
   src_main_java_org_springframework_samples_petclinic_owner_Owner_java["src/main/java/org/springframework/samples/petclinic/owner/Owner.java"]
+  src_main_java_org_springframework_samples_petclinic_owner_OwnerRepository_java["src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java"]
   src_main_java_org_springframework_samples_petclinic_owner_Pet_java["src/main/java/org/springframework/samples/petclinic/owner/Pet.java"]
   src_main_java_org_springframework_samples_petclinic_owner_PetType_java["src/main/java/org/springframework/samples/petclinic/owner/PetType.java"]
+  src_main_java_org_springframework_samples_petclinic_owner_PetTypeRepository_java["src/main/java/org/springframework/samples/petclinic/owner/PetTypeRepository.java"]
+  src_main_java_org_springframework_samples_petclinic_owner_PetValidator_java["src/main/java/org/springframework/samples/petclinic/owner/PetValidator.java"]
   src_main_java_org_springframework_samples_petclinic_owner_Visit_java["src/main/java/org/springframework/samples/petclinic/owner/Visit.java"]
   src_main_java_org_springframework_samples_petclinic_vet_Specialty_java["src/main/java/org/springframework/samples/petclinic/vet/Specialty.java"]
   src_main_java_org_springframework_samples_petclinic_vet_Vet_java["src/main/java/org/springframework/samples/petclinic/vet/Vet.java"]
-  src_main_java_org_springframework_samples_petclinic_PetClinicRuntimeHints_java --> src_main_java_org_springframework_samples_petclinic_model_BaseEntity_java
+  src_main_java_org_springframework_samples_petclinic_vet_VetRepository_java["src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java"]
+  src_main_java_org_springframework_samples_petclinic_vet_Vets_java["src/main/java/org/springframework/samples/petclinic/vet/Vets.java"]
+  src_main_java_org_springframework_samples_petclinic_PetClinicApplication_java --> src_main_java_org_springframework_samples_petclinic_PetClinicRuntimeHints_java
   src_main_java_org_springframework_samples_petclinic_PetClinicRuntimeHints_java --> src_main_java_org_springframework_samples_petclinic_model_Person_java
   src_main_java_org_springframework_samples_petclinic_PetClinicRuntimeHints_java --> src_main_java_org_springframework_samples_petclinic_vet_Vet_java
   src_main_java_org_springframework_samples_petclinic_owner_Owner_java --> src_main_java_org_springframework_samples_petclinic_model_Person_java
+  src_main_java_org_springframework_samples_petclinic_owner_Owner_java --> src_main_java_org_springframework_samples_petclinic_owner_Pet_java
+  src_main_java_org_springframework_samples_petclinic_owner_Owner_java --> src_main_java_org_springframework_samples_petclinic_owner_Visit_java
+  src_main_java_org_springframework_samples_petclinic_owner_OwnerRepository_java --> src_main_java_org_springframework_samples_petclinic_owner_Owner_java
   src_main_java_org_springframework_samples_petclinic_owner_Pet_java --> src_main_java_org_springframework_samples_petclinic_model_NamedEntity_java
+  src_main_java_org_springframework_samples_petclinic_owner_Pet_java --> src_main_java_org_springframework_samples_petclinic_owner_PetType_java
+  src_main_java_org_springframework_samples_petclinic_owner_Pet_java --> src_main_java_org_springframework_samples_petclinic_owner_Visit_java
   src_main_java_org_springframework_samples_petclinic_owner_PetType_java --> src_main_java_org_springframework_samples_petclinic_model_NamedEntity_java
-  src_main_java_org_springframework_samples_petclinic_owner_Visit_java --> src_main_java_org_springframework_samples_petclinic_model_BaseEntity_java
+  src_main_java_org_springframework_samples_petclinic_owner_PetTypeRepository_java --> src_main_java_org_springframework_samples_petclinic_owner_PetType_java
+  src_main_java_org_springframework_samples_petclinic_owner_PetValidator_java --> src_main_java_org_springframework_samples_petclinic_owner_Pet_java
   src_main_java_org_springframework_samples_petclinic_vet_Specialty_java --> src_main_java_org_springframework_samples_petclinic_model_NamedEntity_java
   src_main_java_org_springframework_samples_petclinic_vet_Vet_java --> src_main_java_org_springframework_samples_petclinic_model_NamedEntity_java
   src_main_java_org_springframework_samples_petclinic_vet_Vet_java --> src_main_java_org_springframework_samples_petclinic_model_Person_java
+  src_main_java_org_springframework_samples_petclinic_vet_Vet_java --> src_main_java_org_springframework_samples_petclinic_vet_Specialty_java
+  src_main_java_org_springframework_samples_petclinic_vet_VetRepository_java --> src_main_java_org_springframework_samples_petclinic_vet_Vet_java
+  src_main_java_org_springframework_samples_petclinic_vet_Vets_java --> src_main_java_org_springframework_samples_petclinic_vet_Vet_java
 ```
 
 > 📌 This diagram shows the high-level execution flow.<br>For the complete flow, see [**flow/flow-full.md**](./flow/FLOW-full.md)<br>Raw Mermaid: [flow/flow-full.mmd](./flow/FLOW-full.mmd)<br>Every file and import, ungrouped (for tools and AI): [flow/flow-complete.mmd](./flow/flow-complete.mmd)<br>Interactive explorer: run `gnost open flow` (the page is `flow.html` in this folder; it is rebuilt, not committed)
@@ -93,44 +132,53 @@ flowchart TD
 ### Start Here
 
 - `src/main/java/org/springframework/samples/petclinic/PetClinicApplication.java`
-- `src/main/java/org/springframework/samples/petclinic/PetClinicRuntimeHints.java`
-- `src/main/java/org/springframework/samples/petclinic/owner/Owner.java`
-- `src/main/java/org/springframework/samples/petclinic/owner/Pet.java`
-- `src/main/java/org/springframework/samples/petclinic/owner/PetType.java`
-- `src/main/java/org/springframework/samples/petclinic/owner/Visit.java`
-- `src/main/java/org/springframework/samples/petclinic/vet/Specialty.java`
+- `src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java`
+- `src/main/java/org/springframework/samples/petclinic/owner/PetController.java`
+- `src/main/java/org/springframework/samples/petclinic/owner/PetTypeFormatter.java`
+- `src/main/java/org/springframework/samples/petclinic/owner/VisitController.java`
+- `src/main/java/org/springframework/samples/petclinic/vet/VetController.java`
 
 ### Core Logic
 
+- `src/main/java/org/springframework/samples/petclinic/PetClinicRuntimeHints.java`
+- `src/main/java/org/springframework/samples/petclinic/owner/Owner.java`
+- `src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java`
+- `src/main/java/org/springframework/samples/petclinic/owner/Pet.java`
+- `src/main/java/org/springframework/samples/petclinic/owner/PetType.java`
+- `src/main/java/org/springframework/samples/petclinic/owner/PetTypeRepository.java`
+- `src/main/java/org/springframework/samples/petclinic/owner/PetValidator.java`
+- `src/main/java/org/springframework/samples/petclinic/owner/Visit.java`
 - `src/main/java/org/springframework/samples/petclinic/vet/Vet.java`
+- `src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java`
+- `src/main/java/org/springframework/samples/petclinic/vet/Vets.java`
+- `src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java`
+- `src/main/java/org/springframework/samples/petclinic/model/Person.java`
+- `src/main/java/org/springframework/samples/petclinic/vet/Specialty.java`
 
 ### Supporting / Leaf Code
 
-- `src/main/java/org/springframework/samples/petclinic/PetClinicApplication.java`
 - `src/main/java/org/springframework/samples/petclinic/model/BaseEntity.java`
-- `src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java`
-- `src/main/java/org/springframework/samples/petclinic/model/Person.java`
 
 ## 📘 First Files to Read
+- **`src/main/java/org/springframework/samples/petclinic/owner/PetController.java`**
+  - Frequently involved in execution flow
 - **`src/main/java/org/springframework/samples/petclinic/PetClinicApplication.java`**
   - Primary entry point into the application
-- **`src/main/java/org/springframework/samples/petclinic/PetClinicRuntimeHints.java`**
+- **`src/main/java/org/springframework/samples/petclinic/owner/VisitController.java`**
   - Frequently involved in execution flow
-- **`src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java`**
+- **`src/main/java/org/springframework/samples/petclinic/vet/VetController.java`**
   - Frequently involved in execution flow
-- **`src/main/java/org/springframework/samples/petclinic/model/BaseEntity.java`**
-  - Frequently involved in execution flow
-- **`src/main/java/org/springframework/samples/petclinic/model/Person.java`**
+- **`src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java`**
   - Frequently involved in execution flow
 - **`src/main/java/org/springframework/samples/petclinic/owner/Owner.java`**
-  - Frequently involved in execution flow
+  - Core logic file referenced by multiple execution paths
+- **`src/main/java/org/springframework/samples/petclinic/PetClinicRuntimeHints.java`**
+  - Core logic file referenced by multiple execution paths
+- **`src/main/java/org/springframework/samples/petclinic/vet/Vet.java`**
+  - Core logic file referenced by multiple execution paths
 - **`src/main/java/org/springframework/samples/petclinic/owner/Pet.java`**
-  - Frequently involved in execution flow
-- **`src/main/java/org/springframework/samples/petclinic/owner/PetType.java`**
-  - Frequently involved in execution flow
-- **`src/main/java/org/springframework/samples/petclinic/owner/Visit.java`**
-  - Frequently involved in execution flow
-- **`src/main/java/org/springframework/samples/petclinic/vet/Specialty.java`**
+  - Core logic file referenced by multiple execution paths
+- **`src/main/java/org/springframework/samples/petclinic/owner/PetTypeFormatter.java`**
   - Frequently involved in execution flow
 
 ## ⚠️ Caution Areas
@@ -171,4 +219,4 @@ To understand specific scenarios, see the entry-based execution paths:
 
 ---
 
-<sub>Generated by [GNOST](https://gnost.readthedocs.io) 0.6.1. Try it on your own code: `mvn io.github.mohdzain98:gnost-maven-plugin:onboard`</sub>
+<sub>Generated by [GNOST](https://gnost.readthedocs.io) 0.7.0. Try it on your own code: `mvn io.github.mohdzain98:gnost-maven-plugin:onboard`</sub>

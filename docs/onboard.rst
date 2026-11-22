@@ -42,6 +42,65 @@ Use ``output_dir`` in ``.gnost.toml`` to choose another folder.
   - ``folder-paths.md``
   - ``function-flow.md`` (Python call trees, one diagram per entry point)
 
+How files are read
+------------------
+
+GNOST builds the import graph from the syntax of each file, not from text patterns: Python with the ``ast``
+module, and JavaScript, TypeScript (including TSX and JSX) and Java with `tree-sitter <https://tree-sitter.github.io>`_.
+That means an ``import`` inside a comment or a string is never counted, ``require('x')`` and dynamic ``import('x')``
+are read exactly, ``import type`` (and imports where every name is a ``type``) is marked deferred, and a syntax
+error in one place does not hide the rest of the file.
+
+Java gets more than its ``import`` lines. A class in the same package needs no import, so GNOST also records
+references to classes of the same package (types in declarations, ``new``, static calls and annotations). Static
+imports are attributed to their class, wildcard imports (which name only a package) are skipped, and an import
+of a nested class points to the file of its outer class. This is why the diagram of a Spring Boot application is
+no longer nearly empty.
+
+``insights.json`` says how each language was read, under ``project.parsers`` (``ast``, ``tree-sitter`` or ``regex``).
+If the tree-sitter grammars cannot be loaded on a machine (no wheel for an unusual platform), GNOST falls back to the
+older text-based reader for that language and says so there. ``GNOST_PARSER=regex`` forces the fallback.
+
+Architecture rules
+------------------
+
+With an ``[architecture]`` section in ``.gnost.toml`` (layers, or "this folder must not import that one"; see
+:doc:`configuration`), ``ONBOARD.md`` gets an "Architecture rules" section listing the imports that break a rule,
+and ``insights.json`` has them under ``architecture``. Without rules there is no section.
+
+Get it running
+--------------
+
+``ONBOARD.md`` starts with a **Get it running** section: how to install, build, run and test the project, plus
+the environment variables it needs. It is read from the project's own files, and **every line names the file
+it came from; nothing is guessed**. A group with nothing to say is left out, and a project with none of
+these files has no section.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 28 72
+
+   * - File
+     - What GNOST reads
+   * - ``package.json``
+     - The package manager (from ``packageManager`` or the lock file), the ``dev``, ``start``, ``build`` and
+       ``test`` scripts, and the Node version in ``engines``
+   * - ``pyproject.toml``, ``requirements.txt``, ``setup.py``
+     - The Python version, how to install (pip, poetry or uv), the test extras, console scripts and pytest
+   * - ``pom.xml``, ``build.gradle(.kts)``
+     - The Java version, the Maven or Gradle build and test commands, and the Spring Boot run goal
+   * - ``Makefile``
+     - Targets with the usual names (``install``, ``setup``, ``build``, ``run``, ``dev``, ``test``, ``check``)
+   * - ``Dockerfile``, ``docker-compose.yml``
+     - The build and run commands, with the port the Dockerfile exposes
+   * - ``.env.example`` (and ``.env.sample``, ``.env.template``)
+     - The variable **names only**. Values are never copied, even from an example file
+   * - ``.github/workflows/*.yml``
+     - Install and test commands, used only for a group that no other file filled
+
+The same data is in ``insights.json`` under ``quickstart`` and in the terminal summary (the first install, run
+and test command).
+
 Change hotspots
 ---------------
 
@@ -98,6 +157,9 @@ Options
 
 - ``--mermaid``: generate only the Mermaid diagram (``.gnost/flow/FLOW-full.mmd``).
 - ``--no-html``: do not write the explorer page ``.gnost/flow.html``.
+- ``--progress`` / ``--no-progress``: ``onboard`` shows a progress bar with the step it is on (and a start line)
+  by default when run in a terminal, so a long run is never a blank screen. It stays quiet in CI, in pipes
+  and when ``CI`` or ``GNOST_NO_PROGRESS`` is set. Everything goes to stderr, so stdout stays clean.
 - ``--progress``: show progress indicators.
 - ``--inject``: inject onboarding link into repository README.
 - ``--layered``: generate layered flow (Entry -> Core -> Leaf).

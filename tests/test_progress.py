@@ -85,3 +85,88 @@ def test_the_binary_exits_non_zero_when_it_fails(tmp_path: Path) -> None:
         cwd=ROOT,
     )
     assert done.returncode == 2
+
+
+# --------------------------------------------------------------- when to show it
+
+
+class FakeStream:
+    """A stream that says whether it is a terminal."""
+
+    def __init__(self, tty: bool) -> None:
+        self.tty = tty
+
+    def isatty(self) -> bool:
+        return self.tty
+
+
+def policy(tty: bool, **environ: str):
+    from gnost.utils.progress import ProgressPolicy
+
+    return ProgressPolicy(stream=FakeStream(tty), environ=environ)
+
+
+def test_progress_shows_in_a_terminal_only() -> None:
+    assert policy(True).enabled() is True
+    assert policy(False).enabled() is False  # a pipe or a redirected log
+
+
+def test_progress_is_off_in_ci_and_when_switched_off() -> None:
+    assert policy(True, CI="true").enabled() is False
+    assert policy(True, GNOST_NO_PROGRESS="1").enabled() is False
+    assert policy(True).enabled(disabled=True) is False
+
+
+def test_forcing_progress_wins_over_everything() -> None:
+    assert policy(False, CI="true").enabled(force=True) is True
+    assert policy(True).enabled(force=True, disabled=True) is True
+
+
+def test_a_stream_without_isatty_counts_as_not_a_terminal() -> None:
+    from gnost.utils.progress import ProgressPolicy
+
+    class Bare:
+        pass
+
+    assert ProgressPolicy(stream=Bare(), environ={}).enabled() is False  # type: ignore[arg-type]
+
+
+# ----------------------------------------------------------------- the step bar
+
+
+def test_step_progress_names_each_step_and_announces_itself(
+    capsys: pytest.CaptureFixture,
+) -> None:
+    from gnost.utils.progress import StepProgress
+
+    with StepProgress(True, ["One", "Two"], announce="Starting ...") as bar:
+        bar.advance()
+        bar.advance()
+        bar.advance()  # more than the steps: harmless
+    err = capsys.readouterr().err
+    assert "Starting ..." in err and "One" in err and "Two" in err
+
+
+def test_step_progress_is_silent_when_disabled(capsys: pytest.CaptureFixture) -> None:
+    from gnost.utils.progress import StepProgress
+
+    with StepProgress(False, ["One"], announce="Starting ...") as bar:
+        bar.advance()
+    captured = capsys.readouterr()
+    assert captured.out == "" and captured.err == ""
+
+
+def test_onboard_writes_progress_to_stderr_and_keeps_stdout_clean(
+    tmp_path: Path, capsys: pytest.CaptureFixture
+) -> None:
+    import shutil
+
+    from gnost.cli.commands.onboard import run
+
+    shutil.copytree(ROOT / "tests" / "fixtures" / "python_app", tmp_path / "app")
+    run(path=str(tmp_path / "app"), progress=True)
+    captured = capsys.readouterr()
+    assert "Onboarding " in captured.err and "Scanning files" in captured.err
+    assert "Scanning files" not in captured.out and "Onboarding /" not in captured.out
+    run(path=str(tmp_path / "app"), progress=False)
+    assert "Scanning files" not in capsys.readouterr().err

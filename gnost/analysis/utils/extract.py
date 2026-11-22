@@ -1,6 +1,6 @@
 """Helpers for collecting the source files that ``gnost analyze`` inspects.
 
-The ``Extract`` class holds the supported extensions (currently Python only) and
+The ``Extract`` class holds the supported extensions (Python, JavaScript, TypeScript) and
 the directory names that are always skipped, and can unpack zip archives.
 """
 
@@ -9,13 +9,14 @@ import zipfile
 import tempfile
 from pathlib import Path
 from typing import Iterable, Set
+from gnost.analysis.languages import AnalysisLanguages
 from gnost.utils.logger import AppLogger
 
 logger = AppLogger.get_logger()
 
 
 class Extract:
-    CODE_EXTS: Set[str] = {".py"}
+    CODE_EXTS: Set[str] = AnalysisLanguages().extensions()
 
     EXCLUDE_DIRS: Set[str] = {
         "__MACOSX",

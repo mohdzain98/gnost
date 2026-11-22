@@ -28,6 +28,10 @@ public class ChangesMojo extends RepositoryMojo {
     @Parameter(property = "gnost.noCycles", defaultValue = "false")
     boolean noCycles;
 
+    /** Fail the build (exit code 3) when the change breaks an [architecture] rule. */
+    @Parameter(property = "gnost.failOnViolations", defaultValue = "false")
+    boolean failOnViolations;
+
     /** Do not write .gnost/changes/. */
     @Parameter(property = "gnost.noWrite", defaultValue = "false")
     boolean noWrite;
@@ -51,5 +55,6 @@ public class ChangesMojo extends RepositoryMojo {
         flag(cmd, findings, "--findings");
         flag(cmd, noCycles, "--no-cycles");
         flag(cmd, noWrite, "--no-write");
+        flag(cmd, failOnViolations, "--fail-on-violations");
     }
 }

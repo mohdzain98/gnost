@@ -1,11 +1,12 @@
 """Build the showcase gallery: run `gnost onboard` on well-known projects and keep the guides.
 
 Usage: python scripts/build_gallery.py [name ...]   (needs network and git)
-Writes docs/gallery/<name>/ONBOARD.md and its flow/ pages; docs/gallery.rst links to them.
+Writes docs/gallery/<name>/ONBOARD.md, its flow/ pages and analysis/analysis.json; docs/gallery.rst links to them.
 """
 
 from __future__ import annotations
 
+import json
 import os
 import shutil
 import subprocess
@@ -26,6 +27,39 @@ PROJECTS: Dict[str, str] = {
 }
 
 
+SEVERITY_ORDER = {"critical": 0, "high": 1, "medium": 2, "low": 3, "info": 4}
+FINDINGS_KEPT = 150  # keeps the repository small; the summary still counts all of them
+
+
+def scrub_paths(node: object, url: str) -> None:
+    """Replace every `target_path` (a temporary clone folder) with the repository address."""
+    if isinstance(node, dict):
+        for key, value in node.items():
+            if key == "target_path":
+                node[key] = url
+            else:
+                scrub_paths(value, url)
+    elif isinstance(node, list):
+        for item in node:
+            scrub_paths(item, url)
+
+
+def trim_report(source: Path, target: Path, url: str) -> None:
+    """Copy an analysis report with the most severe findings only and no local paths."""
+    data = json.loads(source.read_text(encoding="utf-8"))
+    findings = sorted(
+        data.get("findings", []),
+        key=lambda f: SEVERITY_ORDER.get(str(f.get("severity")), 9),
+    )
+    data["findings"] = findings[:FINDINGS_KEPT]
+    scrub_paths(data, url)
+    data["gallery_note"] = (
+        f"Showing the {len(data['findings'])} most severe of {len(findings)} findings; "
+        "the summary counts all of them."
+    )
+    target.write_text(json.dumps(data, indent=1) + "\n", encoding="utf-8")
+
+
 def build(name: str, url: str) -> bool:
     """Onboard one project into a temp folder and copy its guide; True on success."""
     with tempfile.TemporaryDirectory(prefix="gnost-gallery-") as work:
@@ -38,6 +72,11 @@ def build(name: str, url: str) -> bool:
             Path(work) / ".gnost" / RemoteUrl(url).slug
         )  # one folder per repository
         guide = folder / "ONBOARD.md"
+        report = subprocess.run(
+            [sys.executable, "-m", "gnost.cli.app", "analyze", url, "-o", "--quiet"],
+            cwd=work,
+            env=dict(os.environ, GNOST_NO_UPDATE_CHECK="1", GNOST_NO_PROGRESS="1"),
+        )
         if done.returncode != 0 or not guide.is_file():
             return False
         target = OUT / name
@@ -47,6 +86,12 @@ def build(name: str, url: str) -> bool:
         for page in (folder / "flow").iterdir():
             if page.suffix in (".md", ".mmd"):  # the pages ONBOARD.md links to
                 shutil.copy(page, target / "flow" / page.name)
+        analysis = folder / "analysis"
+        if report.returncode == 0 and (analysis / "analysis.json").is_file():
+            (target / "analysis").mkdir()
+            shutil.copy(
+                analysis / "analysis.json", target / "analysis" / "analysis.json"
+            )
         return True
 
 

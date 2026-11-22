@@ -21,9 +21,11 @@ from gnost.core.flow import FlowResult
 from gnost.core.graph import DependencyGraph
 from gnost.core.ranker import HotspotRanker
 from gnost.models.insights import OnboardingInsights
+from gnost.parsing import default_factory
+from gnost.quickstart import Quickstart
 from gnost.scanner.models import ScanResult
 
-SCHEMA_VERSION = "1.4"
+SCHEMA_VERSION = "1.5"
 SCHEMA_PATH = os.path.join(
     os.path.dirname(os.path.dirname(__file__)), "schemas", "insights.schema.json"
 )
@@ -40,6 +42,8 @@ def build_payload(
     call_graph: Any = None,
     changes: Any = None,
     risks: Any = None,
+    quickstart: Any = None,
+    architecture: Any = None,
 ) -> Dict[str, Any]:
     root = scan.root
 
@@ -65,6 +69,8 @@ def build_payload(
             "languages": dict(sorted(scan.languages.items())),
             "framework": scan.framework,
             "files": len(scan.files),
+            # how each language is read: ast, tree-sitter, or regex (no grammar available)
+            "parsers": default_factory().status(scan.languages),
         },
         "entry_points": [
             {
@@ -87,6 +93,18 @@ def build_payload(
         ],
         "change_history": _change_history(changes),
         "risk": _risk(risks),
+        "quickstart": quickstart.to_dict() if quickstart else Quickstart().to_dict(),
+        "architecture": (
+            architecture.to_dict()
+            if architecture
+            else {
+                "configured": False,
+                "rules": 0,
+                "edges_checked": 0,
+                "fail": False,
+                "violations": [],
+            }
+        ),
         "flows": [_flow(f, rel) for f in (flows or [])],
         "callgraph": {
             "functions": len(call_graph.functions) if call_graph else 0,

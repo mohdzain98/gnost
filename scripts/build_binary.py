@@ -17,6 +17,15 @@ OS_NAMES = {"Darwin": "darwin", "Linux": "linux", "Windows": "win32"}
 ARCH_NAMES = {"arm64": "arm64", "aarch64": "arm64", "x86_64": "x64", "AMD64": "x64"}
 
 
+# The grammars are native libraries that nothing imports statically, so PyInstaller needs to be told.
+TREE_SITTER_PACKAGES = (
+    "tree_sitter",
+    "tree_sitter_javascript",
+    "tree_sitter_typescript",
+    "tree_sitter_java",
+)
+
+
 def mypyc_module() -> str:
     """Find mypy's compiled helper module; its hash changes with the mypy version."""
     import mypy
@@ -62,7 +71,7 @@ def pyinstaller_args() -> List[str]:
         "--add-binary",
         f"{ruff_binary()}{sep}bin",
     ]
-    for pkg in ("mypy", "bandit", "radon", "gnost"):
+    for pkg in ("mypy", "bandit", "radon", "gnost") + TREE_SITTER_PACKAGES:
         args += ["--collect-all", pkg]
     for pkg in ("mypy", "bandit", "radon", "gnost", "stevedore"):
         args += ["--copy-metadata", pkg]

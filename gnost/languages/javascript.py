@@ -7,12 +7,18 @@ from typing import List, Optional
 
 from gnost.languages.base import LanguageAdapter, EntryPoint, ImportEdge
 from gnost.languages.manifests import find_manifests
+from gnost.parsing import ParserFactory, default_factory
+from gnost.parsing.queries import EcmaScriptQueries
 
 
 class JavaScriptAdapter(LanguageAdapter):
     name = "javascript"
     extensions = [".js", ".jsx", ".mjs", ".cjs"]
     entry_stems = {"index", "main", "server", "app"}
+
+    def __init__(self, parser_factory: Optional[ParserFactory] = None) -> None:
+        self.parsers = parser_factory or default_factory()
+        self.queries = EcmaScriptQueries()
 
     # -------------------------
     # Entry Points
@@ -62,22 +68,40 @@ class JavaScriptAdapter(LanguageAdapter):
     def detect_imports(self, file_path: str, content: str) -> List[ImportEdge]:
         """Imports with a flag for those that do not run when the module loads
         (dynamic `import()` and `import type`), so they cannot cause an
-        import-time cycle. One eager import of a target makes its edge eager."""
+        import-time cycle. One eager import of a target makes its edge eager.
+
+        Read with tree-sitter (comments and strings cannot fool it); the text-based
+        code below is the fallback when no grammar is available."""
+        found = self._tree_imports(file_path, content)
+        if found is None:
+            found = self._regex_imports(content)
+        deferred: dict = {}
+        for target, is_deferred in found:
+            deferred[target] = deferred.get(target, True) and is_deferred
+        return [
+            ImportEdge(source=file_path, target=t, deferred=d)
+            for t, d in deferred.items()
+        ]
+
+    def _tree_imports(self, file_path: str, content: str) -> Optional[List[tuple]]:
+        """(target, deferred) pairs from the syntax tree, or None when it cannot be parsed."""
+        grammar = self.parsers.grammar_for(os.path.splitext(file_path)[1])
+        if grammar is None:
+            return None
+        tree = self.parsers.parse(grammar, content.encode("utf-8", "replace"))
+        if tree is None:
+            return None
+        return [(ref.target, ref.deferred) for ref in self.queries.imports(tree)]
+
+    def _regex_imports(self, content: str) -> List[tuple]:
+        """The text-based reader (fallback): (target, deferred) pairs."""
         found: List[tuple] = []  # (target, deferred)
         for m in self._FROM_RE.finditer(content):
             found.append((m.group(1), bool(self._TYPE_PREFIX_RE.match(m.group(0)))))
         for regex in (self._SIDE_EFFECT_RE, self._REQUIRE_RE):
             found.extend((t, False) for t in regex.findall(content))
         found.extend((t, True) for t in self._DYNAMIC_RE.findall(content))
-
-        deferred: dict = {}
-        for target, is_deferred in found:
-            deferred[target] = deferred.get(target, True) and is_deferred
-
-        return [
-            ImportEdge(source=file_path, target=t, deferred=d)
-            for t, d in deferred.items()
-        ]
+        return found
 
     # -------------------------
     # Framework Detection

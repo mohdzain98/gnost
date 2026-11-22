@@ -63,6 +63,19 @@ class FindingInChange:
 
 
 @dataclass
+class ArchitectureChange:
+    """Architecture rule violations the change adds or removes."""
+
+    configured: bool
+    new: List[Dict[str, str]] = field(default_factory=list)
+    fixed: List[Dict[str, str]] = field(default_factory=list)
+    total: int = 0  # violations in the changed version
+    compared: bool = (
+        True  # False when the base was not scanned (new = those touching changed files)
+    )
+
+
+@dataclass
 class ChangeReport:
     """Everything `gnost changes` found for one range."""
 
@@ -80,6 +93,7 @@ class ChangeReport:
     findings: Optional[List[FindingInChange]] = None  # None: not asked for
     cycles_compared: bool = True
     languages: Dict[str, int] = field(default_factory=dict)  # files per language
+    architecture: Optional[ArchitectureChange] = None
     notes: List[str] = field(default_factory=list)
 
     @property
@@ -118,6 +132,16 @@ class ChangeReport:
                 "new": [asdict(c) for c in self.new_cycles],
                 "fixed": [asdict(c) for c in self.fixed_cycles],
             },
+            "architecture": (
+                None
+                if self.architecture is None or not self.architecture.configured
+                else {
+                    "compared": self.architecture.compared,
+                    "total": self.architecture.total,
+                    "new": self.architecture.new,
+                    "fixed": self.architecture.fixed,
+                }
+            ),
             "findings": (
                 None if self.findings is None else [asdict(f) for f in self.findings]
             ),

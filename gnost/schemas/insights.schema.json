@@ -71,6 +71,18 @@
         "files": {
           "type": "integer",
           "minimum": 0
+        },
+        "parsers": {
+          "type": "object",
+          "description": "How each language's files are read: `ast` (Python), `tree-sitter`, or `regex` when no grammar is available on this machine.",
+          "additionalProperties": {
+            "type": "string",
+            "enum": [
+              "ast",
+              "tree-sitter",
+              "regex"
+            ]
+          }
         }
       }
     },
@@ -620,6 +632,214 @@
                 "items": {
                   "type": "string"
                 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "quickstart": {
+      "type": "object",
+      "description": "How to install, build, run and test the project, read from its own files. Each step names its source file; nothing is guessed.",
+      "required": [
+        "prerequisites",
+        "install",
+        "build",
+        "run",
+        "test",
+        "environment"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "prerequisites": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "text",
+              "source",
+              "command"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              },
+              "command": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "install": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "text",
+              "source",
+              "command"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              },
+              "command": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "build": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "text",
+              "source",
+              "command"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              },
+              "command": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "run": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "text",
+              "source",
+              "command"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              },
+              "command": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "test": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "text",
+              "source",
+              "command"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              },
+              "command": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "environment": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "text",
+              "source",
+              "command"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              },
+              "command": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      }
+    },
+    "architecture": {
+      "type": "object",
+      "description": "Result of the `[architecture]` rules in .gnost.toml: imports that break a layer order or a forbidden-import rule. `configured` is false when there are no rules.",
+      "required": [
+        "configured",
+        "rules",
+        "edges_checked",
+        "fail",
+        "violations"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "configured": {
+          "type": "boolean"
+        },
+        "rules": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "edges_checked": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fail": {
+          "type": "boolean"
+        },
+        "violations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "rule",
+              "source",
+              "target",
+              "message"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "rule": {
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              },
+              "target": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
               }
             }
           }

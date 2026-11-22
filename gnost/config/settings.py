@@ -49,6 +49,7 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
 from gnost.utils.layout import DEFAULT_OUTPUT_DIR
+from gnost.core.architecture import ArchitectureSettings, ForbiddenImportRule
 from gnost.core.risk import RiskSettings
 from gnost.vcs.history import HistorySettings
 from gnost.core.caution import (
@@ -97,12 +98,14 @@ SCHEMA: Dict[Optional[str], Dict[str, Any]] = {
     },
     "analyze": {
         "analyzers": list,
+        "languages": list,
         "timeout": int,
         "max_findings": int,
         "parallel": bool,
         "fail_under": _NUMBER,
         "baseline": str,
     },
+    "architecture": {"layers": list, "rules": list, "fail": bool},
 }
 _TABLES = {"caution.weights", "caution.ranges"}
 
@@ -167,6 +170,26 @@ class GnostConfig:
             ),
             min_commits=int(given.get("min_commits", base.min_commits)),
             top=int(given.get("top", base.top)),
+        )
+
+    def architecture_settings(self) -> ArchitectureSettings:
+        """The [architecture] table as rule objects (empty when there is none)."""
+        given = self.values.get("architecture", {})
+        rules = []
+        for index, item in enumerate(given.get("rules", []), start=1):
+            sources = item["from"] if isinstance(item["from"], list) else [item["from"]]
+            rules.append(
+                ForbiddenImportRule(
+                    name=item.get("name") or f"rule {index}",
+                    sources=tuple(sources),
+                    forbidden=tuple(item["must_not_import"]),
+                    allow=tuple(item.get("allow", [])),
+                )
+            )
+        return ArchitectureSettings(
+            forbidden=tuple(rules),
+            layers=tuple(given.get("layers", [])),
+            fail=bool(given.get("fail", False)),
         )
 
     def caution_settings(self) -> CautionSettings:
@@ -282,6 +305,23 @@ def _validate_section(
         else:
             config.warnings.append(f"{where}: unknown setting '{dotted}' (ignored)")
 
+    if section == "analyze" and "languages" in out:
+        from gnost.analysis.languages import AnalysisLanguages
+
+        unknown = [
+            n
+            for n in out["languages"]
+            if str(n).lower() not in AnalysisLanguages.names()
+        ]
+        if unknown:
+            raise ConfigError(
+                f"{where}: 'analyze.languages' has unknown {', '.join(map(str, unknown))}; "
+                f"choose from {', '.join(AnalysisLanguages.names())}"
+            )
+
+    if section == "architecture":
+        _validate_architecture(where, out, config)
+
     if section == "risk":
         if "limit" in out and out["limit"] < 1:
             raise ConfigError(f"{where}: 'risk.limit' must be 1 or more")
@@ -351,6 +391,49 @@ def _validate_table(
                 )
             out[name] = value
     return out
+
+
+def _validate_architecture(
+    where: str, out: Dict[str, Any], config: GnostConfig
+) -> None:
+    """Check `[architecture]`: layers are names, each rule has `from` and `must_not_import`."""
+    layers = out.get("layers", [])
+    if not all(isinstance(n, str) and n.strip() for n in layers):
+        raise ConfigError(
+            f"{where}: 'architecture.layers' must be a list of folder names"
+        )
+    if len(set(layers)) != len(layers):
+        raise ConfigError(f"{where}: 'architecture.layers' lists a layer twice")
+    known = {"name", "from", "must_not_import", "allow"}
+    for index, item in enumerate(out.get("rules", []), start=1):
+        label = f"architecture.rules #{index}"
+        if not isinstance(item, dict):
+            raise ConfigError(
+                f"{where}: '{label}' must be a table ([[architecture.rules]])"
+            )
+        for key in item:
+            if key not in known:
+                config.warnings.append(
+                    f"{where}: unknown setting '{label}.{key}' (ignored)"
+                )
+        source = item.get("from")
+        sources = source if isinstance(source, list) else [source]
+        if not source or not all(isinstance(s, str) and s.strip() for s in sources):
+            raise ConfigError(
+                f"{where}: '{label}' needs 'from' (a path or list of paths)"
+            )
+        for key in ("must_not_import", "allow"):
+            value = item.get(key, [])
+            if not isinstance(value, list) or not all(
+                isinstance(s, str) for s in value
+            ):
+                raise ConfigError(f"{where}: '{label}.{key}' must be a list of paths")
+        if not item.get("must_not_import"):
+            raise ConfigError(
+                f"{where}: '{label}' needs 'must_not_import' (a list of paths)"
+            )
+        if "name" in item and not isinstance(item["name"], str):
+            raise ConfigError(f"{where}: '{label}.name' must be text")
 
 
 def _check(where: str, key: str, value: Any, expected: Any) -> None:

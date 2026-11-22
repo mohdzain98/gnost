@@ -1,0 +1,9 @@
+{
+  "comment": "Compressed size in bytes of the gnost 0.6.1 release archives. The build fails when an archive is larger than baseline + budget_mib. Raise a baseline only on purpose, in a reviewed commit.",
+  "budget_mib": 15,
+  "platforms": {
+    "darwin-arm64": 40954548,
+    "linux-x64": 57787991,
+    "win32-x64": 39974170
+  }
+}

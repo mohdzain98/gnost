@@ -299,6 +299,15 @@ class ImportResolver:
                 index.setdefault(".".join(parts[start:]), path)
         return index
 
+    NESTED_CLASS_DEPTH = 2  # `a.b.Outer.Inner` imports the file of `a.b.Outer`
+
     def _resolve_java(self, edge: ImportEdge) -> List[str]:
-        path = self.java_classes.get(edge.target)
-        return [path] if path else []
+        target = edge.target
+        for _ in range(self.NESTED_CLASS_DEPTH + 1):
+            path = self.java_classes.get(target)
+            if path:
+                return [path]
+            if "." not in target:
+                break
+            target = target.rsplit(".", 1)[0]
+        return []

@@ -19,7 +19,7 @@ from typing import List, Optional, Tuple
 from gnost.utils.layout import DEFAULT_OUTPUT_DIR
 
 # Version of the Maven plugin that exists on Central; the release updates it when Maven is published.
-MAVEN_PLUGIN_VERSION = "0.6.1"
+MAVEN_PLUGIN_VERSION = "0.7.0"
 MAVEN_GROUP = "io.github.mohdzain98"
 MAVEN_ARTIFACT = "gnost-maven-plugin"
 NPM_SCRIPT_NAME = "gnost"

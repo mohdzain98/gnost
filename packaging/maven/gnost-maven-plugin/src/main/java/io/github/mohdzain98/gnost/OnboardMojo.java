@@ -24,6 +24,10 @@ public class OnboardMojo extends RepositoryMojo {
     @Parameter(property = "gnost.progress", defaultValue = "false")
     boolean progress;
 
+    /** Never show the progress bar. */
+    @Parameter(property = "gnost.noProgress", defaultValue = "false")
+    boolean noProgress;
+
     /** Write only the insights JSON. */
     @Parameter(property = "gnost.insightsOnly", defaultValue = "false")
     boolean insightsOnly;
@@ -56,6 +60,7 @@ public class OnboardMojo extends RepositoryMojo {
         flag(cmd, layered, "--layered");
         flag(cmd, inject, "--inject");
         flag(cmd, progress, "--progress");
+        flag(cmd, noProgress, "--no-progress");
         flag(cmd, insightsOnly, "--insights-only");
         option(cmd, depth, "--depth");
         option(cmd, maxEdges, "--max-edges");

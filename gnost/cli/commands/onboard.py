@@ -16,6 +16,11 @@ from gnost.core.callgraph import build_call_graph, find_flows
 from gnost.core.caution import CautionSettings
 from gnost.core.resolver import ImportResolver
 from gnost.core.insight_builder import InsightBuilder
+from gnost.core.architecture import (
+    ArchitectureChecker,
+    ArchitectureSettings,
+    relative_to,
+)
 from gnost.core.risk import RiskCalculator, RiskSettings
 from gnost.core.graph import DependencyGraph
 from gnost.core.flow import FlowBuilder
@@ -28,9 +33,10 @@ from gnost.reporters.mermaid import (
 )
 from gnost.reporters.readme import ReadmeInjector
 from gnost.reporters.insights_json import build_payload, write_payload
+from gnost.quickstart import QuickstartDetector
 from gnost.utils.footer import Footer
 from gnost.utils.layout import LEGACY_OUTPUT_PATHS, OutputLayout
-from gnost.utils.progress import progress_bar
+from gnost.utils.progress import StepProgress
 from gnost.vcs.history import HistoryReader, HistorySettings
 
 
@@ -147,6 +153,7 @@ def run(
     output_root: Optional[str] = None,
     source: Optional[str] = None,
     footer: bool = True,
+    architecture: Optional[ArchitectureSettings] = None,
 ) -> None:
     """Onboard a codebase: write the guide, diagrams, insights JSON and explorer page.
 
@@ -170,7 +177,8 @@ def run(
     if write_documents:
         os.makedirs(flow_dir, exist_ok=True)
 
-    with progress_bar(enabled=progress, total=4, desc="Onboarding") as bar:
+    steps = ["Scanning files", "Building graph", "Tracing flow", "Writing files"]
+    with StepProgress(progress, steps, announce=f"Onboarding {scan_root} ...") as bar:
         # -------------------------
         # 1. Language adapters
         # -------------------------
@@ -191,23 +199,20 @@ def run(
         # The line-count tables only understand plain folder names, not globs.
         loc_exclude = [p for p in (exclude or []) if not re.search(r"[*?\[/]", p)]
         loc_data = loc_scan(scan_root, exclude=loc_exclude)
-        if bar is not None:
-            bar.update(1)
+        bar.advance()
 
         # -------------------------
         # 3. Build dependency graph
         # -------------------------
         graph = DependencyGraph.from_scan(scan_result)
-        if bar is not None:
-            bar.update(1)
+        bar.advance()
 
         # -------------------------
         # 4. Build execution flow
         # -------------------------
         flow_builder = FlowBuilder(graph=graph, scan=scan_result)
         flow_result = flow_builder.build()
-        if bar is not None:
-            bar.update(1)
+        bar.advance()
 
         # -------------------------
         # 4.4 Function-level call graph (Python)
@@ -243,6 +248,19 @@ def run(
         )
 
         # -------------------------
+        # 4.55 Architecture rules from .gnost.toml (the import graph against the layers)
+        # -------------------------
+        arch_settings = architecture or ArchitectureSettings()
+        arch_report = ArchitectureChecker.for_settings(arch_settings).report(
+            graph, relative_to(scan_root), arch_settings
+        )
+
+        # -------------------------
+        # 4.56 How to get the project running (read from its own files)
+        # -------------------------
+        quickstart = QuickstartDetector().detect(scan_root)
+
+        # -------------------------
         # 4.6 Insights JSON (optional)
         # -------------------------
         if json_out is not None or not diagram_only:
@@ -256,12 +274,13 @@ def run(
                 call_graph=call_graph,
                 changes=changes,
                 risks=risks,
+                quickstart=quickstart,
+                architecture=arch_report,
             )
             write_payload(payload, json_path)
             print(f"Insights JSON written to {json_path}")
             if insights_only:
-                if bar is not None:
-                    bar.update(1)
+                bar.advance()
                 return
 
         # -------------------------
@@ -282,8 +301,7 @@ def run(
             with open(output_path, "w", encoding="utf-8") as f:
                 f.write(full_diagram + "\n")
 
-            if bar is not None:
-                bar.update(1)
+            bar.advance()
 
             print(f"Mermaid flow diagram written to {output_path}")
             return
@@ -516,6 +534,8 @@ def run(
             changes=changes,
             risks=risks,
             root_label=source,
+            quickstart=quickstart,
+            architecture=arch_report,
         ).render()
 
         MarkdownReporter(
@@ -534,6 +554,8 @@ def run(
             risks=risks,
             root_label=source,
             footer=stamp,
+            quickstart=quickstart,
+            architecture=arch_report,
         ).write()
 
         if html:
@@ -553,8 +575,7 @@ def run(
             else:
                 print("ℹ️  README.md not found, skipping injection")
 
-        if bar is not None:
-            bar.update(1)
+        bar.advance()
 
     print(f"\nGNOST wrote its files to {layout.folder}")
     print(f"  Guide: {layout.relative_name}/ONBOARD.md")

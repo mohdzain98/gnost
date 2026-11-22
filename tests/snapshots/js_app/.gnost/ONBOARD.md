@@ -20,6 +20,14 @@ _Generated automatically by <a href='https://gnost.readthedocs.io'>GNOST</a>._
 |---|---:|---:|---:|---:|---:|
 | JavaScript | 4 | 21 | 0 | 3 | 24 |
 
+## Get it running
+
+_Read from this project's own files. Each line names its source; nothing is guessed._
+
+**Install**
+
+- `npm install` _(package.json)_
+
 ## Entry Points
 
 - `src/index.js` — Common JS entry filename

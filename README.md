@@ -25,6 +25,7 @@ Perfect for first-day onboarding, audits, and codebase exploration.
 
 ## 🧠 What GNOST Does
 - Works on a folder **or a repository address** (`gnost onboard https://github.com/owner/repo`): read-only clone, nothing in it is run, deleted afterwards
+- Writes a **"Get it running"** section: how to install, run and test the project and which environment variables it needs, read from its own files (`package.json`, `pyproject.toml`, `Makefile`, `Dockerfile`, `.env.example`, ...)
 - Detects **where execution starts**
 - Infers **high-level execution flow**
 - Identifies **hotspot files** (most important code)
@@ -45,7 +46,7 @@ Pick the channel you already use. The same version is published to all of them.
 | uv / pipx | `uvx gnost onboard .` or `pipx run gnost onboard .` | Python 3.9+ |
 | npm | `npx gnost-cli onboard .` | Node 18+ (no Python) |
 | Docker | `docker run --rm --user "$(id -u):$(id -g)" -v "$PWD":/repo ghcr.io/mohdzain98/gnost onboard /repo` | Docker (no Python) |
-| Maven | `mvn io.github.mohdzain98:gnost-maven-plugin:0.6.1:onboard` | Java 8+, Maven 3.6.3+ (no Python) |
+| Maven | `mvn io.github.mohdzain98:gnost-maven-plugin:0.7.0:onboard` | Java 8+, Maven 3.6.3+ (no Python) |
 
 The npm package carries a standalone binary for macOS (Apple silicon), Linux (x86_64) and Windows (x86_64).
 The Maven plugin is small: it uses a matching `gnost` found on your `PATH`, or downloads the same binary once from the
@@ -129,7 +130,7 @@ Run it on every pull request with the GitHub Action (a comment with the blast ra
 ```yaml
 - uses: actions/checkout@v4
   with: { fetch-depth: 0 }        # full history, for hotspots and `gnost changes`
-- uses: mohdzain98/gnost@v0.6.1
+- uses: mohdzain98/gnost@v0.7.0
   with: { comment: "true", fail-under: "7.5" }   # needs `pull-requests: write`
 ```
 
@@ -137,14 +138,15 @@ See [Use GNOST in CI](https://gnost.readthedocs.io/en/latest/ci.html), or run `g
 
 ### Analysis scope
 
-- `gnost analyze` currently supports Python codebases only.
-- JavaScript/TypeScript/Java analysis is planned for future releases.
+- `gnost analyze` checks **Python, JavaScript, TypeScript and Java** (since 0.7.0). Python uses mypy, bandit, radon and ruff; the other languages use GNOST's own rules, so nothing else needs to be installed (no Node, no JDK).
 
 ## 🌍 Supported Languages
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+
+GNOST reads Python with `ast` and JavaScript, TypeScript and Java with tree-sitter, so imports in comments and strings are never counted and Java's same-package references show up in the graph.
 
 ## 🎯 Who Is This For?
 - Developers joining a new team

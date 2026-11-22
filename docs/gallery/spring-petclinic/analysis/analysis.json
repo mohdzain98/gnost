@@ -1,0 +1,261 @@
+{
+ "id": "153d2ca9-6e26-401f-a74c-d6c7395e2bdb",
+ "timestamp": "2026-11-22T13:10:45.564234",
+ "target_path": "https://github.com/spring-projects/spring-petclinic",
+ "findings": [
+  {
+   "id": "ebe411d0-612a-4c3c-9442-f72169ecae7d",
+   "title": "Catches Exception or Throwable",
+   "description": "`catch (Exception ...)` is too broad",
+   "details": null,
+   "clubbed": null,
+   "category": "quality",
+   "severity": "low",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "src/test/java/org/springframework/samples/petclinic/PetClinicConcurrencyTests.java",
+    "line_number": 94,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "ROB-CATCH-GENERIC",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Catch the specific exceptions you can handle.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "robustness",
+   "timestamp": "2026-11-22T13:10:45.584544",
+   "tags": [
+    "error_handling",
+    "java",
+    "rule_engine"
+   ],
+   "extra_data": {
+    "language": "java",
+    "priority_score": 49.0,
+    "file_issue_count": 1,
+    "category_prevalence": 2,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "38efaf62-b4e8-4ff4-a5cb-ac2b77afec00",
+   "title": "Function is too complex",
+   "description": "`checkNonInternationalizedStrings` has a cyclomatic complexity of 13 (limit 10)",
+   "details": null,
+   "clubbed": null,
+   "category": "quality",
+   "severity": "low",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "src/test/java/org/springframework/samples/petclinic/system/I18nPropertiesSyncTest.java",
+    "line_number": 39,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": "checkNonInternationalizedStrings",
+    "class_name": null
+   },
+   "rule_id": "MNT-COMPLEXITY",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Split the function into smaller ones, or replace long if/else chains with a lookup.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "maintainability",
+   "timestamp": "2026-11-22T13:10:45.636133",
+   "tags": [
+    "complexity",
+    "rule_engine",
+    "java"
+   ],
+   "extra_data": {
+    "language": "java",
+    "priority_score": 49.0,
+    "file_issue_count": 1,
+    "category_prevalence": 2,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "69a3e97d-3204-48dc-bcf0-f06f10a2ac92",
+   "title": "Line is too long",
+   "description": "The line is 123 characters (limit 120)",
+   "details": null,
+   "clubbed": null,
+   "category": "readability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "src/test/java/org/springframework/samples/petclinic/PostgresIntegrationTests.java",
+    "line_number": 51,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "RDB-LONG-LINE",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Break the line, or let a formatter do it.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "readability",
+   "timestamp": "2026-11-22T13:10:45.696414",
+   "tags": [
+    "formatting",
+    "java",
+    "rule_engine"
+   ],
+   "extra_data": {
+    "language": "java",
+    "priority_score": 37.0,
+    "file_issue_count": 1,
+    "category_prevalence": 1,
+    "complexity_rank": 1
+   }
+  }
+ ],
+ "analysis_metrics": [
+  {
+   "analyzer_name": "robustness",
+   "execution_time_seconds": 0.03731417655944824,
+   "files_analyzed": 50,
+   "findings_count": 1,
+   "error_count": 0,
+   "warnings_count": 0,
+   "success": true,
+   "error_message": null
+  },
+  {
+   "analyzer_name": "maintainability",
+   "execution_time_seconds": 0.05413508415222168,
+   "files_analyzed": 50,
+   "findings_count": 1,
+   "error_count": 0,
+   "warnings_count": 0,
+   "success": true,
+   "error_message": null
+  },
+  {
+   "analyzer_name": "observability",
+   "execution_time_seconds": 0.023215055465698242,
+   "files_analyzed": 50,
+   "findings_count": 0,
+   "error_count": 0,
+   "warnings_count": 0,
+   "success": true,
+   "error_message": null
+  },
+  {
+   "analyzer_name": "readability",
+   "execution_time_seconds": 0.033360958099365234,
+   "files_analyzed": 50,
+   "findings_count": 1,
+   "error_count": 0,
+   "warnings_count": 0,
+   "success": true,
+   "error_message": null
+  }
+ ],
+ "total_execution_time": 0.14832305908203125,
+ "summary": {
+  "timestamp": "2026-11-22T13:10:45.712479",
+  "target_path": "https://github.com/spring-projects/spring-petclinic",
+  "analysis_duration": 0.0,
+  "total_findings": 3,
+  "total_analyzers": 4,
+  "successful_analyzers": 4,
+  "failed_analyzers": 0,
+  "severity_breakdown": {
+   "critical": 0,
+   "high": 0,
+   "medium": 0,
+   "low": 2,
+   "info": 1
+  },
+  "category_breakdown": {
+   "security": 0,
+   "privacy": 0,
+   "quality": 2,
+   "performance": 0,
+   "testability": 0,
+   "readability": 1,
+   "observability": 0,
+   "dependency": 0,
+   "maintainability": 0,
+   "compliance": 0
+  },
+  "risk_score": 13.333333333333334,
+  "risk_level": "MINIMAL",
+  "files_with_issues": 3,
+  "top_problematic_files": [
+   {
+    "file": "src/test/java/org/springframework/samples/petclinic/PetClinicConcurrencyTests.java",
+    "total": 1,
+    "critical": 0,
+    "high": 0
+   },
+   {
+    "file": "src/test/java/org/springframework/samples/petclinic/system/I18nPropertiesSyncTest.java",
+    "total": 1,
+    "critical": 0,
+    "high": 0
+   },
+   {
+    "file": "src/test/java/org/springframework/samples/petclinic/PostgresIntegrationTests.java",
+    "total": 1,
+    "critical": 0,
+    "high": 0
+   }
+  ],
+  "remediation_complexity": {
+   "trivial": 0,
+   "simple": 3,
+   "moderate": 0,
+   "complex": 0,
+   "very_complex": 0
+  },
+  "quick_wins": 0,
+  "compliance_issues": {},
+  "analyzer_performance": {
+   "total_execution_time": 0.1480252742767334,
+   "average_time_per_analyzer": 0.03700631856918335,
+   "fastest_analyzer": "observability",
+   "slowest_analyzer": "maintainability",
+   "success_rate": 1.0
+  },
+  "trend_analysis": {
+   "note": "Trend analysis requires historical data",
+   "current_timestamp": "2026-11-22T13:10:45.564234",
+   "baseline_established": true
+  }
+ },
+ "compliance_status": [],
+ "trend_data": [],
+ "analysis_config": {
+  "target_path": "https://github.com/spring-projects/spring-petclinic",
+  "file_patterns": [
+   "*.py"
+  ],
+  "exclude_patterns": [],
+  "enabled_analyzers": [],
+  "severity_threshold": "info",
+  "parallel_execution": false,
+  "timeout_seconds": 900,
+  "include_low_confidence": false,
+  "max_findings_per_analyzer": 1000
+ },
+ "gallery_note": "Showing the 3 most severe of 3 findings; the summary counts all of them."
+}

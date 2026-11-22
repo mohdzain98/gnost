@@ -12,6 +12,7 @@ Good for first-day onboarding, audits and exploring code you did not write.
 
 - **Entry points and routes:** where execution starts, and HTTP endpoints for Flask, FastAPI, Django, Express, NestJS and Spring.
 - **Execution flow:** Mermaid diagrams of imports, plus function-level flow for Python.
+- **How to get it running:** install, run and test commands and the environment variable names, read from the project's own files (nothing guessed).
 - **Hotspot files and caution areas:** the files most worth reading first, and the risky ones to read carefully.
 - **Circular imports**, listed and drawn.
 - **`ONBOARD.md`:** a written guide to the repository, plus the same facts as JSON for tools and AI, all saved in a `.gnost/` folder.

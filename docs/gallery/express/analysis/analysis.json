@@ -1,0 +1,2094 @@
+{
+ "id": "1b49f85e-f0b4-4a71-8e58-0bc7b15b7c68",
+ "timestamp": "2026-11-22T13:17:19.119868",
+ "target_path": "https://github.com/expressjs/express",
+ "findings": [
+  {
+   "id": "72605824-390e-4fe4-b0d5-5e4b7483d24c",
+   "title": "Function is too complex",
+   "description": "`send` has a cyclomatic complexity of 23 (limit 10)",
+   "details": null,
+   "clubbed": null,
+   "category": "quality",
+   "severity": "high",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "lib/response.js",
+    "line_number": 126,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": "send",
+    "class_name": null
+   },
+   "rule_id": "MNT-COMPLEXITY",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Split the function into smaller ones, or replace long if/else chains with a lookup.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "maintainability",
+   "timestamp": "2026-11-22T13:17:19.269446",
+   "tags": [
+    "rule_engine",
+    "javascript",
+    "complexity"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 69.0,
+    "cross_references": [
+     "7232c132-80ab-4ac6-af89-793664a8485d",
+     "a805d2e2-a34e-43c8-8264-7c789fde6066",
+     "d2da5fce-9300-487d-b4ee-8fc56dfceec0",
+     "c426741b-7561-4145-aca1-eae345ad4e86"
+    ],
+    "file_issue_count": 6,
+    "category_prevalence": 10,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "a805d2e2-a34e-43c8-8264-7c789fde6066",
+   "title": "File is too long",
+   "description": "The file has 1050 lines (limit 500)",
+   "details": null,
+   "clubbed": null,
+   "category": "quality",
+   "severity": "medium",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "lib/response.js",
+    "line_number": 1,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "MNT-LONG-FILE",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Split the file by responsibility.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "maintainability",
+   "timestamp": "2026-11-22T13:17:19.270763",
+   "tags": [
+    "rule_engine",
+    "size",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 59.0,
+    "cross_references": [
+     "7232c132-80ab-4ac6-af89-793664a8485d",
+     "72605824-390e-4fe4-b0d5-5e4b7483d24c",
+     "d2da5fce-9300-487d-b4ee-8fc56dfceec0",
+     "c426741b-7561-4145-aca1-eae345ad4e86"
+    ],
+    "file_issue_count": 6,
+    "category_prevalence": 10,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "d69fd3f4-aeda-4d16-9ded-3fe141b629e9",
+   "title": "Function is too complex",
+   "description": "`<anonymous>` has a cyclomatic complexity of 17 (limit 10)",
+   "details": null,
+   "clubbed": null,
+   "category": "quality",
+   "severity": "medium",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/mvc/lib/boot.js",
+    "line_number": 14,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": "<anonymous>",
+    "class_name": null
+   },
+   "rule_id": "MNT-COMPLEXITY",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Split the function into smaller ones, or replace long if/else chains with a lookup.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "maintainability",
+   "timestamp": "2026-11-22T13:17:19.317989",
+   "tags": [
+    "rule_engine",
+    "javascript",
+    "complexity"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 59.0,
+    "cross_references": [
+     "fc9d17a2-9b45-4658-8e35-8dd70e39d385",
+     "43a45520-6629-495c-b3c0-ed5411f0361a",
+     "c1897b0c-f4c3-40d2-9b0c-dbebe1de3236"
+    ],
+    "file_issue_count": 4,
+    "category_prevalence": 10,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "d2da5fce-9300-487d-b4ee-8fc56dfceec0",
+   "title": "Function is too long",
+   "description": "`send` is 97 lines long (limit 60)",
+   "details": null,
+   "clubbed": null,
+   "category": "quality",
+   "severity": "low",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "lib/response.js",
+    "line_number": 126,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": "send",
+    "class_name": null
+   },
+   "rule_id": "MNT-LONG-FUNCTION",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Extract the steps into named functions.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "maintainability",
+   "timestamp": "2026-11-22T13:17:19.270667",
+   "tags": [
+    "rule_engine",
+    "size",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 49.0,
+    "cross_references": [
+     "7232c132-80ab-4ac6-af89-793664a8485d",
+     "72605824-390e-4fe4-b0d5-5e4b7483d24c",
+     "a805d2e2-a34e-43c8-8264-7c789fde6066",
+     "c426741b-7561-4145-aca1-eae345ad4e86"
+    ],
+    "file_issue_count": 6,
+    "category_prevalence": 10,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "c426741b-7561-4145-aca1-eae345ad4e86",
+   "title": "Function is too complex",
+   "description": "`download` has a cyclomatic complexity of 13 (limit 10)",
+   "details": null,
+   "clubbed": null,
+   "category": "quality",
+   "severity": "low",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "lib/response.js",
+    "line_number": 437,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": "download",
+    "class_name": null
+   },
+   "rule_id": "MNT-COMPLEXITY",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Split the function into smaller ones, or replace long if/else chains with a lookup.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "maintainability",
+   "timestamp": "2026-11-22T13:17:19.269463",
+   "tags": [
+    "rule_engine",
+    "javascript",
+    "complexity"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 49.0,
+    "cross_references": [
+     "7232c132-80ab-4ac6-af89-793664a8485d",
+     "72605824-390e-4fe4-b0d5-5e4b7483d24c",
+     "a805d2e2-a34e-43c8-8264-7c789fde6066",
+     "d2da5fce-9300-487d-b4ee-8fc56dfceec0"
+    ],
+    "file_issue_count": 6,
+    "category_prevalence": 10,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "749a87d3-8a8b-44ab-8bb8-19066f30e79f",
+   "title": "Function is too long",
+   "description": "`sendfile` is 89 lines long (limit 60)",
+   "details": null,
+   "clubbed": null,
+   "category": "quality",
+   "severity": "low",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "lib/response.js",
+    "line_number": 924,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": "sendfile",
+    "class_name": null
+   },
+   "rule_id": "MNT-LONG-FUNCTION",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Extract the steps into named functions.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "maintainability",
+   "timestamp": "2026-11-22T13:17:19.270673",
+   "tags": [
+    "rule_engine",
+    "size",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 49.0,
+    "cross_references": [
+     "7232c132-80ab-4ac6-af89-793664a8485d",
+     "72605824-390e-4fe4-b0d5-5e4b7483d24c",
+     "c426741b-7561-4145-aca1-eae345ad4e86",
+     "a805d2e2-a34e-43c8-8264-7c789fde6066",
+     "d2da5fce-9300-487d-b4ee-8fc56dfceec0"
+    ],
+    "file_issue_count": 6,
+    "category_prevalence": 10,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "43a45520-6629-495c-b3c0-ed5411f0361a",
+   "title": "Function is too long",
+   "description": "`module.exports` is 73 lines long (limit 60)",
+   "details": null,
+   "clubbed": null,
+   "category": "quality",
+   "severity": "low",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/mvc/lib/boot.js",
+    "line_number": 11,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": "module.exports",
+    "class_name": null
+   },
+   "rule_id": "MNT-LONG-FUNCTION",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Extract the steps into named functions.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "maintainability",
+   "timestamp": "2026-11-22T13:17:19.318179",
+   "tags": [
+    "rule_engine",
+    "size",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 49.0,
+    "cross_references": [
+     "fc9d17a2-9b45-4658-8e35-8dd70e39d385",
+     "c1897b0c-f4c3-40d2-9b0c-dbebe1de3236",
+     "d69fd3f4-aeda-4d16-9ded-3fe141b629e9"
+    ],
+    "file_issue_count": 4,
+    "category_prevalence": 10,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "c1897b0c-f4c3-40d2-9b0c-dbebe1de3236",
+   "title": "Function is too long",
+   "description": "`<anonymous>` is 69 lines long (limit 60)",
+   "details": null,
+   "clubbed": null,
+   "category": "quality",
+   "severity": "low",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/mvc/lib/boot.js",
+    "line_number": 14,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": "<anonymous>",
+    "class_name": null
+   },
+   "rule_id": "MNT-LONG-FUNCTION",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Extract the steps into named functions.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "maintainability",
+   "timestamp": "2026-11-22T13:17:19.318184",
+   "tags": [
+    "rule_engine",
+    "size",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 49.0,
+    "cross_references": [
+     "fc9d17a2-9b45-4658-8e35-8dd70e39d385",
+     "43a45520-6629-495c-b3c0-ed5411f0361a",
+     "d69fd3f4-aeda-4d16-9ded-3fe141b629e9"
+    ],
+    "file_issue_count": 4,
+    "category_prevalence": 10,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "4e025432-6914-43ea-b215-be290b9eb17c",
+   "title": "File is too long",
+   "description": "The file has 527 lines (limit 500)",
+   "details": null,
+   "clubbed": null,
+   "category": "quality",
+   "severity": "low",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "lib/request.js",
+    "line_number": 1,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "MNT-LONG-FILE",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Split the file by responsibility.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "maintainability",
+   "timestamp": "2026-11-22T13:17:19.277188",
+   "tags": [
+    "rule_engine",
+    "size",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 49.0,
+    "file_issue_count": 1,
+    "category_prevalence": 10,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "a6a26651-81fb-4e68-ac73-7206402384a0",
+   "title": "File is too long",
+   "description": "The file has 631 lines (limit 500)",
+   "details": null,
+   "clubbed": null,
+   "category": "quality",
+   "severity": "low",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "lib/application.js",
+    "line_number": 1,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "MNT-LONG-FILE",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Split the file by responsibility.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "maintainability",
+   "timestamp": "2026-11-22T13:17:19.286952",
+   "tags": [
+    "rule_engine",
+    "size",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 49.0,
+    "file_issue_count": 1,
+    "category_prevalence": 10,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "bc5acda0-42a8-42b3-97f6-4b4b76e92ee9",
+   "title": "Error is caught and neither logged nor rethrown",
+   "description": "The error is caught but not logged, rethrown or used",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "low",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "lib/view.js",
+    "line_number": 202,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-SWALLOWED-ERROR",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Log the error (with context), rethrow it, show it to the user, or pass it on.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.618793",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript",
+    "error_handling"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 41.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "7232c132-80ab-4ac6-af89-793664a8485d",
+   "title": "Line is too long",
+   "description": "The line is 130 characters (limit 120)",
+   "details": null,
+   "clubbed": null,
+   "category": "readability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "lib/response.js",
+    "line_number": 72,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "RDB-LONG-LINE",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Break the line, or let a formatter (Prettier) do it.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "readability",
+   "timestamp": "2026-11-22T13:17:19.685079",
+   "tags": [
+    "rule_engine",
+    "javascript",
+    "formatting"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 37.0,
+    "cross_references": [
+     "c426741b-7561-4145-aca1-eae345ad4e86",
+     "72605824-390e-4fe4-b0d5-5e4b7483d24c",
+     "a805d2e2-a34e-43c8-8264-7c789fde6066",
+     "d2da5fce-9300-487d-b4ee-8fc56dfceec0"
+    ],
+    "file_issue_count": 6,
+    "category_prevalence": 8,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "6a162607-0736-44ab-97e8-b1922a413e42",
+   "title": "Commented-out code",
+   "description": "A comment contains code",
+   "details": null,
+   "clubbed": null,
+   "category": "readability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/static-files/index.js",
+    "line_number": 32,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "RDB-COMMENTED-CODE",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Delete it; it is in version control if it is needed again.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "readability",
+   "timestamp": "2026-11-22T13:17:19.702565",
+   "tags": [
+    "dead_code",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 37.0,
+    "file_issue_count": 2,
+    "category_prevalence": 8,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "4ed2d4e3-2d35-4558-9500-c4dff71f4144",
+   "title": "Commented-out code",
+   "description": "A comment contains code (3 in this file, the first is shown)",
+   "details": null,
+   "clubbed": null,
+   "category": "readability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/view-locals/index.js",
+    "line_number": 115,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "RDB-COMMENTED-CODE",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Delete it; it is in version control if it is needed again.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "readability",
+   "timestamp": "2026-11-22T13:17:19.711750",
+   "tags": [
+    "dead_code",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 37.0,
+    "file_issue_count": 2,
+    "category_prevalence": 8,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "1922f104-cf0d-45de-ab7c-94142e23e2ce",
+   "title": "Line is too long",
+   "description": "The line is 134 characters (limit 120) (2 in this file, the first is shown)",
+   "details": null,
+   "clubbed": null,
+   "category": "readability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "test/app.render.js",
+    "line_number": 115,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "RDB-LONG-LINE",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Break the line, or let a formatter (Prettier) do it.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "readability",
+   "timestamp": "2026-11-22T13:17:19.753045",
+   "tags": [
+    "rule_engine",
+    "javascript",
+    "formatting"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 37.0,
+    "file_issue_count": 1,
+    "category_prevalence": 8,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "df5d8ca1-d754-4b77-b9e5-f502a82659f2",
+   "title": "Line is too long",
+   "description": "The line is 133 characters (limit 120) (2 in this file, the first is shown)",
+   "details": null,
+   "clubbed": null,
+   "category": "readability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "test/res.redirect.js",
+    "line_number": 110,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "RDB-LONG-LINE",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Break the line, or let a formatter (Prettier) do it.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "readability",
+   "timestamp": "2026-11-22T13:17:19.770939",
+   "tags": [
+    "rule_engine",
+    "javascript",
+    "formatting"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 37.0,
+    "file_issue_count": 1,
+    "category_prevalence": 8,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "f5bce50f-db03-4b9b-b520-e22917ef1ed5",
+   "title": "Line is too long",
+   "description": "The line is 122 characters (limit 120)",
+   "details": null,
+   "clubbed": null,
+   "category": "readability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "test/res.attachment.js",
+    "line_number": 88,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "RDB-LONG-LINE",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Break the line, or let a formatter (Prettier) do it.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "readability",
+   "timestamp": "2026-11-22T13:17:19.775871",
+   "tags": [
+    "rule_engine",
+    "javascript",
+    "formatting"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 37.0,
+    "file_issue_count": 1,
+    "category_prevalence": 8,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "14afcef5-22c8-47b2-aaf2-1973c6c61ccd",
+   "title": "Line is too long",
+   "description": "The line is 131 characters (limit 120)",
+   "details": null,
+   "clubbed": null,
+   "category": "readability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "test/res.cookie.js",
+    "line_number": 257,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "RDB-LONG-LINE",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Break the line, or let a formatter (Prettier) do it.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "readability",
+   "timestamp": "2026-11-22T13:17:19.805967",
+   "tags": [
+    "rule_engine",
+    "javascript",
+    "formatting"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 37.0,
+    "file_issue_count": 1,
+    "category_prevalence": 8,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "489fea38-ef48-4be8-ab6a-86e80cd8bc2e",
+   "title": "Line is too long",
+   "description": "The line is 131 characters (limit 120)",
+   "details": null,
+   "clubbed": null,
+   "category": "readability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "test/acceptance/resource.js",
+    "line_number": 17,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "RDB-LONG-LINE",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Break the line, or let a formatter (Prettier) do it.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "readability",
+   "timestamp": "2026-11-22T13:17:19.849437",
+   "tags": [
+    "rule_engine",
+    "javascript",
+    "formatting"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 37.0,
+    "file_issue_count": 1,
+    "category_prevalence": 8,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "fc9d17a2-9b45-4658-8e35-8dd70e39d385",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output (3 in this file, the first is shown)",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/mvc/lib/boot.js",
+    "line_number": 17,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.637977",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "cross_references": [
+     "43a45520-6629-495c-b3c0-ed5411f0361a",
+     "c1897b0c-f4c3-40d2-9b0c-dbebe1de3236",
+     "d69fd3f4-aeda-4d16-9ded-3fe141b629e9"
+    ],
+    "file_issue_count": 4,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "aa439b87-e984-49bb-86ba-a3bbe5ec7468",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/session/index.js",
+    "line_number": 36,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.621904",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "203f9a24-73d5-4af1-9d34-54566d69c7cc",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/session/redis.js",
+    "line_number": 39,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.622223",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "084fba47-8b7f-41ec-b5a7-d761ce04530d",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/content-negotiation/index.js",
+    "line_number": 45,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.622965",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "f17724bb-7b87-4cc3-b12c-e03db56f5162",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/cookies/index.js",
+    "line_number": 52,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.623389",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "27d62d11-d51b-4ee9-9bcb-6d3f278846c3",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/route-middleware/index.js",
+    "line_number": 89,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.623981",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "df5d352c-c35b-4855-b7ab-4d2d7ed61140",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/error/index.js",
+    "line_number": 52,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.624328",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "ac3d002a-c886-4cfd-87db-8df55fcecd4d",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/downloads/index.js",
+    "line_number": 39,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.624655",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "68100fc4-98b8-43d4-9a9b-5748d19c3b44",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/resource/index.js",
+    "line_number": 94,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.625329",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "fb69b3e4-10d0-44de-92da-aa9d736fa71c",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/online/index.js",
+    "line_number": 60,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.625724",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "0c3b1b3c-7838-4f5f-8cf3-74a74a52dd61",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output (5 in this file, the first is shown)",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/static-files/index.js",
+    "line_number": 39,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.626041",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 2,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "1377ac5c-58ae-492d-899d-252294afe49a",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output (2 in this file, the first is shown)",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/route-map/index.js",
+    "line_number": 24,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.626724",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "aa31127b-b111-48af-a56a-4f48cf297a2f",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/params/index.js",
+    "line_number": 73,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.627282",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "696075b7-c64c-4476-9946-4df9fcb356f0",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output (2 in this file, the first is shown)",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/vhost/index.js",
+    "line_number": 38,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.627673",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "477eb84c-5d06-4569-842a-b7eae9787597",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/error-pages/index.js",
+    "line_number": 102,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.628272",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "45a7f784-37c6-47cf-921b-71f47f956462",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/web-service/index.js",
+    "line_number": 116,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.628972",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "fee26ae7-708d-429e-835c-3a6fa1ca39a1",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/search/index.js",
+    "line_number": 81,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.629610",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "a173faa7-92c5-49ac-9e8a-daf1be70ea46",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/hello-world/index.js",
+    "line_number": 14,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.630075",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "338343ea-4c36-432a-b2cc-f32f5bebbdb7",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/ejs/index.js",
+    "line_number": 56,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.630429",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "79a49ffd-7945-4efd-bf38-1f189d37de47",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/cookie-sessions/index.js",
+    "line_number": 24,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.630684",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "6485ab15-6e5f-40f2-88e8-09ee56b76b43",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/route-separation/index.js",
+    "line_number": 54,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.631711",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "ddb4c8b8-219b-49b2-a9c9-2e0ba2feb479",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/view-constructor/index.js",
+    "line_number": 47,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.632203",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "7dc45bbd-08da-47d3-8b80-04e31654b12c",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/view-locals/index.js",
+    "line_number": 154,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.633483",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 2,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "8a5bbaf9-a61a-4e87-8263-bb8a1a87c0e3",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/multi-router/index.js",
+    "line_number": 17,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.633713",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "25229d6c-e85a-4bf2-bc20-1f43d79ac1ad",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/markdown/index.js",
+    "line_number": 43,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.634436",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "96364d20-3d7b-4a46-b8bc-bb0e0370fcd0",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output (2 in this file, the first is shown)",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/auth/index.js",
+    "line_number": 61,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.635388",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  },
+  {
+   "id": "a659589d-4bac-4096-986e-33ce8397e981",
+   "title": "Console output instead of a logger",
+   "description": "`console.log` is used for output",
+   "details": null,
+   "clubbed": null,
+   "category": "observability",
+   "severity": "info",
+   "confidence_score": 0.8,
+   "location": {
+    "file_path": "examples/mvc/index.js",
+    "line_number": 94,
+    "end_line_number": null,
+    "column": null,
+    "end_column": null,
+    "function_name": null,
+    "class_name": null
+   },
+   "rule_id": "OBS-PRINT-LOGGING",
+   "cwe_id": null,
+   "cve_id": null,
+   "code_snippet": null,
+   "remediation_guidance": "Use a logger with levels (pino, winston, a framework logger) and remove debug output.",
+   "remediation_complexity": "simple",
+   "compliance_frameworks": [],
+   "owasp_category": null,
+   "source_analyzer": "observability",
+   "timestamp": "2026-11-22T13:17:19.636299",
+   "tags": [
+    "logging",
+    "rule_engine",
+    "javascript"
+   ],
+   "extra_data": {
+    "language": "javascript",
+    "priority_score": 36.0,
+    "file_issue_count": 1,
+    "category_prevalence": 28,
+    "complexity_rank": 1
+   }
+  }
+ ],
+ "analysis_metrics": [
+  {
+   "analyzer_name": "robustness",
+   "execution_time_seconds": 0.1443631649017334,
+   "files_analyzed": 142,
+   "findings_count": 0,
+   "error_count": 0,
+   "warnings_count": 0,
+   "success": true,
+   "error_message": null
+  },
+  {
+   "analyzer_name": "maintainability",
+   "execution_time_seconds": 0.3459751605987549,
+   "files_analyzed": 142,
+   "findings_count": 10,
+   "error_count": 0,
+   "warnings_count": 0,
+   "success": true,
+   "error_message": null
+  },
+  {
+   "analyzer_name": "observability",
+   "execution_time_seconds": 0.07098603248596191,
+   "files_analyzed": 142,
+   "findings_count": 28,
+   "error_count": 0,
+   "warnings_count": 0,
+   "success": true,
+   "error_message": null
+  },
+  {
+   "analyzer_name": "readability",
+   "execution_time_seconds": 0.17559123039245605,
+   "files_analyzed": 142,
+   "findings_count": 8,
+   "error_count": 0,
+   "warnings_count": 0,
+   "success": true,
+   "error_message": null
+  }
+ ],
+ "total_execution_time": 0.7378718852996826,
+ "summary": {
+  "timestamp": "2026-11-22T13:17:19.857614",
+  "target_path": "https://github.com/expressjs/express",
+  "analysis_duration": 0.0,
+  "total_findings": 46,
+  "total_analyzers": 4,
+  "successful_analyzers": 4,
+  "failed_analyzers": 0,
+  "severity_breakdown": {
+   "critical": 0,
+   "high": 1,
+   "medium": 2,
+   "low": 8,
+   "info": 35
+  },
+  "category_breakdown": {
+   "security": 0,
+   "privacy": 0,
+   "quality": 10,
+   "performance": 0,
+   "testability": 0,
+   "readability": 8,
+   "observability": 28,
+   "dependency": 0,
+   "maintainability": 0,
+   "compliance": 0
+  },
+  "risk_score": 11.478260869565219,
+  "risk_level": "MINIMAL",
+  "files_with_issues": 36,
+  "top_problematic_files": [
+   {
+    "file": "lib/response.js",
+    "total": 6,
+    "critical": 0,
+    "high": 1
+   },
+   {
+    "file": "examples/mvc/lib/boot.js",
+    "total": 4,
+    "critical": 0,
+    "high": 0
+   },
+   {
+    "file": "examples/static-files/index.js",
+    "total": 2,
+    "critical": 0,
+    "high": 0
+   },
+   {
+    "file": "examples/view-locals/index.js",
+    "total": 2,
+    "critical": 0,
+    "high": 0
+   },
+   {
+    "file": "lib/request.js",
+    "total": 1,
+    "critical": 0,
+    "high": 0
+   }
+  ],
+  "remediation_complexity": {
+   "trivial": 0,
+   "simple": 46,
+   "moderate": 0,
+   "complex": 0,
+   "very_complex": 0
+  },
+  "quick_wins": 0,
+  "compliance_issues": {},
+  "analyzer_performance": {
+   "total_execution_time": 0.7369155883789062,
+   "average_time_per_analyzer": 0.18422889709472656,
+   "fastest_analyzer": "observability",
+   "slowest_analyzer": "maintainability",
+   "success_rate": 1.0
+  },
+  "trend_analysis": {
+   "note": "Trend analysis requires historical data",
+   "current_timestamp": "2026-11-22T13:17:19.119868",
+   "baseline_established": true
+  }
+ },
+ "compliance_status": [],
+ "trend_data": [],
+ "analysis_config": {
+  "target_path": "https://github.com/expressjs/express",
+  "file_patterns": [
+   "*.py"
+  ],
+  "exclude_patterns": [],
+  "enabled_analyzers": [],
+  "severity_threshold": "info",
+  "parallel_execution": false,
+  "timeout_seconds": 900,
+  "include_low_confidence": false,
+  "max_findings_per_analyzer": 1000
+ },
+ "gallery_note": "Showing the 46 most severe of 46 findings; the summary counts all of them."
+}

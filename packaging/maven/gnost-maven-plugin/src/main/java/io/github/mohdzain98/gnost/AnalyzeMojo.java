@@ -4,7 +4,7 @@ import java.util.List;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
-/** Runs the quality analysis (gnost analyze). Python code only. */
+/** Runs the quality analysis (gnost analyze): Python, JavaScript, TypeScript and Java. */
 @Mojo(name = "analyze", requiresProject = false, aggregator = true, threadSafe = true)
 public class AnalyzeMojo extends RepositoryMojo {
 
@@ -19,6 +19,10 @@ public class AnalyzeMojo extends RepositoryMojo {
     /** Comma-separated analyzer names; only these run. */
     @Parameter(property = "gnost.analyzer")
     String analyzer;
+
+    /** Comma-separated languages to analyze: python, javascript, typescript, java (default: all). */
+    @Parameter(property = "gnost.language")
+    String language;
 
     /** Hide info logs. */
     @Parameter(property = "gnost.quiet", defaultValue = "false")
@@ -90,6 +94,13 @@ public class AnalyzeMojo extends RepositoryMojo {
         optionalValue(cmd, writeBaseline, "--write-baseline");
         flag(cmd, failOnNew, "--fail-on-new");
         optionalValue(cmd, sarif, "--sarif");
+        if (language != null) {
+            for (String name : language.split(",")) {
+                if (!name.trim().isEmpty()) {
+                    option(cmd, name.trim(), "--language");
+                }
+            }
+        }
         if (analyzer != null) {
             for (String name : analyzer.split(",")) {
                 if (!name.trim().isEmpty()) {
