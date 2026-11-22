@@ -300,7 +300,9 @@ def test_insights_json_says_how_each_language_is_read(tmp_path: Path) -> None:
     root = tmp_path / "app"
     shutil.copytree(Path(__file__).parent / "fixtures" / "java_app", root)
     run(path=str(root))
-    payload = json.loads((root / ".gnost" / "insights.json").read_text())
+    payload = json.loads(
+        (root / ".gnost" / "insights.json").read_text(encoding="utf-8")
+    )
     assert payload["project"]["parsers"] == {"java": "tree-sitter"}
     jsonschema.validate(payload, json.load(open(SCHEMA_PATH)))
     os.environ["GNOST_PARSER"] = "regex"
@@ -308,5 +310,5 @@ def test_insights_json_says_how_each_language_is_read(tmp_path: Path) -> None:
         run(path=str(root))
     finally:
         del os.environ["GNOST_PARSER"]
-    again = json.loads((root / ".gnost" / "insights.json").read_text())
+    again = json.loads((root / ".gnost" / "insights.json").read_text(encoding="utf-8"))
     assert again["project"]["parsers"] == {"java": "regex"}

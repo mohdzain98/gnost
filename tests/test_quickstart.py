@@ -295,7 +295,9 @@ def test_onboard_writes_the_section_and_the_json_field(tmp_path: Path) -> None:
     assert "- `npm install` _(package.json)_" in guide
     assert "- TOKEN _(.env.example)_" in guide and "abc123" not in guide
     assert guide.index("## Get it running") < guide.index("## Entry Points")
-    payload = json.loads((root / ".gnost" / "insights.json").read_text())
+    payload = json.loads(
+        (root / ".gnost" / "insights.json").read_text(encoding="utf-8")
+    )
     assert payload["quickstart"]["test"][0] == {
         "text": "npm test",
         "source": "package.json",
@@ -311,8 +313,12 @@ def test_a_project_without_files_has_no_section_but_still_has_the_json_field(
 ) -> None:
     root = project(tmp_path / "bare", {"main.py": "print(1)\n"})
     run(path=str(root))
-    assert "## Get it running" not in (root / ".gnost" / "ONBOARD.md").read_text()
-    payload = json.loads((root / ".gnost" / "insights.json").read_text())
+    assert "## Get it running" not in (root / ".gnost" / "ONBOARD.md").read_text(
+        encoding="utf-8"
+    )
+    payload = json.loads(
+        (root / ".gnost" / "insights.json").read_text(encoding="utf-8")
+    )
     assert all(payload["quickstart"][g] == [] for g in GROUPS)
 
 

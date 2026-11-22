@@ -201,7 +201,9 @@ def test_onboard_reports_violations_in_the_guide_and_the_json(tmp_path: Path) ->
     guide = (root / ".gnost" / "ONBOARD.md").read_text(encoding="utf-8")
     assert "## Architecture rules" in guide and "1 imports break the rules" in guide
     assert "`app/db/repo.py` | `app/api/routes.py`" in guide
-    payload = json.loads((root / ".gnost" / "insights.json").read_text())
+    payload = json.loads(
+        (root / ".gnost" / "insights.json").read_text(encoding="utf-8")
+    )
     assert payload["architecture"]["configured"] is True
     assert payload["architecture"]["violations"][0]["rule"] == "layers"
     jsonschema.validate(payload, json.load(open(SCHEMA_PATH)))
@@ -215,11 +217,17 @@ def test_onboard_says_when_all_rules_pass_and_stays_silent_without_rules(
         {"app/api/a.py": "from app.db import b\n", "app/db/b.py": "X = 1\n"},
     )
     run(path=str(clean), architecture=ArchitectureSettings(layers=("api", "db")))
-    assert "All 1 rules pass" in (clean / ".gnost" / "ONBOARD.md").read_text()
+    assert "All 1 rules pass" in (clean / ".gnost" / "ONBOARD.md").read_text(
+        encoding="utf-8"
+    )
     none = project(tmp_path / "none", LAYERED)
     run(path=str(none))
-    assert "Architecture rules" not in (none / ".gnost" / "ONBOARD.md").read_text()
-    payload = json.loads((none / ".gnost" / "insights.json").read_text())
+    assert "Architecture rules" not in (none / ".gnost" / "ONBOARD.md").read_text(
+        encoding="utf-8"
+    )
+    payload = json.loads(
+        (none / ".gnost" / "insights.json").read_text(encoding="utf-8")
+    )
     assert payload["architecture"]["configured"] is False
 
 

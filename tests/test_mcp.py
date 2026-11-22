@@ -154,7 +154,7 @@ def test_insights_reload_when_the_file_changes(project: Path) -> None:
     data = ProjectData(str(project))
     first = data.insights["project"]["name"]
     path = project / ".gnost" / "insights.json"
-    payload = json.loads(path.read_text())
+    payload = json.loads(path.read_text(encoding="utf-8"))
     payload["project"]["name"] = "renamed"
     path.write_text(json.dumps(payload))
     os.utime(path, (path.stat().st_atime, path.stat().st_mtime + 5))

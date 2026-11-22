@@ -50,7 +50,9 @@ def analyze(monkeypatch: pytest.MonkeyPatch, *flags: str) -> int:
 
 
 def findings(project: Path) -> List[dict]:
-    report = json.loads((project / ".gnost" / "analysis" / "analysis.json").read_text())
+    report = json.loads(
+        (project / ".gnost" / "analysis" / "analysis.json").read_text(encoding="utf-8")
+    )
     return report["findings"]
 
 
@@ -73,7 +75,9 @@ def test_sarif_has_locations_for_javascript_findings(
     project: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     assert analyze(monkeypatch, "--sarif") == ExitCode.OK
-    sarif = json.loads((project / ".gnost" / "analysis" / "analysis.sarif").read_text())
+    sarif = json.loads(
+        (project / ".gnost" / "analysis" / "analysis.sarif").read_text(encoding="utf-8")
+    )
     results = sarif["runs"][0]["results"]
     uris = {
         r["locations"][0]["physicalLocation"]["artifactLocation"]["uri"]
@@ -225,6 +229,8 @@ def test_paths_stay_relative_when_the_folder_is_reached_through_a_symlink(
         "sys.argv", ["gnost", "analyze", str(link), "--no-progress", "--quiet", "-o"]
     )
     assert int(app.main()) == ExitCode.OK
-    report = json.loads((real / ".gnost" / "analysis" / "analysis.json").read_text())
+    report = json.loads(
+        (real / ".gnost" / "analysis" / "analysis.json").read_text(encoding="utf-8")
+    )
     paths = {f["location"]["file_path"] for f in report["findings"]}
     assert paths == {"src/app.js"}
