@@ -49,41 +49,43 @@ Complete CLI usage::
 
     Command Options:
     summary|stats|folders|files:
-        --include  Comma-separated folder names to include
-        --exclude  Comma-separated folder names to exclude
-        --progress Show a progress bar while scanning
+        --include               Comma-separated folder names to include
+        --exclude               Comma-separated folder names to exclude
+        --progress              Show a progress bar while scanning
 
     onboard:
-        --progress Always show the progress bar (default: in a terminal only)
-        --no-progress  Never show the progress bar
-        --mermaid  Generate only Mermaid flow diagram (FLOW.mmd)
-        --inject   Inject onboarding link into README.md files
-        --layered  Produce Layered mermaid as Entry -> Core -> Leaf
-        --depth    Limit execution flow depth (e.g. --depth 2)
-        --json FILE      Write the insights JSON to FILE instead of .gnost/insights.json
-        --no-html        Do not write the flow explorer page (.gnost/flow.html)
-        --insights-only  Write only the insights JSON
-        --max-edges N    Largest diagram drawn file by file (default 80)
-        --collapse [LEVEL]  Group diagrams by folder
+        --progress              Always show the progress bar (default: in a terminal only)
+        --no-progress           Never show the progress bar
+        --mermaid               Generate only Mermaid flow diagram (FLOW.mmd)
+        --inject                Inject onboarding link into README.md files
+        --layered               Produce Layered mermaid as Entry -> Core -> Leaf
+        --depth                 Limit execution flow depth (e.g. --depth 2)
+        --json FILE             Write the insights JSON to FILE instead of .gnost/insights.json
+        --no-html               Do not write the flow explorer page (.gnost/flow.html)
+        --pages [FOLDER]        Also publish the explorer for GitHub Pages (docs/ or docs/gnost/)
+        --insights-only         Write only the insights JSON
+        --max-edges N           Largest diagram drawn file by file (default 80)
+        --collapse [LEVEL]      Group diagrams by folder
 
     init:
-        path             Project folder (default: .)
-        --print          Print the default settings instead of writing .gnost.toml
-        --force          Overwrite files that already exist
-        --dry-run        Show what would change, write nothing
-        --pom            Add gnost-maven-plugin to pom.xml
-        --npm            Add a "gnost" script to package.json
-        --github-action  Write .github/workflows/gnost.yml
-        --agents         Write AGENTS.md pointing coding agents to the .gnost/ folder
+        path                    Project folder (default: .)
+        --print                 Print the default settings instead of writing .gnost.toml
+        --force                 Overwrite files that already exist
+        --dry-run               Show what would change, write nothing
+        --pom                   Add gnost-maven-plugin to pom.xml
+        --npm                   Add a "gnost" script to package.json
+        --github-action         Write .github/workflows/gnost.yml
+        --fork-comments         With --github-action: also write gnost-comment.yml (comments on PRs from forks)
+        --agents                Write AGENTS.md pointing coding agents to the .gnost/ folder
 
     mcp:
-        path             Project folder (default: .); needs `gnost onboard` run first
+        path                    Project folder (default: .); needs `gnost onboard` run first
 
     open|show:
         target                  report (default), flow, or a .mmd / .md / .html file
                                 (`show` takes only a file)
         --path FILE             Custom report or diagram path
-        --view auto|graph|mermaid  Interactive explorer (default); mermaid draws one flat picture
+        --view MODE             auto|graph|mermaid: the explorer (default); mermaid draws one flat picture
         -o, --output FILE       Where to save the HTML page (default: a temp file)
         --no-open               Write the HTML but do not open a browser
 
@@ -107,7 +109,7 @@ Complete CLI usage::
         --sarif [FILE]          Write the findings as SARIF (for GitHub code scanning)
 
     files:
-        --top      Number of files to show (default: 5)
+        --top                   Number of files to show (default: 5)
     Use `gnost <command> --help` for full command options.
 
 
@@ -130,9 +132,10 @@ Subcommand usage::
     gnost stats [path] [--include INCLUDE] [--exclude EXCLUDE] [--progress]
     gnost folders [path] [--include INCLUDE] [--exclude EXCLUDE] [--progress]
     gnost files [path] [--include INCLUDE] [--exclude EXCLUDE] [--progress] [--top TOP]
-    gnost onboard [path] [--mermaid] [--progress] [--no-progress] [--inject] [--layered] [--depth DEPTH] [--json [FILE]] [--insights-only] [--max-edges N] [--collapse [LEVEL]]
+    gnost onboard [path] [--mermaid] [--progress] [--no-progress] [--inject] [--layered] [--depth DEPTH] [--json [FILE]] [--insights-only] [--no-html] [--pages [FOLDER]] [--max-edges N] [--collapse [LEVEL]]
     gnost analyze [path] [--parallel] [--out] [--language NAME] [--list-analyzers] [--no-progress]
     gnost changes BASE[..HEAD] [path] [--depth N] [--format text|markdown|json] [--findings] [--no-cycles] [--no-write] [--fail-on-violations]
+    gnost init [path] [--print] [--force] [--dry-run] [--pom] [--npm] [--github-action [--fork-comments]] [--agents]
     gnost mcp [path]
     gnost open report|rpt
     gnost version
@@ -229,6 +232,28 @@ Open report::
 
     gnost open report
 
+GitHub Actions
+--------------
+
+Run GNOST on every pull request: a quality gate, the onboarding guide, and one comment with what the change
+touches (blast radius, risk, new cycles). Let ``gnost init`` write the workflow::
+
+    gnost init --github-action                    # .github/workflows/gnost.yml
+    gnost init --github-action --fork-comments    # also gnost-comment.yml, to comment on pull requests from forks
+
+or add the action to a workflow yourself (it runs on pull requests into ``main`` or ``master``):
+
+.. code-block:: yaml
+
+   - uses: actions/checkout@v4
+     with: { fetch-depth: 0 }      # full history, for hotspots and `gnost changes`
+   - uses: mohdzain98/gnost@v0.7.0
+     with: { comment: "true", fail-under: "7.5" }   # needs `pull-requests: write`
+
+Pull requests from forks get a read-only token, so by default they get the report in the job summary instead
+of a comment; ``--fork-comments`` adds a second workflow that posts it safely. See :doc:`ci` for every input,
+the score gate, baselines, SARIF and how the fork comments work.
+
 Use CLI docs
 -------------
 
@@ -236,21 +261,37 @@ Use dedicated pages for details:
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents
+   :caption: Get Started
 
    Home <self>
    install
+   configuration
    commands
-   ci
-   changes
-   agents
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Understand a Codebase
+
    onboard
    folder
-   analyze
-   calibration
-   analyzer_guide
-   configuration
+   changes
    gallery
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Code Quality
+
+   analyze
+   scoring
+   analyzer_guide
+   calibration
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Automate
+
+   ci
+   agents
 
 Options
 -------

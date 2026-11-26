@@ -56,6 +56,8 @@ gnost open flow                  # interactive flow explorer in your browser
 gnost changes origin/main        # what your change touches: blast radius, risk, new cycles
 gnost onboard https://github.com/owner/repo   # any public repository (read only)
 gnost init                       # write a complete .gnost.toml
+gnost init --github-action       # GitHub workflow: quality gate and a comment on each pull request
+gnost init --github-action --fork-comments   # also comment on pull requests from forks
 ```
 
 Add an optional `.gnost.toml` at the repository root for excludes, weights and thresholds. Command-line flags win over the file.

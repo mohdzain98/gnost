@@ -76,6 +76,9 @@ Found by running `onboard` on a real 250-file FastAPI project. Fixed: package/`f
 See `project-docs/tasks/ROADMAP.md` for the full ladder and `project-docs/tasks/PLAN_0.4.0.md` for the checkpoint plan.
 
 - **0.4.0** (in progress, one release): foundation (tests, cleanup), circular dependency detection, insights JSON export and `--insights-only`, improved Mermaid output, route-to-handler mapping, caution scoring, `.gnost.toml` config, and AST-aware flow for Python. Fixes afterwards ship as 0.4.x patches.
-- **0.5.0**: git-based hotspots, change intelligence, remote repo analysis, CI integration.
-- **0.6.0**: tree-sitter parsing and `analyze` for JS/TS and Java.
-- **0.7.0**: AI-powered reasoning.
+- **0.5.0** to **0.7.0**: shipped (distribution, change intelligence, multi-language `analyze` with tree-sitter, architecture rules, `gnost mcp`). 0.7.0 was released 2026-11-22.
+- **0.7.1** (in progress on `release/0.7.1`): `analyze` root-detection fix (done: it analyzed `tests/` instead of the project when tests had the most files), size-aware quality score (built: density on a log curve, docs page "How the score works"), GitHub Pages explorer (built: `onboard --pages`), PR-only workflow (built) and fork-PR comments (built; test on a real fork PR with the rc).
+- **0.8.0**: visual project map (2D mind map, README mind map as SVG or rotating GIF, 3D view).
+- **0.9.0**: GNOST for AI agents (agent skill file, more MCP tools).
+- **0.10.0**: Jupyter notebooks, HTML and CSS in `stats` and the summary only.
+- **0.11.0**: one new full language; Go first, then Kotlin, C#, Rust.

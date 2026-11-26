@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 import re
+import sys
 from typing import Optional
 
 from gnost.utils.paths import shorten
@@ -31,13 +32,24 @@ from gnost.reporters.mermaid import (
     MermaidFlowReporter,
     render_function_flows,
 )
+from gnost.reporters.pages import PagesPublisher, PagesRequest, PagesResult
 from gnost.reporters.readme import ReadmeInjector
 from gnost.reporters.insights_json import build_payload, write_payload
 from gnost.quickstart import QuickstartDetector
 from gnost.utils.footer import Footer
 from gnost.utils.layout import LEGACY_OUTPUT_PATHS, OutputLayout
 from gnost.utils.progress import StepProgress
+from gnost.vcs.git import GitError, GitRepository
 from gnost.vcs.history import HistoryReader, HistorySettings
+
+
+def _pages_root(scan_root: str, output_root: str) -> str:
+    """The git top folder for `--pages` (Pages serves from there), else the output root."""
+    try:
+        repository = GitRepository.containing(scan_root)
+    except GitError:
+        repository = None
+    return repository.root if repository else output_root
 
 
 def resolve_repo_root(path: str) -> str:
@@ -154,10 +166,12 @@ def run(
     source: Optional[str] = None,
     footer: bool = True,
     architecture: Optional[ArchitectureSettings] = None,
+    pages: Optional[PagesRequest] = None,
 ) -> None:
     """Onboard a codebase: write the guide, diagrams, insights JSON and explorer page.
 
     Everything goes into the output folder (`.gnost/`, see OutputLayout). `diagram_only` writes only the diagram.
+    `pages` also copies the explorer where GitHub Pages serves it; raises PagesError instead of overwriting.
     """
     scan_root = os.path.abspath(path or ".")
     # A remote clone passes output_root so the files land in the current folder.
@@ -168,6 +182,14 @@ def run(
     if insights_only and json_out is None:
         json_out = ""
     stamp = Footer(footer)
+    published: Optional[PagesResult] = None
+    publisher = (
+        PagesPublisher(_pages_root(scan_root, output_root), pages.folder, pages.origin)
+        if pages is not None and html and not diagram_only and not insights_only
+        else None
+    )
+    if publisher is not None:
+        publisher.check()  # a foreign page stops the run before the slow work
     first_run = not os.path.isdir(layout.folder)
     # The scanners must never read GNOST's own output.
     own_output = [layout.relative_name] + list(LEGACY_OUTPUT_PATHS)
@@ -561,8 +583,11 @@ def run(
         if html:
             from gnost.cli.commands.show import build_page
 
+            page = build_page(os.path.join(flow_dir, "flow-complete.mmd"))
             with open(layout.flow_html, "w", encoding="utf-8") as f:
-                f.write(build_page(os.path.join(flow_dir, "flow-complete.mmd")))
+                f.write(page)
+            if publisher is not None:
+                published = publisher.publish(page)
 
         if inject:
             injector = ReadmeInjector(
@@ -587,5 +612,14 @@ def run(
             else "gnost open flow"
         )
         print(f"  Open the explorer: {command}")
+    if published is not None:
+        for line in published.lines:
+            print(line, file=sys.stderr)
+        for warning in published.warnings:
+            print(f"gnost: warning: {warning}", file=sys.stderr)
+        where = f" ({published.url})" if published.url else ""
+        print(
+            f"  GitHub Pages: {published.path}, outside {layout.relative_name}/, so commit it{where}"
+        )
     if first_run and layout.has_legacy_output():
         print(f"\nNote: {layout.moved_notice()}")

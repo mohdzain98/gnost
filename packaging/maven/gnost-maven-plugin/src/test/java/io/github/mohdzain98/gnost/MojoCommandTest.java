@@ -118,10 +118,13 @@ public class MojoCommandTest {
         InitMojo m = new InitMojo();
         m.pom = true;
         m.githubAction = true;
+        m.forkComments = true;
         m.dryRun = true;
         m.agents = true;
         assertEquals(
-                Arrays.asList("g", "init", ".", "--dry-run", "--pom", "--github-action", "--agents"), m.command("g"));
+                Arrays.asList("g", "init", ".", "--dry-run", "--pom", "--github-action", "--fork-comments",
+                        "--agents"),
+                m.command("g"));
     }
 
     @Test

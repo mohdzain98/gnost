@@ -134,7 +134,7 @@ Run it on every pull request with the GitHub Action (a comment with the blast ra
   with: { comment: "true", fail-under: "7.5" }   # needs `pull-requests: write`
 ```
 
-See [Use GNOST in CI](https://gnost.readthedocs.io/en/latest/ci.html), or run `gnost init --github-action` to write the workflow for you.
+See [Use GNOST in CI](https://gnost.readthedocs.io/en/latest/ci.html), or run `gnost init --github-action` to write the workflow for you. Pull requests from forks get the report in the job summary (GitHub gives them a read-only token); `gnost init --github-action --fork-comments` adds a second workflow that comments on them too ([how it works](https://gnost.readthedocs.io/en/latest/ci.html#comments-on-pull-requests-from-forks)).
 
 ### Analysis scope
 

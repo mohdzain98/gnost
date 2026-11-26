@@ -7,7 +7,8 @@ import os
 import time
 import asyncio
 import traceback
-from typing import List, Dict, Any, Optional
+from collections import Counter
+from typing import List, Dict, Any, Optional, Tuple
 
 from gnost.analysis.core.models import (
     ConsolidatedReport,
@@ -300,8 +301,12 @@ class UnifiedAnalysisEngine:
                 progress_cb(increment=0, stage=f"{analyzer_name} running")
             result = await analyzer.analyze(config)
 
-            # Apply filters and transformations
-            filtered_findings = self._apply_filters(result.findings, config)
+            filtered_findings, left_out = self._cap(
+                self._apply_filters(result.findings, config), config
+            )
+            result.metrics.capped_by_severity = dict(
+                Counter(f.severity.value for f in left_out)
+            )
 
             # Update metrics
             result.metrics.execution_time_seconds = time.time() - start_time
@@ -352,24 +357,30 @@ class UnifiedAnalysisEngine:
         if not config.include_low_confidence:
             filtered = [f for f in filtered if f.confidence_score >= 0.7]
 
-        # Apply max findings limit
-        if config.max_findings_per_analyzer > 0:
-            # Sort by severity and confidence, then take top N
-            filtered = sorted(
-                filtered,
-                key=lambda f: (
-                    [
-                        SeverityLevel.CRITICAL,
-                        SeverityLevel.HIGH,
-                        SeverityLevel.MEDIUM,
-                        SeverityLevel.LOW,
-                        SeverityLevel.INFO,
-                    ].index(f.severity),
-                    -f.confidence_score,
-                ),
-            )[: config.max_findings_per_analyzer]
-
         return filtered
+
+    @staticmethod
+    def _cap(
+        findings: List[UnifiedFinding], config: AnalysisConfiguration
+    ) -> Tuple[List[UnifiedFinding], List[UnifiedFinding]]:
+        """Split into the `max_findings_per_analyzer` most severe findings and the rest.
+
+        The rest is not reported, but the score still counts it (`capped_by_severity`).
+        """
+        limit = config.max_findings_per_analyzer
+        if limit <= 0:
+            return findings, []
+        order = [
+            SeverityLevel.CRITICAL,
+            SeverityLevel.HIGH,
+            SeverityLevel.MEDIUM,
+            SeverityLevel.LOW,
+            SeverityLevel.INFO,
+        ]
+        ranked = sorted(
+            findings, key=lambda f: (order.index(f.severity), -f.confidence_score)
+        )
+        return ranked[:limit], ranked[limit:]
 
     def _get_analyzers_for_config(
         self, config: AnalysisConfiguration

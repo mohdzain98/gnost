@@ -1,4 +1,4 @@
-Commands by channel
+Commands by Channel
 ===================
 
 GNOST has one set of commands. Which ones you can run depends on how you installed it:
@@ -356,8 +356,8 @@ These take the same ``gnost.include``, ``gnost.exclude`` and ``gnost.progress`` 
    * - ``gnost.output``, ``gnost.file``, ``gnost.view``
      - ``-o``, ``--path``, ``--view``
      - ``open``: where to save the page, a custom report or diagram, and the viewer.
-   * - ``gnost.pom``, ``gnost.npm``, ``gnost.githubAction``, ``gnost.agents``
-     - ``--pom``, ``--npm``, ``--github-action``, ``--agents``
+   * - ``gnost.pom``, ``gnost.npm``, ``gnost.githubAction``, ``gnost.forkComments``, ``gnost.agents``
+     - ``--pom``, ``--npm``, ``--github-action``, ``--fork-comments``, ``--agents``
      - ``init``: wire GNOST into the build.
    * - ``gnost.force``, ``gnost.print``, ``gnost.dryRun``
      - ``--force``, ``--print``, ``--dry-run``

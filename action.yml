@@ -25,7 +25,10 @@ inputs:
     description: "Also write the onboarding guide into .gnost/ (and upload it as an artifact)."
     default: "false"
   comment:
-    description: "On pull requests, post one comment (updated on each push) with what changed, the blast radius and the risk. Needs `fetch-depth: 0` and `pull-requests: write`."
+    description: "On pull requests, post one comment (updated on each push) with what changed, the blast radius and the risk, and add the same report to the job summary. Needs `fetch-depth: 0` and `pull-requests: write`. Pull requests from forks get only the job summary (their token is read-only), unless `fork-comments` is on."
+    default: "false"
+  fork-comments:
+    description: "On pull requests from forks, hand the report to the comment workflow written by `gnost init --github-action --fork-comments` (as the `gnost-comment` artifact), which posts it."
     default: "false"
   version:
     description: "GNOST version (Docker image tag). Defaults to the version of this action, or latest."
@@ -50,7 +53,12 @@ runs:
         INPUT_ONBOARD: ${{ inputs.onboard }}
         INPUT_VERSION: ${{ inputs.version }}
         INPUT_COMMENT: ${{ inputs.comment }}
+        INPUT_FORK_COMMENTS: ${{ inputs.fork-comments }}
         BASE_REF: ${{ github.base_ref }}
+        HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+        THIS_REPO: ${{ github.repository }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         ACTION_REF: ${{ github.action_ref }}
       run: |
         TAG="$INPUT_VERSION"
@@ -88,8 +96,27 @@ runs:
           grep -E "final score|Quality gate failed|Baseline:" "$RUNNER_TEMP/gnost-analyze.txt" | sed 's/\x1b\[[0-9;]*m//g' | sed 's/^/- /'
         } >> "$GITHUB_STEP_SUMMARY" || true
 
+        CHANGES="$RUNNER_TEMP/gnost-changes.md"
+        if [ -s "$CHANGES" ]; then
+          { echo; cat "$CHANGES"; } >> "$GITHUB_STEP_SUMMARY" || true
+          if [ -n "$HEAD_REPO" ] && [ "$HEAD_REPO" != "$THIS_REPO" ]; then
+            # A pull request from a fork gets a read-only token, so this job cannot comment.
+            echo "fork=true" >> "$GITHUB_OUTPUT"
+            if [ "$INPUT_FORK_COMMENTS" = "true" ]; then
+              mkdir -p "$RUNNER_TEMP/gnost-comment"
+              cp "$CHANGES" "$RUNNER_TEMP/gnost-comment/comment.md"
+              echo "$PR_NUMBER" > "$RUNNER_TEMP/gnost-comment/pr-number"
+              echo "$HEAD_SHA" > "$RUNNER_TEMP/gnost-comment/head-sha"
+              echo "comment-dir=$RUNNER_TEMP/gnost-comment" >> "$GITHUB_OUTPUT"
+              echo "::notice title=GNOST::This pull request comes from a fork, so the GNOST comment workflow posts the comment after this run."
+            else
+              echo "::notice title=GNOST::Comments are not possible on pull requests from forks (GitHub gives them a read-only token). The change report is in the job summary. To comment anyway: gnost init --github-action --fork-comments (https://gnost.readthedocs.io/en/latest/ci.html#comments-on-pull-requests-from-forks)"
+            fi
+          fi
+        fi
+
     - name: Comment on the pull request
-      if: ${{ always() && inputs.comment == 'true' && steps.analyze.outputs.changes-file != '' }}
+      if: ${{ always() && inputs.comment == 'true' && steps.analyze.outputs.changes-file != '' && steps.analyze.outputs.fork != 'true' }}
       continue-on-error: true
       uses: actions/github-script@v7
       env:
@@ -101,12 +128,21 @@ runs:
           const {owner, repo} = context.repo;
           const issue_number = context.issue.number;
           const comments = await github.paginate(github.rest.issues.listComments, {owner, repo, issue_number});
-          const mine = comments.find(c => c.body && c.body.includes(marker));
+          // only GNOST's own comment, never someone else's that happens to contain the marker
+          const mine = comments.find(c => c.user && c.user.login === 'github-actions[bot]' && c.body && c.body.includes(marker));
           if (mine) {
             await github.rest.issues.updateComment({owner, repo, comment_id: mine.id, body});
           } else {
             await github.rest.issues.createComment({owner, repo, issue_number, body});
           }
+
+    - name: Hand the report to the comment workflow (pull request from a fork)
+      if: ${{ always() && inputs.fork-comments == 'true' && steps.analyze.outputs.comment-dir != '' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: gnost-comment
+        path: ${{ steps.analyze.outputs.comment-dir }}
+        retention-days: 1
 
     - name: Upload findings to code scanning
       if: ${{ always() && inputs.sarif == 'true' && hashFiles('.gnost/analysis/analysis.sarif') != '' }}

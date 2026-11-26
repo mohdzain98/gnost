@@ -286,10 +286,104 @@ def test_the_workflow_is_valid_yaml_and_is_not_overwritten(
     assert steps[1]["uses"].startswith("mohdzain98/gnost@v")
     assert steps[1]["with"]["comment"] == "true"
     assert data["permissions"]["pull-requests"] == "write"
+    # pull requests to main or master only, no push trigger (YAML reads `on` as True)
+    assert data[True] == {"pull_request": {"branches": ["main", "master"]}}
     wf.write_text("# mine\n")
     assert _run(monkeypatch, tmp_path, "--github-action") == 0
     assert wf.read_text() == "# mine\n"
     assert "already exists" in capsys.readouterr().out
+
+
+def test_the_default_workflow_points_fork_users_to_the_flag(
+    tmp_path, monkeypatch
+) -> None:
+    (tmp_path / ".git").mkdir()
+    assert _run(monkeypatch, tmp_path, "--github-action") == 0
+    text = (tmp_path / ig.WORKFLOW_PATH).read_text()
+    assert "--fork-comments" in text and 'fork-comments: "true"' not in text
+    assert not (tmp_path / ig.COMMENT_WORKFLOW_PATH).exists()
+
+
+def test_fork_comments_needs_the_github_action_flag(
+    tmp_path, monkeypatch, capsys
+) -> None:
+    (tmp_path / ".git").mkdir()
+    assert _run(monkeypatch, tmp_path, "--fork-comments") == 2
+    assert "only works together with --github-action" in capsys.readouterr().err
+    assert (
+        not (tmp_path / ".github").exists() and not (tmp_path / ".gnost.toml").exists()
+    )
+
+
+def test_fork_comments_writes_both_workflows(tmp_path, monkeypatch) -> None:
+    (tmp_path / ".git").mkdir()
+    assert _run(monkeypatch, tmp_path, "--github-action", "--fork-comments") == 0
+    main = yaml.safe_load((tmp_path / ig.WORKFLOW_PATH).read_text())
+    assert main["jobs"]["gnost"]["steps"][1]["with"]["fork-comments"] == "true"
+    comment = yaml.safe_load((tmp_path / ig.COMMENT_WORKFLOW_PATH).read_text())
+    # follows the GNOST workflow by name, in the base repository, with the smallest permissions
+    assert comment[True] == {
+        "workflow_run": {"workflows": [main["name"]], "types": ["completed"]}
+    }
+    assert comment["permissions"] == {"actions": "read", "pull-requests": "write"}
+    job = comment["jobs"]["comment"]
+    assert "head_repository.full_name != github.repository" in job["if"]
+    uses = [step.get("uses", "") for step in job["steps"]]
+    assert not any(
+        u.startswith("actions/checkout") for u in uses
+    )  # never the fork's code
+    script = job["steps"][1]["with"]["script"]
+    assert "/^[0-9]{1,10}$/" in script  # the artifact's number is checked
+    assert "pr.head.sha !== run.head_sha" in script
+    assert "github-actions[bot]" in script  # only its own comment is updated
+
+
+def test_fork_comments_notes_an_old_workflow_and_force_rewrites_both(
+    tmp_path, monkeypatch, capsys
+) -> None:
+    (tmp_path / ".git").mkdir()
+    assert _run(monkeypatch, tmp_path, "--github-action") == 0
+    capsys.readouterr()
+    assert _run(monkeypatch, tmp_path, "--github-action", "--fork-comments") == 0
+    out = capsys.readouterr().out
+    assert 'add `fork-comments: "true"`' in out
+    assert (tmp_path / ig.COMMENT_WORKFLOW_PATH).exists()
+    assert (
+        _run(monkeypatch, tmp_path, "--github-action", "--fork-comments", "--force")
+        == 0
+    )
+    assert 'fork-comments: "true"' in (tmp_path / ig.WORKFLOW_PATH).read_text()
+    assert "Note:" not in capsys.readouterr().out
+
+
+def test_fork_comments_dry_run_lists_both(tmp_path, monkeypatch, capsys) -> None:
+    (tmp_path / ".git").mkdir()
+    assert (
+        _run(monkeypatch, tmp_path, "--github-action", "--fork-comments", "--dry-run")
+        == 0
+    )
+    out = capsys.readouterr().out
+    assert "gnost.yml" in out and "gnost-comment.yml" in out
+    assert not (tmp_path / ".github").exists()
+
+
+def test_the_action_skips_the_comment_on_forks_and_only_edits_its_own() -> None:
+    action = yaml.safe_load(
+        (Path(__file__).parent.parent / "action.yml").read_text(encoding="utf-8")
+    )
+    steps = {s.get("name", s.get("id")): s for s in action["runs"]["steps"]}
+    comment = steps["Comment on the pull request"]
+    assert "steps.analyze.outputs.fork != 'true'" in comment["if"]
+    assert "github-actions[bot]" in comment["with"]["script"]
+    handover = steps[
+        "Hand the report to the comment workflow (pull request from a fork)"
+    ]
+    assert handover["with"]["name"] == "gnost-comment"
+    assert "fork-comments" in action["inputs"]
+    run = steps["analyze"]["run"]
+    assert (
+        'cat "$CHANGES"; } >> "$GITHUB_STEP_SUMMARY"' in run
+    )  # every PR gets the report
 
 
 # ------------------------------------------------------------------ AGENTS.md
@@ -325,7 +419,7 @@ def test_a_new_integration_needs_no_change_to_the_command(tmp_path: Path) -> Non
 
 def test_the_command_and_its_flags_come_from_the_registry() -> None:
     flags = {i.flag for i in InitCommand.available()}
-    assert flags == {"pom", "npm", "github-action", "agents"}
+    assert flags == {"pom", "npm", "github-action", "fork-comments", "agents"}
     help_text = subprocess.run(
         [sys.executable, "-m", "gnost.cli.app", "init", "--help"],
         capture_output=True,

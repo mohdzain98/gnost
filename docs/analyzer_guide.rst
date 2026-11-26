@@ -110,5 +110,6 @@ Tools and scope
 rules that do not apply to them, and generated folders (``node_modules``, ``dist``, ``build``, ``target`` and
 others) are skipped. Duplicate-code detection is not available for these languages yet.
 
-The score is the average severity of an analyzer's findings, not their number, so it does not get worse with
-project size; track change with ``--baseline`` and ``--fail-on-new``.
+Each analyzer's score comes from the density of its findings: their severity weights per 1,000 analyzed lines,
+on a log curve from 10 down to 0. More findings or more severe ones lower it, and a bigger project carries the
+same findings more easily. :doc:`scoring` has the formula, the curve and a worked example.

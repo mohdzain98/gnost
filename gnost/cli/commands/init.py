@@ -60,6 +60,7 @@ footer = true
 max_edges = {DEFAULT_MAX_EDGES}      # largest diagram drawn file by file; bigger ones are grouped by folder
 # collapse = 1       # always group diagrams by folder, this many levels deep
 # depth = 3          # limit how deep the execution flow goes
+# pages = true       # also publish the explorer for GitHub Pages (docs/ or docs/gnost/), or a folder name
 
 [caution]            # which files are "risky to change"
 threshold = {self._num(caution.threshold)}        # lowest caution score reported, 0 to 100
@@ -100,6 +101,7 @@ exclude_authors = [{authors}]   # patterns; bots do not count as people
 # analyzers = ["maintainability", "readability"]   # default: all of them
 # languages = ["python", "javascript", "typescript", "java"]   # default: all of them
 # fail_under = 7.5   # CI: exit with code 3 when the final score (0 to 10) is lower
+# score = "average"   # the 0.7.0 formula (average severity) until 0.8.0; default "density"
 # baseline = ".gnost/baseline.json"   # report only findings that are not in this file
 timeout = {ANALYZE_TIMEOUT}          # seconds each analyzer may run
 max_findings = {ANALYZE_MAX_FINDINGS}     # most findings kept per analyzer
@@ -183,6 +185,8 @@ class InitCommand:
         print(f"  {result.label}: {messages[result.status]}")
         for line in result.diff:
             print(f"    {line}")
+        for note in result.notes:
+            print(f"    Note: {note}")
 
 
 def run(
@@ -196,8 +200,20 @@ def run(
     if print_only:
         print(default_config_text(), end="")
         return 0
+    wanted = set(selected)
+    for integration in InitCommand.available():
+        if integration.flag in wanted and integration.requires not in (None, *wanted):
+            print(
+                f"gnost: --{integration.flag} only works together with --{integration.requires}",
+                file=sys.stderr,
+            )
+            return 2
     chosen: List[Integration] = [
-        i for i in InitCommand.available() if i.flag in set(selected)
+        i
+        for i in default_integrations(
+            __version__, fork_comments="fork-comments" in wanted
+        )
+        if i.flag in wanted
     ]
     root = resolve_repo_root(os.path.abspath(path or "."))
     return InitCommand(root, chosen, force=force, dry_run=dry_run).run()

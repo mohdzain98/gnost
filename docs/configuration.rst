@@ -30,6 +30,7 @@ comments and formatting, does nothing if it is already set up, and shows what it
    gnost init --pom             # add gnost-maven-plugin to pom.xml
    gnost init --npm             # add a "gnost" script to package.json
    gnost init --github-action   # write .github/workflows/gnost.yml (runs the GNOST action)
+   gnost init --github-action --fork-comments   # also gnost-comment.yml: comments on pull requests from forks
    gnost init --agents          # write AGENTS.md that points coding agents to .gnost/
 
 A complete example
@@ -54,6 +55,7 @@ A complete example
    max_edges = 150      # largest diagram drawn file by file (default 200)
    collapse = 1         # always group diagrams by folder
    depth = 3            # limit how deep the execution flow goes
+   pages = true         # also publish the explorer for GitHub Pages (or a folder: "docs/gnost")
 
    [caution]            # which files are "risky to change"
    threshold = 50       # lowest caution score reported, 0-100 (default 40)
@@ -76,6 +78,7 @@ A complete example
    analyzers = ["maintainability", "readability"]
    languages = ["python", "typescript"]   # default: python, javascript, typescript and java
    fail_under = 7.5     # CI: exit code 3 when the final score (0-10) is lower
+   score = "density"    # or "average": the 0.7.0 formula, until 0.8.0 (see the score page)
    baseline = ".gnost/baseline.json"   # report only findings not in this file
    timeout = 600
    max_findings = 500

@@ -41,6 +41,19 @@ def _analyzer_risk(findings: List[Dict[str, Any]]) -> float:
     return round((total_weight / (len(scored_findings) * max_weight)) * 100.0, 2)
 
 
+def _score_note(summary: Dict[str, Any]) -> str:
+    """The line under the final score: how it was computed, when the report says."""
+    card = summary.get("score") if isinstance(summary, dict) else None
+    if not isinstance(card, dict) or card.get("method") != "density":
+        return "Higher is better"
+    lines = _safe_int(card.get("analyzed_lines"))
+    density = _safe_float(card.get("density"))
+    return (
+        f"Higher is better. {density:.2f} weighted findings per 1,000 lines "
+        f"({lines:,} lines analyzed)"
+    )
+
+
 def _safe_int(value: Any, default: int = 0) -> int:
     try:
         return int(value)
@@ -237,17 +250,18 @@ def render_analysis_html(report: Dict[str, Any], output_file: str) -> None:
         for title in sorted(by_title)
     )
 
+    card_scores = (summary.get("score") or {}).get("analyzers") or {}
     analyzer_rows = []
     for metric in metrics:
         analyzer_name = metric.get("analyzer_name", "unknown")
         analyzer_findings = by_analyzer.get(analyzer_name, [])
-        metric_risk_score = metric.get("risk_score")
-        if not isinstance(metric_risk_score, (int, float)):
-            metric_risk_score = _analyzer_risk(analyzer_findings)
+        analyzer_score = card_scores.get(analyzer_name)
+        if not isinstance(analyzer_score, (int, float)):  # reports written before 0.7.1
+            analyzer_score = _risk_to_score(_analyzer_risk(analyzer_findings))
         analyzer_rows.append(
             {
                 "analyzer": analyzer_name,
-                "score": _risk_to_score(_safe_float(metric_risk_score, 0.0)),
+                "score": _safe_float(analyzer_score, 10.0),
                 "findings": len(analyzer_findings),
                 "high": sum(
                     1
@@ -276,7 +290,7 @@ def render_analysis_html(report: Dict[str, Any], output_file: str) -> None:
     analyzer_rows += [
         {
             "analyzer": name,
-            "score": 10.0,
+            "score": _safe_float(card_scores.get(name), 10.0),
             "findings": len(items),
             "high": sum(
                 1
@@ -723,7 +737,7 @@ def render_analysis_html(report: Dict[str, Any], output_file: str) -> None:
           <h3>Final Score</h3>
           <p><span id=\"finalScore\" class=\"score FINAL_SCORE_CLASS\">FINAL_SCORE / 10.00</span></p>
           <div class=\"scorebar\"><span id=\"scoreBar\"></span></div>
-          <p class=\"small score-note\" style=\"font-size: small\">Higher is better</p>
+          <p class=\"small score-note\" style=\"font-size: small\">SCORE_NOTE</p>
         </div>
         <div class=\"card\">
           <h3>Total Findings</h3>
@@ -1272,8 +1286,9 @@ def render_analysis_html(report: Dict[str, Any], output_file: str) -> None:
     html_content = html_content.replace("{{", "{").replace("}}", "}")
     html_content = (
         html_content.replace("TARGET_PATH", _escape(report.get("target_path", "")))
-        .replace("FINAL_SCORE", f"{final_score:.2f}")
         .replace("FINAL_SCORE_CLASS", final_score_class)
+        .replace("SCORE_NOTE", _escape(_score_note(summary)))
+        .replace("FINAL_SCORE", f"{final_score:.2f}")
         .replace("TOTAL_FINDINGS", str(total_findings))
         .replace("TOTAL_ANALYZERS", str(total_analyzers))
         .replace("FILES_WITH_ISSUES", str(files_with_issues))

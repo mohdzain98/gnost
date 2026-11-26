@@ -25,6 +25,10 @@ MAVEN_ARTIFACT = "gnost-maven-plugin"
 NPM_SCRIPT_NAME = "gnost"
 NPM_SCRIPT = "npx --yes gnost-cli onboard ."
 WORKFLOW_PATH = ".github/workflows/gnost.yml"
+WORKFLOW_NAME = (
+    "GNOST"  # the comment workflow follows runs of the workflow with this name
+)
+COMMENT_WORKFLOW_PATH = ".github/workflows/gnost-comment.yml"
 
 
 class IntegrationError(Exception):
@@ -39,6 +43,9 @@ class IntegrationResult:
     status: str  # "changed", "would change", "unchanged", "exists", "created", "would create"
     path: str
     diff: List[str] = field(default_factory=list)
+    notes: List[str] = field(
+        default_factory=list
+    )  # something the user has to do by hand
 
 
 # ------------------------------------------------------------------ pom.xml
@@ -159,6 +166,7 @@ class Integration(ABC):
     help: str
     label: str
     relative_path: str
+    requires: Optional[str] = None  # another flag this one only works with
 
     def apply(self, root: str, dry_run: bool, force: bool) -> IntegrationResult:
         """Set this up under root (or only describe it in a dry run)."""
@@ -269,25 +277,41 @@ class PackageJsonIntegration(EditsExistingFile):
 
 
 class WorkflowIntegration(CreatesFile):
-    """Writes a GitHub Actions workflow that runs the GNOST action on pull requests and pushes."""
+    """Writes a GitHub Actions workflow that runs the GNOST action on pull requests to main or master."""
 
     flag = "github-action"
     help = f"Write {WORKFLOW_PATH}"
     label = "workflow"
     relative_path = WORKFLOW_PATH
 
-    def __init__(self, version: str) -> None:
+    def __init__(self, version: str, fork_comments: bool = False) -> None:
         self.version = version
+        self.fork_comments = fork_comments
 
     def content(self) -> str:
-        return f"""# Runs GNOST on every pull request and push: quality gate, onboarding guide and a pull
+        forks = (
+            """
+          fork-comments: "true"   # pull requests from forks: gnost-comment.yml posts the comment"""
+            if self.fork_comments
+            else ""
+        )
+        fork_note = (
+            "# Pull requests from forks get a read-only token, so gnost-comment.yml posts their comment."
+            if self.fork_comments
+            else "# Pull requests from forks get the report in the job summary instead of a comment (their token\n"
+            "# is read-only); `gnost init --github-action --fork-comments --force` adds a workflow that comments."
+        )
+        return f"""# Runs GNOST on pull requests to main or master: quality gate, onboarding guide and a pull
 # request comment with what the change touches. Written by `gnost init --github-action`; edit freely.
-name: GNOST
+{fork_note}
+name: {WORKFLOW_NAME}
 
 on:
   pull_request:
-  push:
-    branches: [main]
+    branches: [main, master]   # the branch the pull request goes INTO
+  # With sarif: "true", also scan the main branch so code scanning has something to compare with:
+  # push:
+  #   branches: [main]
 
 permissions:
   contents: read
@@ -303,10 +327,111 @@ jobs:
           fetch-depth: 0   # full history: hotspots and `gnost changes` need it
       - uses: mohdzain98/gnost@v{self.version}
         with:
-          comment: "true"   # one comment per pull request: blast radius, risk, new cycles
+          comment: "true"   # one comment per pull request: blast radius, risk, new cycles{forks}
           onboard: "true"   # also attach the .gnost/ guide to the run
           sarif: "false"    # "true" uploads findings to code scanning
           # fail-under: "7.5"   # fail the job when the quality score is below this
+"""
+
+
+class ForkCommentsIntegration(CreatesFile):
+    """Writes the second workflow that comments on pull requests from forks (with --github-action).
+
+    It runs after "GNOST" in the base repository with a write token, never checks out the fork's
+    code, and treats the artifact as untrusted: digits-only PR number, matching open PR and head commit.
+    """
+
+    flag = "fork-comments"
+    help = f"With --github-action: also write {COMMENT_WORKFLOW_PATH} to comment on PRs from forks"
+    label = "fork comments workflow"
+    relative_path = COMMENT_WORKFLOW_PATH
+    requires = "github-action"
+
+    def apply(self, root: str, dry_run: bool, force: bool) -> IntegrationResult:
+        """Write the workflow, and say so when an older gnost.yml does not hand reports over."""
+        result = super().apply(root, dry_run, force)
+        workflow = os.path.join(root, WORKFLOW_PATH)
+        if not force and os.path.isfile(workflow):
+            with open(workflow, encoding="utf-8", errors="ignore") as f:
+                handed_over = re.search(r"fork-comments:\s*[\"']?true", f.read())
+            if not handed_over:
+                result.notes.append(
+                    f'{WORKFLOW_PATH} existed already: add `fork-comments: "true"` under `with:` of the '
+                    "GNOST step (or run again with --force) so it hands fork reports to this workflow"
+                )
+        return result
+
+    def content(self) -> str:
+        return f"""# Posts GNOST's pull request comment for pull requests from forks. Written by
+# `gnost init --github-action --fork-comments`. A fork's pull request runs {WORKFLOW_PATH} with a
+# read-only token; that run hands the report over as the `gnost-comment` artifact, and this workflow,
+# which runs in this repository with a write token, posts it. It never checks out or runs the fork's
+# code, and it trusts nothing in the artifact: the pull request number must be an open pull request
+# whose head commit is the one that was analyzed, and the report is only ever posted as text.
+name: GNOST comment
+
+on:
+  workflow_run:
+    workflows: [{WORKFLOW_NAME}]
+    types: [completed]
+
+permissions:
+  actions: read          # download the artifact of the GNOST run
+  pull-requests: write   # post the comment
+
+jobs:
+  comment:
+    if: >-
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.head_repository.full_name != github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download the report
+        id: download
+        continue-on-error: true   # no artifact: the run stopped early or had nothing to report
+        uses: actions/download-artifact@v4
+        with:
+          name: gnost-comment
+          path: ${{{{ runner.temp }}}}/gnost-comment
+          run-id: ${{{{ github.event.workflow_run.id }}}}
+          github-token: ${{{{ github.token }}}}
+
+      - name: Comment on the pull request
+        if: ${{{{ steps.download.outcome == 'success' }}}}
+        uses: actions/github-script@v7
+        env:
+          REPORT_DIR: ${{{{ runner.temp }}}}/gnost-comment
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const read = (name) => fs.readFileSync(path.join(process.env.REPORT_DIR, name), 'utf8');
+            const run = context.payload.workflow_run;
+            const {{owner, repo}} = context.repo;
+
+            const number = read('pr-number').trim();
+            if (!/^[0-9]{{1,10}}$/.test(number)) {{
+              core.setFailed(`Ignored: the pull request number in the artifact is not a number`);
+              return;
+            }}
+            const {{data: pr}} = await github.rest.pulls.get({{owner, repo, pull_number: Number(number)}});
+            if (pr.state !== 'open' || pr.head.sha !== run.head_sha ||
+                pr.head.repo === null || pr.head.repo.full_name !== run.head_repository.full_name) {{
+              core.notice(`Not commenting: pull request #${{number}} is closed or has moved past the analyzed commit`);
+              return;
+            }}
+
+            const marker = '<!-- gnost-changes -->';
+            let body = read('comment.md').slice(0, 60000);   // GitHub allows 65,536 characters
+            if (!body.includes(marker)) body = `${{marker}}\\n${{body}}`;
+            const issue_number = pr.number;
+            const comments = await github.paginate(github.rest.issues.listComments, {{owner, repo, issue_number}});
+            const mine = comments.find(c => c.user && c.user.login === 'github-actions[bot]' && c.body && c.body.includes(marker));
+            if (mine) {{
+              await github.rest.issues.updateComment({{owner, repo, comment_id: mine.id, body}});
+            }} else {{
+              await github.rest.issues.createComment({{owner, repo, issue_number, body}});
+            }}
 """
 
 
@@ -336,11 +461,17 @@ Before a change, `gnost changes origin/main` shows which files it reaches and ho
 """
 
 
-def default_integrations(gnost_version: str) -> Tuple[Integration, ...]:
-    """The integrations `gnost init` offers; add a new class here to offer a new one."""
+def default_integrations(
+    gnost_version: str, fork_comments: bool = False
+) -> Tuple[Integration, ...]:
+    """The integrations `gnost init` offers; add a new class here to offer a new one.
+
+    `fork_comments` makes the GNOST workflow hand fork reports to the comment workflow.
+    """
     return (
         PomIntegration(),
         PackageJsonIntegration(),
-        WorkflowIntegration(gnost_version),
+        WorkflowIntegration(gnost_version, fork_comments),
+        ForkCommentsIntegration(),
         AgentsIntegration(),
     )

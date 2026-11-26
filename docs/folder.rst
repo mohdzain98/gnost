@@ -1,4 +1,4 @@
-The GNOST folder
+The GNOST Folder
 ================
 
 Everything GNOST writes goes into one folder in your project, ``.gnost/`` (change it with
