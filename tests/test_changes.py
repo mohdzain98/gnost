@@ -287,3 +287,56 @@ def test_the_cli_entry_point_passes_every_option_to_the_command(monkeypatch) -> 
     module.run("p", "main", 4, "json", True, False, False, "/out", True, "slug", True)
     assert len(seen["args"]) == len(names)
     assert seen["args"][-2:] == ("slug", True)  # output_subdir, fail_on_violations
+
+
+@needs_git
+def test_line_deltas_for_text_rename_and_binary_files(tmp_path: Path) -> None:
+    root = tmp_path / "r"
+    make_repo(
+        root,
+        [
+            ("Ada", {"keep.py": "a = 1\nb = 2\n", "orig.py": "x = 1\n" * 20}, D1),
+            ("Ada", {"keep.py": "a = 1\nc = 3\nd = 4\n", "orig.py": None, "moved.py": "x = 1\n" * 20}, D2),
+        ],
+    )
+    bin_file = root / "blob.bin"
+    bin_file.write_bytes(b"\x00\x01\x02\x03")
+    subprocess.run(["git", "add", "blob.bin"], cwd=root, check=True, capture_output=True)
+    subprocess.run(
+        ["git", "commit", "-q", "--amend", "--no-edit"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        env={
+            **os.environ,
+            "GIT_CONFIG_GLOBAL": os.devnull,
+            "GIT_CONFIG_SYSTEM": os.devnull,
+            "GIT_AUTHOR_NAME": "Ada",
+            "GIT_AUTHOR_EMAIL": "ada@example.com",
+            "GIT_COMMITTER_NAME": "Ada",
+            "GIT_COMMITTER_EMAIL": "ada@example.com",
+        },
+    )
+
+    repo = GitRepository.containing(str(root))
+    assert repo is not None
+    report = ChangeAnalyzer(repo, str(root)).analyze(RefRange.parse("HEAD~1", repo))
+    by_path = {f.path: f for f in report.files}
+
+    assert (by_path["keep.py"].added, by_path["keep.py"].removed) == (2, 1)
+    assert (by_path["moved.py"].status, by_path["moved.py"].old_path, by_path["moved.py"].added, by_path["moved.py"].removed) == ("renamed", "orig.py", 0, 0)
+    assert (by_path["blob.bin"].added, by_path["blob.bin"].removed) == (None, None)
+
+    payload = {entry["path"]: entry for entry in report.to_dict()["files"]}
+    assert payload["keep.py"]["added"] == 2 and payload["keep.py"]["removed"] == 1
+    assert payload["blob.bin"]["added"] is None and payload["blob.bin"]["removed"] is None
+
+    md = MarkdownRenderer().render(report)
+    assert "`keep.py` (+2 -1)" in md
+    assert "`orig.py → moved.py` (+0 -0)" in md
+    assert "`blob.bin` (binary)" in md
+
+    text = TextRenderer().render(report)
+    assert "M keep.py (+2 -1)" in text
+    assert "R orig.py -> moved.py (+0 -0)" in text
+    assert "A blob.bin (binary)" in text

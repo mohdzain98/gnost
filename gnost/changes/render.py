@@ -16,6 +16,12 @@ LIST_LIMIT = 15
 ICONS = {"added": "A", "modified": "M", "deleted": "D", "renamed": "R"}
 
 
+def _line_delta(f: "ChangedFile") -> str:
+    if f.added is None or f.removed is None:
+        return " (binary)"
+    return f" (+{f.added} -{f.removed})"
+
+
 class MarkdownRenderer:
     """Writes the report as Markdown that GitHub shows well."""
 
@@ -133,9 +139,9 @@ class MarkdownRenderer:
 
     def _files(self, r: ChangeReport) -> str:
         lines = [
-            f"- {ICONS[f.status]} `{f.old_path} → {f.path}`"
+            f"- {ICONS[f.status]} `{f.old_path} → {f.path}`{_line_delta(f)}"
             if f.old_path
-            else f"- {ICONS[f.status]} `{f.path}`"
+            else f"- {ICONS[f.status]} `{f.path}`{_line_delta(f)}"
             for f in r.files[: LIST_LIMIT * 4]
         ]
         return (
@@ -158,6 +164,15 @@ class TextRenderer:
             f"({c['added']} added, {c['modified']} modified, {c['deleted']} deleted, {c['renamed']} renamed)",
             f"Blast radius: {len(report.affected)} files depend on them (depth {report.depth})",
         ]
+        out += self._section(
+            "Changed files",
+            (
+                f"{ICONS[f.status]} {f.old_path} -> {f.path}{_line_delta(f)}"
+                if f.old_path
+                else f"{ICONS[f.status]} {f.path}{_line_delta(f)}"
+                for f in report.files
+            ),
+        )
         out += self._section(
             "Risky files",
             (f"{x.path}  risk {x.level:.0f}  {x.why}" for x in report.risks),

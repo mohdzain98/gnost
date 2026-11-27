@@ -75,6 +75,8 @@ class ChangedFile:
     path: str  # relative to the scanned folder; the new name for a rename
     status: str  # added, modified, deleted or renamed
     old_path: Optional[str] = None  # the previous name of a renamed file
+    added: Optional[int] = None  # lines added; None for binary files
+    removed: Optional[int] = None  # lines removed; None for binary files
 
 
 class DiffReader:
@@ -88,8 +90,52 @@ class DiffReader:
         args = ["diff", "--name-status", "-M", "--relative"]
         # --relative limits the list to scan_root and makes the paths relative to it
         text = self.repo.run([*args, refs.base_commit, refs.head_commit], cwd=scan_root)
-        files = [f for f in (self._parse(line) for line in text.splitlines()) if f]
+        stats = self._numstat(refs, scan_root)
+        files = []
+        for line in text.splitlines():
+            item = self._parse(line)
+            if item is None:
+                continue
+            added, removed = stats.get(item.path, (None, None))
+            files.append(
+                ChangedFile(
+                    path=item.path,
+                    status=item.status,
+                    old_path=item.old_path,
+                    added=added,
+                    removed=removed,
+                )
+            )
         return sorted(files, key=lambda f: f.path)
+
+    def _numstat(
+        self, refs: RefRange, scan_root: str
+    ) -> dict[str, tuple[Optional[int], Optional[int]]]:
+        """Parse `git diff --numstat -z -M --relative` into {path: (added, removed)}."""
+        text = self.repo.run(
+            ["diff", "--numstat", "-z", "-M", "--relative", refs.base_commit, refs.head_commit],
+            cwd=scan_root,
+        )
+        tokens = text.split("\0")
+        out: dict[str, tuple[Optional[int], Optional[int]]] = {}
+        i = 0
+        while i < len(tokens):
+            tok = tokens[i]
+            i += 1
+            if not tok or "\t" not in tok:
+                continue
+            added_s, removed_s, path_s = tok.split("\t", 2)
+            if path_s == "":
+                # Rename entry: followed by old_path\0new_path\0
+                if i + 1 < len(tokens):
+                    path_s = tokens[i + 1]
+                    i += 2
+                else:
+                    continue
+            added = None if added_s == "-" else int(added_s)
+            removed = None if removed_s == "-" else int(removed_s)
+            out[path_s] = (added, removed)
+        return out
 
     @staticmethod
     def _parse(line: str) -> Optional[ChangedFile]:
