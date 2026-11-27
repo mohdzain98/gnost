@@ -32,6 +32,10 @@ public class InitMojo extends AbstractGnostMojo {
     @Parameter(property = "gnost.githubAction", defaultValue = "false")
     boolean githubAction;
 
+    /** With githubAction: also write .github/workflows/gnost-comment.yml (comments on pull requests from forks). */
+    @Parameter(property = "gnost.forkComments", defaultValue = "false")
+    boolean forkComments;
+
     /** Write AGENTS.md that points coding agents to the .gnost/ folder. */
     @Parameter(property = "gnost.agents", defaultValue = "false")
     boolean agents;
@@ -49,6 +53,7 @@ public class InitMojo extends AbstractGnostMojo {
         flag(cmd, pom, "--pom");
         flag(cmd, npm, "--npm");
         flag(cmd, githubAction, "--github-action");
+        flag(cmd, forkComments, "--fork-comments");
         flag(cmd, agents, "--agents");
     }
 }

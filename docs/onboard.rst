@@ -157,6 +157,9 @@ Options
 
 - ``--mermaid``: generate only the Mermaid diagram (``.gnost/flow/FLOW-full.mmd``).
 - ``--no-html``: do not write the explorer page ``.gnost/flow.html``.
+- ``--pages [FOLDER]``: also copy the explorer where GitHub Pages can serve it: ``docs/index.html``, or
+  ``docs/gnost/index.html`` when ``docs/`` already holds a site (or ``FOLDER/index.html``). See
+  `Publish the explorer on GitHub Pages`_.
 - ``--progress`` / ``--no-progress``: ``onboard`` shows a progress bar with the step it is on (and a start line)
   by default when run in a terminal, so a long run is never a blank screen. It stays quiet in CI, in pipes
   and when ``CI`` or ``GNOST_NO_PROGRESS`` is set. Everything goes to stderr, so stdout stays clean.
@@ -179,6 +182,7 @@ Examples
    gnost onboard . --layered --depth 3
    gnost onboard . --json
    gnost onboard . --insights-only
+   gnost onboard . --pages
 
 Routes
 ------
@@ -298,6 +302,76 @@ Use
 the HTML, and ``-o FILE`` to choose where it is saved. The page opens in a dark theme (a button switches to light, and the choice is
 remembered), and hovering anything fades everything not connected to it, and a line at the bottom describes it. The magnifier ``+`` / ``-`` buttons (or the mouse wheel) zoom, and ``Fit`` resets the view. The arrow button under them saves what is drawn as a PNG image. The page loads its
 libraries from a CDN, so it needs an internet connection.
+
+Publish the explorer on GitHub Pages
+------------------------------------
+
+``.gnost/flow.html`` is not committed, and GitHub Pages can only serve the repository root or the ``docs/``
+folder. ``--pages`` copies the explorer to a place Pages serves, so everyone can open it from a link:
+
+.. code-block:: bash
+
+   gnost onboard . --pages
+   git add docs && git commit -m "Publish the GNOST explorer"
+
+Then turn Pages on once: **Settings > Pages > Build and deployment > Deploy from a branch**, choose your default
+branch and the ``/docs`` folder. GNOST prints the address it will have.
+
+**Where the page goes.** GNOST looks at ``docs/`` and never overwrites a page it did not write:
+
+.. list-table::
+   :header-rows: 1
+
+   * - What GNOST finds
+     - Where the explorer goes
+     - Address
+   * - no ``docs/``, or no site in it
+     - ``docs/index.html`` (the site's home page)
+     - ``https://<owner>.github.io/<repo>/``
+   * - a site already: its own ``docs/index.html``, ``docs/index.md`` or ``docs/README.md``, Sphinx
+       (``docs/conf.py``), MkDocs (``mkdocs.yml``), Jekyll (``docs/_config.yml``) or Docusaurus
+     - ``docs/gnost/index.html``
+     - ``https://<owner>.github.io/<repo>/gnost/``
+   * - a page GNOST wrote before
+     - the same place again
+     - unchanged
+
+Pages serves everything inside ``docs/``, so ``docs/gnost/index.html`` is published next to your own site
+without touching it. If a site appears in ``docs/`` later, the next run moves the explorer to ``docs/gnost/`` and
+says so; the old ``docs/index.html`` is left for you to delete. GNOST recognises its own page by a comment
+after the first line; a ``docs/index.html`` without it is never touched, and if the folder you chose holds
+one, ``onboard`` stops with exit code 2 before doing any work.
+
+**Choose the folder yourself** with ``--pages FOLDER`` or in ``.gnost.toml``:
+
+.. code-block:: toml
+
+   [onboard]
+   pages = "docs/gnost"   # or true: choose from docs/ as above; a folder outside docs/ needs Pages set to / (root)
+
+With ``pages`` set, every ``gnost onboard`` refreshes the page; commit it when it changed.
+
+**What GNOST prints** (on stderr):
+
+.. code-block:: text
+
+   Pages: no site found in docs/, so the explorer is the site's home page: docs/index.html
+   Pages: wrote docs/.gitattributes so the page does not count as HTML in GitHub's language bar (delete it to count it)
+   Pages: URL after you enable Pages (Settings > Pages > Branch: main, folder /docs): https://owner.github.io/repo/
+
+The address comes from the ``origin`` remote (``github.com`` addresses, SSH host aliases included). Without one,
+GNOST prints the folder and the Pages setting instead.
+
+**GitHub's language bar.** A committed explorer page is a large HTML file, and GitHub would start showing your
+project as mostly HTML. The first time it writes the page, GNOST adds ``/index.html linguist-generated=true``
+to a ``.gitattributes`` file in that folder (appended once if the file already exists). That keeps the page out
+of the language bar and collapsed in pull request diffs, and touches no other HTML. Delete the line (or the file)
+to count the page; GNOST does not add it again.
+
+**Size.** The page holds the whole graph. On large projects it can be several MB, and GNOST warns from 5 MB:
+Pages allows it, but every committed update adds that much to the repository history.
+
+The page loads its drawing libraries from a CDN, like the local explorer.
 
 Folder overview, hovering a folder (the line at the bottom describes it):
 

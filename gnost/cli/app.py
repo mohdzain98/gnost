@@ -21,6 +21,8 @@ from gnost import __version__
 from gnost.scanner.loc import scan
 from gnost.reporters import stats, folders, files, loc_summary
 from gnost.reporters.analysis_html import render_analysis_html
+from gnost.reporters.badge import ScoreBadge
+from gnost.reporters.pages import PagesError, PagesRequest
 from gnost.analysis.core.models import (
     AnalysisConfiguration,
     SeverityLevel,
@@ -168,6 +170,23 @@ def _analysis_html_output_path(
     return _layout(target_path, output_dir, output_root).analysis_html
 
 
+def _badge_path(
+    flag: Optional[str], configured: Any, layout: OutputLayout
+) -> Optional[str]:
+    """Where to write the badge: the flag's file, the config's, the default, or None (off).
+
+    A bare --badge or `badge = true` means `<output folder>/badge.svg`; a configured path is
+    relative to the project root, like `baseline`.
+    """
+    if flag:
+        return os.path.abspath(flag)
+    if flag == "" or configured is True:
+        return layout.badge_svg
+    if isinstance(configured, str) and configured:
+        return os.path.normpath(os.path.join(layout.root, configured))
+    return None
+
+
 def _print_analysis_scores(card: ScoreCard) -> None:
     """Print the per-analyzer score table and the final score."""
     if not card.analyzers:
@@ -310,21 +329,22 @@ def main():
         epilog=(
             "Command Options:\n"
             "  summary|stats|folders|files:\n"
-            "    --include      Comma-separated folder names to include\n"
-            "    --exclude      Comma-separated folder names to exclude\n"
-            "    --progress     Show a progress bar while scanning\n\n"
+            "    --include            Comma-separated folder names to include\n"
+            "    --exclude            Comma-separated folder names to exclude\n"
+            "    --progress           Show a progress bar while scanning\n\n"
             "  onboard:\n"
-            "    --progress     Always show the progress bar (default: in a terminal only)\n"
-            "    --no-progress  Never show the progress bar\n"
-            "    --mermaid      Generate only Mermaid flow diagram\n"
-            "    --inject       Inject onboarding link into README.md\n"
-            "    --layered      Produce Layered mermaid as Entry -> Core -> Leaf\n"
-            "    --depth DEPTH  Limit execution flow depth (e.g. --depth 2)\n"
-            "    --json FILE    Write the insights JSON to FILE instead of .gnost/insights.json\n"
-            "    --no-html      Do not write the flow explorer page (.gnost/flow.html)\n"
-            "    --insights-only  Write only the insights JSON\n"
-            "    --max-edges N  Largest diagram drawn file by file (default 80); bigger ones group by folder\n"
-            "    --collapse [LEVEL]  Group diagrams by folder, LEVEL folders deep (default 1)\n\n"
+            "    --progress           Always show the progress bar (default: in a terminal only)\n"
+            "    --no-progress        Never show the progress bar\n"
+            "    --mermaid            Generate only Mermaid flow diagram\n"
+            "    --inject             Inject onboarding link into README.md\n"
+            "    --layered            Produce Layered mermaid as Entry -> Core -> Leaf\n"
+            "    --depth DEPTH        Limit execution flow depth (e.g. --depth 2)\n"
+            "    --json FILE          Write the insights JSON to FILE instead of .gnost/insights.json\n"
+            "    --no-html            Do not write the flow explorer page (.gnost/flow.html)\n"
+            "    --pages [FOLDER]     Also publish the explorer for GitHub Pages (docs/ or docs/gnost/)\n"
+            "    --insights-only      Write only the insights JSON\n"
+            "    --max-edges N        Largest diagram drawn file by file (default 80); bigger ones group by folder\n"
+            "    --collapse [LEVEL]   Group diagrams by folder, LEVEL folders deep (default 1)\n\n"
             "  analyze:\n"
             "    path                 File or directory to analyze (default: .)\n"
             "    -a, --analyzer       Enable only specific analyzers\n"
@@ -336,36 +356,37 @@ def main():
             "    --timeout SECONDS    Analyzer timeout (default: 900)\n"
             "    --compact            Write compact JSON when --out is used\n"
             "    --no-progress        Hide progress updates\n"
-            "    --max-findings N     Per-analyzer findings limit (default: 1000)\n\n"
+            "    --max-findings N     Per-analyzer findings limit (default: 1000)\n"
+            "    --badge [FILE]       Write a README badge with the final score (.gnost/badge.svg)\n\n"
             "  files:\n"
-            "    --top          Number of files to show (default: 5)\n\n"
+            "    --top                Number of files to show (default: 5)\n\n"
             "  init:\n"
-            "    path             Project folder (default: .)\n"
-            "    --print          Print the default settings instead of writing .gnost.toml\n"
-            "    --force          Overwrite files that already exist\n"
-            "    --dry-run        Show what would change, write nothing\n"
+            "    path                 Project folder (default: .)\n"
+            "    --print              Print the default settings instead of writing .gnost.toml\n"
+            "    --force              Overwrite files that already exist\n"
+            "    --dry-run            Show what would change, write nothing\n"
             + "".join(
-                f"    {'--' + i.flag:<16} {i.help}\n" for i in InitCommand.available()
+                f"    {'--' + i.flag:<21}{i.help}\n" for i in InitCommand.available()
             )
             + "\n"
             "  onboard|analyze|changes also take an https:// or ssh repository address\n"
             "    in place of the folder (cloned to a temporary folder, results go to\n"
             "    .gnost/<repo-name>/ in the current folder), and --ref BRANCH to pick a branch or tag.\n\n"
             "  changes:\n"
-            "    refs             BASE or BASE..HEAD, compared like a pull request\n"
-            "    --depth N        How far to follow importers (default 3)\n"
-            "    --format text|markdown|json  What to print (files go to .gnost/changes/)\n"
-            "    --findings       Also run the analyzers on the changed Python files\n"
-            "    --no-cycles      Skip scanning the base commit\n"
-            "    --fail-on-violations  Exit with code 3 when the change breaks an [architecture] rule\n\n"
+            "    refs                 BASE or BASE..HEAD, compared like a pull request\n"
+            "    --depth N            How far to follow importers (default 3)\n"
+            "    --format FORMAT      text, markdown or json: what to print (files go to .gnost/changes/)\n"
+            "    --findings           Also run the analyzers on the changed Python files\n"
+            "    --no-cycles          Skip scanning the base commit\n"
+            "    --fail-on-violations Exit with code 3 when the change breaks an [architecture] rule\n\n"
             "  open|show:\n"
-            "    target                  report|rpt (default): the analysis report;\n"
-            "                            flow: the flow explorer; or a .mmd, .md or .html file\n"
-            "                            (`show` takes only a file)\n"
-            "    --path FILE             Custom report or diagram path\n"
-            "    --view auto|graph|mermaid  Interactive explorer (default); mermaid draws one flat picture\n"
-            "    -o, --output FILE       Where to save the HTML page (default: a temp file)\n"
-            "    --no-open               Write the HTML but do not open a browser\n\n"
+            "    target               report|rpt (default): the analysis report;\n"
+            "                         flow: the flow explorer; or a .mmd, .md or .html file\n"
+            "                         (`show` takes only a file)\n"
+            "    --path FILE          Custom report or diagram path\n"
+            "    --view MODE          auto|graph|mermaid: the explorer (default); mermaid draws one flat picture\n"
+            "    -o, --output FILE    Where to save the HTML page (default: a temp file)\n"
+            "    --no-open            Write the HTML but do not open a browser\n\n"
             "Use `gnost <command> --help` for full command options."
         ),
     )
@@ -455,6 +476,15 @@ def main():
         "--no-html",
         action="store_true",
         help="Do not write the flow explorer page (.gnost/flow.html)",
+    )
+    onboard.add_argument(
+        "--pages",
+        nargs="?",
+        const="",
+        default=None,
+        metavar="FOLDER",
+        help="Also write the flow explorer for GitHub Pages: docs/index.html, or "
+        "docs/gnost/index.html when docs/ already has a site (or FOLDER/index.html)",
     )
     onboard.add_argument(
         "--insights-only",
@@ -575,6 +605,14 @@ def main():
         default=None,
         metavar="FILE",
         help="Write the findings as SARIF 2.1.0 (default file: .gnost/analysis/analysis.sarif)",
+    )
+    analyze.add_argument(
+        "--badge",
+        nargs="?",
+        const="",
+        default=None,
+        metavar="FILE",
+        help="Write a README badge with the final score (default file: .gnost/badge.svg)",
     )
     analyze.add_argument(
         "--max-findings",
@@ -790,42 +828,65 @@ def _dispatch(args: argparse.Namespace) -> int:
         )
 
     if args.cmd == "onboard":
-        onboard_run(
-            args.path,
-            diagram_only=getattr(args, "mermaid", False),
-            progress=ProgressPolicy().enabled(
-                force=getattr(args, "progress", False),
-                disabled=getattr(args, "no_progress", False),
-            ),
-            inject=getattr(args, "inject", False),
-            depth=config.pick("onboard", "depth", getattr(args, "depth", None), None),
-            layered=getattr(args, "layered", False),
-            json_out=getattr(args, "json", None),
-            insights_only=getattr(args, "insights_only", False),
-            max_edges=config.pick(
-                "onboard",
-                "max_edges",
-                getattr(args, "max_edges", None),
-                DEFAULT_MAX_EDGES,
-            ),
-            collapse=config.pick(
-                "onboard", "collapse", getattr(args, "collapse", None), None
-            ),
-            exclude=config.exclude,
-            caution=config.caution_settings(),
-            output_dir=output_dir,
-            html=not getattr(args, "no_html", False),
-            history=(
-                dataclasses.replace(config.history_settings(), allow_shallow=True)
-                if remote
-                else config.history_settings()
-            ),
-            risk=config.risk_settings(),
-            output_root=output_root,
-            source=args.source if remote else None,
-            footer=config.footer,
-            architecture=config.architecture_settings(),
+        flag = getattr(args, "pages", None)
+        pages = PagesRequest.resolve(flag, config.get("onboard", "pages"))
+        skips_page = any(
+            getattr(args, name, False)
+            for name in ("no_html", "insights_only", "mermaid")
         )
+        if pages and (remote or skips_page):
+            if flag is not None:
+                reason = (
+                    "--pages publishes a page in your own repository, not a remote one"
+                    if remote
+                    else "--pages needs the explorer page; drop --no-html, --insights-only or --mermaid"
+                )
+                print(f"gnost: {reason}", file=sys.stderr)
+                return 2
+            pages = None  # set in .gnost.toml, but this run writes no page
+        try:
+            onboard_run(
+                args.path,
+                diagram_only=getattr(args, "mermaid", False),
+                progress=ProgressPolicy().enabled(
+                    force=getattr(args, "progress", False),
+                    disabled=getattr(args, "no_progress", False),
+                ),
+                inject=getattr(args, "inject", False),
+                depth=config.pick(
+                    "onboard", "depth", getattr(args, "depth", None), None
+                ),
+                layered=getattr(args, "layered", False),
+                json_out=getattr(args, "json", None),
+                insights_only=getattr(args, "insights_only", False),
+                max_edges=config.pick(
+                    "onboard",
+                    "max_edges",
+                    getattr(args, "max_edges", None),
+                    DEFAULT_MAX_EDGES,
+                ),
+                collapse=config.pick(
+                    "onboard", "collapse", getattr(args, "collapse", None), None
+                ),
+                exclude=config.exclude,
+                caution=config.caution_settings(),
+                output_dir=output_dir,
+                html=not getattr(args, "no_html", False),
+                history=(
+                    dataclasses.replace(config.history_settings(), allow_shallow=True)
+                    if remote
+                    else config.history_settings()
+                ),
+                risk=config.risk_settings(),
+                output_root=output_root,
+                source=args.source if remote else None,
+                footer=config.footer,
+                architecture=config.architecture_settings(),
+                pages=pages,
+            )
+        except PagesError as exc:
+            print(f"gnost: {exc}", file=sys.stderr)
+            return 2
         return 0
 
     if args.cmd == "analyze":
@@ -917,6 +978,8 @@ def _dispatch(args: argparse.Namespace) -> int:
                 traceback.print_exc()
             return ExitCode.ERROR
 
+        if isinstance(report.summary, dict):
+            report.summary["analyzed_lines"] = ScoreCard.count_lines(reader_files)
         try:
             outcome = CiRun(
                 ci_options, _resolve_repo_root(target_path), reader_files
@@ -926,6 +989,9 @@ def _dispatch(args: argparse.Namespace) -> int:
             return ExitCode.USAGE
 
         payload = _to_dict_payload(outcome.report)
+        if isinstance(payload.get("summary"), dict):
+            payload["summary"]["final_score"] = outcome.card.final_score
+            payload["summary"]["score"] = outcome.card.to_dict()
         if outcome.baseline_summary():
             payload["baseline"] = outcome.baseline_summary()
         html_output = _analysis_html_output_path(target_path, output_dir, output_root)
@@ -957,6 +1023,19 @@ def _dispatch(args: argparse.Namespace) -> int:
                 return ExitCode.ERROR
 
         _print_analysis_scores(outcome.card)
+        badge = _badge_path(
+            getattr(args, "badge", None),
+            config.get("analyze", "badge"),
+            _layout(target_path, output_dir, output_root),
+        )
+        if badge:
+            ScoreBadge(outcome.card.final_score).write(badge)
+            line = ScoreBadge.markdown(badge, _resolve_repo_root(target_path))
+            message = f"Badge written to {badge}; in the README: {line}"
+            if args.quiet:
+                cprint(message, "green")
+            else:
+                logger.info(message)
         for note in outcome.notes:
             if args.quiet:
                 cprint(note, "green")

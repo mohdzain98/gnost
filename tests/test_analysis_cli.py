@@ -143,3 +143,26 @@ def test_analyze_out_writes_json_and_html_files(monkeypatch, tmp_path):
     assert captured["html"] == str(repo_root / ".gnost" / "analysis" / "analysis.html")
     assert captured["compact"] is True
     assert "findings" in captured["payload"]
+
+
+def test_collect_code_files_keeps_the_source_when_tests_outnumber_it(tmp_path: Path):
+    for name in ("a", "b", "c"):
+        (tmp_path / "tests").mkdir(exist_ok=True)
+        (tmp_path / "tests" / f"test_{name}.py").write_text("x = 1\n")
+    (tmp_path / "pkg").mkdir()
+    (tmp_path / "pkg" / "core.py").write_text("x = 1\n")
+
+    files, _ = app.analysis.collect_code_files(str(tmp_path))
+
+    assert any(f.endswith("core.py") for f in files)
+    assert len(files) == 4
+
+
+def test_collect_code_files_steps_into_a_single_wrapper_folder(tmp_path: Path):
+    inner = tmp_path / "project-main" / "src"
+    inner.mkdir(parents=True)
+    (inner / "app.py").write_text("x = 1\n")
+
+    files, _ = app.analysis.collect_code_files(str(tmp_path))
+
+    assert [Path(f).name for f in files] == ["app.py"]

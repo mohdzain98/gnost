@@ -25,7 +25,7 @@ Or locally in an existing checkout:
    git fetch --unshallow
 
 Git is not installed or not on PATH
-----------------------------------
+-----------------------------------
 
 **Message:** ``git is not installed or not on PATH, so history is not available.``
 
@@ -40,7 +40,7 @@ Unsupported platform in npm wrapper (``gnost-cli``)
 
 **Cause:** Prebuilt native binaries for ``gnost-cli`` ship only for supported platforms (``darwin-arm64``, ``linux-x64``, ``win32-x64``), or npm skipped optional platform dependencies via ``--no-optional`` / ``--omit=optional``.
 
-**Fix:** Install via Python (``pipx install gnost``) or use the Docker image (`ghcr.io/mohdzain98/gnost`), or reinstall ``gnost-cli`` with optional dependencies enabled.
+**Fix:** Install via Python (``pipx install gnost``) or use the Docker image (``ghcr.io/mohdzain98/gnost``), or reinstall ``gnost-cli`` with optional dependencies enabled.
 
 Remote repository access refused
 --------------------------------
@@ -59,7 +59,7 @@ Exit codes and quality gate failures
 - ``0`` — Success.
 - ``1`` — Unexpected runtime error or output write failure.
 - ``2`` — Invalid CLI option, missing path, invalid ``.gnost.toml``, missing baseline file, or invalid flag combination (for example ``--fail-on-new`` without ``--baseline``).
-- ``3`` — Quality gate failed: the project score is below ``--fail-under`` or new findings were introduced under ``--baseline --fail-on-new``. Inspect `.gnost/analysis/analysis.json` (or run ``gnost open report``) to review findings.
+- ``3`` — Quality gate failed: the project score is below ``--fail-under`` or new findings were introduced under ``--baseline --fail-on-new``. Inspect ``.gnost/analysis/analysis.json`` (or run ``gnost open report``) to review findings.
 - ``130`` — Interrupted (``Ctrl+C``).
 
 See :doc:`ci` for full CI configuration and baseline details.

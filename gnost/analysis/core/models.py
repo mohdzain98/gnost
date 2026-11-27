@@ -225,6 +225,8 @@ class AnalysisMetrics:
     warnings_count: int = 0
     success: bool = True
     error_message: Optional[str] = None
+    # Findings left out by max_findings, per severity value; the score still counts them.
+    capped_by_severity: Dict[str, int] = field(default_factory=dict)
 
     @classmethod
     def from_dict(cls, d: Dict[str, Any]) -> "AnalysisMetrics":
@@ -245,6 +247,7 @@ class AnalysisMetrics:
             warnings_count=_safe_int(d.get("warnings_count") or 0),
             success=bool(d.get("success", True)),
             error_message=d.get("error_message"),
+            capped_by_severity=dict(d.get("capped_by_severity") or {}),
         )
 
 

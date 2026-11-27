@@ -9,11 +9,13 @@ import json
 import re
 import asyncio
 import ast
+import sys
 from pathlib import Path
 from typing import List, Dict, Any, Optional, Tuple
 from collections import defaultdict, Counter
 from gnost.utils.paths import tail
 from gnost.analysis.utils.tool_command import tool_command
+from gnost.analysis.utils.project_python import ProjectPython
 from gnost.utils.logger import AppLogger
 from gnost.analysis.utils.df_handling import collect_pandas_info, is_dataframe_expr
 from gnost.analysis.core.interfaces import QualityAnalyzer
@@ -152,7 +154,9 @@ class RobustnessAnalyzer(QualityAnalyzer):
                 findings.extend(bandit_findings)
 
             if analyzer_config.get("enable_mypy", True):
-                mypy_findings = await self._run_mypy_check(python_files)
+                mypy_findings = await self._run_mypy_check(
+                    python_files, config.target_path
+                )
                 findings.extend(mypy_findings)
 
             if analyzer_config.get("enable_dict_check", True):
@@ -333,7 +337,6 @@ class RobustnessAnalyzer(QualityAnalyzer):
             "call-arg": SeverityLevel.HIGH,  # mismatched call arguments
             "name-defined": SeverityLevel.HIGH,  # undefined name
             "attr-defined": SeverityLevel.HIGH,  # missing attribute
-            "import-not-found": SeverityLevel.HIGH,  # missing dependency
             "assignment": SeverityLevel.HIGH,  # invalid assignment type
             "return": SeverityLevel.HIGH,  # invalid return statement/type
             "has-type": SeverityLevel.HIGH,
@@ -341,13 +344,15 @@ class RobustnessAnalyzer(QualityAnalyzer):
             "no-redef": SeverityLevel.MEDIUM,  # redefinition may shadow variables
             "operator": SeverityLevel.MEDIUM,  # wrong operator types
             "type-arg": SeverityLevel.MEDIUM,  # missing/invalid type argument
-            "import-untyped": SeverityLevel.MEDIUM,  # imported module lacks typing
             "union-attr": SeverityLevel.MEDIUM,  # unsafe attribute access on Union
             "annotation-unchecked": SeverityLevel.MEDIUM,  # unchecked annotations may hide issues
             "misc": SeverityLevel.MEDIUM,  # generic issues (potentially unsafe)
             # 🟢 Low — style / completeness / type coverage
             "no-untyped-def": SeverityLevel.LOW,  # missing function annotations
             "no-untyped-call": SeverityLevel.LOW,  # call to untyped function
+            # ⚪ Info — about the environment GNOST ran in, not the code
+            "import-not-found": SeverityLevel.INFO,
+            "import-untyped": SeverityLevel.INFO,
         }
         return severity_map.get(code, SeverityLevel.INFO)
 
@@ -361,7 +366,7 @@ class RobustnessAnalyzer(QualityAnalyzer):
             "type-arg": "Bad/missing type arguments",
             "operator": "Invalid operator types",
             "arg-type": "Invalid argument type",
-            "import-not-found": "Import error (module not found)",
+            "import-not-found": "Module not found by the type checker",
             "import-untyped": "Import without type hints",
             "name-defined": "Undefined name",
             "no-redef": "Name redefined",
@@ -375,7 +380,75 @@ class RobustnessAnalyzer(QualityAnalyzer):
         }
         return code_mapping.get(code, "Type Checking Issue")
 
-    async def _run_mypy_check(self, files: List[str]) -> List[UnifiedFinding]:
+    BLOCKED = "errors prevented further checking"
+    FOUND_TWICE = "found twice under different module names"
+
+    @staticmethod
+    def mypy_command(
+        files: List[str], target: Optional[str] = None, package_bases: bool = False
+    ) -> List[str]:
+        """The mypy command line, using the project's virtual environment when it has one.
+
+        The Python version stays GNOST's own, so an old project interpreter cannot stop mypy.
+        """
+        cmd = tool_command("mypy") + ["--config-file", str(MYPY_CONFIG)]
+        python = ProjectPython(target).find() if target else None
+        if python:
+            version = f"{sys.version_info.major}.{sys.version_info.minor}"
+            cmd += ["--python-executable", python, "--python-version", version]
+        if package_bases:
+            cmd.append("--explicit-package-bases")
+        return cmd + files
+
+    @staticmethod
+    def package_bases_env(root: str) -> Dict[str, str]:
+        """Environment for an --explicit-package-bases run: module names start at the root.
+
+        A src/ layout (src/ without __init__.py) is a base too, so src/pkg/a.py is `pkg.a`.
+        """
+        bases = [root]
+        src = os.path.join(root, "src")
+        if os.path.isdir(src) and not os.path.isfile(os.path.join(src, "__init__.py")):
+            bases.append(src)
+        return {**os.environ, "MYPYPATH": os.pathsep.join(bases)}
+
+    async def _mypy_output(self, files: List[str], target: Optional[str]) -> str:
+        """Run mypy and return its report, retrying once when it stops before checking.
+
+        A file reachable under two module names (tests/ without __init__.py, imported as
+        `tests.x`) blocks mypy; module names counted from the project root fix that.
+        """
+        output = await self._exec(self.mypy_command(files, target))
+        if target and self.BLOCKED in output and self.FOUND_TWICE in output:
+            root = os.path.abspath(target)
+            absolute = [os.path.abspath(f) for f in files]
+            cmd = self.mypy_command(absolute, target, package_bases=True)
+            output = await self._exec(cmd, cwd=root, env=self.package_bases_env(root))
+        if self.BLOCKED in output:
+            reason = next(
+                (line for line in output.splitlines() if ": error:" in line), ""
+            )
+            logger.warning(f"MyPy could not type check this project: {reason}")
+        return output
+
+    @staticmethod
+    async def _exec(
+        cmd: List[str], cwd: Optional[str] = None, env: Optional[Dict[str, str]] = None
+    ) -> str:
+        """Run a command and return its standard output."""
+        proc = await asyncio.create_subprocess_exec(
+            *cmd,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+            cwd=cwd,
+            env=env,
+        )
+        stdout, _ = await proc.communicate()
+        return stdout.decode()
+
+    async def _run_mypy_check(
+        self, files: List[str], target: Optional[str] = None
+    ) -> List[UnifiedFinding]:
         """Run mypy in strict mode and parse output for type checking issues."""
         findings = []
 
@@ -383,13 +456,7 @@ class RobustnessAnalyzer(QualityAnalyzer):
             return findings
 
         try:
-            cmd = tool_command("mypy") + ["--config-file", str(MYPY_CONFIG)] + files
-            result = await asyncio.create_subprocess_exec(
-                *cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
-            )
-            stdout, stderr = await result.communicate()
-
-            output = stdout.decode()
+            output = await self._mypy_output(files, target)
             pattern = (
                 r"^(?P<file>.+\.py):(?P<line>\d+):\s*"
                 r"(?P<level>error|warning|note):\s*"
@@ -848,8 +915,8 @@ class RobustnessAnalyzer(QualityAnalyzer):
             "type-arg": "Provide valid type arguments for generic types (e.g., List[str] instead of List).",
             "operator": "Use operators with compatible types or cast values to appropriate types.",
             "arg-type": "Ensure argument types match the expected parameter types.",
-            "import-not-found": "Check that the module is installed and available in the environment. Try with `pip install types-module_name`",
-            "import-untyped": "Install or add type stubs for the module, or mark it as typed (py.typed).",
+            "import-not-found": "Usually nothing to fix in the code: create the project's virtual environment (.venv/ or venv/) with its dependencies installed, or activate it, and GNOST's type checks will use it. If the module is your own, check the import path.",
+            "import-untyped": "Install the module's type stubs (for example pandas-stubs) in the project's virtual environment, or ignore it: this does not affect the score much.",
             "assignment": "Ensure assigned values match the declared type of the variable.",
             "name-defined": "Define or import the name before use; fix scope/order of definitions.",
             "no-redef": "Use a unique name or remove the duplicate definition.",
@@ -882,8 +949,9 @@ class RobustnessAnalyzer(QualityAnalyzer):
             "(e.g., adding an int and a str). It can give TypeError",
             "arg-type": "A function argument was passed with the wrong type. "
             "The type checker expected a different type than what was provided.",
-            "import-not-found": "Analyzer could not find the specified module. "
-            "It may not be installed in your environment.",
+            "import-not-found": "The type checker could not find this module. Most often it is a "
+            "third-party package that is not installed where GNOST ran (no .venv/ or venv/ found), "
+            "so it is reported as info and not as an error in the code.",
             "import-untyped": "The imported module exists but has no type information available "
             "(no .pyi stubs or py.typed marker). Analyzer treats it as untyped.",
             "assignment": "A variable is being assigned a value that does not match its type annotation.",

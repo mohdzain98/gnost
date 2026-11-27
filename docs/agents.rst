@@ -1,4 +1,4 @@
-Use GNOST with coding agents
+Use GNOST with Coding Agents
 ============================
 
 ``gnost mcp`` starts a small `Model Context Protocol <https://modelcontextprotocol.io>`_ server so an AI

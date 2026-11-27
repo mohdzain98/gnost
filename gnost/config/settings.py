@@ -15,6 +15,7 @@ Example::
     [onboard]
     max_edges = 150          # largest diagram drawn file by file
     collapse = 1             # always group diagrams by folder
+    pages = true             # also publish the explorer for GitHub Pages (or a folder: "docs/gnost")
     depth = 3                # limit flow depth
 
     [caution]                # which files are "risky to change"
@@ -36,6 +37,8 @@ Example::
     [analyze]
     analyzers = ["maintainability", "readability"]
     fail_under = 7.5         # CI: exit 3 when the final score (0-10) is lower
+    score = "density"        # or "average": the 0.7 formula, kept for one release
+    badge = true             # write .gnost/badge.svg for the README (or a path)
     timeout = 600
     max_findings = 500
     parallel = true
@@ -75,6 +78,7 @@ class ConfigError(Exception):
 
 
 _NUMBER = (int, float)
+_SWITCH_OR_TEXT = (bool, str)
 # section -> key -> accepted type(s); `None` section is the top level
 SCHEMA: Dict[Optional[str], Dict[str, Any]] = {
     None: {
@@ -83,7 +87,12 @@ SCHEMA: Dict[Optional[str], Dict[str, Any]] = {
         "check_updates": bool,
         "footer": bool,
     },
-    "onboard": {"max_edges": int, "collapse": int, "depth": int},
+    "onboard": {
+        "max_edges": int,
+        "collapse": int,
+        "depth": int,
+        "pages": _SWITCH_OR_TEXT,
+    },
     "caution": {"threshold": _NUMBER, "limit": int},
     "risk": {"threshold": _NUMBER, "limit": int, "churn_weight": _NUMBER},
     "history": {
@@ -104,6 +113,8 @@ SCHEMA: Dict[Optional[str], Dict[str, Any]] = {
         "parallel": bool,
         "fail_under": _NUMBER,
         "baseline": str,
+        "score": str,
+        "badge": _SWITCH_OR_TEXT,
     },
     "architecture": {"layers": list, "rules": list, "fail": bool},
 }
@@ -246,6 +257,8 @@ def load_config(start: str = ".") -> GnostConfig:
 def _type_name(expected: Any) -> str:
     if expected is _NUMBER:
         return "a number"
+    if expected is _SWITCH_OR_TEXT:
+        return "true, false or a folder name"
     return {
         list: "a list",
         int: "an integer",
@@ -354,6 +367,11 @@ def _validate_section(
         and not 0 <= out["fail_under"] <= 10
     ):
         raise ConfigError(f"{where}: 'analyze.fail_under' must be between 0 and 10")
+    if section == "analyze" and out.get("score", "density") not in (
+        "density",
+        "average",
+    ):
+        raise ConfigError(f'{where}: \'analyze.score\' must be "density" or "average"')
     if section == "analyze" and "analyzers" in out:
         if not all(isinstance(a, str) for a in out["analyzers"]):
             raise ConfigError(f"{where}: 'analyze.analyzers' must be a list of strings")

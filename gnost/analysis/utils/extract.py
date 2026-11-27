@@ -129,45 +129,15 @@ class Extract:
 
     @staticmethod
     def find_best_project_root(base: Path, exts: Iterable[str] = CODE_EXTS) -> Path:
-        """
-        Heuristic:
-        0) Normalize to an existing dir; otherwise return base.
-        1) If base itself has code files at top level → return base.
-        2) If base has exactly one subdir (after filtering) and no top-level code → recurse into it
-            (handles zips that wrap the project in a single folder).
-        3) Otherwise, choose the subdir with the most code files (deep count).
-            Tie-breakers: shallower depth wins, then lexicographical name.
-        4) If no subdir has code → return base.
+        """The folder to analyze: `base`, or the project inside single wrapper folders.
+
+        Only steps down when `base` has no code of its own and exactly one sub-folder
+        (an unzipped archive); never picks one sub-folder out of several (that chose `tests/`).
         """
         base = base.resolve()
-        if not base.exists() or not base.is_dir():
+        if not base.is_dir() or Extract.first_level_code_files(base, exts) > 0:
             return base
-
-        # (1) code files directly at base?
-        if Extract.first_level_code_files(base, exts) > 0:
-            return base
-
         subs = Extract.filtered_subdirs(base)
-
-        # (2) descend through single wrapper folder(s)
-        if len(subs) == 1:
-            only = subs[0]
-            # guard against infinite loop by checking if it actually changes
-            if only != base:
-                return Extract.find_best_project_root(only, exts)
-
-        # (3) pick subdir with most code files
-        best = None
-        best_count = -1
-        for d in subs:
-            cnt = Extract.count_code_files(d, exts)
-            if (
-                cnt > best_count
-                or (cnt == best_count and len(d.parts) < len((best or d).parts))
-                or (cnt == best_count and d.name < (best or d).name)
-            ):
-                best = d
-                best_count = cnt
-
-        # (4) fallback
-        return best if best and best_count > 0 else base
+        if len(subs) == 1 and Extract.count_code_files(subs[0], exts) > 0:
+            return Extract.find_best_project_root(subs[0], exts)
+        return base

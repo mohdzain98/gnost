@@ -166,7 +166,8 @@ Key options
   - ``.gnost/analysis/analysis.html``
 
 - ``--max-findings N``
-  Limit findings collected per analyzer.
+  Limit the findings listed per analyzer (default 1000). The score still counts the ones left out
+  (see :doc:`scoring`).
 - ``--compact``
   Emit compact JSON when ``-o`` is enabled.
 - ``--timeout SECONDS``
@@ -180,8 +181,19 @@ Key options
 - ``--list-analyzers``
   Print analyzer names and exit.
 
+Score
+-----
+
+Every analyzer gets a score from 0 to 10, and the project a final score. The score comes from the finding
+*density*: the severity weights of the findings per 1,000 analyzed lines, on the curve
+``10 − 2 × ln(1 + density)``. More findings, or more severe ones, lower it, and a bigger project carries the same
+findings more easily. :doc:`scoring` has the weights, the curve, a worked example and how to compare scores;
+:doc:`calibration` shows where well-known projects land.
+
 CI options
 ----------
+
+``--badge [FILE]`` writes the final score as a README badge (``.gnost/badge.svg``); see :doc:`scoring`.
 
 ``--fail-under SCORE``, ``--baseline`` / ``--write-baseline`` / ``--fail-on-new`` and ``--sarif`` make
 ``analyze`` usable as a quality gate and a code scanning source. See :doc:`ci`.
@@ -189,7 +201,8 @@ CI options
 Output behavior
 ---------------
 
-- Terminal: table with analyzer scores and severity counts.
+- Terminal: table with analyzer scores and severity counts, and the final score. :doc:`scoring` explains how
+  the scores are computed (finding density on a log curve).
 - JSON: machine-readable results for CI or pipelines.
 - HTML: interactive report for human review.
 

@@ -106,9 +106,15 @@ Tools and scope
 - ``bandit`` and ``mypy`` for robustness findings.
 - ``radon`` for maintainability findings.
 
+mypy runs in strict mode with the project's own packages: it uses the virtual environment in ``.venv/`` or
+``venv/`` (in the analyzed folder, or up to the repository root) or the one that is activated. Without one,
+mypy cannot see third-party packages; those imports are reported as ``info`` (``import-not-found``,
+``import-untyped``) and barely move the score. Create or activate the environment to get full type checks.
+
 **JavaScript, TypeScript and Java** use GNOST's own rules for all four analyzers. Test files are exempt from the
 rules that do not apply to them, and generated folders (``node_modules``, ``dist``, ``build``, ``target`` and
 others) are skipped. Duplicate-code detection is not available for these languages yet.
 
-The score is the average severity of an analyzer's findings, not their number, so it does not get worse with
-project size; track change with ``--baseline`` and ``--fail-on-new``.
+Each analyzer's score comes from the density of its findings: their severity weights per 1,000 analyzed lines,
+on a log curve from 10 down to 0. More findings or more severe ones lower it, and a bigger project carries the
+same findings more easily. :doc:`scoring` has the formula, the curve and a worked example.
