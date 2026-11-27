@@ -557,7 +557,21 @@ def test_the_html_report_shows_the_card_scores(tmp_path: Path) -> None:
         'class="score okay"' in page
     )  # the colour class is filled in, not "6.78_CLASS"
     assert "<td>7.25</td>" in page
-    assert "4.00 weighted findings per 1,000 lines (12,345 lines analyzed)" in page
+    assert "<h3>Finding Density</h3>\n          <p>4.00</p>" in page
+    assert "Weighted findings per 1,000 lines (12,345 lines analyzed)" in page
+
+
+def test_the_html_report_has_a_light_theme(tmp_path: Path) -> None:
+    from gnost.reporters.analysis_html import render_analysis_html
+
+    out = tmp_path / "report.html"
+    render_analysis_html({"findings": [], "summary": {}}, str(out))
+    page = out.read_text(encoding="utf-8")
+    assert '<html lang="en" data-theme="dark">' in page
+    assert ':root[data-theme="light"] {' in page  # braces unescaped
+    assert 'id="themeBtn"' in page
+    assert "Not computed with score = average" in page  # no density in this report
+    assert 'localStorage.getItem("gnost-theme")' in page  # shared with flow.html
 
 
 def test_findings_left_out_by_max_findings_still_count() -> None:

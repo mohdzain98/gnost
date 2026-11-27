@@ -294,7 +294,12 @@ class PagesPublisher:
         if repo is None:
             return None, (
                 f"Pages: no github.com 'origin' remote, so the address is unknown; enable Pages "
-                f"(Settings > Pages > folder {setting}) and open {served or 'the site root'}/ on your Pages site"
+                f"(Settings > Pages > folder {setting}) and open "
+                + (
+                    f"{served}/ on your Pages site"
+                    if served
+                    else "your Pages site's home page"
+                )
             )
         url = repo.pages_url(served)
         return url, (

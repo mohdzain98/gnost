@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import os
 import re
-import sys
 from typing import Optional
+
+from rich.console import Console
+from rich.markup import escape
 
 from gnost.utils.paths import shorten
 from gnost.languages.python import PythonAdapter
@@ -41,6 +43,26 @@ from gnost.utils.layout import LEGACY_OUTPUT_PATHS, OutputLayout
 from gnost.utils.progress import StepProgress
 from gnost.vcs.git import GitError, GitRepository
 from gnost.vcs.history import HistoryReader, HistorySettings
+
+
+def _print_pages(published: PagesResult, output_name: str) -> None:
+    """Print what --pages did, with "Pages:" in green and warnings in yellow.
+
+    Rich drops the colours when the output is not a terminal or NO_COLOR is set.
+    """
+    err = Console(stderr=True, highlight=False, soft_wrap=True)
+    for line in published.lines:
+        head, _, rest = line.partition(": ")
+        err.print(
+            f"[bold green]{escape(head)}:[/] {escape(rest)}" if rest else escape(line)
+        )
+    for warning in published.warnings:
+        err.print(f"[bold yellow]gnost: warning:[/] {escape(warning)}")
+    where = f" ({escape(published.url)})" if published.url else ""
+    Console(highlight=False, soft_wrap=True).print(
+        f"  [bold green]GitHub Pages:[/] [bold]{escape(published.path)}[/], outside "
+        f"{escape(output_name)}/, so commit it{where}"
+    )
 
 
 def _pages_root(scan_root: str, output_root: str) -> str:
@@ -613,13 +635,6 @@ def run(
         )
         print(f"  Open the explorer: {command}")
     if published is not None:
-        for line in published.lines:
-            print(line, file=sys.stderr)
-        for warning in published.warnings:
-            print(f"gnost: warning: {warning}", file=sys.stderr)
-        where = f" ({published.url})" if published.url else ""
-        print(
-            f"  GitHub Pages: {published.path}, outside {layout.relative_name}/, so commit it{where}"
-        )
+        _print_pages(published, layout.relative_name)
     if first_run and layout.has_legacy_output():
         print(f"\nNote: {layout.moved_notice()}")

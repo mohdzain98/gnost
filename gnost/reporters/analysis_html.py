@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import html
 import os
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional, Tuple
 
 
 def _escape(value: Any) -> str:
@@ -41,16 +41,34 @@ def _analyzer_risk(findings: List[Dict[str, Any]]) -> float:
     return round((total_weight / (len(scored_findings) * max_weight)) * 100.0, 2)
 
 
-def _score_note(summary: Dict[str, Any]) -> str:
-    """The line under the final score: how it was computed, when the report says."""
+def _score_card(summary: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """The report's `summary.score` block when the density formula made it, else None."""
     card = summary.get("score") if isinstance(summary, dict) else None
     if not isinstance(card, dict) or card.get("method") != "density":
+        return None
+    return card
+
+
+def _score_note(summary: Dict[str, Any]) -> str:
+    """The line under the final score: what it comes from, when the report says."""
+    if _score_card(summary) is None:
         return "Higher is better"
+    return "Higher is better. Computed from the finding density"
+
+
+def _density_kpi(summary: Dict[str, Any]) -> Tuple[str, str]:
+    """The Finding Density card: the value and the line under it.
+
+    Reports scored with the old average formula have no density, so the card says so.
+    """
+    card = _score_card(summary)
+    if card is None:
+        return "n/a", "Not computed with score = average"
     lines = _safe_int(card.get("analyzed_lines"))
     density = _safe_float(card.get("density"))
     return (
-        f"Higher is better. {density:.2f} weighted findings per 1,000 lines "
-        f"({lines:,} lines analyzed)"
+        f"{density:.2f}",
+        f"Weighted findings per 1,000 lines ({lines:,} lines analyzed)",
     )
 
 
@@ -335,8 +353,9 @@ def render_analysis_html(report: Dict[str, Any], output_file: str) -> None:
     out_dir = os.path.dirname(os.path.abspath(output_file)) or "."
     os.makedirs(out_dir, exist_ok=True)
 
+    density_value, density_note = _density_kpi(summary)
     html_content = """<!doctype html>
-<html lang=\"en\">
+<html lang=\"en\" data-theme=\"dark\">
 <head>
   <meta charset=\"utf-8\" />
   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />
@@ -354,21 +373,69 @@ def render_analysis_html(report: Dict[str, Any], output_file: str) -> None:
       --bad: #ef4444;
       --neutral: #64748b;
       --accent: #60a5fa;
+      --bg-top: #111827;
+      --th: #0b1220;
+      --stripe: rgba(15, 23, 42, 0.28);
+      --accent-text: #bfdbfe;
+      --sev-high: #fecaca;
+      --sev-medium: #fde68a;
+      --sev-low: #bbf7d0;
+      --sev-info: #bae6fd;
+      --sev-critical: #fbcfe8;
+      --sev-unknown: #e2e8f0;
+      --score-good: #86efac;
+      --score-okay: #fcd34d;
+      --score-bad: #fca5a5;
+    }}
+    /* Light theme: the same switch and remembered choice as the flow explorer */
+    :root[data-theme=\"light\"] {{
+      --bg: #ffffff;
+      --bg-top: #f6f8fa;
+      --panel: #ffffff;
+      --panel-soft: #f6f8fa;
+      --text: #1f2328;
+      --muted: #59636e;
+      --border: #d0d7de;
+      --accent: #0969da;
+      --th: #f6f8fa;
+      --stripe: rgba(208, 215, 222, 0.25);
+      --accent-text: #0969da;
+      --sev-high: #b91c1c;
+      --sev-medium: #92400e;
+      --sev-low: #166534;
+      --sev-info: #075985;
+      --sev-critical: #9d174d;
+      --sev-unknown: #334155;
+      --score-good: #15803d;
+      --score-okay: #a16207;
+      --score-bad: #b91c1c;
     }}
     * {{ box-sizing: border-box; }}
     body {{
       margin: 0;
       font-family: Inter, "Segoe UI", Arial, sans-serif;
-      background: radial-gradient(circle at top, #111827, #0f172a 45%);
+      background: radial-gradient(circle at top, var(--bg-top), var(--bg) 45%);
+      min-height: 100vh;
       color: var(--text);
       padding: 22px;
     }}
     .container {{ max-width: 1400px; margin: 0 auto; }}
     h1 {{ margin: 0 0 8px; font-size: 28px; }}
+    .header {{ display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }}
+    .theme-btn {{
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 13px;
+      cursor: pointer;
+    }}
+    .theme-btn:hover {{ border-color: var(--accent); }}
     .subtitle {{ margin: 0 0 18px; color: var(--muted); }}
     .stats {{
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: 12px;
       margin-bottom: 16px;
     }}
@@ -420,7 +487,7 @@ def render_analysis_html(report: Dict[str, Any], output_file: str) -> None:
       vertical-align: top;
       font-size: 14px;
     }}
-    th {{ background: #0b1220; color: var(--muted); position: sticky; top: 0; cursor: pointer; user-select: none; }}
+    th {{ background: var(--th); color: var(--muted); position: sticky; top: 0; cursor: pointer; user-select: none; }}
     tr:hover td {{ background: rgba(96, 165, 250, 0.08); }}
     .badge {{
       display: inline-block;
@@ -430,11 +497,11 @@ def render_analysis_html(report: Dict[str, Any], output_file: str) -> None:
       font-weight: 700;
       text-transform: uppercase;
     }}
-    .badge-high {{ background: rgba(239, 68, 68, 0.2); color: #fecaca; }}
-    .badge-medium {{ background: rgba(245, 158, 11, 0.2); color: #fde68a; }}
-    .badge-low {{ background: rgba(34, 197, 94, 0.2); color: #bbf7d0; }}
-    .badge-info {{ background: rgba(14, 165, 233, 0.2); color: #bae6fd; }}
-    .badge-critical {{ background: rgba(236, 72, 153, 0.2); color: #fbcfe8; }}
+    .badge-high {{ background: rgba(239, 68, 68, 0.2); color: var(--sev-high); }}
+    .badge-medium {{ background: rgba(245, 158, 11, 0.2); color: var(--sev-medium); }}
+    .badge-low {{ background: rgba(34, 197, 94, 0.2); color: var(--sev-low); }}
+    .badge-info {{ background: rgba(14, 165, 233, 0.2); color: var(--sev-info); }}
+    .badge-critical {{ background: rgba(236, 72, 153, 0.2); color: var(--sev-critical); }}
     .muted {{ color: var(--muted); }}
     .small {{ font-size: 12px; color: var(--muted); }}
     .pager {{
@@ -455,16 +522,16 @@ def render_analysis_html(report: Dict[str, Any], output_file: str) -> None:
     .pager button:disabled {{ opacity: 0.45; cursor: not-allowed; }}
     .score {{
       display: inline-block;
-      background: #0f172a;
+      background: var(--bg);
       border: 1px solid var(--border);
       border-radius: 999px;
       padding: 4px 10px;
       font-weight: 700;
       color: var(--text);
     }}
-    .score.good {{ border-color: rgba(34,197,94,0.5); color: #86efac; }}
-    .score.okay {{ border-color: rgba(245,158,11,0.5); color: #fcd34d; }}
-    .score.bad {{ border-color: rgba(239,68,68,0.5); color: #fca5a5; }}
+    .score.good {{ border-color: rgba(34,197,94,0.5); color: var(--score-good); }}
+    .score.okay {{ border-color: rgba(245,158,11,0.5); color: var(--score-okay); }}
+    .score.bad {{ border-color: rgba(239,68,68,0.5); color: var(--score-bad); }}
     .severity-col {{ width: 90px; }}
     .details {{ max-width: 360px; white-space: pre-wrap; }}
     .analysis-grid {{
@@ -497,11 +564,11 @@ def render_analysis_html(report: Dict[str, Any], output_file: str) -> None:
       z-index: 1;
     }}
     tbody tr:nth-child(even) td {{
-      background: rgba(15, 23, 42, 0.28);
+      background: var(--stripe);
     }}
     .badge-unknown {{
       background: rgba(148, 163, 184, 0.25);
-      color: #e2e8f0;
+      color: var(--sev-unknown);
     }}
     .muted-note {{
       display: inline-flex;
@@ -700,12 +767,12 @@ def render_analysis_html(report: Dict[str, Any], output_file: str) -> None:
     }}
     .tab-btn:hover {{
       border-color: rgba(96, 165, 250, 0.6);
-      color: #bfdbfe;
+      color: var(--accent-text);
     }}
     .tab-btn.active {{
       border-color: rgba(96, 165, 250, 0.85);
       background: rgba(96, 165, 250, 0.12);
-      color: #bfdbfe;
+      color: var(--accent-text);
     }}
     .tab-panel {{
       display: none;
@@ -715,7 +782,7 @@ def render_analysis_html(report: Dict[str, Any], output_file: str) -> None:
     }}
     .pager button:hover:not(:disabled) {{
       border-color: rgba(96, 165, 250, 0.6);
-      color: #dbeafe;
+      color: var(--accent-text);
     }}
     @media (max-width: 1024px) {{
       body {{ padding: 12px; }}
@@ -729,7 +796,10 @@ def render_analysis_html(report: Dict[str, Any], output_file: str) -> None:
 </head>
 <body>
   <div class=\"container\">
-    <h1>GNOST Analysis Report</h1>
+    <div class=\"header\">
+      <h1>GNOST Analysis Report</h1>
+      <button type=\"button\" id=\"themeBtn\" class=\"theme-btn\" title=\"Switch theme\">Light</button>
+    </div>
     <p class=\"subtitle\">Target: TARGET_PATH</p>
     <div class=\"row\">
       <div class=\"stats\">
@@ -738,6 +808,11 @@ def render_analysis_html(report: Dict[str, Any], output_file: str) -> None:
           <p><span id=\"finalScore\" class=\"score FINAL_SCORE_CLASS\">FINAL_SCORE / 10.00</span></p>
           <div class=\"scorebar\"><span id=\"scoreBar\"></span></div>
           <p class=\"small score-note\" style=\"font-size: small\">SCORE_NOTE</p>
+        </div>
+        <div class=\"card\">
+          <h3>Finding Density</h3>
+          <p>DENSITY_VALUE</p>
+          <p class=\"small score-note\" style=\"font-size: small\">DENSITY_NOTE</p>
         </div>
         <div class=\"card\">
           <h3>Total Findings</h3>
@@ -865,6 +940,21 @@ def render_analysis_html(report: Dict[str, Any], output_file: str) -> None:
   </div>
 
   <script>
+    (function () {{
+      const btn = document.getElementById("themeBtn");
+      const apply = (t) => {{
+        document.documentElement.dataset.theme = t;
+        btn.textContent = t === "dark" ? "Light" : "Dark";
+      }};
+      let theme = "dark";
+      try {{ theme = localStorage.getItem("gnost-theme") || "dark"; }} catch (e) {{}}
+      apply(theme);
+      btn.onclick = () => {{
+        theme = theme === "dark" ? "light" : "dark";
+        apply(theme);
+        try {{ localStorage.setItem("gnost-theme", theme); }} catch (e) {{}}
+      }};
+    }})();
     const REPORT_DATA = JSON.parse(REPORT_DATA_JSON);
     const findings = Array.isArray(REPORT_DATA.findings) ? REPORT_DATA.findings : [];
 
@@ -1288,6 +1378,8 @@ def render_analysis_html(report: Dict[str, Any], output_file: str) -> None:
         html_content.replace("TARGET_PATH", _escape(report.get("target_path", "")))
         .replace("FINAL_SCORE_CLASS", final_score_class)
         .replace("SCORE_NOTE", _escape(_score_note(summary)))
+        .replace("DENSITY_VALUE", _escape(density_value))
+        .replace("DENSITY_NOTE", _escape(density_note))
         .replace("FINAL_SCORE", f"{final_score:.2f}")
         .replace("TOTAL_FINDINGS", str(total_findings))
         .replace("TOTAL_ANALYZERS", str(total_analyzers))
