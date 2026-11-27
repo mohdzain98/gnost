@@ -47,9 +47,10 @@ public class MojoCommandTest {
         m.writeBaseline = "ci/base.json";
         m.failOnNew = true;
         m.sarif = "true";
+        m.badge = "docs/score.svg";
         assertEquals(
                 Arrays.asList("g", "analyze", ".", "--fail-under", "7.5", "--baseline", "--write-baseline",
-                        "ci/base.json", "--fail-on-new", "--sarif"),
+                        "ci/base.json", "--fail-on-new", "--sarif", "--badge", "docs/score.svg"),
                 m.command("g"));
     }
 
@@ -118,10 +119,13 @@ public class MojoCommandTest {
         InitMojo m = new InitMojo();
         m.pom = true;
         m.githubAction = true;
+        m.forkComments = true;
         m.dryRun = true;
         m.agents = true;
         assertEquals(
-                Arrays.asList("g", "init", ".", "--dry-run", "--pom", "--github-action", "--agents"), m.command("g"));
+                Arrays.asList("g", "init", ".", "--dry-run", "--pom", "--github-action", "--fork-comments",
+                        "--agents"),
+                m.command("g"));
     }
 
     @Test

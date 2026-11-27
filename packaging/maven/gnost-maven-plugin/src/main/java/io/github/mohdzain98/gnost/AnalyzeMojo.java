@@ -72,6 +72,10 @@ public class AnalyzeMojo extends RepositoryMojo {
     @Parameter(property = "gnost.sarif")
     String sarif;
 
+    /** Write a README badge with the final score ("true" uses .gnost/badge.svg). */
+    @Parameter(property = "gnost.badge")
+    String badge;
+
     @Override
     String subcommand() {
         return "analyze";
@@ -94,6 +98,7 @@ public class AnalyzeMojo extends RepositoryMojo {
         optionalValue(cmd, writeBaseline, "--write-baseline");
         flag(cmd, failOnNew, "--fail-on-new");
         optionalValue(cmd, sarif, "--sarif");
+        optionalValue(cmd, badge, "--badge");
         if (language != null) {
             for (String name : language.split(",")) {
                 if (!name.trim().isEmpty()) {

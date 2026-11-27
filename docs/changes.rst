@@ -1,4 +1,4 @@
-What does this change touch?
+What Does This Change Touch?
 ============================
 
 ``gnost changes`` answers the question a reviewer asks first: *what does this change reach, and how

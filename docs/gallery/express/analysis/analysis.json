@@ -1,10 +1,10 @@
 {
- "id": "1b49f85e-f0b4-4a71-8e58-0bc7b15b7c68",
- "timestamp": "2026-11-22T13:17:19.119868",
+ "id": "5e69cea3-d2fd-4cc1-bee2-3c9024b1a71f",
+ "timestamp": "2026-11-26T23:09:37.880310",
  "target_path": "https://github.com/expressjs/express",
  "findings": [
   {
-   "id": "72605824-390e-4fe4-b0d5-5e4b7483d24c",
+   "id": "d4f78ddf-ce87-4481-8fad-d968c77ef59e",
    "title": "Function is too complex",
    "description": "`send` has a cyclomatic complexity of 23 (limit 10)",
    "details": null,
@@ -30,20 +30,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-22T13:17:19.269446",
+   "timestamp": "2026-11-26T23:09:38.029934",
    "tags": [
-    "rule_engine",
+    "complexity",
     "javascript",
-    "complexity"
+    "rule_engine"
    ],
    "extra_data": {
     "language": "javascript",
     "priority_score": 69.0,
     "cross_references": [
-     "7232c132-80ab-4ac6-af89-793664a8485d",
-     "a805d2e2-a34e-43c8-8264-7c789fde6066",
-     "d2da5fce-9300-487d-b4ee-8fc56dfceec0",
-     "c426741b-7561-4145-aca1-eae345ad4e86"
+     "17cff3b5-210a-4f83-b2c1-f7ee959f1fa9",
+     "8f259d09-3fff-4c58-95ca-d3ae3173e1b8",
+     "d74be59a-bc52-408f-82d2-a218042faefd",
+     "f3cfe02f-bc4c-4e23-9d0b-c4b521b50648"
     ],
     "file_issue_count": 6,
     "category_prevalence": 10,
@@ -51,7 +51,7 @@
    }
   },
   {
-   "id": "a805d2e2-a34e-43c8-8264-7c789fde6066",
+   "id": "d74be59a-bc52-408f-82d2-a218042faefd",
    "title": "File is too long",
    "description": "The file has 1050 lines (limit 500)",
    "details": null,
@@ -77,20 +77,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-22T13:17:19.270763",
+   "timestamp": "2026-11-26T23:09:38.031273",
    "tags": [
-    "rule_engine",
+    "javascript",
     "size",
-    "javascript"
+    "rule_engine"
    ],
    "extra_data": {
     "language": "javascript",
     "priority_score": 59.0,
     "cross_references": [
-     "7232c132-80ab-4ac6-af89-793664a8485d",
-     "72605824-390e-4fe4-b0d5-5e4b7483d24c",
-     "d2da5fce-9300-487d-b4ee-8fc56dfceec0",
-     "c426741b-7561-4145-aca1-eae345ad4e86"
+     "17cff3b5-210a-4f83-b2c1-f7ee959f1fa9",
+     "8f259d09-3fff-4c58-95ca-d3ae3173e1b8",
+     "d4f78ddf-ce87-4481-8fad-d968c77ef59e",
+     "f3cfe02f-bc4c-4e23-9d0b-c4b521b50648"
     ],
     "file_issue_count": 6,
     "category_prevalence": 10,
@@ -98,7 +98,7 @@
    }
   },
   {
-   "id": "d69fd3f4-aeda-4d16-9ded-3fe141b629e9",
+   "id": "b6d4c7e4-adbe-4a4c-b31a-a4616a62f743",
    "title": "Function is too complex",
    "description": "`<anonymous>` has a cyclomatic complexity of 17 (limit 10)",
    "details": null,
@@ -124,19 +124,19 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-22T13:17:19.317989",
+   "timestamp": "2026-11-26T23:09:38.078330",
    "tags": [
-    "rule_engine",
+    "complexity",
     "javascript",
-    "complexity"
+    "rule_engine"
    ],
    "extra_data": {
     "language": "javascript",
     "priority_score": 59.0,
     "cross_references": [
-     "fc9d17a2-9b45-4658-8e35-8dd70e39d385",
-     "43a45520-6629-495c-b3c0-ed5411f0361a",
-     "c1897b0c-f4c3-40d2-9b0c-dbebe1de3236"
+     "342f9e81-fbf1-42f2-a056-3474f9f16077",
+     "b95b3f18-49b5-4f37-a82e-57a6f0ce8396",
+     "55d07d9f-e9c8-4d44-9f9b-415e930cea3a"
     ],
     "file_issue_count": 4,
     "category_prevalence": 10,
@@ -144,7 +144,7 @@
    }
   },
   {
-   "id": "d2da5fce-9300-487d-b4ee-8fc56dfceec0",
+   "id": "8f259d09-3fff-4c58-95ca-d3ae3173e1b8",
    "title": "Function is too long",
    "description": "`send` is 97 lines long (limit 60)",
    "details": null,
@@ -170,20 +170,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-22T13:17:19.270667",
+   "timestamp": "2026-11-26T23:09:38.031176",
    "tags": [
-    "rule_engine",
+    "javascript",
     "size",
-    "javascript"
+    "rule_engine"
    ],
    "extra_data": {
     "language": "javascript",
     "priority_score": 49.0,
     "cross_references": [
-     "7232c132-80ab-4ac6-af89-793664a8485d",
-     "72605824-390e-4fe4-b0d5-5e4b7483d24c",
-     "a805d2e2-a34e-43c8-8264-7c789fde6066",
-     "c426741b-7561-4145-aca1-eae345ad4e86"
+     "17cff3b5-210a-4f83-b2c1-f7ee959f1fa9",
+     "d74be59a-bc52-408f-82d2-a218042faefd",
+     "d4f78ddf-ce87-4481-8fad-d968c77ef59e",
+     "f3cfe02f-bc4c-4e23-9d0b-c4b521b50648"
     ],
     "file_issue_count": 6,
     "category_prevalence": 10,
@@ -191,7 +191,7 @@
    }
   },
   {
-   "id": "c426741b-7561-4145-aca1-eae345ad4e86",
+   "id": "f3cfe02f-bc4c-4e23-9d0b-c4b521b50648",
    "title": "Function is too complex",
    "description": "`download` has a cyclomatic complexity of 13 (limit 10)",
    "details": null,
@@ -217,20 +217,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-22T13:17:19.269463",
+   "timestamp": "2026-11-26T23:09:38.029950",
    "tags": [
-    "rule_engine",
+    "complexity",
     "javascript",
-    "complexity"
+    "rule_engine"
    ],
    "extra_data": {
     "language": "javascript",
     "priority_score": 49.0,
     "cross_references": [
-     "7232c132-80ab-4ac6-af89-793664a8485d",
-     "72605824-390e-4fe4-b0d5-5e4b7483d24c",
-     "a805d2e2-a34e-43c8-8264-7c789fde6066",
-     "d2da5fce-9300-487d-b4ee-8fc56dfceec0"
+     "17cff3b5-210a-4f83-b2c1-f7ee959f1fa9",
+     "8f259d09-3fff-4c58-95ca-d3ae3173e1b8",
+     "d74be59a-bc52-408f-82d2-a218042faefd",
+     "d4f78ddf-ce87-4481-8fad-d968c77ef59e"
     ],
     "file_issue_count": 6,
     "category_prevalence": 10,
@@ -238,7 +238,7 @@
    }
   },
   {
-   "id": "749a87d3-8a8b-44ab-8bb8-19066f30e79f",
+   "id": "647388b7-f05c-46f4-a27d-25d845a39858",
    "title": "Function is too long",
    "description": "`sendfile` is 89 lines long (limit 60)",
    "details": null,
@@ -264,21 +264,21 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-22T13:17:19.270673",
+   "timestamp": "2026-11-26T23:09:38.031182",
    "tags": [
-    "rule_engine",
+    "javascript",
     "size",
-    "javascript"
+    "rule_engine"
    ],
    "extra_data": {
     "language": "javascript",
     "priority_score": 49.0,
     "cross_references": [
-     "7232c132-80ab-4ac6-af89-793664a8485d",
-     "72605824-390e-4fe4-b0d5-5e4b7483d24c",
-     "c426741b-7561-4145-aca1-eae345ad4e86",
-     "a805d2e2-a34e-43c8-8264-7c789fde6066",
-     "d2da5fce-9300-487d-b4ee-8fc56dfceec0"
+     "d74be59a-bc52-408f-82d2-a218042faefd",
+     "d4f78ddf-ce87-4481-8fad-d968c77ef59e",
+     "f3cfe02f-bc4c-4e23-9d0b-c4b521b50648",
+     "17cff3b5-210a-4f83-b2c1-f7ee959f1fa9",
+     "8f259d09-3fff-4c58-95ca-d3ae3173e1b8"
     ],
     "file_issue_count": 6,
     "category_prevalence": 10,
@@ -286,7 +286,7 @@
    }
   },
   {
-   "id": "43a45520-6629-495c-b3c0-ed5411f0361a",
+   "id": "55d07d9f-e9c8-4d44-9f9b-415e930cea3a",
    "title": "Function is too long",
    "description": "`module.exports` is 73 lines long (limit 60)",
    "details": null,
@@ -312,19 +312,19 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-22T13:17:19.318179",
+   "timestamp": "2026-11-26T23:09:38.078521",
    "tags": [
-    "rule_engine",
+    "javascript",
     "size",
-    "javascript"
+    "rule_engine"
    ],
    "extra_data": {
     "language": "javascript",
     "priority_score": 49.0,
     "cross_references": [
-     "fc9d17a2-9b45-4658-8e35-8dd70e39d385",
-     "c1897b0c-f4c3-40d2-9b0c-dbebe1de3236",
-     "d69fd3f4-aeda-4d16-9ded-3fe141b629e9"
+     "b6d4c7e4-adbe-4a4c-b31a-a4616a62f743",
+     "342f9e81-fbf1-42f2-a056-3474f9f16077",
+     "b95b3f18-49b5-4f37-a82e-57a6f0ce8396"
     ],
     "file_issue_count": 4,
     "category_prevalence": 10,
@@ -332,7 +332,7 @@
    }
   },
   {
-   "id": "c1897b0c-f4c3-40d2-9b0c-dbebe1de3236",
+   "id": "b95b3f18-49b5-4f37-a82e-57a6f0ce8396",
    "title": "Function is too long",
    "description": "`<anonymous>` is 69 lines long (limit 60)",
    "details": null,
@@ -358,19 +358,19 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-22T13:17:19.318184",
+   "timestamp": "2026-11-26T23:09:38.078525",
    "tags": [
-    "rule_engine",
+    "javascript",
     "size",
-    "javascript"
+    "rule_engine"
    ],
    "extra_data": {
     "language": "javascript",
     "priority_score": 49.0,
     "cross_references": [
-     "fc9d17a2-9b45-4658-8e35-8dd70e39d385",
-     "43a45520-6629-495c-b3c0-ed5411f0361a",
-     "d69fd3f4-aeda-4d16-9ded-3fe141b629e9"
+     "b6d4c7e4-adbe-4a4c-b31a-a4616a62f743",
+     "342f9e81-fbf1-42f2-a056-3474f9f16077",
+     "55d07d9f-e9c8-4d44-9f9b-415e930cea3a"
     ],
     "file_issue_count": 4,
     "category_prevalence": 10,
@@ -378,7 +378,7 @@
    }
   },
   {
-   "id": "4e025432-6914-43ea-b215-be290b9eb17c",
+   "id": "b970f2c3-1290-47b6-b155-42f20a73c075",
    "title": "File is too long",
    "description": "The file has 527 lines (limit 500)",
    "details": null,
@@ -404,11 +404,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-22T13:17:19.277188",
+   "timestamp": "2026-11-26T23:09:38.037634",
    "tags": [
-    "rule_engine",
+    "javascript",
     "size",
-    "javascript"
+    "rule_engine"
    ],
    "extra_data": {
     "language": "javascript",
@@ -419,7 +419,7 @@
    }
   },
   {
-   "id": "a6a26651-81fb-4e68-ac73-7206402384a0",
+   "id": "c11d1377-12c9-415a-8eef-16fbcc8b0cfd",
    "title": "File is too long",
    "description": "The file has 631 lines (limit 500)",
    "details": null,
@@ -445,11 +445,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-22T13:17:19.286952",
+   "timestamp": "2026-11-26T23:09:38.047488",
    "tags": [
-    "rule_engine",
+    "javascript",
     "size",
-    "javascript"
+    "rule_engine"
    ],
    "extra_data": {
     "language": "javascript",
@@ -460,7 +460,7 @@
    }
   },
   {
-   "id": "bc5acda0-42a8-42b3-97f6-4b4b76e92ee9",
+   "id": "4ffe7da3-3820-4724-ba27-771f84e55dd4",
    "title": "Error is caught and neither logged nor rethrown",
    "description": "The error is caught but not logged, rethrown or used",
    "details": null,
@@ -486,12 +486,12 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.618793",
+   "timestamp": "2026-11-26T23:09:38.381662",
    "tags": [
-    "logging",
-    "rule_engine",
+    "error_handling",
     "javascript",
-    "error_handling"
+    "rule_engine",
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -502,7 +502,7 @@
    }
   },
   {
-   "id": "7232c132-80ab-4ac6-af89-793664a8485d",
+   "id": "17cff3b5-210a-4f83-b2c1-f7ee959f1fa9",
    "title": "Line is too long",
    "description": "The line is 130 characters (limit 120)",
    "details": null,
@@ -528,20 +528,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-22T13:17:19.685079",
+   "timestamp": "2026-11-26T23:09:38.449460",
    "tags": [
+    "formatting",
     "rule_engine",
-    "javascript",
-    "formatting"
+    "javascript"
    ],
    "extra_data": {
     "language": "javascript",
     "priority_score": 37.0,
     "cross_references": [
-     "c426741b-7561-4145-aca1-eae345ad4e86",
-     "72605824-390e-4fe4-b0d5-5e4b7483d24c",
-     "a805d2e2-a34e-43c8-8264-7c789fde6066",
-     "d2da5fce-9300-487d-b4ee-8fc56dfceec0"
+     "8f259d09-3fff-4c58-95ca-d3ae3173e1b8",
+     "d74be59a-bc52-408f-82d2-a218042faefd",
+     "d4f78ddf-ce87-4481-8fad-d968c77ef59e",
+     "f3cfe02f-bc4c-4e23-9d0b-c4b521b50648"
     ],
     "file_issue_count": 6,
     "category_prevalence": 8,
@@ -549,7 +549,7 @@
    }
   },
   {
-   "id": "6a162607-0736-44ab-97e8-b1922a413e42",
+   "id": "ce32f820-2f45-4aeb-8765-f83e02b5715e",
    "title": "Commented-out code",
    "description": "A comment contains code",
    "details": null,
@@ -575,11 +575,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-22T13:17:19.702565",
+   "timestamp": "2026-11-26T23:09:38.467023",
    "tags": [
     "dead_code",
-    "rule_engine",
-    "javascript"
+    "javascript",
+    "rule_engine"
    ],
    "extra_data": {
     "language": "javascript",
@@ -590,7 +590,7 @@
    }
   },
   {
-   "id": "4ed2d4e3-2d35-4558-9500-c4dff71f4144",
+   "id": "864a0e61-23ad-4e65-9435-e7a3cc28c8b6",
    "title": "Commented-out code",
    "description": "A comment contains code (3 in this file, the first is shown)",
    "details": null,
@@ -616,11 +616,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-22T13:17:19.711750",
+   "timestamp": "2026-11-26T23:09:38.476263",
    "tags": [
     "dead_code",
-    "rule_engine",
-    "javascript"
+    "javascript",
+    "rule_engine"
    ],
    "extra_data": {
     "language": "javascript",
@@ -631,7 +631,7 @@
    }
   },
   {
-   "id": "1922f104-cf0d-45de-ab7c-94142e23e2ce",
+   "id": "e4327bc0-8063-4a2c-9510-df0e5e722010",
    "title": "Line is too long",
    "description": "The line is 134 characters (limit 120) (2 in this file, the first is shown)",
    "details": null,
@@ -657,11 +657,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-22T13:17:19.753045",
+   "timestamp": "2026-11-26T23:09:38.517205",
    "tags": [
+    "formatting",
     "rule_engine",
-    "javascript",
-    "formatting"
+    "javascript"
    ],
    "extra_data": {
     "language": "javascript",
@@ -672,7 +672,7 @@
    }
   },
   {
-   "id": "df5d8ca1-d754-4b77-b9e5-f502a82659f2",
+   "id": "89febc7f-13fa-4718-9197-762d8598be09",
    "title": "Line is too long",
    "description": "The line is 133 characters (limit 120) (2 in this file, the first is shown)",
    "details": null,
@@ -698,11 +698,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-22T13:17:19.770939",
+   "timestamp": "2026-11-26T23:09:38.535062",
    "tags": [
+    "formatting",
     "rule_engine",
-    "javascript",
-    "formatting"
+    "javascript"
    ],
    "extra_data": {
     "language": "javascript",
@@ -713,7 +713,7 @@
    }
   },
   {
-   "id": "f5bce50f-db03-4b9b-b520-e22917ef1ed5",
+   "id": "2bfdf6fa-e6cf-4b49-ae63-a740ca4fa891",
    "title": "Line is too long",
    "description": "The line is 122 characters (limit 120)",
    "details": null,
@@ -739,11 +739,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-22T13:17:19.775871",
+   "timestamp": "2026-11-26T23:09:38.540013",
    "tags": [
+    "formatting",
     "rule_engine",
-    "javascript",
-    "formatting"
+    "javascript"
    ],
    "extra_data": {
     "language": "javascript",
@@ -754,7 +754,7 @@
    }
   },
   {
-   "id": "14afcef5-22c8-47b2-aaf2-1973c6c61ccd",
+   "id": "f498575f-6f47-4907-84de-44438f17237f",
    "title": "Line is too long",
    "description": "The line is 131 characters (limit 120)",
    "details": null,
@@ -780,11 +780,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-22T13:17:19.805967",
+   "timestamp": "2026-11-26T23:09:38.569384",
    "tags": [
+    "formatting",
     "rule_engine",
-    "javascript",
-    "formatting"
+    "javascript"
    ],
    "extra_data": {
     "language": "javascript",
@@ -795,7 +795,7 @@
    }
   },
   {
-   "id": "489fea38-ef48-4be8-ab6a-86e80cd8bc2e",
+   "id": "68a4c8bb-c740-4d5a-ae3e-c84de9b842e5",
    "title": "Line is too long",
    "description": "The line is 131 characters (limit 120)",
    "details": null,
@@ -821,11 +821,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-22T13:17:19.849437",
+   "timestamp": "2026-11-26T23:09:38.612085",
    "tags": [
+    "formatting",
     "rule_engine",
-    "javascript",
-    "formatting"
+    "javascript"
    ],
    "extra_data": {
     "language": "javascript",
@@ -836,7 +836,7 @@
    }
   },
   {
-   "id": "fc9d17a2-9b45-4658-8e35-8dd70e39d385",
+   "id": "342f9e81-fbf1-42f2-a056-3474f9f16077",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output (3 in this file, the first is shown)",
    "details": null,
@@ -862,19 +862,19 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.637977",
+   "timestamp": "2026-11-26T23:09:38.401037",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
     "priority_score": 36.0,
     "cross_references": [
-     "43a45520-6629-495c-b3c0-ed5411f0361a",
-     "c1897b0c-f4c3-40d2-9b0c-dbebe1de3236",
-     "d69fd3f4-aeda-4d16-9ded-3fe141b629e9"
+     "b6d4c7e4-adbe-4a4c-b31a-a4616a62f743",
+     "b95b3f18-49b5-4f37-a82e-57a6f0ce8396",
+     "55d07d9f-e9c8-4d44-9f9b-415e930cea3a"
     ],
     "file_issue_count": 4,
     "category_prevalence": 28,
@@ -882,7 +882,7 @@
    }
   },
   {
-   "id": "aa439b87-e984-49bb-86ba-a3bbe5ec7468",
+   "id": "2deb1783-7a85-4b44-9a36-4d3b30cfaa86",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output",
    "details": null,
@@ -908,11 +908,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.621904",
+   "timestamp": "2026-11-26T23:09:38.384803",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -923,7 +923,7 @@
    }
   },
   {
-   "id": "203f9a24-73d5-4af1-9d34-54566d69c7cc",
+   "id": "ba3358de-f6ad-4b46-928a-e6a1395943d7",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output",
    "details": null,
@@ -949,11 +949,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.622223",
+   "timestamp": "2026-11-26T23:09:38.385120",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -964,7 +964,7 @@
    }
   },
   {
-   "id": "084fba47-8b7f-41ec-b5a7-d761ce04530d",
+   "id": "ba84a128-73b6-4a94-8ab4-fbaa055b777e",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output",
    "details": null,
@@ -990,11 +990,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.622965",
+   "timestamp": "2026-11-26T23:09:38.385886",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -1005,7 +1005,7 @@
    }
   },
   {
-   "id": "f17724bb-7b87-4cc3-b12c-e03db56f5162",
+   "id": "685a20aa-82b9-43dd-8320-93a6deac393e",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output",
    "details": null,
@@ -1031,11 +1031,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.623389",
+   "timestamp": "2026-11-26T23:09:38.386441",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -1046,7 +1046,7 @@
    }
   },
   {
-   "id": "27d62d11-d51b-4ee9-9bcb-6d3f278846c3",
+   "id": "f6e23407-e9d9-4f81-9806-fe8ef83532f9",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output",
    "details": null,
@@ -1072,11 +1072,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.623981",
+   "timestamp": "2026-11-26T23:09:38.387069",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -1087,7 +1087,7 @@
    }
   },
   {
-   "id": "df5d352c-c35b-4855-b7ab-4d2d7ed61140",
+   "id": "4ff1c247-30b8-4f77-81eb-5e67959f53cf",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output",
    "details": null,
@@ -1113,11 +1113,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.624328",
+   "timestamp": "2026-11-26T23:09:38.387425",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -1128,7 +1128,7 @@
    }
   },
   {
-   "id": "ac3d002a-c886-4cfd-87db-8df55fcecd4d",
+   "id": "51ecab5a-3762-4515-b723-4ea0ef8f1d0c",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output",
    "details": null,
@@ -1154,11 +1154,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.624655",
+   "timestamp": "2026-11-26T23:09:38.387750",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -1169,7 +1169,7 @@
    }
   },
   {
-   "id": "68100fc4-98b8-43d4-9a9b-5748d19c3b44",
+   "id": "3499f0f7-8c95-4707-9fdc-bcfe27168fb2",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output",
    "details": null,
@@ -1195,11 +1195,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.625329",
+   "timestamp": "2026-11-26T23:09:38.388419",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -1210,7 +1210,7 @@
    }
   },
   {
-   "id": "fb69b3e4-10d0-44de-92da-aa9d736fa71c",
+   "id": "09c6877e-2d05-4d87-96d2-985fd02a9129",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output",
    "details": null,
@@ -1236,11 +1236,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.625724",
+   "timestamp": "2026-11-26T23:09:38.388789",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -1251,7 +1251,7 @@
    }
   },
   {
-   "id": "0c3b1b3c-7838-4f5f-8cf3-74a74a52dd61",
+   "id": "9d96e5e2-a72a-4434-b281-c850e1d76c52",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output (5 in this file, the first is shown)",
    "details": null,
@@ -1277,11 +1277,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.626041",
+   "timestamp": "2026-11-26T23:09:38.389102",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -1292,7 +1292,7 @@
    }
   },
   {
-   "id": "1377ac5c-58ae-492d-899d-252294afe49a",
+   "id": "6fcfe6ed-e0f8-4769-a8b7-d497cf6e2331",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output (2 in this file, the first is shown)",
    "details": null,
@@ -1318,11 +1318,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.626724",
+   "timestamp": "2026-11-26T23:09:38.389713",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -1333,7 +1333,7 @@
    }
   },
   {
-   "id": "aa31127b-b111-48af-a56a-4f48cf297a2f",
+   "id": "88a7b771-73b4-4a1b-bed8-3beb332e216c",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output",
    "details": null,
@@ -1359,11 +1359,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.627282",
+   "timestamp": "2026-11-26T23:09:38.390235",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -1374,7 +1374,7 @@
    }
   },
   {
-   "id": "696075b7-c64c-4476-9946-4df9fcb356f0",
+   "id": "59dbc50e-f346-4579-8d54-1019017b470b",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output (2 in this file, the first is shown)",
    "details": null,
@@ -1400,11 +1400,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.627673",
+   "timestamp": "2026-11-26T23:09:38.390605",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -1415,7 +1415,7 @@
    }
   },
   {
-   "id": "477eb84c-5d06-4569-842a-b7eae9787597",
+   "id": "ac771f4e-0dea-446d-b584-dd05393d0ab3",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output",
    "details": null,
@@ -1441,11 +1441,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.628272",
+   "timestamp": "2026-11-26T23:09:38.391178",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -1456,7 +1456,7 @@
    }
   },
   {
-   "id": "45a7f784-37c6-47cf-921b-71f47f956462",
+   "id": "68890334-d70f-40fe-95d1-abff0716f292",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output",
    "details": null,
@@ -1482,11 +1482,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.628972",
+   "timestamp": "2026-11-26T23:09:38.391819",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -1497,7 +1497,7 @@
    }
   },
   {
-   "id": "fee26ae7-708d-429e-835c-3a6fa1ca39a1",
+   "id": "4e825bf1-9053-4814-bf9b-64dfa78ad45a",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output",
    "details": null,
@@ -1523,11 +1523,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.629610",
+   "timestamp": "2026-11-26T23:09:38.392360",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -1538,7 +1538,7 @@
    }
   },
   {
-   "id": "a173faa7-92c5-49ac-9e8a-daf1be70ea46",
+   "id": "799c9d26-b925-4092-9199-298300bdf148",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output",
    "details": null,
@@ -1564,11 +1564,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.630075",
+   "timestamp": "2026-11-26T23:09:38.393089",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -1579,7 +1579,7 @@
    }
   },
   {
-   "id": "338343ea-4c36-432a-b2cc-f32f5bebbdb7",
+   "id": "76692467-0126-479f-ae0b-0391b461c655",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output",
    "details": null,
@@ -1605,11 +1605,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.630429",
+   "timestamp": "2026-11-26T23:09:38.393471",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -1620,7 +1620,7 @@
    }
   },
   {
-   "id": "79a49ffd-7945-4efd-bf38-1f189d37de47",
+   "id": "cc289957-07f7-4b92-acef-bc30e288ed46",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output",
    "details": null,
@@ -1646,11 +1646,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.630684",
+   "timestamp": "2026-11-26T23:09:38.393727",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -1661,7 +1661,7 @@
    }
   },
   {
-   "id": "6485ab15-6e5f-40f2-88e8-09ee56b76b43",
+   "id": "d03ff62e-d44e-4b8e-bd4e-415fb3b871be",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output",
    "details": null,
@@ -1687,11 +1687,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.631711",
+   "timestamp": "2026-11-26T23:09:38.394750",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -1702,7 +1702,7 @@
    }
   },
   {
-   "id": "ddb4c8b8-219b-49b2-a9c9-2e0ba2feb479",
+   "id": "07bb3cad-9dec-4950-aff0-db06bae00ca7",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output",
    "details": null,
@@ -1728,11 +1728,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.632203",
+   "timestamp": "2026-11-26T23:09:38.395238",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -1743,7 +1743,7 @@
    }
   },
   {
-   "id": "7dc45bbd-08da-47d3-8b80-04e31654b12c",
+   "id": "5bd5c91a-d953-434e-be1c-e7c408ace0b4",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output",
    "details": null,
@@ -1769,11 +1769,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.633483",
+   "timestamp": "2026-11-26T23:09:38.396528",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -1784,7 +1784,7 @@
    }
   },
   {
-   "id": "8a5bbaf9-a61a-4e87-8263-bb8a1a87c0e3",
+   "id": "8715b3fe-05ae-438d-8379-7804f176a451",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output",
    "details": null,
@@ -1810,11 +1810,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.633713",
+   "timestamp": "2026-11-26T23:09:38.396758",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -1825,7 +1825,7 @@
    }
   },
   {
-   "id": "25229d6c-e85a-4bf2-bc20-1f43d79ac1ad",
+   "id": "412e6ad0-2238-40f3-8911-73a326e79604",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output",
    "details": null,
@@ -1851,11 +1851,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.634436",
+   "timestamp": "2026-11-26T23:09:38.397494",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -1866,7 +1866,7 @@
    }
   },
   {
-   "id": "96364d20-3d7b-4a46-b8bc-bb0e0370fcd0",
+   "id": "54728754-40e9-40ff-afca-672f9ed2666b",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output (2 in this file, the first is shown)",
    "details": null,
@@ -1892,11 +1892,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.635388",
+   "timestamp": "2026-11-26T23:09:38.398432",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -1907,7 +1907,7 @@
    }
   },
   {
-   "id": "a659589d-4bac-4096-986e-33ce8397e981",
+   "id": "4d5717ec-d0b7-4e41-8eb6-a19a4ba87947",
    "title": "Console output instead of a logger",
    "description": "`console.log` is used for output",
    "details": null,
@@ -1933,11 +1933,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-22T13:17:19.636299",
+   "timestamp": "2026-11-26T23:09:38.399300",
    "tags": [
-    "logging",
+    "javascript",
     "rule_engine",
-    "javascript"
+    "logging"
    ],
    "extra_data": {
     "language": "javascript",
@@ -1951,48 +1951,52 @@
  "analysis_metrics": [
   {
    "analyzer_name": "robustness",
-   "execution_time_seconds": 0.1443631649017334,
+   "execution_time_seconds": 0.14436101913452148,
    "files_analyzed": 142,
    "findings_count": 0,
    "error_count": 0,
    "warnings_count": 0,
    "success": true,
-   "error_message": null
+   "error_message": null,
+   "capped_by_severity": {}
   },
   {
    "analyzer_name": "maintainability",
-   "execution_time_seconds": 0.3459751605987549,
+   "execution_time_seconds": 0.3482520580291748,
    "files_analyzed": 142,
    "findings_count": 10,
    "error_count": 0,
    "warnings_count": 0,
    "success": true,
-   "error_message": null
+   "error_message": null,
+   "capped_by_severity": {}
   },
   {
    "analyzer_name": "observability",
-   "execution_time_seconds": 0.07098603248596191,
+   "execution_time_seconds": 0.07257533073425293,
    "files_analyzed": 142,
    "findings_count": 28,
    "error_count": 0,
    "warnings_count": 0,
    "success": true,
-   "error_message": null
+   "error_message": null,
+   "capped_by_severity": {}
   },
   {
    "analyzer_name": "readability",
-   "execution_time_seconds": 0.17559123039245605,
+   "execution_time_seconds": 0.1739940643310547,
    "files_analyzed": 142,
    "findings_count": 8,
    "error_count": 0,
    "warnings_count": 0,
    "success": true,
-   "error_message": null
+   "error_message": null,
+   "capped_by_severity": {}
   }
  ],
- "total_execution_time": 0.7378718852996826,
+ "total_execution_time": 0.7401249408721924,
  "summary": {
-  "timestamp": "2026-11-22T13:17:19.857614",
+  "timestamp": "2026-11-26T23:09:38.620295",
   "target_path": "https://github.com/expressjs/express",
   "analysis_duration": 0.0,
   "total_findings": 46,
@@ -2063,16 +2067,30 @@
   "quick_wins": 0,
   "compliance_issues": {},
   "analyzer_performance": {
-   "total_execution_time": 0.7369155883789062,
-   "average_time_per_analyzer": 0.18422889709472656,
+   "total_execution_time": 0.7391824722290039,
+   "average_time_per_analyzer": 0.18479561805725098,
    "fastest_analyzer": "observability",
    "slowest_analyzer": "maintainability",
    "success_rate": 1.0
   },
   "trend_analysis": {
    "note": "Trend analysis requires historical data",
-   "current_timestamp": "2026-11-22T13:17:19.119868",
+   "current_timestamp": "2026-11-26T23:09:37.880310",
    "baseline_established": true
+  },
+  "analyzed_lines": 18004,
+  "final_score": 9.62,
+  "score": {
+   "method": "density",
+   "final_score": 9.62,
+   "analyzed_lines": 18004,
+   "density": 0.208,
+   "analyzers": {
+    "maintainability": 9.8,
+    "observability": 9.85,
+    "readability": 9.96,
+    "robustness": 10.0
+   }
   }
  },
  "compliance_status": [],
@@ -2090,5 +2108,5 @@
   "include_low_confidence": false,
   "max_findings_per_analyzer": 1000
  },
- "gallery_note": "Showing the 46 most severe of 46 findings; the summary counts all of them."
+ "gallery_note": "Showing the 46 most severe of 46 listed findings; the score (summary.score) counts all of them."
 }

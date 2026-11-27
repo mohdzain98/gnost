@@ -116,7 +116,11 @@ def test_the_score_card_reads_a_report() -> None:
     )
     card = ScoreCard.from_report(report)
     assert [a.name for a in card.analyzers] == ["readability", "robustness"]  # sorted
-    assert card.final_score == 7.0
+    assert card.method == "density" and card.lines is None
+    assert (
+        card.final_score == 8.72
+    )  # weight 0.9 in fewer than 1,000 lines: 10 - 2 ln 1.9
+    assert ScoreCard.from_report(report, "average").final_score == 7.0  # risk_score 30
     clean = next(a for a in card.analyzers if a.name == "robustness")
     assert clean.score == 10.0 and clean.findings == 0
     assert (
@@ -124,6 +128,84 @@ def test_the_score_card_reads_a_report() -> None:
         and ScoreCard.style(6.5) == "yellow"
         and ScoreCard.style(3) == "red"
     )
+
+
+def _scored(findings: List[UnifiedFinding], lines: Optional[int]) -> ScoreCard:
+    return ScoreCard.from_report(
+        ConsolidatedReport(
+            findings=findings,
+            analysis_metrics=[AnalysisMetrics("readability", 1.0, 3, len(findings))],
+            summary={"analyzed_lines": lines, "risk_score": 30.0},
+        )
+    )
+
+
+def test_the_density_curve() -> None:
+    assert ScoreCard.density_to_score(0) == 10.0
+    assert ScoreCard.density_to_score(1) == 8.61
+    assert ScoreCard.density_to_score(4) == 6.78
+    assert ScoreCard.density_to_score(10_000) == 0.0  # floored, never negative
+    assert ScoreCard.density_to_score(-1) == 10.0
+
+
+def test_the_number_of_findings_counts() -> None:
+    one = _scored([finding(severity=SeverityLevel.INFO)], 5000)
+    many = _scored(
+        [finding(severity=SeverityLevel.INFO, line=i) for i in range(200)], 5000
+    )
+    assert (
+        many.final_score < one.final_score
+    )  # the "average" formula scored them the same
+    critical = _scored([finding(severity=SeverityLevel.CRITICAL)], 5000)
+    assert (
+        many.final_score < critical.final_score
+    )  # 200 info findings weigh more than one critical
+
+
+def test_the_project_size_counts() -> None:
+    found = [finding(line=i) for i in range(20)]
+    assert _scored(found, 50_000).final_score > _scored(found, 5_000).final_score
+    assert _scored(found, 50_000).density == 0.12  # 20 x 0.3 per 50 KLOC
+
+
+def test_a_small_project_counts_as_a_thousand_lines() -> None:
+    found = [finding()]
+    assert _scored(found, 20).final_score == _scored(found, 1000).final_score
+    assert _scored(found, None).final_score == _scored(found, 1000).final_score
+
+
+def test_the_analyzer_and_final_scores_use_the_same_lines() -> None:
+    card = _scored([finding(), finding(analyzer="robustness", line=2)], 2000)
+    readability = next(a for a in card.analyzers if a.name == "readability")
+    assert readability.score == ScoreCard.density_to_score(0.15)
+    assert card.final_score == ScoreCard.density_to_score(0.3)
+    assert card.to_dict() == {
+        "method": "density",
+        "final_score": card.final_score,
+        "analyzed_lines": 2000,
+        "density": 0.3,
+        "analyzers": {"readability": readability.score},
+    }
+
+
+def test_count_lines_skips_blank_lines_and_missing_files(tmp_path: Path) -> None:
+    source = tmp_path / "a.py"
+    source.write_text("x = 1\n\n   \ny = 2\n", encoding="utf-8")
+    assert ScoreCard.count_lines([str(source), str(tmp_path / "gone.py")]) == 2
+
+
+def test_the_score_method_comes_from_the_config(tmp_path: Path) -> None:
+    from gnost.config.settings import ConfigError
+
+    config = GnostConfig()
+    _validate({"analyze": {"score": "average"}}, config)
+    options = CiOptions.from_args(
+        argparse.Namespace(), config, OutputLayout(str(tmp_path))
+    )
+    assert options.score_method == "average"
+    assert CiOptions().score_method == "density"
+    with pytest.raises(ConfigError):
+        _validate({"analyze": {"score": "median"}}, GnostConfig())
 
 
 # ------------------------------------------------------------ path resolving
@@ -417,14 +499,14 @@ def test_a_full_run_writes_the_baseline_then_gates_on_new_findings(
     assert len(first.report.findings) == 2  # no baseline yet, everything shows
     assert os.path.isfile(base) and os.path.isfile(sarif)
 
-    options = CiOptions(baseline=base, fail_on_new=True, fail_under=8.0)
+    options = CiOptions(baseline=base, fail_on_new=True, fail_under=9.5)
     same = CiRun(options, ROOT, FILES).process(_report(list(today.findings)))
     assert same.new_findings == 0 and same.known_findings == 2
     assert (
-        same.report.findings == [] and same.card.final_score == 7.0
-    )  # the score covers everything
+        same.report.findings == [] and same.card.final_score == 9.06
+    )  # the score covers everything: two medium findings, 10 - 2 ln 1.6
     assert same.gate.messages == [
-        "score 7.00 is below the required 8.00 (--fail-under)"
+        "score 9.06 is below the required 9.50 (--fail-under)"
     ]
 
     grown = CiRun(options, ROOT, FILES).process(
@@ -445,3 +527,79 @@ def test_paths_behind_a_symlinked_folder_still_resolve(tmp_path: Path) -> None:
     resolver_ = PathResolver([str(real / "src" / "a.py")], str(link))
     assert resolver_.resolve(str(link / "src" / "a.py")) == "src/a.py"
     assert resolver_.resolve(str(real / "src" / "a.py")) == "src/a.py"
+
+
+def test_the_html_report_shows_the_card_scores(tmp_path: Path) -> None:
+    from gnost.reporters.analysis_html import render_analysis_html
+
+    out = tmp_path / "report.html"
+    summary = {
+        "final_score": 6.78,
+        "score": {
+            "method": "density",
+            "final_score": 6.78,
+            "analyzed_lines": 12345,
+            "density": 4.0,
+            "analyzers": {"readability": 7.25},
+        },
+    }
+    render_analysis_html(
+        {
+            "findings": [],
+            "summary": summary,
+            "analysis_metrics": [{"analyzer_name": "readability"}],
+        },
+        str(out),
+    )
+    page = out.read_text(encoding="utf-8")
+    assert "6.78 / 10.00" in page and 'class="score bad"' not in page
+    assert (
+        'class="score okay"' in page
+    )  # the colour class is filled in, not "6.78_CLASS"
+    assert "<td>7.25</td>" in page
+    assert "<h3>Finding Density</h3>\n          <p>4.00</p>" in page
+    assert "Weighted findings per 1,000 lines (12,345 lines analyzed)" in page
+
+
+def test_the_html_report_has_a_light_theme(tmp_path: Path) -> None:
+    from gnost.reporters.analysis_html import render_analysis_html
+
+    out = tmp_path / "report.html"
+    render_analysis_html({"findings": [], "summary": {}}, str(out))
+    page = out.read_text(encoding="utf-8")
+    assert '<html lang="en" data-theme="dark">' in page
+    assert ':root[data-theme="light"] {' in page  # braces unescaped
+    assert 'id="themeBtn"' in page
+    assert "Not computed with score = average" in page  # no density in this report
+    assert 'localStorage.getItem("gnost-theme")' in page  # shared with flow.html
+
+
+def test_findings_left_out_by_max_findings_still_count() -> None:
+    metrics = AnalysisMetrics("readability", 1.0, 3, 1)
+    metrics.capped_by_severity = {"low": 30}
+    report = ConsolidatedReport(
+        findings=[finding()],
+        analysis_metrics=[metrics],
+        summary={"analyzed_lines": 1000},
+    )
+    card = ScoreCard.from_report(report)
+    assert card.density == 3.3  # 0.3 listed + 30 x 0.1 left out
+    assert (
+        card.analyzers[0].score == card.final_score == ScoreCard.density_to_score(3.3)
+    )
+
+
+def test_the_engine_reports_what_the_cap_left_out() -> None:
+    from gnost.analysis.core.engine import UnifiedAnalysisEngine
+    from gnost.analysis.core.models import AnalysisConfiguration
+
+    found = [finding(severity=SeverityLevel.LOW, line=i) for i in range(5)]
+    found.append(finding(severity=SeverityLevel.HIGH, line=99))
+    kept, left_out = UnifiedAnalysisEngine._cap(
+        found, AnalysisConfiguration(max_findings_per_analyzer=2)
+    )
+    assert [f.severity for f in kept] == [SeverityLevel.HIGH, SeverityLevel.LOW]
+    assert len(left_out) == 4 and {f.severity for f in left_out} == {SeverityLevel.LOW}
+    assert UnifiedAnalysisEngine._cap(
+        found, AnalysisConfiguration(max_findings_per_analyzer=0)
+    ) == (found, [])

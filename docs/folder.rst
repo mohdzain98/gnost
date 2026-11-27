@@ -1,4 +1,4 @@
-The GNOST folder
+The GNOST Folder
 ================
 
 Everything GNOST writes goes into one folder in your project, ``.gnost/`` (change it with
@@ -27,6 +27,8 @@ its layout and its JSON are treated as an interface.
      - ``changes.md`` and ``changes.json`` from ``gnost changes``.
    * - ``baseline.json``
      - Known findings, so CI reports only new ones (see :doc:`ci`).
+   * - ``badge.svg``
+     - The final score as a README badge, from ``gnost analyze --badge`` (see :doc:`scoring`).
    * - ``.gitignore``
      - Ignores ``*.html``: those pages are large and can be rebuilt.
 

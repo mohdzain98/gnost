@@ -32,6 +32,7 @@ class CiOptions:
     baseline: Optional[str] = None  # file to compare against
     write_baseline: Optional[str] = None  # file to create from today's findings
     sarif: Optional[str] = None  # SARIF file to write
+    score_method: str = ScoreCard.DENSITY  # "average" is the 0.7 formula
 
     @classmethod
     def from_args(
@@ -56,6 +57,7 @@ class CiOptions:
                 getattr(args, "write_baseline", None), layout.baseline_json
             ),
             sarif=cls._path(getattr(args, "sarif", None), layout.analysis_sarif),
+            score_method=config.get("analyze", "score", ScoreCard.DENSITY),
         )
 
     def problem(self) -> Optional[str]:
@@ -130,7 +132,7 @@ class CiRun:
             )
             notes.append(f"SARIF written to {opts.sarif}")
 
-        card = ScoreCard.from_report(report)
+        card = ScoreCard.from_report(report, opts.score_method)
         gate = QualityGate(opts.fail_under, opts.fail_on_new).evaluate(
             card.final_score, new
         )

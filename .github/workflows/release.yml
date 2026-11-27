@@ -210,12 +210,22 @@ jobs:
           NPM_VERSION: ${{ needs.meta.outputs.npm }}
         run: |
           TAG=latest; [ "$IS_RC" = "true" ] && TAG=next
+          published() { npm view "$1@$NPM_VERSION" version >/dev/null 2>&1; }
           for d in npm-out/@gnost-cli/* npm-out/gnost-cli; do
             NAME="$(node -p "require('./$d/package.json').name")"
-            if npm view "$NAME@$NPM_VERSION" version >/dev/null 2>&1; then
+            if published "$NAME"; then
               echo "$NAME@$NPM_VERSION already published, skipping"; continue
             fi
-            (cd "$d" && npm publish --provenance --access public --tag "$TAG")
+            # Sigstore's transparency log can be slow: npm then retries the entry and gets
+            # "409 an equivalent entry already exists" although the first try was recorded.
+            # Retry, and count a version that did reach the registry as published.
+            for try in 1 2 3; do
+              if (cd "$d" && npm publish --provenance --access public --tag "$TAG"); then break; fi
+              echo "::warning::npm publish of $NAME failed (try $try of 3); checking the registry"
+              sleep 60
+              if published "$NAME"; then echo "$NAME@$NPM_VERSION is on the registry after all"; break; fi
+              if [ "$try" = 3 ]; then echo "::error::could not publish $NAME@$NPM_VERSION"; exit 1; fi
+            done
           done
 
   smoke-maven:

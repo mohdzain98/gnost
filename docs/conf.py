@@ -28,7 +28,7 @@ html_static_path = ["_static"]
 html_css_files = ["custom.css"]
 html_theme_options = {
     "navigation_depth": 4,
-    "collapse_navigation": False,
-    "sticky_navigation": True,
+    "collapse_navigation": False,  # every page can be expanded with its + button
+    "sticky_navigation": False,  # the sidebar does not follow the page while scrolling
     "includehidden": True,
 }
