@@ -242,6 +242,7 @@ Use dedicated pages for details:
    install
    commands
    ci
+   troubleshooting
    changes
    agents
    onboard
