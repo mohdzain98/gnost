@@ -350,7 +350,9 @@ def test_line_deltas_for_text_rename_and_binary_files(tmp_path: Path) -> None:
 
     payload = {entry["path"]: entry for entry in report.to_dict()["files"]}
     assert payload["keep.py"]["added"] == 2 and payload["keep.py"]["removed"] == 1
-    assert payload["blob.bin"]["added"] is None and payload["blob.bin"]["removed"] is None
+    assert (
+        payload["blob.bin"]["added"] is None and payload["blob.bin"]["removed"] is None
+    )
     assert "binary" not in payload["blob.bin"]
 
     md = MarkdownRenderer().render(report)
