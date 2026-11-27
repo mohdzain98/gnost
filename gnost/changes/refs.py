@@ -6,8 +6,8 @@ starts at the commit where HEAD split from BASE. `DiffReader` lists the changed 
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import List, Optional
+from dataclasses import dataclass, replace
+from typing import Dict, List, Optional, Tuple
 
 from gnost.vcs.git import GitError, GitRepository
 
@@ -75,8 +75,9 @@ class ChangedFile:
     path: str  # relative to the scanned folder; the new name for a rename
     status: str  # added, modified, deleted or renamed
     old_path: Optional[str] = None  # the previous name of a renamed file
-    added: Optional[int] = None  # lines added; None for binary files
-    removed: Optional[int] = None  # lines removed; None for binary files
+    added: Optional[int] = None  # lines added; None when binary or unknown
+    removed: Optional[int] = None  # lines removed; None when binary or unknown
+    binary: bool = False  # True only when git --numstat reported `-`
 
 
 class DiffReader:
@@ -87,37 +88,34 @@ class DiffReader:
 
     def read(self, refs: RefRange, scan_root: str) -> List[ChangedFile]:
         """Changed files under scan_root, sorted by path, with paths relative to scan_root."""
-        args = ["diff", "--name-status", "-M", "--relative"]
+        args = ["diff", "--name-status", "-z", "-M", "--relative"]
         # --relative limits the list to scan_root and makes the paths relative to it
         text = self.repo.run([*args, refs.base_commit, refs.head_commit], cwd=scan_root)
         stats = self._numstat(refs, scan_root)
         files = []
-        for line in text.splitlines():
-            item = self._parse(line)
-            if item is None:
-                continue
-            added, removed = stats.get(item.path, (None, None))
-            files.append(
-                ChangedFile(
-                    path=item.path,
-                    status=item.status,
-                    old_path=item.old_path,
-                    added=added,
-                    removed=removed,
-                )
-            )
+        for item in self._parse_z(text):
+            added, removed, binary = stats.get(item.path, (None, None, False))
+            files.append(replace(item, added=added, removed=removed, binary=binary))
         return sorted(files, key=lambda f: f.path)
 
     def _numstat(
         self, refs: RefRange, scan_root: str
-    ) -> dict[str, tuple[Optional[int], Optional[int]]]:
-        """Parse `git diff --numstat -z -M --relative` into {path: (added, removed)}."""
+    ) -> Dict[str, Tuple[Optional[int], Optional[int], bool]]:
+        """Parse `git diff --numstat -z -M --relative` into {path: (added, removed, binary)}."""
         text = self.repo.run(
-            ["diff", "--numstat", "-z", "-M", "--relative", refs.base_commit, refs.head_commit],
+            [
+                "diff",
+                "--numstat",
+                "-z",
+                "-M",
+                "--relative",
+                refs.base_commit,
+                refs.head_commit,
+            ],
             cwd=scan_root,
         )
         tokens = text.split("\0")
-        out: dict[str, tuple[Optional[int], Optional[int]]] = {}
+        out: Dict[str, Tuple[Optional[int], Optional[int], bool]] = {}
         i = 0
         while i < len(tokens):
             tok = tokens[i]
@@ -132,10 +130,41 @@ class DiffReader:
                     i += 2
                 else:
                     continue
+            binary = added_s == "-" or removed_s == "-"
             added = None if added_s == "-" else int(added_s)
             removed = None if removed_s == "-" else int(removed_s)
-            out[path_s] = (added, removed)
+            out[path_s] = (added, removed, binary)
         return out
+
+    @staticmethod
+    def _parse_z(text: str) -> List[ChangedFile]:
+        """Parse NUL-delimited `git diff --name-status -z -M` output."""
+        tokens = text.split("\0")
+        items: List[ChangedFile] = []
+        i = 0
+        while i < len(tokens):
+            tok = tokens[i]
+            i += 1
+            if not tok:
+                continue
+            code = tok[:1]
+            status = STATUS_NAMES.get(code)
+            if code in ("R", "C"):
+                if i + 1 >= len(tokens):
+                    break
+                old_path, new_path = tokens[i], tokens[i + 1]
+                i += 2
+                if status is not None:
+                    old = old_path if status == "renamed" else None
+                    items.append(ChangedFile(new_path, status, old))
+            else:
+                if i >= len(tokens):
+                    break
+                path = tokens[i]
+                i += 1
+                if status is not None:
+                    items.append(ChangedFile(path, status))
+        return items
 
     @staticmethod
     def _parse(line: str) -> Optional[ChangedFile]:

@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from typing import Iterable, List
 
+from gnost.changes.refs import ChangedFile
 from gnost.changes.report import ChangeReport
 from gnost.utils.footer import Footer
 
@@ -16,9 +17,12 @@ LIST_LIMIT = 15
 ICONS = {"added": "A", "modified": "M", "deleted": "D", "renamed": "R"}
 
 
-def _line_delta(f: "ChangedFile") -> str:
-    if f.added is None or f.removed is None:
+def _line_delta(f: ChangedFile) -> str:
+    """Format a file's line delta, `binary` when marked binary, or empty if unknown."""
+    if f.binary:
         return " (binary)"
+    if f.added is None or f.removed is None:
+        return ""
     return f" (+{f.added} -{f.removed})"
 
 

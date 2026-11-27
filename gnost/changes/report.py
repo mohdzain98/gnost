@@ -120,7 +120,10 @@ class ChangeReport:
                 "head_commit": self.head_commit,
             },
             "counts": self.counts,
-            "files": [asdict(f) for f in self.files],
+            "files": [
+                {k: v for k, v in asdict(f).items() if k != "binary"}
+                for f in self.files
+            ],
             "blast_radius": {
                 "depth": self.depth,
                 "affected": [asdict(a) for a in self.affected],
