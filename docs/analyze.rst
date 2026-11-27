@@ -193,6 +193,8 @@ findings more easily. :doc:`scoring` has the weights, the curve, a worked exampl
 CI options
 ----------
 
+``--badge [FILE]`` writes the final score as a README badge (``.gnost/badge.svg``); see :doc:`scoring`.
+
 ``--fail-under SCORE``, ``--baseline`` / ``--write-baseline`` / ``--fail-on-new`` and ``--sarif`` make
 ``analyze`` usable as a quality gate and a code scanning source. See :doc:`ci`.
 

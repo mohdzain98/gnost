@@ -237,6 +237,75 @@ Any system that runs containers can use the same image:
 The command exits with code 3 when the gate fails, which every CI system treats as a failed job. If
 ``pip`` is available, ``pip install gnost`` and ``gnost analyze . --fail-under 7.5`` does the same.
 
+Inside a CI job that already runs *in* the image (GitLab, Jenkins below), two things differ from
+``docker run``: the image's entrypoint is ``gnost``, so set it to empty and call ``gnost`` yourself, and git
+only trusts ``/repo`` by default, so allow the checkout folder (the ``GIT_CONFIG_*`` variables below do that
+without writing a config file). Pin the image to a version (``:0.7.1``) so the score does not change under you.
+
+GitLab CI
+~~~~~~~~~
+
+.. code-block:: yaml
+
+   gnost:
+     image:
+       name: ghcr.io/mohdzain98/gnost:0.7.1
+       entrypoint: [""]
+     variables:
+       GIT_DEPTH: "0"                     # full history, for hotspots and `gnost changes`
+       GIT_CONFIG_COUNT: "1"
+       GIT_CONFIG_KEY_0: safe.directory
+       GIT_CONFIG_VALUE_0: "*"
+     rules:
+       - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+     script:
+       - gnost analyze . --fail-under 7.5 --no-progress -o
+       - gnost changes "origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" --format markdown | tee gnost-changes.md
+     artifacts:
+       when: always
+       paths: [.gnost/analysis/, gnost-changes.md]
+
+The job runs on merge requests; ``gnost changes`` compares the merge request with its target branch, and the
+report is kept as an artifact (post it as a merge request note with your own token if you want a comment).
+Exit code 3 fails the job when the score is below ``--fail-under``.
+
+Jenkins
+~~~~~~~
+
+A declarative pipeline with the Docker Pipeline plugin:
+
+.. code-block:: groovy
+
+   pipeline {
+     agent {
+       docker {
+         image 'ghcr.io/mohdzain98/gnost:0.7.1'
+         args '--entrypoint=""'
+       }
+     }
+     environment {
+       GIT_CONFIG_COUNT = '1'
+       GIT_CONFIG_KEY_0 = 'safe.directory'
+       GIT_CONFIG_VALUE_0 = '*'
+     }
+     stages {
+       stage('GNOST') {
+         steps {
+           sh 'gnost analyze . --fail-under 7.5 --no-progress -o --sarif'
+         }
+       }
+     }
+     post {
+       always {
+         archiveArtifacts artifacts: '.gnost/analysis/**', allowEmptyArchive: true
+         // with the Warnings Next Generation plugin, show the findings in Jenkins:
+         // recordIssues tools: [sarif(pattern: '.gnost/analysis/analysis.sarif')]
+       }
+     }
+   }
+
+Without Docker on the agent, install it with ``pip install gnost`` (Python 3.9+) in a ``sh`` step instead.
+
 Maven
 -----
 
@@ -248,3 +317,27 @@ The Maven plugin passes the same options to the ``analyze`` goal:
    mvn gnost:analyze -Dgnost.baseline=true -Dgnost.failOnNew=true -Dgnost.sarif=true
 
 ``true`` means the default file in ``.gnost/``; give a path to use another one.
+
+Gradle
+------
+
+There is no Gradle plugin yet. Run GNOST from a task with whatever the build machine has: Node (``npx``,
+which downloads the ``gnost-cli`` binary), Python (``uvx`` or ``pipx``), or Docker. In ``build.gradle.kts``:
+
+.. code-block:: kotlin
+
+   tasks.register<Exec>("gnostOnboard") {
+       group = "documentation"
+       description = "Write the GNOST onboarding guide to .gnost/"
+       commandLine("npx", "--yes", "gnost-cli", "onboard", ".")
+   }
+
+   tasks.register<Exec>("gnostAnalyze") {
+       group = "verification"
+       description = "GNOST quality gate"
+       commandLine("npx", "--yes", "gnost-cli", "analyze", ".", "--fail-under", "7.5", "--no-progress")
+   }
+
+Replace ``"npx", "--yes", "gnost-cli"`` with ``"uvx", "gnost"`` to use Python instead. A failed gate (exit code
+3) fails the task, and so the build when another task depends on it. On CI, the GitHub Action or the Docker
+image above are the simplest choice for Gradle projects too.

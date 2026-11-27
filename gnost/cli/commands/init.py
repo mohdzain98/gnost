@@ -102,6 +102,7 @@ exclude_authors = [{authors}]   # patterns; bots do not count as people
 # languages = ["python", "javascript", "typescript", "java"]   # default: all of them
 # fail_under = 7.5   # CI: exit with code 3 when the final score (0 to 10) is lower
 # score = "average"   # the 0.7.0 formula (average severity) until 0.8.0; default "density"
+# badge = true       # write .gnost/badge.svg with the score for the README (or a path)
 # baseline = ".gnost/baseline.json"   # report only findings that are not in this file
 timeout = {ANALYZE_TIMEOUT}          # seconds each analyzer may run
 max_findings = {ANALYZE_MAX_FINDINGS}     # most findings kept per analyzer

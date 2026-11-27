@@ -28,6 +28,7 @@ that explains a codebase: where it starts, how it flows and which files matter.
 | `analysis/` | The code quality report from `gnost analyze -o` (`analysis.json`, `analysis.html`, `analysis.sarif`) |
 | `changes/` | The report from `gnost changes BASE`: changed files, blast radius, risk (`changes.md`, `changes.json`) |
 | `baseline.json` | Known findings, from `gnost analyze --write-baseline`, so CI can report only new ones |
+| `badge.svg` | The final score as a README badge, from `gnost analyze --badge` |
 
 It is safe to commit this folder. The `.html` pages are ignored (see `.gitignore` here)
 because they are large and can be rebuilt.
@@ -64,6 +65,7 @@ class OutputLayout:
         self.changes_md = os.path.join(self.changes_dir, "changes.md")
         self.changes_json = os.path.join(self.changes_dir, "changes.json")
         self.baseline_json = os.path.join(self.folder, "baseline.json")
+        self.badge_svg = os.path.join(self.folder, "badge.svg")
 
     # The places GNOST wrote to before 0.6.0.
     @property

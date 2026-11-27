@@ -107,6 +107,7 @@ Complete CLI usage::
         --write-baseline [FILE] Save today's findings as the baseline
         --fail-on-new           With a baseline, exit with code 3 on new findings
         --sarif [FILE]          Write the findings as SARIF (for GitHub code scanning)
+        --badge [FILE]          Write a README badge with the final score (.gnost/badge.svg)
 
     files:
         --top                   Number of files to show (default: 5)

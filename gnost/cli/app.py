@@ -21,6 +21,7 @@ from gnost import __version__
 from gnost.scanner.loc import scan
 from gnost.reporters import stats, folders, files, loc_summary
 from gnost.reporters.analysis_html import render_analysis_html
+from gnost.reporters.badge import ScoreBadge
 from gnost.reporters.pages import PagesError, PagesRequest
 from gnost.analysis.core.models import (
     AnalysisConfiguration,
@@ -167,6 +168,23 @@ def _analysis_html_output_path(
     output_root: Optional[str] = None,
 ) -> str:
     return _layout(target_path, output_dir, output_root).analysis_html
+
+
+def _badge_path(
+    flag: Optional[str], configured: Any, layout: OutputLayout
+) -> Optional[str]:
+    """Where to write the badge: the flag's file, the config's, the default, or None (off).
+
+    A bare --badge or `badge = true` means `<output folder>/badge.svg`; a configured path is
+    relative to the project root, like `baseline`.
+    """
+    if flag:
+        return os.path.abspath(flag)
+    if flag == "" or configured is True:
+        return layout.badge_svg
+    if isinstance(configured, str) and configured:
+        return os.path.normpath(os.path.join(layout.root, configured))
+    return None
 
 
 def _print_analysis_scores(card: ScoreCard) -> None:
@@ -338,7 +356,8 @@ def main():
             "    --timeout SECONDS    Analyzer timeout (default: 900)\n"
             "    --compact            Write compact JSON when --out is used\n"
             "    --no-progress        Hide progress updates\n"
-            "    --max-findings N     Per-analyzer findings limit (default: 1000)\n\n"
+            "    --max-findings N     Per-analyzer findings limit (default: 1000)\n"
+            "    --badge [FILE]       Write a README badge with the final score (.gnost/badge.svg)\n\n"
             "  files:\n"
             "    --top                Number of files to show (default: 5)\n\n"
             "  init:\n"
@@ -586,6 +605,14 @@ def main():
         default=None,
         metavar="FILE",
         help="Write the findings as SARIF 2.1.0 (default file: .gnost/analysis/analysis.sarif)",
+    )
+    analyze.add_argument(
+        "--badge",
+        nargs="?",
+        const="",
+        default=None,
+        metavar="FILE",
+        help="Write a README badge with the final score (default file: .gnost/badge.svg)",
     )
     analyze.add_argument(
         "--max-findings",
@@ -996,6 +1023,19 @@ def _dispatch(args: argparse.Namespace) -> int:
                 return ExitCode.ERROR
 
         _print_analysis_scores(outcome.card)
+        badge = _badge_path(
+            getattr(args, "badge", None),
+            config.get("analyze", "badge"),
+            _layout(target_path, output_dir, output_root),
+        )
+        if badge:
+            ScoreBadge(outcome.card.final_score).write(badge)
+            line = ScoreBadge.markdown(badge, _resolve_repo_root(target_path))
+            message = f"Badge written to {badge}; in the README: {line}"
+            if args.quiet:
+                cprint(message, "green")
+            else:
+                logger.info(message)
         for note in outcome.notes:
             if args.quiet:
                 cprint(note, "green")

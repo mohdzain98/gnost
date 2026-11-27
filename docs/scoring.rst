@@ -157,6 +157,29 @@ Where you see it
 
 * **HTML report:** the final score, the analyzer table, and a line with the density and the number of lines.
 * **GitHub Action:** the final score in the job summary. See :doc:`ci`.
+* **README badge:** ``gnost analyze --badge``, see below.
+
+A README badge
+--------------
+
+.. image:: _static/badge_example.svg
+   :alt: A badge reading "gnost 9.62" on green
+
+``gnost analyze . --badge`` writes the final score as a small badge, ``.gnost/badge.svg``, and prints the line to
+put in your README:
+
+.. code-block:: text
+
+   Badge written to /path/to/project/.gnost/badge.svg; in the README: ![GNOST score](.gnost/badge.svg)
+
+The badge is a self-contained SVG file (no web service, no tracking). It uses the terminal's colours: green from 8,
+yellow from 6, red below. ``.gnost/`` is safe to commit, so commit the file once and add the line to the README;
+GitHub shows it from the repository. Each time you run ``gnost analyze --badge`` and commit, the badge shows the
+new score. A good moment is a release, or a scheduled CI job that commits it.
+
+``--badge FILE`` writes it somewhere else. ``[analyze] badge = true`` in ``.gnost.toml`` writes it on every run,
+and ``badge = "docs/score.svg"`` names the file (relative to the project root). Maven:
+``-Dgnost.badge=true`` or ``-Dgnost.badge=docs/score.svg``.
 
 Comparing scores
 ----------------

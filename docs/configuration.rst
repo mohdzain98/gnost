@@ -80,6 +80,7 @@ A complete example
    fail_under = 7.5     # CI: exit code 3 when the final score (0-10) is lower
    score = "density"    # or "average": the 0.7.0 formula, until 0.8.0 (see the score page)
    baseline = ".gnost/baseline.json"   # report only findings not in this file
+   badge = true         # write .gnost/badge.svg with the final score for the README (or a path)
    timeout = 600
    max_findings = 500
    parallel = true

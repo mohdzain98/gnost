@@ -278,6 +278,9 @@ Options for every goal:
    * - ``gnost.sarif``
      - ``--sarif [FILE]``
      - Write the findings as SARIF (``true`` = ``.gnost/analysis/analysis.sarif``).
+   * - ``gnost.badge``
+     - ``--badge [FILE]``
+     - Write a README badge with the final score (``true`` = ``.gnost/badge.svg``).
 
 ``gnost:summary`` (same as ``gnost summary``)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

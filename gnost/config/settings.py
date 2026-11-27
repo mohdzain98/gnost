@@ -38,6 +38,7 @@ Example::
     analyzers = ["maintainability", "readability"]
     fail_under = 7.5         # CI: exit 3 when the final score (0-10) is lower
     score = "density"        # or "average": the 0.7 formula, kept for one release
+    badge = true             # write .gnost/badge.svg for the README (or a path)
     timeout = 600
     max_findings = 500
     parallel = true
@@ -113,6 +114,7 @@ SCHEMA: Dict[Optional[str], Dict[str, Any]] = {
         "fail_under": _NUMBER,
         "baseline": str,
         "score": str,
+        "badge": _SWITCH_OR_TEXT,
     },
     "architecture": {"layers": list, "rules": list, "fail": bool},
 }
