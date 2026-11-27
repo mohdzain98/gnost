@@ -8,12 +8,22 @@ from __future__ import annotations
 
 from typing import Iterable, List
 
+from gnost.changes.refs import ChangedFile
 from gnost.changes.report import ChangeReport
 from gnost.utils.footer import Footer
 
 COMMENT_MARKER = "<!-- gnost-changes -->"
 LIST_LIMIT = 15
 ICONS = {"added": "A", "modified": "M", "deleted": "D", "renamed": "R"}
+
+
+def _line_delta(f: ChangedFile) -> str:
+    """Format a file's line delta, `binary` when marked binary, or empty if unknown."""
+    if f.binary:
+        return " (binary)"
+    if f.added is None or f.removed is None:
+        return ""
+    return f" (+{f.added} -{f.removed})"
 
 
 class MarkdownRenderer:
@@ -133,9 +143,9 @@ class MarkdownRenderer:
 
     def _files(self, r: ChangeReport) -> str:
         lines = [
-            f"- {ICONS[f.status]} `{f.old_path} → {f.path}`"
+            f"- {ICONS[f.status]} `{f.old_path} → {f.path}`{_line_delta(f)}"
             if f.old_path
-            else f"- {ICONS[f.status]} `{f.path}`"
+            else f"- {ICONS[f.status]} `{f.path}`{_line_delta(f)}"
             for f in r.files[: LIST_LIMIT * 4]
         ]
         return (
@@ -158,6 +168,15 @@ class TextRenderer:
             f"({c['added']} added, {c['modified']} modified, {c['deleted']} deleted, {c['renamed']} renamed)",
             f"Blast radius: {len(report.affected)} files depend on them (depth {report.depth})",
         ]
+        out += self._section(
+            "Changed files",
+            (
+                f"{ICONS[f.status]} {f.old_path} -> {f.path}{_line_delta(f)}"
+                if f.old_path
+                else f"{ICONS[f.status]} {f.path}{_line_delta(f)}"
+                for f in report.files
+            ),
+        )
         out += self._section(
             "Risky files",
             (f"{x.path}  risk {x.level:.0f}  {x.why}" for x in report.risks),

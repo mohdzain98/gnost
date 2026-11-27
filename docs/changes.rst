@@ -19,7 +19,8 @@ temporary folder, scanned, and removed.
 What you get
 ------------
 
-* **Changed files**, grouped as added, modified, deleted and renamed (renames keep the old name).
+* **Changed files**, grouped as added, modified, deleted and renamed (renames keep the old name),
+  each with its line counts (``+12 -3``, or ``binary``); ``changes.json`` has ``added`` and ``removed``.
 * **Blast radius:** the files that import a changed file, directly (distance 1) or through other
   files, up to ``--depth`` (default 3). Files that imported a deleted or renamed file are included.
 * **Risky files in this change:** the caution score of each changed file, combined with how often it
