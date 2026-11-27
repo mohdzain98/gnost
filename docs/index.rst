@@ -268,6 +268,7 @@ Use dedicated pages for details:
    install
    configuration
    commands
+   troubleshooting
 
 .. toctree::
    :maxdepth: 2
