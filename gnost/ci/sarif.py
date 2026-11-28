@@ -2,7 +2,8 @@
 
 `SarifWriter` turns findings into one run with a rule per kind of finding and a result per
 finding. Locations are repository-relative; each result carries the GNOST fingerprint so
-tools can match the same problem across runs instead of reopening it.
+tools can match the same problem across runs instead of reopening it. Findings about the
+whole project (no file) become run notifications, since code scanning rejects them as results.
 """
 
 from __future__ import annotations
@@ -42,27 +43,34 @@ class SarifWriter:
         """The SARIF log as a dict."""
         rules: Dict[str, Dict[str, Any]] = {}
         results = []
+        notes = []
         for finding in sorted(findings, key=self._sort_key):
             rule_id = self.rule_id(finding)
+            location = self._location(finding)
+            if not location:
+                # GitHub rejects the whole file for a result without a location
+                notes.append(self._notification(rule_id, finding))
+                continue
             rules.setdefault(rule_id, self._rule(rule_id, finding))
-            results.append(self._result(rule_id, list(rules).index(rule_id), finding))
-        return {
-            "$schema": SCHEMA_URL,
-            "version": "2.1.0",
-            "runs": [
-                {
-                    "tool": {
-                        "driver": {
-                            "name": "GNOST",
-                            "version": __version__,
-                            "informationUri": INFO_URL,
-                            "rules": list(rules.values()),
-                        }
-                    },
-                    "results": results,
+            results.append(
+                self._result(rule_id, list(rules).index(rule_id), finding, location)
+            )
+        run: Dict[str, Any] = {
+            "tool": {
+                "driver": {
+                    "name": "GNOST",
+                    "version": __version__,
+                    "informationUri": INFO_URL,
+                    "rules": list(rules.values()),
                 }
-            ],
+            },
+            "results": results,
         }
+        if notes:
+            run["invocations"] = [
+                {"executionSuccessful": True, "toolExecutionNotifications": notes}
+            ]
+        return {"$schema": SCHEMA_URL, "version": "2.1.0", "runs": [run]}
 
     def write(self, path: str, findings: Sequence[UnifiedFinding]) -> None:
         """Write the SARIF log to path (creating its folder)."""
@@ -101,26 +109,42 @@ class SarifWriter:
         return rule
 
     def _result(
-        self, rule_id: str, index: int, finding: UnifiedFinding
+        self,
+        rule_id: str,
+        index: int,
+        finding: UnifiedFinding,
+        location: Dict[str, Any],
     ) -> Dict[str, Any]:
-        text = finding.title
-        if finding.description and finding.description != finding.title:
-            text = f"{finding.title}: {finding.description}"
-        result: Dict[str, Any] = {
+        return {
             "ruleId": rule_id,
             "ruleIndex": index,
             "level": self._level(finding),
-            "message": {"text": text[: self.MESSAGE_LIMIT]},
+            "message": {"text": self._message(finding)},
+            "locations": [location],
             "partialFingerprints": {
                 f"gnostFingerprint/{FindingFingerprint.VERSION}": self.fingerprint.of(
                     finding
                 )
             },
         }
-        location = self._location(finding)
-        if location:
-            result["locations"] = [location]
-        return result
+
+    def _notification(self, rule_id: str, finding: UnifiedFinding) -> Dict[str, Any]:
+        """A finding about the whole project (no file), as a run-level notification.
+
+        Code scanning needs a file for every result, so these stay out of the alerts.
+        """
+        return {
+            "descriptor": {"id": rule_id},
+            "level": self._level(finding),
+            "message": {"text": self._message(finding)},
+        }
+
+    def _message(self, finding: UnifiedFinding) -> str:
+        """Title and description in one line, cut to MESSAGE_LIMIT."""
+        text = finding.title
+        if finding.description and finding.description != finding.title:
+            text = f"{finding.title}: {finding.description}"
+        return text[: self.MESSAGE_LIMIT]
 
     def _location(self, finding: UnifiedFinding) -> Dict[str, Any]:
         """The physical location, or {} when the path is not a file in the repository."""

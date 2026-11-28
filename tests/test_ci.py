@@ -348,15 +348,26 @@ def test_sarif_has_rules_results_locations_and_fingerprints() -> None:
     assert loc["artifactLocation"] == {"uri": "src/a.py", "uriBaseId": "%SRCROOT%"}
     assert loc["region"]["startLine"] == 10
     assert by_rule["robustness/bare-except"]["level"] == "note"
-    assert (
-        "locations" not in by_rule["readability/project"]
-    )  # no real file, no location
+    # GitHub code scanning rejects a result without a location, so a finding about the
+    # whole project is a run notification instead
+    assert "readability/project" not in by_rule
+    assert "readability/project" not in rule_ids
+    notes = run["invocations"][0]["toolExecutionNotifications"]
+    assert [n["descriptor"]["id"] for n in notes] == ["readability/project"]
+    assert notes[0]["message"]["text"].startswith("Project level")
+    assert run["invocations"][0]["executionSuccessful"] is True
     for result in run["results"]:
+        assert len(result["locations"]) == 1
         assert len(result["partialFingerprints"]["gnostFingerprint/v1"]) == 32
         assert (
             run["tool"]["driver"]["rules"][result["ruleIndex"]]["id"]
             == result["ruleId"]
         )
+
+
+def test_sarif_without_project_findings_has_no_invocations() -> None:
+    log = SarifWriter(resolver(), fingerprint()).build([finding(line=3)])
+    assert "invocations" not in log["runs"][0]
 
 
 def test_sarif_output_is_ordered_and_can_be_written(tmp_path: Path) -> None:

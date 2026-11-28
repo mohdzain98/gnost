@@ -46,7 +46,7 @@ Pick the channel you already use. The same version is published to all of them.
 | uv / pipx | `uvx gnost onboard .` or `pipx run gnost onboard .` | Python 3.9+ |
 | npm | `npx gnost-cli onboard .` | Node 18+ (no Python) |
 | Docker | `docker run --rm --user "$(id -u):$(id -g)" -v "$PWD":/repo ghcr.io/mohdzain98/gnost onboard /repo` | Docker (no Python) |
-| Maven | `mvn io.github.mohdzain98:gnost-maven-plugin:0.7.1:onboard` | Java 8+, Maven 3.6.3+ (no Python) |
+| Maven | `mvn io.github.mohdzain98:gnost-maven-plugin:0.7.2:onboard` | Java 8+, Maven 3.6.3+ (no Python) |
 
 The npm package carries a standalone binary for macOS (Apple silicon), Linux (x86_64) and Windows (x86_64).
 The Maven plugin is small: it uses a matching `gnost` found on your `PATH`, or downloads the same binary once from the
@@ -130,7 +130,7 @@ Run it on every pull request with the GitHub Action (a comment with the blast ra
 ```yaml
 - uses: actions/checkout@v4
   with: { fetch-depth: 0 }        # full history, for hotspots and `gnost changes`
-- uses: mohdzain98/gnost@v0.7.1
+- uses: mohdzain98/gnost@v0.7.2
   with: { comment: "true", fail-under: "7.5" }   # needs `pull-requests: write`
 ```
 

@@ -255,6 +255,12 @@ jobs:
         with:
           path: artifacts
           pattern: gnost-*
+      # Maven itself, cached like in tests.yml: Maven Central rate-limits runners (429), which failed
+      # smoke-maven for v0.7.1. A tag run can restore the cache the weekly tests run saves on main.
+      - uses: actions/cache@v4
+        with:
+          path: ~/.m2/wrapper
+          key: maven-wrapper-${{ hashFiles('packaging/maven/.mvn/wrapper/maven-wrapper.properties') }}
       - name: Fetch Maven (the download is flaky, so retry it)
         working-directory: packaging/maven
         run: |
@@ -303,6 +309,12 @@ jobs:
         with:
           path: artifacts
           pattern: gnost-*
+      # Maven itself, cached like in tests.yml: Maven Central rate-limits runners (429), which failed
+      # smoke-maven for v0.7.1. A tag run can restore the cache the weekly tests run saves on main.
+      - uses: actions/cache@v4
+        with:
+          path: ~/.m2/wrapper
+          key: maven-wrapper-${{ hashFiles('packaging/maven/.mvn/wrapper/maven-wrapper.properties') }}
       - name: Fetch Maven (the download is flaky, so retry it)
         working-directory: packaging/maven
         run: |

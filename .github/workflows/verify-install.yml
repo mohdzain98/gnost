@@ -70,7 +70,13 @@ jobs:
       - name: uvx
         run: |
           EXTRA=""; [ "$IS_RC" = "true" ] && EXTRA="--index-url https://test.pypi.org/simple/ --index-strategy unsafe-best-match --extra-index-url https://pypi.org/simple/ --prerelease allow"
-          [ "$(uvx $EXTRA --from "gnost==$VERSION" gnost version)" = "gnost $VERSION" ]
+          # The index can lag behind a fresh release, and uv caches what it saw, so retry with --refresh.
+          for i in 1 2 3 4 5 6; do
+            OUT="$(uvx --refresh $EXTRA --from "gnost==$VERSION" gnost version)" && break
+            echo "gnost==$VERSION not resolvable yet (try $i of 6); waiting 20s"
+            sleep 20
+          done
+          [ "$OUT" = "gnost $VERSION" ]
 
   npm-node-only:
     needs: resolve
