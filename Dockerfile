@@ -8,7 +8,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends git \
     && rm -rf /var/lib/apt/lists/* \
     && for try in 1 2 3 4 5 6; do \
-         pip install --no-cache-dir ${PIP_EXTRA} "gnost==${GNOST_VERSION}" && break; \
+         pip install --no-cache-dir ${PIP_EXTRA} "gnost[media]==${GNOST_VERSION}" && break; \
          [ "$try" = 6 ] && exit 1; \
          echo "gnost==${GNOST_VERSION} not installable yet (try $try of 6); waiting 20s"; \
          sleep 20; \

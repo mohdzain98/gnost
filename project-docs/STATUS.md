@@ -78,7 +78,8 @@ See `project-docs/tasks/ROADMAP.md` for the full ladder and `project-docs/tasks/
 - **0.4.0** (in progress, one release): foundation (tests, cleanup), circular dependency detection, insights JSON export and `--insights-only`, improved Mermaid output, route-to-handler mapping, caution scoring, `.gnost.toml` config, and AST-aware flow for Python. Fixes afterwards ship as 0.4.x patches.
 - **0.5.0** to **0.7.1**: shipped (distribution, change intelligence, multi-language `analyze` with tree-sitter, architecture rules, `gnost mcp`). 0.7.0 was released 2026-11-22, 0.7.1 on 2026-11-27.
 - **0.7.1**: released 2026-11-27 (final tag after the PR merges; rc1 2026-11-26, rc2 2026-11-27). Size-aware score (density on a log curve, docs page "How the Score Works"), `analyze` root-detection fix, mypy uses the project's virtual environment (import findings are info; a mypy run blocked by duplicate module names is retried with `--explicit-package-bases`), GitHub Pages explorer (`onboard --pages`), PR-only workflow, fork-PR comments, README badge (`analyze --badge`), GitLab/Jenkins/Gradle CI docs, analysis report light theme and Finding Density card. Still open: test fork-PR comments on a real fork PR; remove `score = "average"` in 0.8.0.
-- **0.8.0**: visual project map (2D mind map, README mind map as SVG or rotating GIF, 3D view).
-- **0.9.0**: GNOST for AI agents (agent skill file, more MCP tools).
-- **0.10.0**: Jupyter notebooks, HTML and CSS in `stats` and the summary only.
-- **0.11.0**: one new full language; Go first, then Kotlin, C#, Rust.
+- **0.7.2**: released 2026-11-28. SARIF upload fix for code scanning, line counts in `gnost changes`, troubleshooting page.
+- **0.8.0**: released 2026-11-28 (final tag after the PR merges; rc1 2026-11-28). Mind map view in the explorer, 3D view (`onboard --3d`, `open flow --3d`), README project map (`onboard --inject-mindmap`: SVG, rotating GIF with the `gnost[media]` extra, or Mermaid), `summary --git` (GitHub's language bar), `score = "average"` removed. Plan: `project-docs/tasks/PLAN_0.8.0.md`.
+- **0.9.0**: GNOST for AI agents (`gnost learn`, quality/style/project skills, bring-your-own-agent); first step: parse each file once into `FileFacts`.
+- **0.10.0**: Jupyter notebooks, HTML and CSS in `stats` and the summary; optional Rust core `gnost-core`.
+- **0.11.0**: one new full language; Go first (written in the Rust core), then Kotlin, C#, Rust.

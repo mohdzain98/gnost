@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>__TITLE__</title>
+<style>
+  :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d; --code:#161b22; --hl:#58a6ff;
+          --panel:rgba(13,17,23,.88); --glow:#0f1730; --out:#3fb950; --in:#58a6ff; --warn:#ff7a3d; }
+  :root[data-theme="light"] { --bg:#ffffff; --fg:#1f2328; --muted:#656d76; --line:#d0d7de; --code:#f6f8fa;
+          --hl:#0969da; --panel:rgba(255,255,255,.92); --glow:#eef3ff; --out:#1a7f37; --in:#0969da; --warn:#bc4c00; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; height:100%; overflow:hidden; color:var(--fg);
+              font:14px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+              background:radial-gradient(ellipse at 50% 45%, var(--glow) 0%, var(--bg) 70%); }
+  header { position:absolute; top:0; left:0; right:0; height:44px; padding:8px 14px; z-index:5;
+           border-bottom:1px solid var(--line); background:var(--bg); display:flex; gap:10px; align-items:center; }
+  header b { white-space:nowrap; } header .sp { flex:1; } header .muted { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  button, a.btn { background:var(--code); color:var(--fg); border:1px solid var(--line); border-radius:6px;
+           padding:3px 10px; cursor:pointer; font:inherit; text-decoration:none; white-space:nowrap; }
+  button:hover, a.btn:hover { border-color:var(--hl); }
+  /* the drawing starts right of the panel (full width when it is collapsed or on a phone) */
+  #graph, #labels { position:absolute; top:44px; left:324px; right:0; bottom:0; }
+  #labels { pointer-events:none; overflow:hidden; }
+  body.wide #graph, body.wide #labels { left:0; }
+  .flabel, .nlabel { position:absolute; left:0; top:0; white-space:nowrap; font-size:11px; font-weight:600;
+           padding:1px 6px; border-radius:9px; background:var(--panel); border:1px solid var(--line); }
+  .nlabel { font-weight:500; } .nlabel.o { color:var(--out); } .nlabel.i { color:var(--in); }
+  #side { position:absolute; top:56px; left:12px; width:300px; max-height:calc(100% - 68px); display:flex;
+          flex-direction:column; background:var(--panel); border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+  #side .body { overflow:auto; padding:10px 12px 12px; }
+  #side.collapsed .body { display:none; }
+  #side .top { display:flex; align-items:center; gap:8px; padding:8px 12px; border-bottom:1px solid var(--line); }
+  #side .top span { color:var(--muted); font-size:12px; } #collapse { margin-left:auto; padding:0 8px; }
+  #q { width:100%; background:var(--code); color:var(--fg); border:1px solid var(--line); border-radius:6px; padding:5px 8px; font:inherit; }
+  #results { margin:4px 0 0; padding:0; list-style:none; }
+  #results li { padding:3px 6px; border-radius:6px; cursor:pointer; display:flex; gap:7px; align-items:center; font-size:12px; }
+  #results li:hover, .lrow:hover { background:var(--code); color:var(--hl); }
+  #results .path { color:var(--muted); font-size:11px; margin-left:auto; }
+  .opts { margin:10px 0 6px; display:grid; gap:5px; }
+  .opts label { display:flex; gap:8px; align-items:center; cursor:pointer; color:var(--muted); }
+  h4 { font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:600; margin:12px 0 4px; }
+  .lrow { display:flex; align-items:center; gap:8px; padding:2px 6px; border-radius:6px; cursor:pointer; font-size:12px; }
+  .lrow.on { background:var(--code); outline:1px solid var(--hl); }
+  .lrow .n { margin-left:auto; color:var(--muted); font-size:11px; }
+  .lrow .nm { min-width:0; white-space:nowrap; }
+  .dot { width:9px; height:9px; border-radius:50%; flex:none; }
+  .k { display:inline-block; width:22px; border-top:3px solid; vertical-align:middle; margin-right:4px; }
+  .hint { color:var(--muted); font-size:12px; line-height:1.5; margin-top:10px; }
+  #info { position:absolute; right:12px; bottom:12px; width:330px; max-height:55%; overflow:auto; background:var(--panel);
+          border:1px solid var(--line); border-radius:10px; padding:10px 12px; }
+  #info[hidden], #err[hidden] { display:none; }
+  #info h3 { margin:0 0 2px; font-size:14px; display:flex; align-items:center; gap:8px; word-break:break-all; }
+  #info .folder { color:var(--muted); font-size:12px; margin-bottom:6px; word-break:break-all; }
+  #info .close { margin-left:auto; padding:0 8px; }
+  .chips { display:flex; flex-wrap:wrap; gap:4px; }
+  .chip { padding:1px 8px; border-radius:999px; background:var(--code); border:1px solid var(--line); font-size:12px; cursor:pointer; }
+  .chip.o { color:var(--out); } .chip.i { color:var(--in); } .chip:hover { border-color:var(--hl); }
+  .chip.more { cursor:default; color:var(--muted); }
+  .warn { color:var(--warn); border:1px solid var(--warn); border-radius:8px; padding:6px 9px; margin-top:8px; font-size:12px; }
+  #err { position:absolute; inset:44px 0 0 0; display:flex; align-items:center; justify-content:center; text-align:center;
+         padding:24px; color:var(--muted); line-height:1.6; }
+  #err a { color:var(--hl); }
+  @media (max-width:720px) { #graph, #labels { left:0; } #side { width:calc(100% - 24px); max-height:46%; } #info { width:calc(100% - 24px); max-height:38%; } }
+</style>
+</head>
+<body>
+<header>
+  <b id="title"></b><span class="muted" id="stats"></span><span class="sp"></span>
+  <a class="btn" href="flow.html" title="The 2D flow explorer">2D explorer</a>
+  <button id="reset">Reset view</button><button id="theme" title="Switch theme">Light</button>
+</header>
+<div id="graph"></div>
+<div id="labels"></div>
+<aside id="side">
+  <div class="top"><b>3D flow</b><span>folders are clusters</span><button id="collapse" aria-label="Collapse panel">–</button></div>
+  <div class="body">
+    <input id="q" type="search" placeholder="Search files..." autocomplete="off" aria-label="Search files">
+    <ul id="results"></ul>
+    <div class="opts">
+      <label><input type="checkbox" id="optLabels" checked> Folder labels</label>
+      <label><input type="checkbox" id="optAll"> Show every import</label>
+      <label><input type="checkbox" id="optHide"> Hide files not connected to the selection</label>
+      <label><input type="checkbox" id="optCycles"> Only circular imports</label>
+      <label><input type="checkbox" id="optRotate" checked> Rotate</label>
+    </div>
+    <h4>Legend</h4>
+    <div><span class="k" style="border-color:var(--out)"></span>imports (of the selected file)</div>
+    <div><span class="k" style="border-color:var(--in)"></span>imported by</div>
+    <div><span class="k" style="border-color:#ff7a3d"></span>circular, closes via a deferred import</div>
+    <div><span class="k" style="border-color:#f85149"></span>circular import at load time</div>
+    <div><span class="dot" style="display:inline-block;background:#3fb950;margin:0 9px 0 6px"></span>entry point</div>
+    <h4>Folders</h4>
+    <div id="legend"></div>
+    <p class="hint">Drag to rotate, scroll to zoom, right-drag to pan. Click a file to fly to it and see what it
+      imports and what imports it; click a folder above to isolate it. Esc clears.</p>
+  </div>
+</aside>
+<div id="info" hidden></div>
+<div id="err" hidden></div>
+__LIBS__
+<script>
+(function () {
+  "use strict";
+  var DATA = __DATA__;
+  var $ = function (id) { return document.getElementById(id); };
+  // long names keep their start and end: "packaging/mave…/mohdzain98/gnost"
+  var mid = function (s, max) {
+    s = String(s); max = max || 30;
+    if (s.length <= max) return s;
+    var head = Math.ceil((max - 1) / 2), tail = Math.floor((max - 1) / 2);
+    return s.slice(0, head) + "…" + s.slice(s.length - tail);
+  };
+  var esc = function (s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); };
+  function fail(text) {
+    var e = $("err"); e.hidden = false; $("side").hidden = true;
+    e.innerHTML = esc(text) + '<br><a href="flow.html">Open the 2D explorer</a>';
+  }
+  function webgl() {
+    try { var c = document.createElement("canvas"); return !!(c.getContext("webgl2") || c.getContext("webgl")); }
+    catch (e) { return false; }
+  }
+  $("title").textContent = DATA.project + " · 3D flow";
+  if (typeof ForceGraph3D === "undefined") return fail("The 3D library is missing from this page.");
+  if (!webgl()) return fail("This browser has WebGL turned off, so the 3D view cannot draw.");
+  if (!DATA.nodes.length) return fail("There are no files with imports to draw.");
+
+  var RED = "#f85149", ORANGE = "#ff7a3d", ENTRY = "#3fb950";
+  var nodes = DATA.nodes, links = DATA.links, byId = {}, outs = {}, ins = {};
+  nodes.forEach(function (n) { byId[n.id] = n; outs[n.id] = {}; ins[n.id] = {}; });
+  links.forEach(function (l) { outs[l.source][l.target] = 1; ins[l.target][l.source] = 1; });
+
+  /* ---------- folders: shared prefix, families and colours ---------- */
+  var folders = {};
+  nodes.forEach(function (n) { (folders[n.folder] = folders[n.folder] || []).push(n); });
+  var folderNames = Object.keys(folders).sort();
+  // the shared prefix (src/app/...) comes from the data; it is left out of every label
+  var prefix = folderNames.length ? folderNames[0].split("/") : [];
+  folderNames.forEach(function (f) {
+    var parts = f.split("/"), k = 0;
+    while (k < prefix.length && k < parts.length && prefix[k] === parts[k]) k++;
+    prefix = prefix.slice(0, k);
+  });
+  var cut = prefix.length ? prefix.join("/") : "";
+  var short = function (f) {
+    var s = cut && (f === cut || f.indexOf(cut + "/") === 0) ? f.slice(cut.length + 1) : f;
+    return s || "(root)";
+  };
+  var family = function (f) { var s = short(f); return s === "(root)" ? "" : s.split("/")[0]; };
+  var families = {};
+  folderNames.forEach(function (f) { (families[family(f)] = families[family(f)] || []).push(f); });
+  var familyNames = Object.keys(families).sort();
+
+  function hsl2hex(h, s, l) {
+    s /= 100; l /= 100;
+    var k = function (n) { return (n + h / 30) % 12; }, a = s * Math.min(l, 1 - l);
+    var f = function (n) { return l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1))); };
+    var to = function (x) { var v = Math.round(255 * x).toString(16); return v.length < 2 ? "0" + v : v; };
+    return "#" + to(f(0)) + to(f(8)) + to(f(4));
+  }
+  // one hue per family (golden angle), nearby hues for its sub-folders, so a family reads as one group
+  var folderColor = {};
+  familyNames.forEach(function (fam, i) {
+    var hue = (i * 137.5 + 12) % 360;
+    families[fam].forEach(function (f, k) { folderColor[f] = hsl2hex((hue + k * 9) % 360, 70, 60 + (k % 3) * 5); });
+  });
+  nodes.forEach(function (n) { n.color = n.entry ? ENTRY : folderColor[n.folder]; });
+
+  /* ---------- layout: an anchor per folder; families on a sphere, sub-folders around them ---------- */
+  function fib(i, n, R) {
+    var y = 1 - (2 * (i + 0.5)) / n, r = Math.sqrt(1 - y * y), th = Math.PI * (3 - Math.sqrt(5)) * i;
+    return { x: Math.cos(th) * r * R, y: y * R, z: Math.sin(th) * r * R };
+  }
+  var anchors = {}, ring = familyNames.filter(function (f) { return f !== ""; });
+  var R1 = Math.max(260, 60 * Math.sqrt(ring.length) + Math.sqrt(nodes.length) * 6);
+  ring.forEach(function (fam, i) {
+    var base = fib(i, ring.length, R1), subs = families[fam];
+    var R2 = Math.max(60, 30 * Math.sqrt(subs.length));
+    subs.forEach(function (f, k) {
+      if (f === (cut ? cut + "/" : "") + fam || subs.length === 1) { anchors[f] = base; return; }
+      var p = fib(k, subs.length, R2);
+      anchors[f] = { x: base.x + p.x, y: base.y + p.y, z: base.z + p.z };
+    });
+  });
+  (families[""] || []).forEach(function (f) { anchors[f] = { x: 0, y: 0, z: 0 }; });
+
+  /* ---------- state ---------- */
+  var BIG = links.length > 2500;  // too many lines to draw them all by default
+  var sel = null, neigh = null, neighFolders = null, iso = null, cyclesOnly = false, hideUnrelated = false;
+  var showAll = !BIG, showLabels = true, theme = "dark";
+  try { theme = localStorage.getItem("gnost-theme") || "dark"; } catch (e) {}
+  var DIM = function () { return theme === "dark" ? "rgba(70,82,110,0.45)" : "rgba(160,170,190,0.45)"; };
+  var FAINT = function () { return theme === "dark" ? "rgba(160,180,235,0.3)" : "rgba(80,100,150,0.3)"; };
+  var ends = function (l) { return [typeof l.source === "object" ? l.source.id : l.source, typeof l.target === "object" ? l.target.id : l.target]; };
+  var dir = function (l) { if (!sel) return ""; var e = ends(l); return e[0] === sel.id ? "o" : e[1] === sel.id ? "i" : ""; };
+  var cycColor = function (l) { return l.cycle === "import_time" ? RED : ORANGE; };
+
+  var Graph = ForceGraph3D({ controlType: "orbit", rendererConfig: { antialias: true, alpha: true } })($("graph"))
+    .backgroundColor("#00000000").showNavInfo(false).nodeId("id")
+    .width($("graph").clientWidth).height($("graph").clientHeight)
+    .nodeRelSize(5).nodeResolution(nodes.length > 1500 ? 6 : 12).nodeOpacity(0.95)
+    .nodeVal(function (n) { return 1.2 + Math.sqrt(n.inn) * 1.1 + (n.entry ? 2 : 0); })
+    .nodeLabel(function (n) {
+      return '<div style="padding:4px 6px;background:rgba(13,17,23,.9);border-radius:6px;color:#e6edf3"><b>' + esc(mid(n.name, 40)) +
+        '</b><br><span style="opacity:.7">' + esc(mid(short(n.folder), 48)) + "</span><br>imports " + n.out + " · imported by " + n.inn +
+        (n.entry ? '<br><span style="color:#3fb950">entry point</span>' : "") +
+        (n.cyc ? '<br><span style="color:#ffb48a">in a circular import</span>' : "") + "</div>";
+    })
+    .nodeVisibility(function (n) { return !(hideUnrelated && sel && !neigh[n.id]); })
+    .nodeColor(function (n) {
+      if (sel) return n === sel ? (theme === "dark" ? "#ffffff" : "#1f2328") : neigh[n.id] ? n.color : DIM();
+      if (cyclesOnly) return n.cyc ? n.color : DIM();
+      if (iso) return n.folder === iso ? n.color : DIM();
+      return n.color;
+    })
+    .linkVisibility(function (l) {
+      if (cyclesOnly) return !!l.cycle;
+      if (sel && hideUnrelated) return !!dir(l);
+      return showAll || !!l.cycle || !!dir(l) || (iso !== null && within(l));
+    })
+    .linkColor(function (l) {
+      var d = dir(l);
+      if (d) return d === "o" ? getVar("--out") : getVar("--in");
+      if (l.cycle) return sel ? "rgba(255,122,61,0.3)" : cycColor(l);
+      if (sel) return "rgba(120,135,170,0.05)";
+      if (iso) return within(l) ? FAINT() : "rgba(120,135,170,0.04)";
+      return FAINT();
+    })
+    .linkWidth(function (l) { return dir(l) ? 1.4 : l.cycle ? 1.6 : 0.6; })
+    .linkDirectionalArrowLength(function (l) { return dir(l) ? 4 : 0; })
+    .linkDirectionalArrowRelPos(0.92)
+    .linkDirectionalParticles(function (l) { return l.cycle ? 2 : dir(l) ? 3 : 0; })
+    .linkDirectionalParticleWidth(1.7).linkDirectionalParticleSpeed(0.006)
+    // most of the layout runs before the first frame (warm-up); the visible settling is short
+    .d3VelocityDecay(0.35).warmupTicks(180).cooldownTicks(90).cooldownTime(5000)
+    .onNodeClick(function (n) { select(n); })
+    .onBackgroundClick(function () { select(null); })
+    .onEngineTick(function () { dirty = true; })
+    .onEngineStop(function () { dirty = true; if (!fitted) { fitted = true; Graph.zoomToFit(600, 30); } });
+  var fitted = false, dirty = true;
+  function within(l) { var e = ends(l); return byId[e[0]].folder === iso && byId[e[1]].folder === iso; }
+  function getVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+  Graph.d3Force("cluster", function (alpha) {
+    var k = 0.15 * alpha;
+    for (var i = 0; i < nodes.length; i++) {
+      var n = nodes[i], an = anchors[n.folder];
+      if (n.x === undefined || !an) continue;
+      n.vx += (an.x - n.x) * k; n.vy += (an.y - n.y) * k; n.vz += (an.z - n.z) * k;
+    }
+  });
+  // room between the spheres of one folder, so a cluster reads as separate files, not one ball
+  Graph.d3Force("charge").strength(-45);
+  Graph.d3Force("link").distance(function (l) { return l.cross ? 90 : 42; })
+    .strength(function (l) { return l.cross ? 0.015 : 0.25; });
+  Graph.graphData({ nodes: nodes, links: links });
+  // fit as soon as the warm-up has placed the nodes, then again when the layout stops
+  setTimeout(function () { Graph.zoomToFit(0, 30); }, 60);
+  setTimeout(function () { if (!fitted) { fitted = true; Graph.zoomToFit(600, 30); } }, 3500);
+
+  function refresh() {
+    Graph.nodeColor(Graph.nodeColor()).nodeVisibility(Graph.nodeVisibility()).linkColor(Graph.linkColor())
+      .linkWidth(Graph.linkWidth()).linkVisibility(Graph.linkVisibility())
+      .linkDirectionalParticles(Graph.linkDirectionalParticles())
+      .linkDirectionalArrowLength(Graph.linkDirectionalArrowLength());
+  }
+
+  /* ---------- selection ---------- */
+  // Frame the file and everything it connects to, looking from outside the cloud towards it.
+  function frame(list) {
+    var cx = 0, cy = 0, cz = 0;
+    list.forEach(function (n) { cx += n.x; cy += n.y; cz += n.z; });
+    cx /= list.length; cy /= list.length; cz /= list.length;
+    var r = 0; list.forEach(function (n) { r = Math.max(r, Math.hypot(n.x - cx, n.y - cy, n.z - cz)); });
+    var len = Math.hypot(cx, cy, cz), ux = len ? cx / len : 0, uy = len ? cy / len : 0, uz = len ? cz / len : 1;
+    var d = Math.max(90, r * 2.4 + 40);
+    Graph.cameraPosition({ x: cx + ux * d, y: cy + uy * d, z: cz + uz * d }, { x: cx, y: cy, z: cz }, 900);
+  }
+  function select(n) {
+    sel = n || null;
+    if (sel) {
+      iso = null; cyclesOnly = false; $("optCycles").checked = false; renderLegend();
+      neigh = {}; neigh[sel.id] = 1; neighFolders = {};
+      Object.keys(outs[sel.id]).forEach(function (k) { neigh[k] = 1; });
+      Object.keys(ins[sel.id]).forEach(function (k) { neigh[k] = 1; });
+      Object.keys(neigh).forEach(function (k) { neighFolders[byId[k].folder] = 1; });
+      frame(Object.keys(neigh).map(function (k) { return byId[k]; }).filter(function (m) { return m.x !== undefined; }));
+    } else { neigh = null; neighFolders = null; }
+    renderInfo(); refresh(); buildNeighbourLabels();
+  }
+
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
+  function chips(title, ids, cls) {
+    var wrap = el("div"); wrap.appendChild(el("h4", null, title + " (" + ids.length + ")"));
+    var c = el("div", "chips");
+    ids.sort().slice(0, 20).forEach(function (id) {
+      var ch = el("span", "chip " + cls, mid(byId[id].name, 26)); ch.title = id;
+      ch.onclick = function () { select(byId[id]); };
+      c.appendChild(ch);
+    });
+    if (ids.length > 20) c.appendChild(el("span", "chip more", "+" + (ids.length - 20) + " more"));
+    if (!ids.length) c.appendChild(el("span", "chip more", "none"));
+    wrap.appendChild(c); return wrap;
+  }
+  function renderInfo() {
+    var box = $("info"); box.innerHTML = "";
+    if (!sel) { box.hidden = true; return; }
+    box.hidden = false;
+    var h = el("h3"), d = el("span", "dot"); d.style.background = sel.color; h.appendChild(d);
+    h.appendChild(document.createTextNode(sel.name));
+    var x = el("button", "close", "×"); x.setAttribute("aria-label", "Close"); x.onclick = function () { select(null); }; h.appendChild(x);
+    box.appendChild(h); box.appendChild(el("div", "folder", sel.id + (sel.entry ? " · entry point" : "")));
+    box.appendChild(chips("Imports", Object.keys(outs[sel.id]), "o"));
+    box.appendChild(chips("Imported by", Object.keys(ins[sel.id]), "i"));
+    DATA.cycles.filter(function (c) { return c.files.indexOf(sel.id) !== -1; }).forEach(function (c) {
+      box.appendChild(el("div", "warn", (c.kind === "import_time" ? "Circular import at load time: " : "Circular import (closes via a deferred import): ") +
+        c.files.map(function (f) { return f.split("/").pop(); }).join(" → ")));
+    });
+  }
+
+  /* ---------- panel ---------- */
+  $("stats").textContent = nodes.length + " files · " + folderNames.length + " folders · " + links.length + " imports" +
+    (DATA.cycles.length ? " · " + DATA.cycles.length + " circular" : "") + (BIG ? " · large graph: imports shown for the selection" : "");
+  $("optAll").checked = showAll;
+  function renderLegend() {
+    var lg = $("legend"); lg.innerHTML = "";
+    folderNames.forEach(function (f) {
+      var row = el("div", "lrow" + (iso === f ? " on" : ""));
+      var d = el("span", "dot"); d.style.background = folderColor[f]; row.appendChild(d);
+      var nm = el("span", "nm", mid(short(f), 34)); nm.title = f; row.appendChild(nm);
+      row.appendChild(el("span", "n", String(folders[f].length)));
+      row.onclick = function () {
+        if (sel) { sel = null; neigh = null; neighFolders = null; renderInfo(); buildNeighbourLabels(); }
+        iso = iso === f ? null : f; renderLegend(); refresh();
+      };
+      lg.appendChild(row);
+    });
+  }
+  renderLegend();
+  $("q").addEventListener("input", function () {
+    var q = this.value.trim().toLowerCase(), ul = $("results"); ul.innerHTML = "";
+    if (!q) return;
+    nodes.filter(function (n) { return n.id.toLowerCase().indexOf(q) !== -1; }).slice(0, 10).forEach(function (n) {
+      var li = el("li"), d = el("span", "dot"); d.style.background = n.color; li.appendChild(d);
+      li.appendChild(el("span", null, mid(n.name, 26))); li.appendChild(el("span", "path", mid(short(n.folder), 22)));
+      li.title = n.id;
+      li.onclick = function () { $("q").value = ""; ul.innerHTML = ""; select(n); };
+      ul.appendChild(li);
+    });
+  });
+  $("q").addEventListener("keydown", function (e) { if (e.key === "Enter") { var f = $("results").firstChild; if (f) f.click(); } });
+  $("optLabels").onchange = function () { showLabels = this.checked; $("labels").style.display = showLabels ? "" : "none"; };
+  $("optAll").onchange = function () { showAll = this.checked; refresh(); };
+  $("optHide").onchange = function () { hideUnrelated = this.checked; refresh(); };
+  $("optRotate").onchange = function () { var c = Graph.controls(); if (c) { c.autoRotate = this.checked; c.autoRotateSpeed = 0.7; } };
+  $("optRotate").onchange.call($("optRotate"));  // turning by default; untick to stop
+  $("optCycles").onchange = function () {
+    cyclesOnly = this.checked;
+    if (cyclesOnly) { sel = null; neigh = null; neighFolders = null; iso = null; renderInfo(); renderLegend(); buildNeighbourLabels(); }
+    refresh();
+  };
+  $("reset").onclick = function () {
+    sel = null; neigh = null; neighFolders = null; iso = null; cyclesOnly = false; $("optCycles").checked = false;
+    renderInfo(); renderLegend(); refresh(); buildNeighbourLabels(); Graph.zoomToFit(600, 30);
+  };
+  $("collapse").onclick = function () {
+    var p = $("side"); p.classList.toggle("collapsed"); this.textContent = p.classList.contains("collapsed") ? "+" : "–";
+    document.body.classList.toggle("wide", p.classList.contains("collapsed")); resize();
+  };
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") select(null); });
+  function resize() { Graph.width($("graph").clientWidth).height($("graph").clientHeight); }
+  window.addEventListener("resize", resize);
+  function applyTheme(t) {
+    theme = t; document.documentElement.dataset.theme = t; $("theme").textContent = t === "dark" ? "Light" : "Dark"; refresh();
+  }
+  $("theme").onclick = function () {
+    applyTheme(theme === "dark" ? "light" : "dark");
+    try { localStorage.setItem("gnost-theme", theme); } catch (e) {}
+  };
+  applyTheme(theme);
+
+  /* ---------- labels: an HTML overlay that follows the 3D clusters ---------- */
+  // Folder centres are recomputed only while the layout moves (dirty), not on every frame.
+  // Labels are placed nearest first and skipped when they would overlap one already placed.
+  var labelEls = {}, centre = {}, NEAR_LABELS = 24;
+  folderNames.forEach(function (f) {
+    var e = el("div", "flabel", mid(short(f), 28)); e.title = f; e.style.color = folderColor[f]; $("labels").appendChild(e); labelEls[f] = e;
+  });
+  var nlabels = [];
+  function buildNeighbourLabels() {
+    nlabels.forEach(function (x) { x.e.remove(); }); nlabels = [];
+    if (!sel) return;
+    var near = Object.keys(neigh).filter(function (k) { return k !== sel.id; }).map(function (k) { return byId[k]; })
+      .sort(function (a, b) { return Math.hypot(a.x - sel.x, a.y - sel.y, a.z - sel.z) - Math.hypot(b.x - sel.x, b.y - sel.y, b.z - sel.z); })
+      .slice(0, NEAR_LABELS);
+    [sel].concat(near).forEach(function (n) {
+      var e = el("div", "nlabel " + (n === sel ? "" : outs[sel.id][n.id] ? "o" : "i"), mid(n.name, 28));
+      $("labels").appendChild(e); nlabels.push({ n: n, e: e });
+    });
+  }
+  function centres() {
+    folderNames.forEach(function (f) {
+      var list = folders[f], cx = 0, cy = 0, cz = 0, c = 0;
+      for (var i = 0; i < list.length; i++) { var n = list[i]; if (n.x === undefined) continue; cx += n.x; cy += n.y; cz += n.z; c++; }
+      centre[f] = c ? { x: cx / c, y: cy / c, z: cz / c } : null;
+    });
+  }
+  function loop() {
+    requestAnimationFrame(loop);
+    if (!showLabels) return;
+    var cam = Graph.camera(); if (!cam) return;
+    if (dirty) { centres(); dirty = false; }
+    var look = cam.getWorldDirection(cam.position.clone()), placed = [];
+    var fits = function (x, y, w, h) {
+      for (var i = 0; i < placed.length; i++) { var p = placed[i]; if (x < p.x + p.w && x + w > p.x && y < p.y + p.h && y + h > p.y) return false; }
+      placed.push({ x: x, y: y, w: w, h: h }); return true;
+    };
+    var put = function (e, pos, opacity) {
+      var vx = pos.x - cam.position.x, vy = pos.y - cam.position.y, vz = pos.z - cam.position.z;
+      if (vx * look.x + vy * look.y + vz * look.z <= 0) { e.style.display = "none"; return; }
+      var p = Graph.graph2ScreenCoords(pos.x, pos.y, pos.z), h = 18;
+      var w = e._w || (e._w = e.offsetWidth) || 60;  // measured once, not every frame
+      if (!fits(p.x - w / 2, p.y - h / 2, w, h)) { e.style.display = "none"; return; }
+      e.style.display = ""; e.style.opacity = opacity;
+      e.style.transform = "translate(" + Math.round(p.x) + "px," + Math.round(p.y) + "px) translate(-50%,-50%)";
+    };
+    nlabels.forEach(function (x) { if (x.n.x !== undefined) put(x.e, x.n, 1); });  // the selection's names first
+    folderNames.filter(function (f) { return centre[f]; })
+      .sort(function (a, b) {
+        var ca = centre[a], cb = centre[b];
+        return Math.hypot(ca.x - cam.position.x, ca.y - cam.position.y, ca.z - cam.position.z) -
+          Math.hypot(cb.x - cam.position.x, cb.y - cam.position.y, cb.z - cam.position.z);
+      })
+      .forEach(function (f) {
+        var faded = (neighFolders && !neighFolders[f]) || (iso && iso !== f);
+        put(labelEls[f], centre[f], faded ? 0.2 : 0.95);
+      });
+  }
+  loop();
+})();
+</script>
+</body>
+</html>

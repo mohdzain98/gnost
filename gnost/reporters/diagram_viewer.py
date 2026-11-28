@@ -5,9 +5,10 @@ from __future__ import annotations
 import json
 import re
 from pathlib import Path
-from typing import Literal
+from typing import Any, Dict, Literal, Optional
 
 VENDOR_DIR = Path(__file__).parent / "vendor"
+TEMPLATES_DIR = str(Path(__file__).parent / "templates")
 
 Kind = Literal["mermaid", "markdown", "graph"]
 
@@ -120,8 +121,18 @@ def _inline(*files: str) -> str:
     return "\n".join(parts)
 
 
-def render_viewer_html(source: str, title: str, kind: Kind) -> str:
-    """Self-contained HTML page that draws `source`; it needs no network."""
+def _js_json(value: Any) -> str:
+    return json.dumps(value).replace("</", "<\\/")
+
+
+def render_viewer_html(
+    source: str, title: str, kind: Kind, meta: Optional[Dict[str, Any]] = None
+) -> str:
+    """Self-contained HTML page that draws `source`; it needs no network.
+
+    `meta` (graph pages only) adds what the Mermaid source lacks, such as the project name
+    and the entry points, which the mind map highlights.
+    """
     safe_title = title.replace("<", "&lt;")
     if kind == "graph":
         html = (Path(__file__).parent / "templates" / "graph_viewer.html").read_text(
@@ -136,6 +147,7 @@ def render_viewer_html(source: str, title: str, kind: Kind) -> str:
                 "__TITLE__": safe_title,
                 "__LIBS__": libs,
                 "__SOURCE__": _js_string(source),
+                "__META__": _js_json(meta or {}),
             },
         )
     files = ["mermaid.min.js", "svg-pan-zoom.min.js"]

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import platform
 import shutil
 import sys
@@ -76,6 +77,11 @@ def pyinstaller_args() -> List[str]:
     for pkg in ("mypy", "bandit", "radon", "gnost", "stevedore"):
         args += ["--copy-metadata", pkg]
     args += ["--collect-submodules", "stevedore"]
+    if importlib.util.find_spec(
+        "PIL"
+    ):  # gnost[media]: the mind-map GIF (imported lazily)
+        for module in ("PIL.Image", "PIL.ImageDraw", "PIL.ImageFont"):
+            args += ["--hidden-import", module]
     return args
 
 

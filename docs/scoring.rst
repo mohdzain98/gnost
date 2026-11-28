@@ -203,8 +203,7 @@ you see, and raise it as the code improves. See :doc:`ci`.
 
    **Upgrading from 0.7.0 or older.** The numbers moved. JavaScript, TypeScript and Java projects usually go
    **up** by 0.5 to 1.2. Python projects usually go **down** by 0.8 to 1.3, because the old formula ignored how
-   many findings there were. If your CI gates on ``fail_under``, run once with 0.7.1 and adjust the threshold.
-   To keep the old numbers while you do, set ``score = "average"`` (below).
+   many findings there were. If your CI gates on ``fail_under``, run once and adjust the threshold.
 
 The old formula (``score = "average"``)
 ---------------------------------------
@@ -214,11 +213,5 @@ severity weighted by each finding's confidence. Neither looked at how many findi
 the project was. Ten thousand info findings scored better than one critical finding, and a messy project
 scored close to a clean one.
 
-It stays available for one release, and will be removed in 0.8.0:
-
-.. code-block:: toml
-
-   [analyze]
-   score = "average"   # default: "density"
-
-With ``"average"``, ``summary.score.method`` in the JSON is ``"average"`` and ``summary.score.density`` is ``null``.
+It was kept for one release and **removed in 0.8.0**. A ``.gnost.toml`` that still sets ``score = "average"``
+gets a warning, and the density score is used.

@@ -7,7 +7,7 @@ import pathlib
 import sys
 import tempfile
 import webbrowser
-from typing import Optional
+from typing import Any, Dict, Optional
 
 from gnost.reporters.diagram_viewer import render_viewer_html
 
@@ -15,15 +15,20 @@ _MERMAID_EXT = {".mmd", ".mermaid"}
 _MARKDOWN_EXT = {".md", ".markdown"}
 
 
-def build_page(path: str, mode: str = "auto") -> str:
-    """The self-contained HTML page for a .mmd or .md file."""
+def build_page(
+    path: str, mode: str = "auto", meta: Optional[Dict[str, Any]] = None
+) -> str:
+    """The self-contained HTML page for a .mmd or .md file.
+
+    `meta` is passed to the flow explorer (project name and entry points, see `render_viewer_html`).
+    """
     ext = os.path.splitext(path)[1].lower()
     kind = "mermaid" if ext in _MERMAID_EXT else "markdown"
     with open(path, encoding="utf-8") as f:
         source = f.read()
     if kind == "mermaid" and mode != "mermaid":
         kind = "graph"  # the interactive explorer for every size; --view mermaid draws it flat
-    return render_viewer_html(source, os.path.basename(path), kind)  # type: ignore[arg-type]
+    return render_viewer_html(source, os.path.basename(path), kind, meta)  # type: ignore[arg-type]
 
 
 def run(

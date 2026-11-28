@@ -2,7 +2,7 @@
 
 `ScoreCard` is built from a finished report. The gate, the terminal table and the JSON/HTML
 reports all read it, so the number you see is the number a CI threshold compares against.
-Scores come from finding density (see `ScoreCard.density_to_score`); "average" is the 0.7 formula.
+Scores come from finding density (see `ScoreCard.density_to_score`).
 """
 
 from __future__ import annotations
@@ -29,14 +29,11 @@ class AnalyzerScore:
 class ScoreCard:
     """Per-analyzer scores plus the final score of a report.
 
-    "density" (default) scores severity-weighted findings per 1,000 analyzed lines on a log
-    curve, so both the number of findings and the project size count. "average" is the old
-    formula (average severity, ignores count and size), kept for one release.
+    Scores severity-weighted findings per 1,000 analyzed lines on a log curve, so both the
+    number of findings and the project size count. The 0.7 "average" formula was removed in 0.8.0.
     """
 
     DENSITY = "density"
-    AVERAGE = "average"
-    METHODS = (DENSITY, AVERAGE)
 
     SEVERITY_WEIGHTS: Dict[SeverityLevel, float] = {
         SeverityLevel.CRITICAL: 1.0,
@@ -64,9 +61,7 @@ class ScoreCard:
         self.density = density
 
     @classmethod
-    def from_report(
-        cls, report: ConsolidatedReport, method: str = DENSITY
-    ) -> "ScoreCard":
+    def from_report(cls, report: ConsolidatedReport) -> "ScoreCard":
         """Score every analyzer that ran and the report as a whole.
 
         Density uses `summary["analyzed_lines"]`; without it the project counts as 1,000 lines.
@@ -87,19 +82,20 @@ class ScoreCard:
             analyzers.append(
                 AnalyzerScore(
                     name=metric.analyzer_name,
-                    score=cls.score(found, lines, method, capped),
+                    score=cls.score(found, lines, capped),
                     findings=len(found),
                     high=counts["high"],
                     medium=counts["medium"],
                     low=counts["low"],
                 )
             )
-        if method == cls.AVERAGE:
-            final = cls.risk_to_score(summary.get("risk_score", 0.0))
-            return cls(analyzers, final, method, lines)
         density = cls.density(report.findings, lines, capped_total)
         return cls(
-            analyzers, cls.density_to_score(density), method, lines, round(density, 3)
+            analyzers,
+            cls.density_to_score(density),
+            cls.DENSITY,
+            lines,
+            round(density, 3),
         )
 
     @classmethod
@@ -107,15 +103,12 @@ class ScoreCard:
         cls,
         findings: List[UnifiedFinding],
         lines: Optional[int],
-        method: str = DENSITY,
         extra_weight: float = 0.0,
     ) -> float:
-        """The 0-10 score of a group of findings with the chosen method.
+        """The 0-10 score of a group of findings, from their density.
 
         `extra_weight` is the weight of findings not in the list (left out by max_findings).
         """
-        if method == cls.AVERAGE:
-            return cls.risk_to_score(cls.analyzer_risk(findings))
         return cls.density_to_score(cls.density(findings, lines, extra_weight))
 
     @classmethod
@@ -168,23 +161,6 @@ class ScoreCard:
             "density": self.density,
             "analyzers": {a.name: a.score for a in self.analyzers},
         }
-
-    @staticmethod
-    def risk_to_score(risk_score: float) -> float:
-        """Turn a risk percentage (0 to 100, lower is better) into a score out of 10."""
-        clamped = max(0.0, min(100.0, risk_score))
-        return round(10.0 * (1.0 - clamped / 100.0), 2)
-
-    @classmethod
-    def analyzer_risk(cls, findings: List[UnifiedFinding]) -> float:
-        """Risk percentage of one analyzer's findings, weighted by severity ("average" method)."""
-        if not findings:
-            return 0.0
-        total = sum(
-            cls.SEVERITY_WEIGHTS.get(f.severity, cls.UNKNOWN_WEIGHT) for f in findings
-        )
-        worst = max(cls.SEVERITY_WEIGHTS.values())
-        return round((total / (len(findings) * worst)) * 100.0, 2)
 
     @staticmethod
     def severity_counts(findings: List[UnifiedFinding]) -> Dict[str, int]:

@@ -41,7 +41,9 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-test = ["pytest", "jsonschema"]
+test = ["pytest", "jsonschema", "Pillow>=10.1"]
+# the rotating mind-map GIF for a README (`onboard --inject-mindmap --mindmap-format gif`)
+media = ["Pillow>=10.1"]
 
 [project.urls]
 Documentation = "https://gnost.readthedocs.io"

@@ -82,3 +82,39 @@ def test_the_explorer_has_a_png_download_button(tmp_path: Path):
     assert run(str(mmd), str(out), open_browser=False) == 0
     page = out.read_text(encoding="utf-8")
     assert 'id="png"' in page and "cy.png(" in page
+
+
+def test_the_explorer_has_a_mind_map_with_the_entry_points(tmp_path: Path):
+    meta = {"project": "demo</script>", "entry": ["src/app.py"]}
+    page = render_viewer_html(
+        'flowchart TD\n  a["src/app.py"]\n', "f.mmd", "graph", meta
+    )
+    assert 'id="mind"' in page and "function mindView()" in page
+    assert '"entry": ["src/app.py"]' in page
+    assert "demo<\\/script>" in page and "__META__" not in page
+
+
+def test_an_explorer_built_from_a_mmd_file_has_empty_meta(tmp_path: Path):
+    mmd = tmp_path / "f.mmd"
+    mmd.write_text("flowchart TD\n  a --> b\n", encoding="utf-8")
+    out = tmp_path / "f.html"
+    assert run(str(mmd), str(out), open_browser=False) == 0
+    assert "const META = {};" in out.read_text(encoding="utf-8")
+
+
+def test_onboard_passes_the_project_and_entry_points_to_the_explorer(
+    tmp_path: Path,
+) -> None:
+    from gnost.cli.commands.onboard import _page_meta
+    from gnost.languages.base import EntryPoint
+
+    class Scan:
+        entry_points = [
+            EntryPoint(file=str(tmp_path / "cli" / "app.py"), reason="__main__ guard")
+        ]
+
+    meta = _page_meta(Scan(), str(tmp_path), None)
+    assert meta["project"] == tmp_path.name and meta["entry"] == ["cli/app.py"]
+    assert meta["mind"]["depth"] == 2  # the explorer reads the shared settings
+    remote = _page_meta(Scan(), str(tmp_path), "https://github.com/pallets/flask.git")
+    assert remote["project"] == "flask"

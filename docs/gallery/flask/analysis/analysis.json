@@ -1,10 +1,10 @@
 {
- "id": "c422fad4-c64c-435a-907a-da78e47692a2",
- "timestamp": "2026-11-26T23:05:47.252692",
+ "id": "c619bc7d-31ab-41ee-b6f6-ffd324999f34",
+ "timestamp": "2026-11-28T19:25:55.054882",
  "target_path": "https://github.com/pallets/flask",
  "findings": [
   {
-   "id": "5f6f9391-2d53-4516-905f-94b3488f960c",
+   "id": "2411ece8-4483-4a76-b255-2e47c3dbea33",
    "title": "Poor Observability Coverage",
    "description": "Overall Folder Logging coverage is 4.0%, below recommended 60.0%",
    "details": null,
@@ -30,11 +30,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:05:57.072552",
+   "timestamp": "2026-11-28T19:26:05.322172",
    "tags": [
+    "observability",
     "monitoring",
-    "logging",
-    "observability"
+    "logging"
    ],
    "extra_data": {
     "observability_score": 3.951367781155015,
@@ -47,7 +47,7 @@
    }
   },
   {
-   "id": "7804989a-a1d3-4336-b5d1-c5da8c082ef9",
+   "id": "d224d378-f345-482d-8a6d-162f5f54140d",
    "title": "Complexity Risk Ranking",
    "description": "File is marked as Poorly Maintainable for cyclomatic complexity distribution. Moderate: 0.0%, High: 15.2%, Very High: 0.0%. Reason: high 15.2% > 15%.",
    "details": {
@@ -102,17 +102,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019698",
+   "timestamp": "2026-11-28T19:26:05.266879",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "8f20b929-152d-4ade-aacc-8e5d83520598",
-     "6b896a5b-c44c-48c3-bea9-d293c0868ebc",
-     "ea3e17fd-eb3d-4acb-be79-5881f74295fd",
-     "2924d560-13da-4114-9a48-298136f4c6d9"
+     "2a394cf3-eec8-42f3-b742-2095a73a86bf",
+     "3fa38aa3-4e68-41f3-b031-53a1a44faa8d",
+     "3aab1217-c586-452a-9225-7381b09c8395",
+     "9238868a-b2bf-4d83-99be-c5e1a0d2d203"
     ],
     "file_issue_count": 9,
     "category_prevalence": 45,
@@ -121,7 +121,7 @@
    }
   },
   {
-   "id": "3b36b0e1-f06f-4cc8-bf99-dd4862be6e35",
+   "id": "59cab317-83c3-4226-a121-6fd7cf646deb",
    "title": "Cyclomatic Complexity",
    "description": "Function register has More than Moderate cyclomatic complexity (23, rank D) in blueprints.py.",
    "details": {
@@ -169,18 +169,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019683",
+   "timestamp": "2026-11-28T19:26:05.266863",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "6b896a5b-c44c-48c3-bea9-d293c0868ebc",
-     "7804989a-a1d3-4336-b5d1-c5da8c082ef9",
-     "8f20b929-152d-4ade-aacc-8e5d83520598",
-     "ea3e17fd-eb3d-4acb-be79-5881f74295fd",
-     "2924d560-13da-4114-9a48-298136f4c6d9"
+     "3fa38aa3-4e68-41f3-b031-53a1a44faa8d",
+     "9238868a-b2bf-4d83-99be-c5e1a0d2d203",
+     "3aab1217-c586-452a-9225-7381b09c8395",
+     "d224d378-f345-482d-8a6d-162f5f54140d",
+     "2a394cf3-eec8-42f3-b742-2095a73a86bf"
     ],
     "file_issue_count": 9,
     "category_prevalence": 45,
@@ -189,7 +189,7 @@
    }
   },
   {
-   "id": "d2b0e6ed-5830-431c-a68e-248e09c428b4",
+   "id": "11074956-44e1-431f-bac9-ddcff6e422bd",
    "title": "Maintainability Index",
    "description": "File `test_basic.py` has maintainability index (0.0) and is ranked as C.",
    "details": {
@@ -232,17 +232,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019702",
+   "timestamp": "2026-11-28T19:26:05.266883",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "2fee7f45-f11b-44a7-a130-28a630b6ddb8",
-     "d2a4acf2-491e-42bd-9704-da2e623b4b1f",
-     "d8b3dbbb-c749-4d9d-85bb-307eaae628aa",
-     "619e7fce-5c45-465b-9929-daead535fed6"
+     "a0b8ecf3-521d-4ddd-98fc-6933053f8d14",
+     "c07cf61a-9854-4583-ad2d-178223f92247",
+     "50b1edd2-dd22-4505-9105-f89adad29191",
+     "fd76383f-804d-46b9-9e42-557af7223876"
     ],
     "file_issue_count": 14,
     "category_prevalence": 45,
@@ -251,7 +251,7 @@
    }
   },
   {
-   "id": "5606ea8a-0763-4888-808e-c8ea071a73bc",
+   "id": "33f1c49b-f0d9-4960-ba54-850f31895bdd",
    "title": "Cyclomatic Complexity",
    "description": "Function test_response_types has More than Moderate cyclomatic complexity (27, rank D) in test_basic.py.",
    "details": {
@@ -299,18 +299,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019542",
+   "timestamp": "2026-11-28T19:26:05.266724",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "2fee7f45-f11b-44a7-a130-28a630b6ddb8",
-     "d2a4acf2-491e-42bd-9704-da2e623b4b1f",
-     "d2b0e6ed-5830-431c-a68e-248e09c428b4",
-     "d8b3dbbb-c749-4d9d-85bb-307eaae628aa",
-     "619e7fce-5c45-465b-9929-daead535fed6"
+     "11074956-44e1-431f-bac9-ddcff6e422bd",
+     "50b1edd2-dd22-4505-9105-f89adad29191",
+     "c07cf61a-9854-4583-ad2d-178223f92247",
+     "fd76383f-804d-46b9-9e42-557af7223876",
+     "a0b8ecf3-521d-4ddd-98fc-6933053f8d14"
     ],
     "file_issue_count": 14,
     "category_prevalence": 45,
@@ -319,7 +319,7 @@
    }
   },
   {
-   "id": "9317187e-3eea-4cbf-99b8-acd1825aaf61",
+   "id": "d7e8becd-c466-4602-a3a2-ad4f127a759d",
    "title": "Maintainability Index",
    "description": "File `test_blueprints.py` has maintainability index (3.0) and is ranked as C.",
    "details": {
@@ -362,17 +362,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019706",
+   "timestamp": "2026-11-28T19:26:05.266887",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "9f6cd9bc-22ad-4c62-911c-5eb5132b397b",
-     "ba7e401d-6075-4438-bb17-cd371da31413",
-     "8fa3373e-3196-4802-a071-bd7bcd27a847",
-     "ed96bb8f-689c-4806-8afa-9b12ce43da06"
+     "c350df63-fa29-44ce-aed8-095a41167c38",
+     "c1aa48bc-ebfd-4082-9310-99444555e5c8",
+     "0dc4d1b1-54c4-4400-904a-72c557dd8d5a",
+     "cce405bf-85ae-4942-a71c-7df24faece7f"
     ],
     "file_issue_count": 9,
     "category_prevalence": 45,
@@ -381,7 +381,7 @@
    }
   },
   {
-   "id": "7bf35e4c-e1c2-4215-8bd9-cd50937f0647",
+   "id": "631cbc21-3f53-4695-a2e5-700ff758a9d0",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -414,11 +414,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:05:57.072572",
+   "timestamp": "2026-11-28T19:26:05.322191",
    "tags": [
     "error_handling",
-    "logging",
-    "critical_functions"
+    "critical_functions",
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -426,9 +426,9 @@
     ],
     "critical_function_count": 1,
     "cross_references": [
-     "4da9a768-b0d1-45ab-8cd6-fb179a088465",
-     "d47f3e1d-a84c-4321-8633-640610929e8a",
-     "426e6988-4716-4b21-a18f-f1db5a0745b6"
+     "7e2813ef-c97e-472e-b0de-e573564dcb2a",
+     "ca7ffaa7-7574-480e-a655-f6352eca1766",
+     "96045ee1-255e-4045-a928-e745610b8b83"
     ],
     "file_issue_count": 4,
     "category_prevalence": 23,
@@ -437,7 +437,7 @@
    }
   },
   {
-   "id": "7e37a417-1815-473f-86cf-ef18a188df59",
+   "id": "a76fe0bb-d8e2-4a0c-b39d-b9e655d94c93",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 4 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -476,11 +476,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:05:57.072581",
+   "timestamp": "2026-11-28T19:26:05.322201",
    "tags": [
     "error_handling",
-    "logging",
-    "critical_functions"
+    "critical_functions",
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -491,10 +491,10 @@
     ],
     "critical_function_count": 4,
     "cross_references": [
-     "5d9705c3-4967-4d21-b584-60302fe232d8",
-     "4ee685b7-4b38-4dfd-b388-122e11d0467f",
-     "e11523b1-1e06-48c4-8abb-b54954c58a41",
-     "c8eba58e-e8ad-42bc-9925-13695bc5e1f7"
+     "618ce992-29cd-475d-9067-e981b34dcf7c",
+     "0083dd7a-03a1-4ef0-b0f9-50be087d9860",
+     "1c7a4fe6-5a44-4361-8146-679cb0b4dca7",
+     "22318b43-53e4-4195-9865-afe1f6dd4b38"
     ],
     "file_issue_count": 7,
     "category_prevalence": 23,
@@ -503,7 +503,7 @@
    }
   },
   {
-   "id": "e1486fc7-2c0d-4554-85d3-8881a881f62c",
+   "id": "b0d8ff55-02f6-45bb-bcb5-17d535733f29",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 2 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -538,11 +538,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:05:57.072593",
+   "timestamp": "2026-11-28T19:26:05.322214",
    "tags": [
     "error_handling",
-    "logging",
-    "critical_functions"
+    "critical_functions",
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -551,10 +551,10 @@
     ],
     "critical_function_count": 2,
     "cross_references": [
-     "7fbf2c02-b158-4dab-a940-c2e9b4439c50",
-     "e5a89b1a-461a-4694-b30d-d415ca7c0d29",
-     "a67b8d9c-f603-4a9f-ae96-1ad8e4611475",
-     "1c1adfaa-246b-4be5-9696-6e9f53558ad2"
+     "5fb2eb09-942a-44c0-a30d-0b3dcb322f26",
+     "eaf82360-7e5b-4e0e-a78c-2e28440218ce",
+     "98371980-750a-4493-95cd-89bb1b8e37af",
+     "531ec373-f055-4d9f-9de2-cc591c6b5c3f"
     ],
     "file_issue_count": 8,
     "category_prevalence": 23,
@@ -563,7 +563,7 @@
    }
   },
   {
-   "id": "e57ed29f-efac-4043-aea8-0fd6a0acee1b",
+   "id": "ad1a506f-a3ed-44eb-bc3a-9e4d8a0d206a",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 14 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -622,11 +622,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:05:57.072600",
+   "timestamp": "2026-11-28T19:26:05.322222",
    "tags": [
     "error_handling",
-    "logging",
-    "critical_functions"
+    "critical_functions",
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -647,10 +647,10 @@
     ],
     "critical_function_count": 14,
     "cross_references": [
-     "227ae5b9-8b3a-4c3c-92b4-7acb812b8657",
-     "8914bec4-23e9-4fcc-abf8-e0c5d546664d",
-     "9ce79726-340f-4967-9ad0-180b2d37ac4e",
-     "1fae7938-8db0-4c0a-bfa5-827152e80a16"
+     "5e061cd1-c7d8-407f-99a5-a3bb6d2ab816",
+     "403cd8ea-9310-4220-bca0-dd5d1603f7c7",
+     "99e94017-96b9-4db8-9256-40233c112f7a",
+     "fcd01819-97ab-4ac0-9f8f-59bb3b13899f"
     ],
     "file_issue_count": 13,
     "category_prevalence": 23,
@@ -659,7 +659,7 @@
    }
   },
   {
-   "id": "bcb9255f-3969-4785-be2c-db52ad1e26a8",
+   "id": "6ace528e-1041-4fbd-8e27-354dcf16fc55",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 4 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -698,11 +698,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:05:57.072605",
+   "timestamp": "2026-11-28T19:26:05.322228",
    "tags": [
     "error_handling",
-    "logging",
-    "critical_functions"
+    "critical_functions",
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -713,10 +713,10 @@
     ],
     "critical_function_count": 4,
     "cross_references": [
-     "fa30c862-f1cf-4e52-b557-784044ea5eea",
-     "cca28266-e52b-468a-af02-fb9482bc760f",
-     "3a4b433b-4a3a-4383-81cf-738ab90bb6f5",
-     "94f5587f-e8fe-4fb7-b9bb-f2b305034f7c"
+     "7a3e3b6f-9218-480d-84b1-efc5bbc52bc5",
+     "269e1837-09bd-4726-96e5-5fe6e9f06ae0",
+     "919343fe-9d8c-470a-903d-8ca9cf4dd66f",
+     "402d8746-bf8f-455e-b01a-fb05b7934807"
     ],
     "file_issue_count": 5,
     "category_prevalence": 23,
@@ -725,7 +725,7 @@
    }
   },
   {
-   "id": "3487cf9e-1fdc-43fa-acf3-3dc00591c072",
+   "id": "5ac1c5bf-3dde-4fcd-b575-4ee49f46d446",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 20 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -796,11 +796,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:05:57.072612",
+   "timestamp": "2026-11-28T19:26:05.322238",
    "tags": [
     "error_handling",
-    "logging",
-    "critical_functions"
+    "critical_functions",
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -827,10 +827,10 @@
     ],
     "critical_function_count": 20,
     "cross_references": [
-     "42a9a627-a462-4b66-a474-78b77485f753",
-     "4b62b360-3773-4f09-be36-208371dcf0ce",
-     "a7f1f119-330f-4049-a886-6aad7d538b56",
-     "579c4738-8352-4327-8bd7-dd2c9f9d9e74"
+     "b3158ff9-2efb-4e33-9d58-ba1a5b172547",
+     "87cc9cc1-78e9-418d-8f73-4b4397ce99bd",
+     "2c65ec78-d9e6-4de8-9ec5-3e7b9b4f23d4",
+     "76f48ba3-ecc3-44b4-bbe9-ad992c7828f4"
     ],
     "file_issue_count": 13,
     "category_prevalence": 23,
@@ -839,7 +839,7 @@
    }
   },
   {
-   "id": "5ea7c198-5674-48eb-94da-a8de5d9c92c1",
+   "id": "3fed5b24-45a1-4943-9664-63c73f319125",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 10 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -890,11 +890,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:05:57.072628",
+   "timestamp": "2026-11-28T19:26:05.322256",
    "tags": [
     "error_handling",
-    "logging",
-    "critical_functions"
+    "critical_functions",
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -911,10 +911,10 @@
     ],
     "critical_function_count": 10,
     "cross_references": [
-     "93284a8a-7edd-4be8-ab75-e08198d7efb8",
-     "e8d5ee1e-4505-43cb-8b13-300c54441880",
-     "1568b50c-6c73-467c-9d08-f2242b796217",
-     "c40a7b49-530c-470e-bb2f-95e9b00fc416"
+     "fe1a48e9-640a-4332-a893-058ab3b8cc87",
+     "ec767917-ba50-4c69-a460-c4c0820afbb6",
+     "7fdc52a4-8443-4ea3-8ffd-7077607efb7c",
+     "78a4f7c0-6864-4734-87b7-e4111e69b99c"
     ],
     "file_issue_count": 8,
     "category_prevalence": 23,
@@ -923,7 +923,7 @@
    }
   },
   {
-   "id": "ea3e17fd-eb3d-4acb-be79-5881f74295fd",
+   "id": "2a394cf3-eec8-42f3-b742-2095a73a86bf",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 4 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -962,11 +962,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:05:57.072649",
+   "timestamp": "2026-11-28T19:26:05.322278",
    "tags": [
     "error_handling",
-    "logging",
-    "critical_functions"
+    "critical_functions",
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -977,10 +977,10 @@
     ],
     "critical_function_count": 4,
     "cross_references": [
-     "8f20b929-152d-4ade-aacc-8e5d83520598",
-     "7804989a-a1d3-4336-b5d1-c5da8c082ef9",
-     "6b896a5b-c44c-48c3-bea9-d293c0868ebc",
-     "2924d560-13da-4114-9a48-298136f4c6d9"
+     "3fa38aa3-4e68-41f3-b031-53a1a44faa8d",
+     "3aab1217-c586-452a-9225-7381b09c8395",
+     "9238868a-b2bf-4d83-99be-c5e1a0d2d203",
+     "d224d378-f345-482d-8a6d-162f5f54140d"
     ],
     "file_issue_count": 9,
     "category_prevalence": 23,
@@ -989,7 +989,7 @@
    }
   },
   {
-   "id": "9946895c-8dac-4d59-93c4-537a1497537b",
+   "id": "433394e0-0d83-437d-b7c8-d4f1d5fafec2",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 8 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -1036,11 +1036,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:05:57.072655",
+   "timestamp": "2026-11-28T19:26:05.322284",
    "tags": [
     "error_handling",
-    "logging",
-    "critical_functions"
+    "critical_functions",
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -1055,10 +1055,10 @@
     ],
     "critical_function_count": 8,
     "cross_references": [
-     "13133f3e-b7f0-4909-a239-b53f49ce4efd",
-     "802f7b4e-5b34-46b8-939e-b3609a9ee73b",
-     "d6986ea7-37d1-48e2-a439-93129d4e2764",
-     "d12f2bd9-60f3-4a35-8c79-bc5ec4af8ef5"
+     "4df91ba1-bc5e-4c0a-8296-0b1faa4e8c12",
+     "86ec5d22-4be5-4374-a048-63928551e06a",
+     "18fe6311-e9bf-47e5-8a98-18a091ab1e1f",
+     "3f26b466-f58d-4eec-927e-69c9f9096222"
     ],
     "file_issue_count": 9,
     "category_prevalence": 23,
@@ -1067,7 +1067,7 @@
    }
   },
   {
-   "id": "d8579e6c-8cd9-4e07-9d19-da164921bab9",
+   "id": "411329d9-89be-4744-bb50-779ea55b0771",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 2 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -1102,11 +1102,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:05:57.072675",
+   "timestamp": "2026-11-28T19:26:05.322305",
    "tags": [
     "error_handling",
-    "logging",
-    "critical_functions"
+    "critical_functions",
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -1115,9 +1115,9 @@
     ],
     "critical_function_count": 2,
     "cross_references": [
-     "98c8a57d-8fee-4d94-91f7-8ba91108e8f7",
-     "6e75b712-53c8-4464-9a67-0da63c435735",
-     "504ada83-b47e-48d8-ac7e-f3164a3c54ea"
+     "732b45c8-fee4-43e1-975e-b963adb4f12a",
+     "3fb28944-972e-40c9-89cd-737e1c90b724",
+     "70fd5b1c-33b4-4db2-954b-f080efe39f4b"
     ],
     "file_issue_count": 4,
     "category_prevalence": 23,
@@ -1126,7 +1126,7 @@
    }
   },
   {
-   "id": "b2bc7966-57ff-4f1d-80f6-9661be4a7edf",
+   "id": "430508fe-9c47-4976-a752-c8961a5d2d1e",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 3 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -1163,11 +1163,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:05:57.072680",
+   "timestamp": "2026-11-28T19:26:05.322310",
    "tags": [
     "error_handling",
-    "logging",
-    "critical_functions"
+    "critical_functions",
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -1183,7 +1183,7 @@
    }
   },
   {
-   "id": "8cc6f635-a0f0-49d5-9d79-3ed86da1354b",
+   "id": "a209a8fa-ce95-405b-94ee-b15c9e14e794",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -1216,11 +1216,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:05:57.072617",
+   "timestamp": "2026-11-28T19:26:05.322243",
    "tags": [
     "error_handling",
-    "logging",
-    "critical_functions"
+    "critical_functions",
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -1228,10 +1228,10 @@
     ],
     "critical_function_count": 1,
     "cross_references": [
-     "ab3d8650-dfd4-4def-b73b-d6eaa313cd19",
-     "94bcf5f1-3403-4dc4-9c2f-b65e21ca670a",
-     "1343f4cb-2032-4299-a31c-7c3134af62d5",
-     "d0d724c9-91b4-4a04-b4d2-3279e9d748d3"
+     "0358440d-ec99-42ac-88b7-bf9b093593bb",
+     "b097c716-f56b-4780-b9be-a0cae96a6ebc",
+     "ad013bfe-09b8-4e8d-86dd-1d1e1e6eda07",
+     "c5607bba-dc9a-4b27-986f-697d36dcbfe3"
     ],
     "file_issue_count": 9,
     "category_prevalence": 23,
@@ -1240,7 +1240,7 @@
    }
   },
   {
-   "id": "84808152-536b-4822-a1c1-9e0fdf07639c",
+   "id": "cbfbccba-9d79-4b8e-ae83-135a4e0386fc",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 4 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -1279,11 +1279,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:05:57.072587",
+   "timestamp": "2026-11-28T19:26:05.322208",
    "tags": [
     "error_handling",
-    "logging",
-    "critical_functions"
+    "critical_functions",
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -1294,10 +1294,10 @@
     ],
     "critical_function_count": 4,
     "cross_references": [
-     "b3ea3e2c-2927-4a53-98ed-ca2fff20b06c",
-     "17927925-7a07-4e68-b0b0-a1f666e790c2",
-     "3917847d-1e78-442a-b3c7-e64d04083008",
-     "87b924c6-1116-4d83-b8aa-d8efdd7837a1"
+     "5112bbf7-aa84-46d9-b3df-536ace2eceed",
+     "5e5f6025-e95c-47ff-9395-dd1a59515a3b",
+     "029b4dcc-f427-4988-afc3-6d2cdadc4f29",
+     "a7567462-9390-4cc0-9d2d-0f4fdf973128"
     ],
     "file_issue_count": 7,
     "category_prevalence": 23,
@@ -1306,7 +1306,7 @@
    }
   },
   {
-   "id": "d3c2132e-5de6-481d-a145-432fbb21fd2a",
+   "id": "c9a47f7f-ef91-4e6d-8893-c8dd47ca6654",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 7 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -1351,11 +1351,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:05:57.072622",
+   "timestamp": "2026-11-28T19:26:05.322249",
    "tags": [
     "error_handling",
-    "logging",
-    "critical_functions"
+    "critical_functions",
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -1369,10 +1369,10 @@
     ],
     "critical_function_count": 7,
     "cross_references": [
-     "635177b1-0b9e-4ced-baba-ba0d7f9375cf",
-     "87ded48e-495e-4458-aa84-b0020745df8a",
-     "596bef87-baff-482c-a7eb-2fa48b03aaff",
-     "9a864e0c-462c-462f-8fb1-7fdefeba6520"
+     "5896ae62-d7b5-4777-afda-8aa012f6486e",
+     "82ac535d-eb35-4f5a-a407-7b36ec3d0aea",
+     "4f9f1c03-7431-4b91-b345-04d27b6d959a",
+     "9e9bbbbf-7ba5-4708-9a6f-aa0649335149"
     ],
     "file_issue_count": 5,
     "category_prevalence": 23,
@@ -1381,7 +1381,7 @@
    }
   },
   {
-   "id": "d12bfc43-18e2-4378-8f46-70715049f1f6",
+   "id": "e29c1d15-ec5b-4327-8cf3-b9fe78880120",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -1414,11 +1414,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:05:57.072633",
+   "timestamp": "2026-11-28T19:26:05.322261",
    "tags": [
     "error_handling",
-    "logging",
-    "critical_functions"
+    "critical_functions",
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -1426,10 +1426,10 @@
     ],
     "critical_function_count": 1,
     "cross_references": [
-     "d57d1254-cc09-423d-bdf8-188860b6365a",
-     "51622a97-d0ec-4cfe-91dc-33bfc2ec8dcd",
-     "60790461-e74a-4601-919c-2476958522dd",
-     "e108bc31-96cd-4d92-9478-0695b53c353b"
+     "b1f47aa3-6b12-4254-90d3-81ad02701658",
+     "ba7c3675-e2ac-4ede-9b52-22ec85f94e7b",
+     "0ece876f-b1bd-4b88-9f45-de1b431ccf26",
+     "bdd9318e-0598-45d5-80c6-fb52fb495426"
     ],
     "file_issue_count": 6,
     "category_prevalence": 23,
@@ -1438,7 +1438,7 @@
    }
   },
   {
-   "id": "152a41ae-57d4-4b22-9660-3e177185c1ee",
+   "id": "cb3439b0-0446-4112-94b2-662629cd90ee",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 2 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -1473,11 +1473,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:05:57.072638",
+   "timestamp": "2026-11-28T19:26:05.322266",
    "tags": [
     "error_handling",
-    "logging",
-    "critical_functions"
+    "critical_functions",
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -1486,10 +1486,10 @@
     ],
     "critical_function_count": 2,
     "cross_references": [
-     "ae41ab49-f7df-4199-a6a2-f25ebc919f3d",
-     "76e42fc0-4087-409f-a8bb-406f9d7ceede",
-     "d8378c31-3661-4c68-8a5b-f17bd99b844a",
-     "d652c04c-bbce-4c07-addf-91811f48dd69"
+     "f93adc93-1d5b-48f1-9d52-5a41366eee7a",
+     "a0fd05a6-c0fc-4440-9284-844bd3b23e06",
+     "e603cc74-893a-464a-bb2e-0744fc6b777b",
+     "2411b245-b133-4ad3-a103-6eebe9cd38ad"
     ],
     "file_issue_count": 5,
     "category_prevalence": 23,
@@ -1498,7 +1498,7 @@
    }
   },
   {
-   "id": "c87fa305-16a1-4cfe-b4a6-849e71478153",
+   "id": "3a0c967f-0155-45cd-abba-027dfacac5b4",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 4 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -1537,11 +1537,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:05:57.072644",
+   "timestamp": "2026-11-28T19:26:05.322272",
    "tags": [
     "error_handling",
-    "logging",
-    "critical_functions"
+    "critical_functions",
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -1552,10 +1552,10 @@
     ],
     "critical_function_count": 4,
     "cross_references": [
-     "345c5f66-53a7-4abe-a1fb-39a0efcaf9df",
-     "bee88ac9-50ab-4b8c-b78f-9ed32515ac2a",
-     "c247b1f0-85e2-462a-8aa4-9d9f96435982",
-     "4da2fc62-45fd-40aa-9ccd-320ec34851a0"
+     "e4baafc3-0c3b-42ec-860e-5234273b1ee4",
+     "67e989a1-42e1-47ad-93c6-59a2ed4e4853",
+     "8caa098f-ceed-46c1-bdf4-aeec2f8d1642",
+     "6de0d6ac-e4eb-4c76-ab1f-0940c9df2271"
     ],
     "file_issue_count": 7,
     "category_prevalence": 23,
@@ -1564,7 +1564,7 @@
    }
   },
   {
-   "id": "fa617387-fb77-432c-9fe5-ba6a47533a43",
+   "id": "c8945e40-2a28-42e0-bf06-f683fa22f618",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 8 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -1611,11 +1611,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:05:57.072660",
+   "timestamp": "2026-11-28T19:26:05.322290",
    "tags": [
     "error_handling",
-    "logging",
-    "critical_functions"
+    "critical_functions",
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -1630,10 +1630,10 @@
     ],
     "critical_function_count": 8,
     "cross_references": [
-     "5f34e66c-6b73-46fb-b41e-96d81a85fda5",
-     "a1087e6a-59a0-4bc8-a3ce-06dcc3e6e664",
-     "48130b13-cc32-40d4-839c-3b52c713d25b",
-     "44bdfd14-1cee-4a16-96c6-8478a79d98b1"
+     "e90e2c23-71e6-46fa-842f-67a067b124f9",
+     "5011f9cb-a145-44f5-b8dd-27a745faf837",
+     "9aa42ea3-48fc-4987-99d2-3e3be6404d67",
+     "3d28ba34-8f80-44d2-b216-d5a1f85094c8"
     ],
     "file_issue_count": 8,
     "category_prevalence": 23,
@@ -1642,7 +1642,7 @@
    }
   },
   {
-   "id": "72d42ed8-9a30-4cb7-aca1-cc26fb5a0435",
+   "id": "1cb14b47-da54-47a5-bd8c-7432b3c84355",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -1675,11 +1675,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:05:57.072666",
+   "timestamp": "2026-11-28T19:26:05.322295",
    "tags": [
     "error_handling",
-    "logging",
-    "critical_functions"
+    "critical_functions",
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -1693,7 +1693,7 @@
    }
   },
   {
-   "id": "41f24d9f-526c-48c3-b7b1-ec06a2655127",
+   "id": "0ae0450a-8a94-461c-81a2-f2a09484f5db",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -1726,11 +1726,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:05:57.072671",
+   "timestamp": "2026-11-28T19:26:05.322300",
    "tags": [
     "error_handling",
-    "logging",
-    "critical_functions"
+    "critical_functions",
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -1744,7 +1744,7 @@
    }
   },
   {
-   "id": "107b3ba4-54f1-439c-95a5-36eafd3a36ee",
+   "id": "fd31d520-f223-484c-a01e-5da6f6b2b699",
    "title": "Too Many Function Arguments",
    "description": "Too many arguments in function definition (10 > 5)",
    "details": "This function has too many arguments.",
@@ -1770,7 +1770,7 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996862",
+   "timestamp": "2026-11-28T19:26:06.241202",
    "tags": [
     "readability",
     "clarity",
@@ -1780,11 +1780,11 @@
     "ruff_rule_id": "PLR0913",
     "readability_category": "clarity",
     "cross_references": [
-     "7fbf2c02-b158-4dab-a940-c2e9b4439c50",
-     "e1486fc7-2c0d-4554-85d3-8881a881f62c",
-     "e5a89b1a-461a-4694-b30d-d415ca7c0d29",
-     "1c1adfaa-246b-4be5-9696-6e9f53558ad2",
-     "a67b8d9c-f603-4a9f-ae96-1ad8e4611475"
+     "eaf82360-7e5b-4e0e-a78c-2e28440218ce",
+     "531ec373-f055-4d9f-9de2-cc591c6b5c3f",
+     "5fb2eb09-942a-44c0-a30d-0b3dcb322f26",
+     "98371980-750a-4493-95cd-89bb1b8e37af",
+     "b0d8ff55-02f6-45bb-bcb5-17d535733f29"
     ],
     "file_issue_count": 8,
     "category_prevalence": 255,
@@ -1793,7 +1793,7 @@
    }
   },
   {
-   "id": "36d9df5a-12ba-4e53-9945-37b0447d4971",
+   "id": "cc802500-6dcd-4d25-9661-e53b1fffaeb0",
    "title": "Too Many Function Arguments",
    "description": "Too many arguments in function definition (9 > 5)",
    "details": "This function has too many arguments.",
@@ -1819,7 +1819,7 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996914",
+   "timestamp": "2026-11-28T19:26:06.241252",
    "tags": [
     "readability",
     "clarity",
@@ -1829,11 +1829,11 @@
     "ruff_rule_id": "PLR0913",
     "readability_category": "clarity",
     "cross_references": [
-     "9ce79726-340f-4967-9ad0-180b2d37ac4e",
-     "e57ed29f-efac-4043-aea8-0fd6a0acee1b",
-     "227ae5b9-8b3a-4c3c-92b4-7acb812b8657",
-     "1fae7938-8db0-4c0a-bfa5-827152e80a16",
-     "8914bec4-23e9-4fcc-abf8-e0c5d546664d"
+     "403cd8ea-9310-4220-bca0-dd5d1603f7c7",
+     "5e061cd1-c7d8-407f-99a5-a3bb6d2ab816",
+     "ad1a506f-a3ed-44eb-bc3a-9e4d8a0d206a",
+     "fcd01819-97ab-4ac0-9f8f-59bb3b13899f",
+     "99e94017-96b9-4db8-9256-40233c112f7a"
     ],
     "file_issue_count": 13,
     "category_prevalence": 255,
@@ -1842,7 +1842,7 @@
    }
   },
   {
-   "id": "a1703c26-f133-4222-b82c-37d4398ac965",
+   "id": "f18bc832-241c-4cdf-a53c-f06e479a3449",
    "title": "Too Many Function Arguments",
    "description": "Too many arguments in function definition (10 > 5)",
    "details": "This function has too many arguments.",
@@ -1868,7 +1868,7 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996953",
+   "timestamp": "2026-11-28T19:26:06.241292",
    "tags": [
     "readability",
     "clarity",
@@ -1878,11 +1878,11 @@
     "ruff_rule_id": "PLR0913",
     "readability_category": "clarity",
     "cross_references": [
-     "3487cf9e-1fdc-43fa-acf3-3dc00591c072",
-     "a7f1f119-330f-4049-a886-6aad7d538b56",
-     "579c4738-8352-4327-8bd7-dd2c9f9d9e74",
-     "4b62b360-3773-4f09-be36-208371dcf0ce",
-     "42a9a627-a462-4b66-a474-78b77485f753"
+     "b3158ff9-2efb-4e33-9d58-ba1a5b172547",
+     "87cc9cc1-78e9-418d-8f73-4b4397ce99bd",
+     "5ac1c5bf-3dde-4fcd-b575-4ee49f46d446",
+     "2c65ec78-d9e6-4de8-9ec5-3e7b9b4f23d4",
+     "76f48ba3-ecc3-44b4-bbe9-ad992c7828f4"
     ],
     "file_issue_count": 13,
     "category_prevalence": 255,
@@ -1891,7 +1891,7 @@
    }
   },
   {
-   "id": "b0be1e3e-bb24-4b97-b058-98332cc8ee0f",
+   "id": "13435893-e3d8-48c7-ab46-9dea69a32f60",
    "title": "Too Many Function Arguments",
    "description": "Too many arguments in function definition (8 > 5)",
    "details": "This function has too many arguments.",
@@ -1917,7 +1917,7 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997083",
+   "timestamp": "2026-11-28T19:26:06.241426",
    "tags": [
     "readability",
     "clarity",
@@ -1927,11 +1927,11 @@
     "ruff_rule_id": "PLR0913",
     "readability_category": "clarity",
     "cross_references": [
-     "93284a8a-7edd-4be8-ab75-e08198d7efb8",
-     "c40a7b49-530c-470e-bb2f-95e9b00fc416",
-     "e8d5ee1e-4505-43cb-8b13-300c54441880",
-     "5ea7c198-5674-48eb-94da-a8de5d9c92c1",
-     "1568b50c-6c73-467c-9d08-f2242b796217"
+     "ec767917-ba50-4c69-a460-c4c0820afbb6",
+     "fe1a48e9-640a-4332-a893-058ab3b8cc87",
+     "78a4f7c0-6864-4734-87b7-e4111e69b99c",
+     "3fed5b24-45a1-4943-9664-63c73f319125",
+     "7fdc52a4-8443-4ea3-8ffd-7077607efb7c"
     ],
     "file_issue_count": 8,
     "category_prevalence": 255,
@@ -1940,7 +1940,7 @@
    }
   },
   {
-   "id": "b427086c-0fa0-4bbd-82c8-f80eb55af5f0",
+   "id": "193405f7-1738-4cd8-83e8-84a7aa486b3c",
    "title": "Too Many Function Arguments",
    "description": "Too many arguments in function definition (10 > 5)",
    "details": "This function has too many arguments.",
@@ -1966,7 +1966,7 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997191",
+   "timestamp": "2026-11-28T19:26:06.241531",
    "tags": [
     "readability",
     "clarity",
@@ -1976,11 +1976,11 @@
     "ruff_rule_id": "PLR0913",
     "readability_category": "clarity",
     "cross_references": [
-     "6b896a5b-c44c-48c3-bea9-d293c0868ebc",
-     "7804989a-a1d3-4336-b5d1-c5da8c082ef9",
-     "8f20b929-152d-4ade-aacc-8e5d83520598",
-     "ea3e17fd-eb3d-4acb-be79-5881f74295fd",
-     "2924d560-13da-4114-9a48-298136f4c6d9"
+     "3fa38aa3-4e68-41f3-b031-53a1a44faa8d",
+     "9238868a-b2bf-4d83-99be-c5e1a0d2d203",
+     "3aab1217-c586-452a-9225-7381b09c8395",
+     "d224d378-f345-482d-8a6d-162f5f54140d",
+     "2a394cf3-eec8-42f3-b742-2095a73a86bf"
     ],
     "file_issue_count": 9,
     "category_prevalence": 255,
@@ -1989,7 +1989,7 @@
    }
   },
   {
-   "id": "08051952-c777-4830-a977-a79a590abddd",
+   "id": "cf75f3ad-db17-4741-9f61-8f310b16c3d1",
    "title": "Too Many Function Arguments",
    "description": "Too many arguments in function definition (10 > 5)",
    "details": "This function has too many arguments.",
@@ -2015,7 +2015,7 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997206",
+   "timestamp": "2026-11-28T19:26:06.241546",
    "tags": [
     "readability",
     "clarity",
@@ -2025,11 +2025,11 @@
     "ruff_rule_id": "PLR0913",
     "readability_category": "clarity",
     "cross_references": [
-     "13133f3e-b7f0-4909-a239-b53f49ce4efd",
-     "9946895c-8dac-4d59-93c4-537a1497537b",
-     "d6986ea7-37d1-48e2-a439-93129d4e2764",
-     "d12f2bd9-60f3-4a35-8c79-bc5ec4af8ef5",
-     "802f7b4e-5b34-46b8-939e-b3609a9ee73b"
+     "4df91ba1-bc5e-4c0a-8296-0b1faa4e8c12",
+     "86ec5d22-4be5-4374-a048-63928551e06a",
+     "3f26b466-f58d-4eec-927e-69c9f9096222",
+     "18fe6311-e9bf-47e5-8a98-18a091ab1e1f",
+     "433394e0-0d83-437d-b7c8-d4f1d5fafec2"
     ],
     "file_issue_count": 9,
     "category_prevalence": 255,
@@ -2038,7 +2038,7 @@
    }
   },
   {
-   "id": "d2a4acf2-491e-42bd-9704-da2e623b4b1f",
+   "id": "fd76383f-804d-46b9-9e42-557af7223876",
    "title": "Too Many Function Arguments",
    "description": "Too Many Function Arguments",
    "details": "This function has too many arguments.",
@@ -2075,7 +2075,7 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997480",
+   "timestamp": "2026-11-28T19:26:06.241812",
    "tags": [
     "readability",
     "clarity",
@@ -2085,10 +2085,10 @@
     "ruff_rule_id": "PLR0913",
     "readability_category": "clarity",
     "cross_references": [
-     "2fee7f45-f11b-44a7-a130-28a630b6ddb8",
-     "d8b3dbbb-c749-4d9d-85bb-307eaae628aa",
-     "d2b0e6ed-5830-431c-a68e-248e09c428b4",
-     "619e7fce-5c45-465b-9929-daead535fed6"
+     "a0b8ecf3-521d-4ddd-98fc-6933053f8d14",
+     "c07cf61a-9854-4583-ad2d-178223f92247",
+     "11074956-44e1-431f-bac9-ddcff6e422bd",
+     "50b1edd2-dd22-4505-9105-f89adad29191"
     ],
     "file_issue_count": 14,
     "category_prevalence": 255,
@@ -2097,7 +2097,7 @@
    }
   },
   {
-   "id": "33b385cc-d253-4716-b61e-4de3450f619a",
+   "id": "23179b4e-b542-469e-8e0f-a634863db634",
    "title": "Too Many Function Arguments",
    "description": "Too many arguments in function definition (6 > 5)",
    "details": "This function has too many arguments.",
@@ -2123,7 +2123,7 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997630",
+   "timestamp": "2026-11-28T19:26:06.241962",
    "tags": [
     "readability",
     "clarity",
@@ -2133,11 +2133,11 @@
     "ruff_rule_id": "PLR0913",
     "readability_category": "clarity",
     "cross_references": [
-     "ba7e401d-6075-4438-bb17-cd371da31413",
-     "9317187e-3eea-4cbf-99b8-acd1825aaf61",
-     "ed96bb8f-689c-4806-8afa-9b12ce43da06",
-     "9f6cd9bc-22ad-4c62-911c-5eb5132b397b",
-     "8fa3373e-3196-4802-a071-bd7bcd27a847"
+     "d7e8becd-c466-4602-a3a2-ad4f127a759d",
+     "c350df63-fa29-44ce-aed8-095a41167c38",
+     "c1aa48bc-ebfd-4082-9310-99444555e5c8",
+     "0dc4d1b1-54c4-4400-904a-72c557dd8d5a",
+     "cce405bf-85ae-4942-a71c-7df24faece7f"
     ],
     "file_issue_count": 9,
     "category_prevalence": 255,
@@ -2146,7 +2146,7 @@
    }
   },
   {
-   "id": "cfab8948-0dc8-4958-a904-8c40099965d0",
+   "id": "dfcc519b-0841-46d3-84d7-5d310f8d1249",
    "title": "Poor Code Readability",
    "description": "Code readability score is 74.5%, below recommended 75.0%",
    "details": {
@@ -2170,7 +2170,7 @@
    "severity": "medium",
    "confidence_score": 0.8,
    "location": {
-    "file_path": "gnost-clone-uc41i3fz/flask",
+    "file_path": "gnost-clone-n7lptuj5/flask",
     "line_number": null,
     "end_line_number": null,
     "column": null,
@@ -2187,7 +2187,7 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996719",
+   "timestamp": "2026-11-28T19:26:06.241039",
    "tags": [
     "readability",
     "code_quality",
@@ -2208,7 +2208,7 @@
    }
   },
   {
-   "id": "6a968f53-92db-4040-890b-146b5d9cf10c",
+   "id": "df2cdb22-079f-45a2-baa5-72094b178480",
    "title": "Too Many Function Arguments",
    "description": "Too many arguments in function definition (7 > 5)",
    "details": "This function has too many arguments.",
@@ -2234,7 +2234,7 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997417",
+   "timestamp": "2026-11-28T19:26:06.241750",
    "tags": [
     "readability",
     "clarity",
@@ -2250,7 +2250,7 @@
    }
   },
   {
-   "id": "59748e3e-d097-4e9e-839f-3a5136d2101f",
+   "id": "9ba05b2f-2172-45fc-8838-f0ab13221f04",
    "title": "Cyclomatic Complexity",
    "description": "Function find_best_app has Moderate cyclomatic complexity (12, rank C) in cli.py.",
    "details": {
@@ -2298,18 +2298,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019662",
+   "timestamp": "2026-11-28T19:26:05.266840",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "9ce79726-340f-4967-9ad0-180b2d37ac4e",
-     "e57ed29f-efac-4043-aea8-0fd6a0acee1b",
-     "227ae5b9-8b3a-4c3c-92b4-7acb812b8657",
-     "1fae7938-8db0-4c0a-bfa5-827152e80a16",
-     "8914bec4-23e9-4fcc-abf8-e0c5d546664d"
+     "403cd8ea-9310-4220-bca0-dd5d1603f7c7",
+     "5e061cd1-c7d8-407f-99a5-a3bb6d2ab816",
+     "ad1a506f-a3ed-44eb-bc3a-9e4d8a0d206a",
+     "fcd01819-97ab-4ac0-9f8f-59bb3b13899f",
+     "99e94017-96b9-4db8-9256-40233c112f7a"
     ],
     "file_issue_count": 13,
     "category_prevalence": 45,
@@ -2318,7 +2318,7 @@
    }
   },
   {
-   "id": "075158c5-800a-41d7-8ae4-e50a9c01597e",
+   "id": "fe366b65-d66d-4257-b897-c3293d52d303",
    "title": "Cyclomatic Complexity",
    "description": "Function find_app_by_string has Moderate cyclomatic complexity (14, rank C) in cli.py.",
    "details": {
@@ -2366,18 +2366,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019655",
+   "timestamp": "2026-11-28T19:26:05.266832",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "9ce79726-340f-4967-9ad0-180b2d37ac4e",
-     "e57ed29f-efac-4043-aea8-0fd6a0acee1b",
-     "227ae5b9-8b3a-4c3c-92b4-7acb812b8657",
-     "1fae7938-8db0-4c0a-bfa5-827152e80a16",
-     "8914bec4-23e9-4fcc-abf8-e0c5d546664d"
+     "403cd8ea-9310-4220-bca0-dd5d1603f7c7",
+     "5e061cd1-c7d8-407f-99a5-a3bb6d2ab816",
+     "ad1a506f-a3ed-44eb-bc3a-9e4d8a0d206a",
+     "fcd01819-97ab-4ac0-9f8f-59bb3b13899f",
+     "99e94017-96b9-4db8-9256-40233c112f7a"
     ],
     "file_issue_count": 13,
     "category_prevalence": 45,
@@ -2386,7 +2386,7 @@
    }
   },
   {
-   "id": "a5f93871-3e7d-4ce3-8c28-27ac72934c5d",
+   "id": "4fc5ed1a-b5dc-433c-85ef-403f1b209a2b",
    "title": "Cyclomatic Complexity",
    "description": "Function load_dotenv has Moderate cyclomatic complexity (13, rank C) in cli.py.",
    "details": {
@@ -2434,18 +2434,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019658",
+   "timestamp": "2026-11-28T19:26:05.266836",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "9ce79726-340f-4967-9ad0-180b2d37ac4e",
-     "e57ed29f-efac-4043-aea8-0fd6a0acee1b",
-     "227ae5b9-8b3a-4c3c-92b4-7acb812b8657",
-     "1fae7938-8db0-4c0a-bfa5-827152e80a16",
-     "8914bec4-23e9-4fcc-abf8-e0c5d546664d"
+     "403cd8ea-9310-4220-bca0-dd5d1603f7c7",
+     "5e061cd1-c7d8-407f-99a5-a3bb6d2ab816",
+     "ad1a506f-a3ed-44eb-bc3a-9e4d8a0d206a",
+     "fcd01819-97ab-4ac0-9f8f-59bb3b13899f",
+     "99e94017-96b9-4db8-9256-40233c112f7a"
     ],
     "file_issue_count": 13,
     "category_prevalence": 45,
@@ -2454,7 +2454,7 @@
    }
   },
   {
-   "id": "4bc2b52c-7157-4228-a26a-e9ab140212e8",
+   "id": "19a74f2d-eb98-437f-9f7e-72a744f781fa",
    "title": "Cyclomatic Complexity",
    "description": "Function routes_command has Moderate cyclomatic complexity (18, rank C) in cli.py.",
    "details": {
@@ -2502,18 +2502,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019649",
+   "timestamp": "2026-11-28T19:26:05.266828",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "9ce79726-340f-4967-9ad0-180b2d37ac4e",
-     "e57ed29f-efac-4043-aea8-0fd6a0acee1b",
-     "227ae5b9-8b3a-4c3c-92b4-7acb812b8657",
-     "1fae7938-8db0-4c0a-bfa5-827152e80a16",
-     "8914bec4-23e9-4fcc-abf8-e0c5d546664d"
+     "403cd8ea-9310-4220-bca0-dd5d1603f7c7",
+     "5e061cd1-c7d8-407f-99a5-a3bb6d2ab816",
+     "ad1a506f-a3ed-44eb-bc3a-9e4d8a0d206a",
+     "fcd01819-97ab-4ac0-9f8f-59bb3b13899f",
+     "99e94017-96b9-4db8-9256-40233c112f7a"
     ],
     "file_issue_count": 13,
     "category_prevalence": 45,
@@ -2522,7 +2522,7 @@
    }
   },
   {
-   "id": "273329c9-c769-432e-b365-14de066b8cd4",
+   "id": "1a01900f-b9c0-4607-8f7a-7fd4d35f64da",
    "title": "Cyclomatic Complexity",
    "description": "Function run has Moderate cyclomatic complexity (12, rank C) in app.py.",
    "details": {
@@ -2570,18 +2570,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019674",
+   "timestamp": "2026-11-28T19:26:05.266852",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "3487cf9e-1fdc-43fa-acf3-3dc00591c072",
-     "a7f1f119-330f-4049-a886-6aad7d538b56",
-     "579c4738-8352-4327-8bd7-dd2c9f9d9e74",
-     "4b62b360-3773-4f09-be36-208371dcf0ce",
-     "42a9a627-a462-4b66-a474-78b77485f753"
+     "b3158ff9-2efb-4e33-9d58-ba1a5b172547",
+     "87cc9cc1-78e9-418d-8f73-4b4397ce99bd",
+     "5ac1c5bf-3dde-4fcd-b575-4ee49f46d446",
+     "2c65ec78-d9e6-4de8-9ec5-3e7b9b4f23d4",
+     "76f48ba3-ecc3-44b4-bbe9-ad992c7828f4"
     ],
     "file_issue_count": 13,
     "category_prevalence": 45,
@@ -2590,7 +2590,7 @@
    }
   },
   {
-   "id": "6580dfb8-e067-4131-b530-f0fa8b224c1c",
+   "id": "574a015d-83c3-4c14-a085-75ca6506661a",
    "title": "Cyclomatic Complexity",
    "description": "Function url_for has Moderate cyclomatic complexity (13, rank C) in app.py.",
    "details": {
@@ -2638,18 +2638,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019671",
+   "timestamp": "2026-11-28T19:26:05.266848",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "3487cf9e-1fdc-43fa-acf3-3dc00591c072",
-     "a7f1f119-330f-4049-a886-6aad7d538b56",
-     "579c4738-8352-4327-8bd7-dd2c9f9d9e74",
-     "4b62b360-3773-4f09-be36-208371dcf0ce",
-     "42a9a627-a462-4b66-a474-78b77485f753"
+     "b3158ff9-2efb-4e33-9d58-ba1a5b172547",
+     "87cc9cc1-78e9-418d-8f73-4b4397ce99bd",
+     "5ac1c5bf-3dde-4fcd-b575-4ee49f46d446",
+     "2c65ec78-d9e6-4de8-9ec5-3e7b9b4f23d4",
+     "76f48ba3-ecc3-44b4-bbe9-ad992c7828f4"
     ],
     "file_issue_count": 13,
     "category_prevalence": 45,
@@ -2658,7 +2658,7 @@
    }
   },
   {
-   "id": "299b8d2d-c02a-409b-b3e8-a510428ccf13",
+   "id": "2781201d-8c89-4ebc-819f-e8e39429b8df",
    "title": "Cyclomatic Complexity",
    "description": "Function make_response has Moderate cyclomatic complexity (16, rank C) in app.py.",
    "details": {
@@ -2706,18 +2706,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019667",
+   "timestamp": "2026-11-28T19:26:05.266844",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "3487cf9e-1fdc-43fa-acf3-3dc00591c072",
-     "a7f1f119-330f-4049-a886-6aad7d538b56",
-     "579c4738-8352-4327-8bd7-dd2c9f9d9e74",
-     "4b62b360-3773-4f09-be36-208371dcf0ce",
-     "42a9a627-a462-4b66-a474-78b77485f753"
+     "b3158ff9-2efb-4e33-9d58-ba1a5b172547",
+     "87cc9cc1-78e9-418d-8f73-4b4397ce99bd",
+     "5ac1c5bf-3dde-4fcd-b575-4ee49f46d446",
+     "2c65ec78-d9e6-4de8-9ec5-3e7b9b4f23d4",
+     "76f48ba3-ecc3-44b4-bbe9-ad992c7828f4"
     ],
     "file_issue_count": 13,
     "category_prevalence": 45,
@@ -2726,7 +2726,7 @@
    }
   },
   {
-   "id": "fce1c0a1-98a9-4418-b661-ee9b01ccb120",
+   "id": "3cb9f5c0-ea05-42b8-87e8-bcddf7ff41ed",
    "title": "Cyclomatic Complexity",
    "description": "Function add_url_rule has Moderate cyclomatic complexity (13, rank C) in app.py.",
    "details": {
@@ -2774,18 +2774,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019687",
+   "timestamp": "2026-11-28T19:26:05.266867",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "13133f3e-b7f0-4909-a239-b53f49ce4efd",
-     "9946895c-8dac-4d59-93c4-537a1497537b",
-     "d6986ea7-37d1-48e2-a439-93129d4e2764",
-     "d12f2bd9-60f3-4a35-8c79-bc5ec4af8ef5",
-     "802f7b4e-5b34-46b8-939e-b3609a9ee73b"
+     "4df91ba1-bc5e-4c0a-8296-0b1faa4e8c12",
+     "86ec5d22-4be5-4374-a048-63928551e06a",
+     "3f26b466-f58d-4eec-927e-69c9f9096222",
+     "18fe6311-e9bf-47e5-8a98-18a091ab1e1f",
+     "433394e0-0d83-437d-b7c8-d4f1d5fafec2"
     ],
     "file_issue_count": 9,
     "category_prevalence": 45,
@@ -2794,7 +2794,7 @@
    }
   },
   {
-   "id": "b2e2d2c5-4610-4bb0-b849-e3ab93f3fc72",
+   "id": "0ee34168-643e-4700-b80a-62e39cbebed8",
    "title": "Cyclomatic Complexity",
    "description": "Function test_url_mapping has Moderate cyclomatic complexity (12, rank C) in test_basic.py.",
    "details": {
@@ -2842,18 +2842,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019580",
+   "timestamp": "2026-11-28T19:26:05.266762",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "2fee7f45-f11b-44a7-a130-28a630b6ddb8",
-     "d2a4acf2-491e-42bd-9704-da2e623b4b1f",
-     "d2b0e6ed-5830-431c-a68e-248e09c428b4",
-     "d8b3dbbb-c749-4d9d-85bb-307eaae628aa",
-     "619e7fce-5c45-465b-9929-daead535fed6"
+     "11074956-44e1-431f-bac9-ddcff6e422bd",
+     "50b1edd2-dd22-4505-9105-f89adad29191",
+     "c07cf61a-9854-4583-ad2d-178223f92247",
+     "fd76383f-804d-46b9-9e42-557af7223876",
+     "a0b8ecf3-521d-4ddd-98fc-6933053f8d14"
     ],
     "file_issue_count": 14,
     "category_prevalence": 45,
@@ -2862,7 +2862,7 @@
    }
   },
   {
-   "id": "bac57307-5f32-4374-ade3-25372eaf7aaf",
+   "id": "9b6f4e4f-74fc-487b-a89f-dc0f6b9d7ba1",
    "title": "Cyclomatic Complexity",
    "description": "Function test_session_accessed has Moderate cyclomatic complexity (16, rank C) in test_basic.py.",
    "details": {
@@ -2910,18 +2910,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019560",
+   "timestamp": "2026-11-28T19:26:05.266743",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "2fee7f45-f11b-44a7-a130-28a630b6ddb8",
-     "d2a4acf2-491e-42bd-9704-da2e623b4b1f",
-     "d2b0e6ed-5830-431c-a68e-248e09c428b4",
-     "d8b3dbbb-c749-4d9d-85bb-307eaae628aa",
-     "619e7fce-5c45-465b-9929-daead535fed6"
+     "11074956-44e1-431f-bac9-ddcff6e422bd",
+     "50b1edd2-dd22-4505-9105-f89adad29191",
+     "c07cf61a-9854-4583-ad2d-178223f92247",
+     "fd76383f-804d-46b9-9e42-557af7223876",
+     "a0b8ecf3-521d-4ddd-98fc-6933053f8d14"
     ],
     "file_issue_count": 14,
     "category_prevalence": 45,
@@ -2930,7 +2930,7 @@
    }
   },
   {
-   "id": "1a488209-8012-4de7-95b7-4975560b2919",
+   "id": "bc5bacd9-97a7-4d1e-a787-fa5ae3e7c052",
    "title": "Cyclomatic Complexity",
    "description": "Function test_session_using_session_settings has Moderate cyclomatic complexity (13, rank C) in test_basic.py.",
    "details": {
@@ -2978,18 +2978,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019576",
+   "timestamp": "2026-11-28T19:26:05.266755",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "2fee7f45-f11b-44a7-a130-28a630b6ddb8",
-     "d2a4acf2-491e-42bd-9704-da2e623b4b1f",
-     "d2b0e6ed-5830-431c-a68e-248e09c428b4",
-     "d8b3dbbb-c749-4d9d-85bb-307eaae628aa",
-     "619e7fce-5c45-465b-9929-daead535fed6"
+     "11074956-44e1-431f-bac9-ddcff6e422bd",
+     "50b1edd2-dd22-4505-9105-f89adad29191",
+     "c07cf61a-9854-4583-ad2d-178223f92247",
+     "fd76383f-804d-46b9-9e42-557af7223876",
+     "a0b8ecf3-521d-4ddd-98fc-6933053f8d14"
     ],
     "file_issue_count": 14,
     "category_prevalence": 45,
@@ -2998,7 +2998,7 @@
    }
   },
   {
-   "id": "c28ea7d0-29f6-4bec-be1d-237e7fc1462a",
+   "id": "0f53c98c-7f2e-4b2e-9ce2-d2eb6d026c4d",
    "title": "Cyclomatic Complexity",
    "description": "Function test_session_special_types has Moderate cyclomatic complexity (11, rank C) in test_basic.py.",
    "details": {
@@ -3046,18 +3046,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019587",
+   "timestamp": "2026-11-28T19:26:05.266768",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "2fee7f45-f11b-44a7-a130-28a630b6ddb8",
-     "d2a4acf2-491e-42bd-9704-da2e623b4b1f",
-     "d2b0e6ed-5830-431c-a68e-248e09c428b4",
-     "d8b3dbbb-c749-4d9d-85bb-307eaae628aa",
-     "619e7fce-5c45-465b-9929-daead535fed6"
+     "11074956-44e1-431f-bac9-ddcff6e422bd",
+     "50b1edd2-dd22-4505-9105-f89adad29191",
+     "c07cf61a-9854-4583-ad2d-178223f92247",
+     "fd76383f-804d-46b9-9e42-557af7223876",
+     "a0b8ecf3-521d-4ddd-98fc-6933053f8d14"
     ],
     "file_issue_count": 14,
     "category_prevalence": 45,
@@ -3066,7 +3066,7 @@
    }
   },
   {
-   "id": "0dfa385a-d048-408b-ad14-c941a996a46c",
+   "id": "8a3c75d4-c04b-415c-8d2c-03b4fa3bb3a1",
    "title": "Cyclomatic Complexity",
    "description": "Function test_make_response has Moderate cyclomatic complexity (14, rank C) in test_basic.py.",
    "details": {
@@ -3114,18 +3114,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019571",
+   "timestamp": "2026-11-28T19:26:05.266749",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "2fee7f45-f11b-44a7-a130-28a630b6ddb8",
-     "d2a4acf2-491e-42bd-9704-da2e623b4b1f",
-     "d2b0e6ed-5830-431c-a68e-248e09c428b4",
-     "d8b3dbbb-c749-4d9d-85bb-307eaae628aa",
-     "619e7fce-5c45-465b-9929-daead535fed6"
+     "11074956-44e1-431f-bac9-ddcff6e422bd",
+     "50b1edd2-dd22-4505-9105-f89adad29191",
+     "c07cf61a-9854-4583-ad2d-178223f92247",
+     "fd76383f-804d-46b9-9e42-557af7223876",
+     "a0b8ecf3-521d-4ddd-98fc-6933053f8d14"
     ],
     "file_issue_count": 14,
     "category_prevalence": 45,
@@ -3134,7 +3134,7 @@
    }
   },
   {
-   "id": "89990f45-6650-4f35-8958-c76708f88e2a",
+   "id": "49965c11-5619-4a68-b348-e5599ae8ace9",
    "title": "Cyclomatic Complexity",
    "description": "Function test_server_name_subdomain has Moderate cyclomatic complexity (11, rank C) in test_basic.py.",
    "details": {
@@ -3182,18 +3182,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019592",
+   "timestamp": "2026-11-28T19:26:05.266772",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "2fee7f45-f11b-44a7-a130-28a630b6ddb8",
-     "d2a4acf2-491e-42bd-9704-da2e623b4b1f",
-     "d2b0e6ed-5830-431c-a68e-248e09c428b4",
-     "d8b3dbbb-c749-4d9d-85bb-307eaae628aa",
-     "619e7fce-5c45-465b-9929-daead535fed6"
+     "11074956-44e1-431f-bac9-ddcff6e422bd",
+     "50b1edd2-dd22-4505-9105-f89adad29191",
+     "c07cf61a-9854-4583-ad2d-178223f92247",
+     "fd76383f-804d-46b9-9e42-557af7223876",
+     "a0b8ecf3-521d-4ddd-98fc-6933053f8d14"
     ],
     "file_issue_count": 14,
     "category_prevalence": 45,
@@ -3202,7 +3202,7 @@
    }
   },
   {
-   "id": "0fc6892c-021a-47c0-ad46-ac94c5eaa07c",
+   "id": "48eca35f-7883-4670-8797-fc79064139e3",
    "title": "Complexity Risk Ranking",
    "description": "File is marked as Moderately Maintainable for cyclomatic complexity distribution. Moderate: 38.6%, High: 0.0%, Very High: 0.0%. Reason: moderate 38.6% > 30%.",
    "details": {
@@ -3257,17 +3257,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019691",
+   "timestamp": "2026-11-28T19:26:05.266871",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "f040250a-256e-4969-8a48-15d91ef15f02",
-     "eae12477-52d4-4d9a-bba5-f758b8f95f6d",
-     "e8b9c713-61d1-4f2a-ac8b-d6b0554a3654",
-     "b8d9426b-29c6-45a6-a2b0-41e499105a3b"
+     "d196f000-af69-4e11-8720-125e12ca7c08",
+     "60e1db13-997a-45b0-ac8c-53e4bd429f67",
+     "aeab08f1-ee67-4e34-9c37-d28c022691e3",
+     "c2af862f-9a3f-409b-86c2-67807382bb1f"
     ],
     "file_issue_count": 5,
     "category_prevalence": 45,
@@ -3276,7 +3276,7 @@
    }
   },
   {
-   "id": "f040250a-256e-4969-8a48-15d91ef15f02",
+   "id": "c2af862f-9a3f-409b-86c2-67807382bb1f",
    "title": "Cyclomatic Complexity",
    "description": "Function test_limit_config has Moderate cyclomatic complexity (13, rank C) in test_request.py.",
    "details": {
@@ -3324,17 +3324,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019596",
+   "timestamp": "2026-11-28T19:26:05.266777",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "eae12477-52d4-4d9a-bba5-f758b8f95f6d",
-     "e8b9c713-61d1-4f2a-ac8b-d6b0554a3654",
-     "0fc6892c-021a-47c0-ad46-ac94c5eaa07c",
-     "b8d9426b-29c6-45a6-a2b0-41e499105a3b"
+     "d196f000-af69-4e11-8720-125e12ca7c08",
+     "60e1db13-997a-45b0-ac8c-53e4bd429f67",
+     "48eca35f-7883-4670-8797-fc79064139e3",
+     "aeab08f1-ee67-4e34-9c37-d28c022691e3"
     ],
     "file_issue_count": 5,
     "category_prevalence": 45,
@@ -3343,7 +3343,7 @@
    }
   },
   {
-   "id": "ba7e401d-6075-4438-bb17-cd371da31413",
+   "id": "c350df63-fa29-44ce-aed8-095a41167c38",
    "title": "Cyclomatic Complexity",
    "description": "Function test_templates_and_static has Moderate cyclomatic complexity (11, rank C) in test_blueprints.py.",
    "details": {
@@ -3391,17 +3391,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019616",
+   "timestamp": "2026-11-28T19:26:05.266795",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "9f6cd9bc-22ad-4c62-911c-5eb5132b397b",
-     "8fa3373e-3196-4802-a071-bd7bcd27a847",
-     "9317187e-3eea-4cbf-99b8-acd1825aaf61",
-     "ed96bb8f-689c-4806-8afa-9b12ce43da06"
+     "d7e8becd-c466-4602-a3a2-ad4f127a759d",
+     "c1aa48bc-ebfd-4082-9310-99444555e5c8",
+     "0dc4d1b1-54c4-4400-904a-72c557dd8d5a",
+     "cce405bf-85ae-4942-a71c-7df24faece7f"
     ],
     "file_issue_count": 9,
     "category_prevalence": 45,
@@ -3410,7 +3410,7 @@
    }
   },
   {
-   "id": "e1d04273-c933-44ec-993c-ea4408433cf1",
+   "id": "b59aa108-ac3f-4fa3-a31c-2bf68df138b6",
    "title": "Cyclomatic Complexity",
    "description": "Function test_template_filter has Moderate cyclomatic complexity (13, rank C) in test_blueprints.py.",
    "details": {
@@ -3458,18 +3458,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019607",
+   "timestamp": "2026-11-28T19:26:05.266787",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "ba7e401d-6075-4438-bb17-cd371da31413",
-     "9317187e-3eea-4cbf-99b8-acd1825aaf61",
-     "ed96bb8f-689c-4806-8afa-9b12ce43da06",
-     "9f6cd9bc-22ad-4c62-911c-5eb5132b397b",
-     "8fa3373e-3196-4802-a071-bd7bcd27a847"
+     "d7e8becd-c466-4602-a3a2-ad4f127a759d",
+     "c350df63-fa29-44ce-aed8-095a41167c38",
+     "c1aa48bc-ebfd-4082-9310-99444555e5c8",
+     "0dc4d1b1-54c4-4400-904a-72c557dd8d5a",
+     "cce405bf-85ae-4942-a71c-7df24faece7f"
     ],
     "file_issue_count": 9,
     "category_prevalence": 45,
@@ -3478,7 +3478,7 @@
    }
   },
   {
-   "id": "d4815954-f620-4144-90f3-a2b64c3be415",
+   "id": "1ff0fd31-7eda-41a4-90fb-9f234a66aedd",
    "title": "Cyclomatic Complexity",
    "description": "Function test_template_test has Moderate cyclomatic complexity (13, rank C) in test_blueprints.py.",
    "details": {
@@ -3526,18 +3526,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019611",
+   "timestamp": "2026-11-28T19:26:05.266791",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "ba7e401d-6075-4438-bb17-cd371da31413",
-     "9317187e-3eea-4cbf-99b8-acd1825aaf61",
-     "ed96bb8f-689c-4806-8afa-9b12ce43da06",
-     "9f6cd9bc-22ad-4c62-911c-5eb5132b397b",
-     "8fa3373e-3196-4802-a071-bd7bcd27a847"
+     "d7e8becd-c466-4602-a3a2-ad4f127a759d",
+     "c350df63-fa29-44ce-aed8-095a41167c38",
+     "c1aa48bc-ebfd-4082-9310-99444555e5c8",
+     "0dc4d1b1-54c4-4400-904a-72c557dd8d5a",
+     "cce405bf-85ae-4942-a71c-7df24faece7f"
     ],
     "file_issue_count": 9,
     "category_prevalence": 45,
@@ -3546,7 +3546,7 @@
    }
   },
   {
-   "id": "5c635cab-f942-495a-890d-3050ec64803e",
+   "id": "e24479ed-04d3-489f-8438-b3ba48297ccc",
    "title": "Cyclomatic Complexity",
    "description": "Function test_template_global has Moderate cyclomatic complexity (18, rank C) in test_blueprints.py.",
    "details": {
@@ -3594,18 +3594,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019603",
+   "timestamp": "2026-11-28T19:26:05.266782",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "ba7e401d-6075-4438-bb17-cd371da31413",
-     "9317187e-3eea-4cbf-99b8-acd1825aaf61",
-     "ed96bb8f-689c-4806-8afa-9b12ce43da06",
-     "9f6cd9bc-22ad-4c62-911c-5eb5132b397b",
-     "8fa3373e-3196-4802-a071-bd7bcd27a847"
+     "d7e8becd-c466-4602-a3a2-ad4f127a759d",
+     "c350df63-fa29-44ce-aed8-095a41167c38",
+     "c1aa48bc-ebfd-4082-9310-99444555e5c8",
+     "0dc4d1b1-54c4-4400-904a-72c557dd8d5a",
+     "cce405bf-85ae-4942-a71c-7df24faece7f"
     ],
     "file_issue_count": 9,
     "category_prevalence": 45,
@@ -3614,7 +3614,7 @@
    }
   },
   {
-   "id": "5f7cc3b5-9b09-499c-ac50-f730399a066c",
+   "id": "67ff4606-fbbe-4d76-a382-767ab52c149f",
    "title": "Cyclomatic Complexity",
    "description": "Function test_get_namespace has Moderate cyclomatic complexity (13, rank C) in test_config.py.",
    "details": {
@@ -3662,16 +3662,16 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019620",
+   "timestamp": "2026-11-28T19:26:05.266799",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "74419d60-480d-4233-b844-030b4a41caf0",
-     "224a4d9b-b619-46bf-a06a-8cd0659d835f",
-     "77c3da7c-235a-4628-b90a-50352c83e63c"
+     "0e1c8771-66f6-41a1-96c9-267ef4b961eb",
+     "ce4e50bc-f9d1-4c7a-9ff1-ab0098601096",
+     "f5baa5bf-8fad-4a9a-bb85-0c35889fc212"
     ],
     "file_issue_count": 4,
     "category_prevalence": 45,
@@ -3680,7 +3680,7 @@
    }
   },
   {
-   "id": "1725b43c-2d54-4cc5-8349-7cf31399b507",
+   "id": "04627944-c4b4-4dbd-8ae6-53afc3ae5bce",
    "title": "Cyclomatic Complexity",
    "description": "Function test_find_best_app has Moderate cyclomatic complexity (12, rank C) in test_cli.py.",
    "details": {
@@ -3728,18 +3728,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019624",
+   "timestamp": "2026-11-28T19:26:05.266804",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "88b2ab11-de87-4a43-b764-dc6fa8654afb",
-     "4b1d7dc1-e841-4f16-88c6-5409b71f10ae",
-     "52da99c6-2f48-460d-be58-2ebf5aafdb17",
-     "dd65a9a6-9e3a-4405-be83-b0e180aaa010",
-     "442af8ed-06e3-4357-b5a4-0d1f5094ae41"
+     "49f01340-005f-4b46-94eb-82c11e92dab4",
+     "d014c0ca-d073-4f65-958a-a8f5269556d4",
+     "74fb4749-d99f-42ec-b15a-aec48010726a",
+     "740ff3bb-b50b-440d-b8cb-a342aa73ab25",
+     "7d45fa39-62a1-4a77-865b-8ead4cc869a1"
     ],
     "file_issue_count": 9,
     "category_prevalence": 45,
@@ -3748,7 +3748,7 @@
    }
   },
   {
-   "id": "9afe2d32-7b04-498e-b543-6c449b2e7b12",
+   "id": "61d3b907-5cb2-4c71-a6cc-2d1da4980767",
    "title": "Cyclomatic Complexity",
    "description": "Function test_scriptinfo has Moderate cyclomatic complexity (11, rank C) in test_cli.py.",
    "details": {
@@ -3796,18 +3796,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019628",
+   "timestamp": "2026-11-28T19:26:05.266807",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "88b2ab11-de87-4a43-b764-dc6fa8654afb",
-     "4b1d7dc1-e841-4f16-88c6-5409b71f10ae",
-     "52da99c6-2f48-460d-be58-2ebf5aafdb17",
-     "dd65a9a6-9e3a-4405-be83-b0e180aaa010",
-     "442af8ed-06e3-4357-b5a4-0d1f5094ae41"
+     "49f01340-005f-4b46-94eb-82c11e92dab4",
+     "d014c0ca-d073-4f65-958a-a8f5269556d4",
+     "74fb4749-d99f-42ec-b15a-aec48010726a",
+     "740ff3bb-b50b-440d-b8cb-a342aa73ab25",
+     "7d45fa39-62a1-4a77-865b-8ead4cc869a1"
     ],
     "file_issue_count": 9,
     "category_prevalence": 45,
@@ -3816,7 +3816,7 @@
    }
   },
   {
-   "id": "f63b7f9f-4239-4fb6-82ee-c7aa406e4700",
+   "id": "7af8bdd0-5a2b-469b-9902-8921b7ca9558",
    "title": "Maintainability Index",
    "description": "File `test_templating.py` has maintainability index (17.1) and is ranked as B.",
    "details": {
@@ -3859,17 +3859,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019710",
+   "timestamp": "2026-11-28T19:26:05.266891",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "21da13e1-81a1-40f1-bb6d-ee7168e65ff1",
-     "b73b29b7-cd68-44af-b735-f514eda6f885",
-     "cb471af4-a78f-4bd0-ab0e-01da9098805d",
-     "c0f156d5-9c73-489a-8eb5-43a0d40aac4b"
+     "d017e181-27d3-49b5-8e5c-8bdda15ce8ea",
+     "bbfdbf62-15be-4883-85ec-4c6e266ae2ed",
+     "ca970ff7-4740-4d04-b4e7-4b3b0182431a",
+     "b125ee38-19a9-4df8-bbe6-b2456248d5a1"
     ],
     "file_issue_count": 8,
     "category_prevalence": 45,
@@ -3878,7 +3878,7 @@
    }
   },
   {
-   "id": "c0f156d5-9c73-489a-8eb5-43a0d40aac4b",
+   "id": "d017e181-27d3-49b5-8e5c-8bdda15ce8ea",
    "title": "Cyclomatic Complexity",
    "description": "Function test_template_filter has Moderate cyclomatic complexity (13, rank C) in test_templating.py.",
    "details": {
@@ -3926,17 +3926,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019636",
+   "timestamp": "2026-11-28T19:26:05.266815",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "f63b7f9f-4239-4fb6-82ee-c7aa406e4700",
-     "b73b29b7-cd68-44af-b735-f514eda6f885",
-     "21da13e1-81a1-40f1-bb6d-ee7168e65ff1",
-     "cb471af4-a78f-4bd0-ab0e-01da9098805d"
+     "bbfdbf62-15be-4883-85ec-4c6e266ae2ed",
+     "ca970ff7-4740-4d04-b4e7-4b3b0182431a",
+     "7af8bdd0-5a2b-469b-9902-8921b7ca9558",
+     "b125ee38-19a9-4df8-bbe6-b2456248d5a1"
     ],
     "file_issue_count": 8,
     "category_prevalence": 45,
@@ -3945,7 +3945,7 @@
    }
   },
   {
-   "id": "389f0317-b56c-46e8-9fe4-6de3d2c6fa14",
+   "id": "83991931-8598-42f8-bd41-c166bc99e446",
    "title": "Cyclomatic Complexity",
    "description": "Function test_template_test has Moderate cyclomatic complexity (13, rank C) in test_templating.py.",
    "details": {
@@ -3993,18 +3993,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019640",
+   "timestamp": "2026-11-28T19:26:05.266819",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "f63b7f9f-4239-4fb6-82ee-c7aa406e4700",
-     "b73b29b7-cd68-44af-b735-f514eda6f885",
-     "c0f156d5-9c73-489a-8eb5-43a0d40aac4b",
-     "cb471af4-a78f-4bd0-ab0e-01da9098805d",
-     "21da13e1-81a1-40f1-bb6d-ee7168e65ff1"
+     "ca970ff7-4740-4d04-b4e7-4b3b0182431a",
+     "7af8bdd0-5a2b-469b-9902-8921b7ca9558",
+     "b125ee38-19a9-4df8-bbe6-b2456248d5a1",
+     "d017e181-27d3-49b5-8e5c-8bdda15ce8ea",
+     "bbfdbf62-15be-4883-85ec-4c6e266ae2ed"
     ],
     "file_issue_count": 8,
     "category_prevalence": 45,
@@ -4013,7 +4013,7 @@
    }
   },
   {
-   "id": "259b954f-de0b-4341-9ef5-91ef63dafc9c",
+   "id": "c6fa4cd1-4dd3-4427-9613-462fac4fb4b3",
    "title": "Cyclomatic Complexity",
    "description": "Function test_add_template_global has Moderate cyclomatic complexity (17, rank C) in test_templating.py.",
    "details": {
@@ -4061,18 +4061,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019632",
+   "timestamp": "2026-11-28T19:26:05.266812",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "f63b7f9f-4239-4fb6-82ee-c7aa406e4700",
-     "b73b29b7-cd68-44af-b735-f514eda6f885",
-     "c0f156d5-9c73-489a-8eb5-43a0d40aac4b",
-     "cb471af4-a78f-4bd0-ab0e-01da9098805d",
-     "21da13e1-81a1-40f1-bb6d-ee7168e65ff1"
+     "ca970ff7-4740-4d04-b4e7-4b3b0182431a",
+     "7af8bdd0-5a2b-469b-9902-8921b7ca9558",
+     "b125ee38-19a9-4df8-bbe6-b2456248d5a1",
+     "d017e181-27d3-49b5-8e5c-8bdda15ce8ea",
+     "bbfdbf62-15be-4883-85ec-4c6e266ae2ed"
     ],
     "file_issue_count": 8,
     "category_prevalence": 45,
@@ -4081,7 +4081,7 @@
    }
   },
   {
-   "id": "c25fbaae-ed07-4a73-b03b-df0ad1cc0e5d",
+   "id": "33006f91-7c4e-4d04-bd6a-b7dc40e865e7",
    "title": "Cyclomatic Complexity",
    "description": "Function test_templates_auto_reload has Moderate cyclomatic complexity (12, rank C) in test_templating.py.",
    "details": {
@@ -4129,18 +4129,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019644",
+   "timestamp": "2026-11-28T19:26:05.266824",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "f63b7f9f-4239-4fb6-82ee-c7aa406e4700",
-     "b73b29b7-cd68-44af-b735-f514eda6f885",
-     "c0f156d5-9c73-489a-8eb5-43a0d40aac4b",
-     "cb471af4-a78f-4bd0-ab0e-01da9098805d",
-     "21da13e1-81a1-40f1-bb6d-ee7168e65ff1"
+     "ca970ff7-4740-4d04-b4e7-4b3b0182431a",
+     "7af8bdd0-5a2b-469b-9902-8921b7ca9558",
+     "b125ee38-19a9-4df8-bbe6-b2456248d5a1",
+     "d017e181-27d3-49b5-8e5c-8bdda15ce8ea",
+     "bbfdbf62-15be-4883-85ec-4c6e266ae2ed"
     ],
     "file_issue_count": 8,
     "category_prevalence": 45,
@@ -4149,7 +4149,7 @@
    }
   },
   {
-   "id": "1343f4cb-2032-4299-a31c-7c3134af62d5",
+   "id": "0358440d-ec99-42ac-88b7-bf9b093593bb",
    "title": "Complexity Risk Ranking",
    "description": "File is marked as Moderately Maintainable for cyclomatic complexity distribution. Moderate: 31.3%, High: 0.0%, Very High: 0.0%. Reason: moderate 31.3% > 30%.",
    "details": {
@@ -4204,17 +4204,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019695",
+   "timestamp": "2026-11-28T19:26:05.266875",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "8cc6f635-a0f0-49d5-9d79-3ed86da1354b",
-     "94bcf5f1-3403-4dc4-9c2f-b65e21ca670a",
-     "ab3d8650-dfd4-4def-b73b-d6eaa313cd19",
-     "d0d724c9-91b4-4a04-b4d2-3279e9d748d3"
+     "b097c716-f56b-4780-b9be-a0cae96a6ebc",
+     "a209a8fa-ce95-405b-94ee-b15c9e14e794",
+     "ad013bfe-09b8-4e8d-86dd-1d1e1e6eda07",
+     "c5607bba-dc9a-4b27-986f-697d36dcbfe3"
     ],
     "file_issue_count": 9,
     "category_prevalence": 45,
@@ -4223,7 +4223,7 @@
    }
   },
   {
-   "id": "1cd59979-a156-4571-9662-3eb00bb67d2c",
+   "id": "fd5d0af6-9230-47e3-a856-187e3d968dfd",
    "title": "Cyclomatic Complexity",
    "description": "Function explain_template_loading_attempts has Moderate cyclomatic complexity (13, rank C) in debughelpers.py.",
    "details": {
@@ -4271,18 +4271,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019679",
+   "timestamp": "2026-11-28T19:26:05.266859",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "ab3d8650-dfd4-4def-b73b-d6eaa313cd19",
-     "94bcf5f1-3403-4dc4-9c2f-b65e21ca670a",
-     "1343f4cb-2032-4299-a31c-7c3134af62d5",
-     "d0d724c9-91b4-4a04-b4d2-3279e9d748d3",
-     "8cc6f635-a0f0-49d5-9d79-3ed86da1354b"
+     "0358440d-ec99-42ac-88b7-bf9b093593bb",
+     "b097c716-f56b-4780-b9be-a0cae96a6ebc",
+     "ad013bfe-09b8-4e8d-86dd-1d1e1e6eda07",
+     "a209a8fa-ce95-405b-94ee-b15c9e14e794",
+     "c5607bba-dc9a-4b27-986f-697d36dcbfe3"
     ],
     "file_issue_count": 9,
     "category_prevalence": 45,
@@ -4291,7 +4291,7 @@
    }
   },
   {
-   "id": "f7d498aa-8486-497e-af13-dfa57b329e24",
+   "id": "78d43f62-c142-4a9b-86b4-2f9126e2c237",
    "title": "Function Duplication",
    "description": "Function `send_static_file` appears in multiple files with identical or near-identical structure.",
    "details": null,
@@ -4317,10 +4317,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019715",
+   "timestamp": "2026-11-28T19:26:05.266895",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 1,
@@ -4330,7 +4330,7 @@
    }
   },
   {
-   "id": "e39d74bf-22e9-4259-86b8-3ca2f8f61929",
+   "id": "e1fd8da6-2b6d-4328-be64-10b3308bd562",
    "title": "Function Duplication",
    "description": "Function `index` appears in multiple files with identical or near-identical structure.",
    "details": null,
@@ -4356,10 +4356,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019719",
+   "timestamp": "2026-11-28T19:26:05.266899",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 1,
@@ -4369,7 +4369,7 @@
    }
   },
   {
-   "id": "9397f20e-32ad-4ff1-996e-1af77f4a3c6c",
+   "id": "006bebb5-0e5c-42c9-9ad0-74248725ec97",
    "title": "Function Duplication",
    "description": "Function `index` appears in multiple files with identical or near-identical structure.",
    "details": null,
@@ -4395,10 +4395,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019723",
+   "timestamp": "2026-11-28T19:26:05.266904",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 1,
@@ -4408,7 +4408,7 @@
    }
   },
   {
-   "id": "2993453f-5156-4652-b839-9988e0434e0e",
+   "id": "506d8a28-6285-43e7-b970-296a92932b31",
    "title": "Function Duplication",
    "description": "Function `index` appears in multiple files with identical or near-identical structure.",
    "details": null,
@@ -4434,10 +4434,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019726",
+   "timestamp": "2026-11-28T19:26:05.266907",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 1,
@@ -4447,7 +4447,7 @@
    }
   },
   {
-   "id": "2c6e1966-2fa2-4dd8-b16e-3c24a82eebd0",
+   "id": "b68838d4-2927-448e-be99-61e9a7657691",
    "title": "Function Duplication",
    "description": "Function `my_reverse` appears in multiple files with identical or near-identical structure.",
    "details": null,
@@ -4473,10 +4473,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019730",
+   "timestamp": "2026-11-28T19:26:05.266911",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 1,
@@ -4486,7 +4486,7 @@
    }
   },
   {
-   "id": "1d865e1c-be61-463e-b5c0-0014847b2063",
+   "id": "5fc37544-d51f-41a9-9ed1-d68003268ceb",
    "title": "Function Duplication",
    "description": "Function `index` appears in multiple files with identical or near-identical structure.",
    "details": null,
@@ -4512,10 +4512,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019734",
+   "timestamp": "2026-11-28T19:26:05.266915",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 1,
@@ -4525,7 +4525,7 @@
    }
   },
   {
-   "id": "fa19a80a-e382-4caa-b7ae-3b16a3a7a465",
+   "id": "23231213-2d12-4ced-98cf-c9fb685b3402",
    "title": "Function Duplication",
    "description": "Function `super_reverse` appears in multiple files with identical or near-identical structure.",
    "details": null,
@@ -4551,10 +4551,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019738",
+   "timestamp": "2026-11-28T19:26:05.266919",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 1,
@@ -4564,7 +4564,7 @@
    }
   },
   {
-   "id": "3d1c0a47-c82e-4d4b-af56-933b1a59aa6d",
+   "id": "bc168c1e-e6ef-4e4a-9d08-3c385a3a84fd",
    "title": "Function Duplication",
    "description": "Function `is_boolean` appears in multiple files with identical or near-identical structure.",
    "details": null,
@@ -4590,10 +4590,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019741",
+   "timestamp": "2026-11-28T19:26:05.266923",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 1,
@@ -4603,7 +4603,7 @@
    }
   },
   {
-   "id": "8893e670-52f7-4d43-b589-9583d735de5e",
+   "id": "d17d302c-0864-4372-a1c8-f3a42a725a29",
    "title": "Function Duplication",
    "description": "Function `index` appears in multiple files with identical or near-identical structure.",
    "details": null,
@@ -4629,10 +4629,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019745",
+   "timestamp": "2026-11-28T19:26:05.266926",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 1,
@@ -4642,7 +4642,7 @@
    }
   },
   {
-   "id": "6ed2b168-dbc7-4207-af1d-046ea450c7bb",
+   "id": "6fdd42de-0370-4aef-b1b0-ecc8c88042a4",
    "title": "Function Duplication",
    "description": "Function `boolean` appears in multiple files with identical or near-identical structure.",
    "details": null,
@@ -4668,10 +4668,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:05:57.019749",
+   "timestamp": "2026-11-28T19:26:05.266930",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 1,
@@ -4681,7 +4681,7 @@
    }
   },
   {
-   "id": "e68bcc7a-2049-46e2-87fb-2295acf60211",
+   "id": "72bdf823-aa3e-4568-903e-1316f12c8b4b",
    "title": "Files with Poor Observability",
    "description": "23 file(s) have very low logging coverage (<25%).",
    "details": null,
@@ -4758,7 +4758,7 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:05:57.072733",
+   "timestamp": "2026-11-28T19:26:05.322365",
    "tags": [
     "logging_coverage",
     "observability"
@@ -5245,7 +5245,7 @@
    }
   },
   {
-   "id": "d47f3e1d-a84c-4321-8633-640610929e8a",
+   "id": "96045ee1-255e-4045-a928-e745610b8b83",
    "title": "1 Blank Line After Summary",
    "description": "1 Blank Line After Summary",
    "details": "Add summary line and blank line in docstring.",
@@ -5280,19 +5280,19 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996749",
+   "timestamp": "2026-11-28T19:26:06.241069",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D205",
     "readability_category": "documentation",
     "cross_references": [
-     "4da9a768-b0d1-45ab-8cd6-fb179a088465",
-     "7bf35e4c-e1c2-4215-8bd9-cd50937f0647",
-     "426e6988-4716-4b21-a18f-f1db5a0745b6"
+     "7e2813ef-c97e-472e-b0de-e573564dcb2a",
+     "ca7ffaa7-7574-480e-a655-f6352eca1766",
+     "631cbc21-3f53-4695-a2e5-700ff758a9d0"
     ],
     "file_issue_count": 4,
     "category_prevalence": 255,
@@ -5301,7 +5301,7 @@
    }
   },
   {
-   "id": "4da9a768-b0d1-45ab-8cd6-fb179a088465",
+   "id": "7e2813ef-c97e-472e-b0de-e573564dcb2a",
    "title": "Missing Module Documentation",
    "description": "Missing docstring in public module",
    "details": "The module is missing a top-level docstring. Add a descriptive docstring at the top of the file to explain its purpose.",
@@ -5327,19 +5327,19 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996740",
+   "timestamp": "2026-11-28T19:26:06.241060",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D100",
     "readability_category": "documentation",
     "cross_references": [
-     "7bf35e4c-e1c2-4215-8bd9-cd50937f0647",
-     "d47f3e1d-a84c-4321-8633-640610929e8a",
-     "426e6988-4716-4b21-a18f-f1db5a0745b6"
+     "ca7ffaa7-7574-480e-a655-f6352eca1766",
+     "631cbc21-3f53-4695-a2e5-700ff758a9d0",
+     "96045ee1-255e-4045-a928-e745610b8b83"
     ],
     "file_issue_count": 4,
     "category_prevalence": 255,
@@ -5348,7 +5348,7 @@
    }
   },
   {
-   "id": "4ee685b7-4b38-4dfd-b388-122e11d0467f",
+   "id": "1c7a4fe6-5a44-4361-8146-679cb0b4dca7",
    "title": "1 Blank Line After Summary",
    "description": "1 Blank Line After Summary",
    "details": "Add summary line and blank line in docstring.",
@@ -5411,20 +5411,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996773",
+   "timestamp": "2026-11-28T19:26:06.241092",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D205",
     "readability_category": "documentation",
     "cross_references": [
-     "5d9705c3-4967-4d21-b584-60302fe232d8",
-     "7e37a417-1815-473f-86cf-ef18a188df59",
-     "e11523b1-1e06-48c4-8abb-b54954c58a41",
-     "c8eba58e-e8ad-42bc-9925-13695bc5e1f7"
+     "618ce992-29cd-475d-9067-e981b34dcf7c",
+     "22318b43-53e4-4195-9865-afe1f6dd4b38",
+     "0083dd7a-03a1-4ef0-b0f9-50be087d9860",
+     "a76fe0bb-d8e2-4a0c-b39d-b9e655d94c93"
     ],
     "file_issue_count": 7,
     "category_prevalence": 255,
@@ -5433,7 +5433,7 @@
    }
   },
   {
-   "id": "e11523b1-1e06-48c4-8abb-b54954c58a41",
+   "id": "0083dd7a-03a1-4ef0-b0f9-50be087d9860",
    "title": "Imperative Mood in Summary",
    "description": "Imperative Mood in Summary",
    "details": "First line should be in imperative mood.",
@@ -5488,20 +5488,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996778",
+   "timestamp": "2026-11-28T19:26:06.241098",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D401",
     "readability_category": "documentation",
     "cross_references": [
-     "5d9705c3-4967-4d21-b584-60302fe232d8",
-     "7e37a417-1815-473f-86cf-ef18a188df59",
-     "4ee685b7-4b38-4dfd-b388-122e11d0467f",
-     "c8eba58e-e8ad-42bc-9925-13695bc5e1f7"
+     "618ce992-29cd-475d-9067-e981b34dcf7c",
+     "22318b43-53e4-4195-9865-afe1f6dd4b38",
+     "1c7a4fe6-5a44-4361-8146-679cb0b4dca7",
+     "a76fe0bb-d8e2-4a0c-b39d-b9e655d94c93"
     ],
     "file_issue_count": 7,
     "category_prevalence": 255,
@@ -5510,7 +5510,7 @@
    }
   },
   {
-   "id": "c8eba58e-e8ad-42bc-9925-13695bc5e1f7",
+   "id": "22318b43-53e4-4195-9865-afe1f6dd4b38",
    "title": "Missing Magic Method Docstring",
    "description": "Missing Magic Method Docstring",
    "details": "Magic methods should include a docstring.",
@@ -5547,20 +5547,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996783",
+   "timestamp": "2026-11-28T19:26:06.241103",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D102",
     "readability_category": "documentation",
     "cross_references": [
-     "5d9705c3-4967-4d21-b584-60302fe232d8",
-     "7e37a417-1815-473f-86cf-ef18a188df59",
-     "4ee685b7-4b38-4dfd-b388-122e11d0467f",
-     "e11523b1-1e06-48c4-8abb-b54954c58a41"
+     "618ce992-29cd-475d-9067-e981b34dcf7c",
+     "0083dd7a-03a1-4ef0-b0f9-50be087d9860",
+     "1c7a4fe6-5a44-4361-8146-679cb0b4dca7",
+     "a76fe0bb-d8e2-4a0c-b39d-b9e655d94c93"
     ],
     "file_issue_count": 7,
     "category_prevalence": 255,
@@ -5569,7 +5569,7 @@
    }
   },
   {
-   "id": "2e70a686-d923-40a5-874b-4998235ff7f0",
+   "id": "7b4f17c0-49b4-4eec-bbea-095eaab5574d",
    "title": "Missing Module Documentation",
    "description": "Missing docstring in public module",
    "details": "The module is missing a top-level docstring. Add a descriptive docstring at the top of the file to explain its purpose.",
@@ -5595,21 +5595,21 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996763",
+   "timestamp": "2026-11-28T19:26:06.241082",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D100",
     "readability_category": "documentation",
     "cross_references": [
-     "5d9705c3-4967-4d21-b584-60302fe232d8",
-     "4ee685b7-4b38-4dfd-b388-122e11d0467f",
-     "c8eba58e-e8ad-42bc-9925-13695bc5e1f7",
-     "7e37a417-1815-473f-86cf-ef18a188df59",
-     "e11523b1-1e06-48c4-8abb-b54954c58a41"
+     "618ce992-29cd-475d-9067-e981b34dcf7c",
+     "1c7a4fe6-5a44-4361-8146-679cb0b4dca7",
+     "22318b43-53e4-4195-9865-afe1f6dd4b38",
+     "0083dd7a-03a1-4ef0-b0f9-50be087d9860",
+     "a76fe0bb-d8e2-4a0c-b39d-b9e655d94c93"
     ],
     "file_issue_count": 7,
     "category_prevalence": 255,
@@ -5618,7 +5618,7 @@
    }
   },
   {
-   "id": "68bc6762-6088-4b2b-9295-090eb6cf58f9",
+   "id": "a39efff5-b5fb-45f2-951b-e02ff8faa03e",
    "title": "Missing __init__ Docstring",
    "description": "Missing docstring in `__init__`",
    "details": "Add docstring for this __init__ method.",
@@ -5644,21 +5644,21 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996768",
+   "timestamp": "2026-11-28T19:26:06.241087",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D107",
     "readability_category": "documentation",
     "cross_references": [
-     "5d9705c3-4967-4d21-b584-60302fe232d8",
-     "4ee685b7-4b38-4dfd-b388-122e11d0467f",
-     "c8eba58e-e8ad-42bc-9925-13695bc5e1f7",
-     "7e37a417-1815-473f-86cf-ef18a188df59",
-     "e11523b1-1e06-48c4-8abb-b54954c58a41"
+     "618ce992-29cd-475d-9067-e981b34dcf7c",
+     "1c7a4fe6-5a44-4361-8146-679cb0b4dca7",
+     "22318b43-53e4-4195-9865-afe1f6dd4b38",
+     "0083dd7a-03a1-4ef0-b0f9-50be087d9860",
+     "a76fe0bb-d8e2-4a0c-b39d-b9e655d94c93"
     ],
     "file_issue_count": 7,
     "category_prevalence": 255,
@@ -5667,7 +5667,7 @@
    }
   },
   {
-   "id": "86b1e745-ebff-49ee-9cb0-95c25f6bc458",
+   "id": "6aac7166-c5e5-42d9-9e7b-7d10557d0ef7",
    "title": "1 Blank Line After Summary",
    "description": "1 Blank Line After Summary",
    "details": "Add summary line and blank line in docstring.",
@@ -5710,20 +5710,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996827",
+   "timestamp": "2026-11-28T19:26:06.241142",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D205",
     "readability_category": "documentation",
     "cross_references": [
-     "dadee3a3-d0c6-4a85-ac2e-3badda30cafe",
-     "77b0098f-dc16-436a-996a-81fe7b36a769",
-     "60ed3f91-aa1b-4c8b-8633-91b39a370ff5",
-     "b4b707fa-e874-4da8-8224-d7cc68260d9e"
+     "dfeb59d7-05f7-4f18-97c6-4c977c41d667",
+     "de33b201-9db6-44e7-80a2-1cf4dc08056d",
+     "3d4946e1-8387-4b0a-86ca-ac0d7af765c6",
+     "6b955116-0baa-410c-936c-be1be9489a91"
     ],
     "file_issue_count": 5,
     "category_prevalence": 255,
@@ -5732,7 +5732,7 @@
    }
   },
   {
-   "id": "77b0098f-dc16-436a-996a-81fe7b36a769",
+   "id": "dfeb59d7-05f7-4f18-97c6-4c977c41d667",
    "title": "Missing __init__ Docstring",
    "description": "Missing __init__ Docstring",
    "details": "Add docstring for this __init__ method.",
@@ -5767,20 +5767,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996833",
+   "timestamp": "2026-11-28T19:26:06.241147",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D107",
     "readability_category": "documentation",
     "cross_references": [
-     "dadee3a3-d0c6-4a85-ac2e-3badda30cafe",
-     "86b1e745-ebff-49ee-9cb0-95c25f6bc458",
-     "b4b707fa-e874-4da8-8224-d7cc68260d9e",
-     "60ed3f91-aa1b-4c8b-8633-91b39a370ff5"
+     "de33b201-9db6-44e7-80a2-1cf4dc08056d",
+     "3d4946e1-8387-4b0a-86ca-ac0d7af765c6",
+     "6b955116-0baa-410c-936c-be1be9489a91",
+     "6aac7166-c5e5-42d9-9e7b-7d10557d0ef7"
     ],
     "file_issue_count": 5,
     "category_prevalence": 255,
@@ -5789,7 +5789,7 @@
    }
   },
   {
-   "id": "b4b707fa-e874-4da8-8224-d7cc68260d9e",
+   "id": "6b955116-0baa-410c-936c-be1be9489a91",
    "title": "Missing Magic Method Docstring",
    "description": "Missing Magic Method Docstring",
    "details": "Magic methods should include a docstring.",
@@ -5824,20 +5824,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996837",
+   "timestamp": "2026-11-28T19:26:06.241152",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D102",
     "readability_category": "documentation",
     "cross_references": [
-     "dadee3a3-d0c6-4a85-ac2e-3badda30cafe",
-     "86b1e745-ebff-49ee-9cb0-95c25f6bc458",
-     "77b0098f-dc16-436a-996a-81fe7b36a769",
-     "60ed3f91-aa1b-4c8b-8633-91b39a370ff5"
+     "dfeb59d7-05f7-4f18-97c6-4c977c41d667",
+     "de33b201-9db6-44e7-80a2-1cf4dc08056d",
+     "3d4946e1-8387-4b0a-86ca-ac0d7af765c6",
+     "6aac7166-c5e5-42d9-9e7b-7d10557d0ef7"
     ],
     "file_issue_count": 5,
     "category_prevalence": 255,
@@ -5846,7 +5846,7 @@
    }
   },
   {
-   "id": "dadee3a3-d0c6-4a85-ac2e-3badda30cafe",
+   "id": "3d4946e1-8387-4b0a-86ca-ac0d7af765c6",
    "title": "Missing Module Documentation",
    "description": "Missing docstring in public module",
    "details": "The module is missing a top-level docstring. Add a descriptive docstring at the top of the file to explain its purpose.",
@@ -5872,20 +5872,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996822",
+   "timestamp": "2026-11-28T19:26:06.241137",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D100",
     "readability_category": "documentation",
     "cross_references": [
-     "86b1e745-ebff-49ee-9cb0-95c25f6bc458",
-     "77b0098f-dc16-436a-996a-81fe7b36a769",
-     "60ed3f91-aa1b-4c8b-8633-91b39a370ff5",
-     "b4b707fa-e874-4da8-8224-d7cc68260d9e"
+     "dfeb59d7-05f7-4f18-97c6-4c977c41d667",
+     "de33b201-9db6-44e7-80a2-1cf4dc08056d",
+     "6b955116-0baa-410c-936c-be1be9489a91",
+     "6aac7166-c5e5-42d9-9e7b-7d10557d0ef7"
     ],
     "file_issue_count": 5,
     "category_prevalence": 255,
@@ -5894,7 +5894,7 @@
    }
   },
   {
-   "id": "a67b8d9c-f603-4a9f-ae96-1ad8e4611475",
+   "id": "98371980-750a-4493-95cd-89bb1b8e37af",
    "title": "1 Blank Line After Summary",
    "description": "1 Blank Line After Summary",
    "details": "Add summary line and blank line in docstring.",
@@ -5931,20 +5931,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996872",
+   "timestamp": "2026-11-28T19:26:06.241213",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D205",
     "readability_category": "documentation",
     "cross_references": [
-     "7fbf2c02-b158-4dab-a940-c2e9b4439c50",
-     "e5a89b1a-461a-4694-b30d-d415ca7c0d29",
-     "e1486fc7-2c0d-4554-85d3-8881a881f62c",
-     "1c1adfaa-246b-4be5-9696-6e9f53558ad2"
+     "5fb2eb09-942a-44c0-a30d-0b3dcb322f26",
+     "eaf82360-7e5b-4e0e-a78c-2e28440218ce",
+     "b0d8ff55-02f6-45bb-bcb5-17d535733f29",
+     "531ec373-f055-4d9f-9de2-cc591c6b5c3f"
     ],
     "file_issue_count": 8,
     "category_prevalence": 255,
@@ -5953,7 +5953,7 @@
    }
   },
   {
-   "id": "7fbf2c02-b158-4dab-a940-c2e9b4439c50",
+   "id": "531ec373-f055-4d9f-9de2-cc591c6b5c3f",
    "title": "Imperative Mood in Summary",
    "description": "Imperative Mood in Summary",
    "details": "First line should be in imperative mood.",
@@ -5988,20 +5988,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996878",
+   "timestamp": "2026-11-28T19:26:06.241218",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D401",
     "readability_category": "documentation",
     "cross_references": [
-     "e5a89b1a-461a-4694-b30d-d415ca7c0d29",
-     "e1486fc7-2c0d-4554-85d3-8881a881f62c",
-     "a67b8d9c-f603-4a9f-ae96-1ad8e4611475",
-     "1c1adfaa-246b-4be5-9696-6e9f53558ad2"
+     "5fb2eb09-942a-44c0-a30d-0b3dcb322f26",
+     "eaf82360-7e5b-4e0e-a78c-2e28440218ce",
+     "98371980-750a-4493-95cd-89bb1b8e37af",
+     "b0d8ff55-02f6-45bb-bcb5-17d535733f29"
     ],
     "file_issue_count": 8,
     "category_prevalence": 255,
@@ -6010,7 +6010,7 @@
    }
   },
   {
-   "id": "e5a89b1a-461a-4694-b30d-d415ca7c0d29",
+   "id": "5fb2eb09-942a-44c0-a30d-0b3dcb322f26",
    "title": "Missing Module Documentation",
    "description": "Missing docstring in public module",
    "details": "The module is missing a top-level docstring. Add a descriptive docstring at the top of the file to explain its purpose.",
@@ -6036,20 +6036,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996852",
+   "timestamp": "2026-11-28T19:26:06.241166",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D100",
     "readability_category": "documentation",
     "cross_references": [
-     "7fbf2c02-b158-4dab-a940-c2e9b4439c50",
-     "e1486fc7-2c0d-4554-85d3-8881a881f62c",
-     "a67b8d9c-f603-4a9f-ae96-1ad8e4611475",
-     "1c1adfaa-246b-4be5-9696-6e9f53558ad2"
+     "eaf82360-7e5b-4e0e-a78c-2e28440218ce",
+     "98371980-750a-4493-95cd-89bb1b8e37af",
+     "b0d8ff55-02f6-45bb-bcb5-17d535733f29",
+     "531ec373-f055-4d9f-9de2-cc591c6b5c3f"
     ],
     "file_issue_count": 8,
     "category_prevalence": 255,
@@ -6058,7 +6058,7 @@
    }
   },
   {
-   "id": "e51ef5f4-bee8-4d4c-a0c4-b2de63168ea3",
+   "id": "ed5e008c-8074-4aaf-a2b3-0f34995fbb99",
    "title": "Missing Class Documentation",
    "description": "Missing docstring in public class",
    "details": "The class is missing a class-level docstring. Add documentation for class usage and purpose.",
@@ -6084,21 +6084,21 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996857",
+   "timestamp": "2026-11-28T19:26:06.241173",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D101",
     "readability_category": "documentation",
     "cross_references": [
-     "7fbf2c02-b158-4dab-a940-c2e9b4439c50",
-     "e1486fc7-2c0d-4554-85d3-8881a881f62c",
-     "e5a89b1a-461a-4694-b30d-d415ca7c0d29",
-     "1c1adfaa-246b-4be5-9696-6e9f53558ad2",
-     "a67b8d9c-f603-4a9f-ae96-1ad8e4611475"
+     "eaf82360-7e5b-4e0e-a78c-2e28440218ce",
+     "531ec373-f055-4d9f-9de2-cc591c6b5c3f",
+     "5fb2eb09-942a-44c0-a30d-0b3dcb322f26",
+     "98371980-750a-4493-95cd-89bb1b8e37af",
+     "b0d8ff55-02f6-45bb-bcb5-17d535733f29"
     ],
     "file_issue_count": 8,
     "category_prevalence": 255,
@@ -6107,7 +6107,7 @@
    }
   },
   {
-   "id": "297dd43f-3024-4ea1-a0cc-ff1c6843d405",
+   "id": "a48c8882-f21c-4ebe-b175-fa775690b26e",
    "title": "Missing __init__ Docstring",
    "description": "Missing docstring in `__init__`",
    "details": "Add docstring for this __init__ method.",
@@ -6133,21 +6133,21 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996867",
+   "timestamp": "2026-11-28T19:26:06.241208",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D107",
     "readability_category": "documentation",
     "cross_references": [
-     "7fbf2c02-b158-4dab-a940-c2e9b4439c50",
-     "e1486fc7-2c0d-4554-85d3-8881a881f62c",
-     "e5a89b1a-461a-4694-b30d-d415ca7c0d29",
-     "1c1adfaa-246b-4be5-9696-6e9f53558ad2",
-     "a67b8d9c-f603-4a9f-ae96-1ad8e4611475"
+     "eaf82360-7e5b-4e0e-a78c-2e28440218ce",
+     "531ec373-f055-4d9f-9de2-cc591c6b5c3f",
+     "5fb2eb09-942a-44c0-a30d-0b3dcb322f26",
+     "98371980-750a-4493-95cd-89bb1b8e37af",
+     "b0d8ff55-02f6-45bb-bcb5-17d535733f29"
     ],
     "file_issue_count": 8,
     "category_prevalence": 255,
@@ -6156,7 +6156,7 @@
    }
   },
   {
-   "id": "8914bec4-23e9-4fcc-abf8-e0c5d546664d",
+   "id": "99e94017-96b9-4db8-9256-40233c112f7a",
    "title": "1 Blank Line After Summary",
    "description": "1 Blank Line After Summary",
    "details": "Add summary line and blank line in docstring.",
@@ -6223,20 +6223,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996889",
+   "timestamp": "2026-11-28T19:26:06.241228",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D205",
     "readability_category": "documentation",
     "cross_references": [
-     "227ae5b9-8b3a-4c3c-92b4-7acb812b8657",
-     "9ce79726-340f-4967-9ad0-180b2d37ac4e",
-     "e57ed29f-efac-4043-aea8-0fd6a0acee1b",
-     "1fae7938-8db0-4c0a-bfa5-827152e80a16"
+     "ad1a506f-a3ed-44eb-bc3a-9e4d8a0d206a",
+     "5e061cd1-c7d8-407f-99a5-a3bb6d2ab816",
+     "403cd8ea-9310-4220-bca0-dd5d1603f7c7",
+     "fcd01819-97ab-4ac0-9f8f-59bb3b13899f"
     ],
     "file_issue_count": 13,
     "category_prevalence": 255,
@@ -6245,7 +6245,7 @@
    }
   },
   {
-   "id": "9ce79726-340f-4967-9ad0-180b2d37ac4e",
+   "id": "fcd01819-97ab-4ac0-9f8f-59bb3b13899f",
    "title": "Missing Function Documentation",
    "description": "Missing Function Documentation",
    "details": "The function does not have a docstring. Add a docstring describing its parameters and return value.",
@@ -6282,20 +6282,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996894",
+   "timestamp": "2026-11-28T19:26:06.241232",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D103",
     "readability_category": "documentation",
     "cross_references": [
-     "227ae5b9-8b3a-4c3c-92b4-7acb812b8657",
-     "8914bec4-23e9-4fcc-abf8-e0c5d546664d",
-     "e57ed29f-efac-4043-aea8-0fd6a0acee1b",
-     "1fae7938-8db0-4c0a-bfa5-827152e80a16"
+     "ad1a506f-a3ed-44eb-bc3a-9e4d8a0d206a",
+     "5e061cd1-c7d8-407f-99a5-a3bb6d2ab816",
+     "403cd8ea-9310-4220-bca0-dd5d1603f7c7",
+     "99e94017-96b9-4db8-9256-40233c112f7a"
     ],
     "file_issue_count": 13,
     "category_prevalence": 255,
@@ -6304,7 +6304,7 @@
    }
   },
   {
-   "id": "227ae5b9-8b3a-4c3c-92b4-7acb812b8657",
+   "id": "5e061cd1-c7d8-407f-99a5-a3bb6d2ab816",
    "title": "Missing __init__ Docstring",
    "description": "Missing __init__ Docstring",
    "details": "Add docstring for this __init__ method.",
@@ -6341,20 +6341,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996899",
+   "timestamp": "2026-11-28T19:26:06.241237",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D107",
     "readability_category": "documentation",
     "cross_references": [
-     "9ce79726-340f-4967-9ad0-180b2d37ac4e",
-     "8914bec4-23e9-4fcc-abf8-e0c5d546664d",
-     "e57ed29f-efac-4043-aea8-0fd6a0acee1b",
-     "1fae7938-8db0-4c0a-bfa5-827152e80a16"
+     "ad1a506f-a3ed-44eb-bc3a-9e4d8a0d206a",
+     "403cd8ea-9310-4220-bca0-dd5d1603f7c7",
+     "99e94017-96b9-4db8-9256-40233c112f7a",
+     "fcd01819-97ab-4ac0-9f8f-59bb3b13899f"
     ],
     "file_issue_count": 13,
     "category_prevalence": 255,
@@ -6363,7 +6363,7 @@
    }
   },
   {
-   "id": "04bc2889-bb89-4821-b14f-7cae9ec8488e",
+   "id": "6bcf24c6-42e0-4427-9ead-ffed88ecf567",
    "title": "Imperative Mood in Summary",
    "description": "Imperative Mood in Summary",
    "details": "First line should be in imperative mood.",
@@ -6404,21 +6404,21 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996903",
+   "timestamp": "2026-11-28T19:26:06.241242",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D401",
     "readability_category": "documentation",
     "cross_references": [
-     "9ce79726-340f-4967-9ad0-180b2d37ac4e",
-     "e57ed29f-efac-4043-aea8-0fd6a0acee1b",
-     "227ae5b9-8b3a-4c3c-92b4-7acb812b8657",
-     "1fae7938-8db0-4c0a-bfa5-827152e80a16",
-     "8914bec4-23e9-4fcc-abf8-e0c5d546664d"
+     "403cd8ea-9310-4220-bca0-dd5d1603f7c7",
+     "5e061cd1-c7d8-407f-99a5-a3bb6d2ab816",
+     "ad1a506f-a3ed-44eb-bc3a-9e4d8a0d206a",
+     "fcd01819-97ab-4ac0-9f8f-59bb3b13899f",
+     "99e94017-96b9-4db8-9256-40233c112f7a"
     ],
     "file_issue_count": 13,
     "category_prevalence": 255,
@@ -6427,7 +6427,7 @@
    }
   },
   {
-   "id": "5c7542ed-1bd6-4dd0-b633-d9b393b0cdf6",
+   "id": "48cceaf2-c377-4aa9-9b64-2ac0be62ecae",
    "title": "Missing Magic Method Docstring",
    "description": "Missing Magic Method Docstring",
    "details": "Magic methods should include a docstring.",
@@ -6470,21 +6470,21 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996908",
+   "timestamp": "2026-11-28T19:26:06.241246",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D102",
     "readability_category": "documentation",
     "cross_references": [
-     "9ce79726-340f-4967-9ad0-180b2d37ac4e",
-     "e57ed29f-efac-4043-aea8-0fd6a0acee1b",
-     "227ae5b9-8b3a-4c3c-92b4-7acb812b8657",
-     "1fae7938-8db0-4c0a-bfa5-827152e80a16",
-     "8914bec4-23e9-4fcc-abf8-e0c5d546664d"
+     "403cd8ea-9310-4220-bca0-dd5d1603f7c7",
+     "5e061cd1-c7d8-407f-99a5-a3bb6d2ab816",
+     "ad1a506f-a3ed-44eb-bc3a-9e4d8a0d206a",
+     "fcd01819-97ab-4ac0-9f8f-59bb3b13899f",
+     "99e94017-96b9-4db8-9256-40233c112f7a"
     ],
     "file_issue_count": 13,
     "category_prevalence": 255,
@@ -6493,7 +6493,7 @@
    }
   },
   {
-   "id": "2ec7b40b-a931-4527-a055-92bd9685fa13",
+   "id": "e1ff300f-9701-4bb9-8a75-dcb433b31b01",
    "title": "Missing Module Documentation",
    "description": "Missing docstring in public module",
    "details": "The module is missing a top-level docstring. Add a descriptive docstring at the top of the file to explain its purpose.",
@@ -6519,21 +6519,21 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996884",
+   "timestamp": "2026-11-28T19:26:06.241223",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D100",
     "readability_category": "documentation",
     "cross_references": [
-     "9ce79726-340f-4967-9ad0-180b2d37ac4e",
-     "e57ed29f-efac-4043-aea8-0fd6a0acee1b",
-     "227ae5b9-8b3a-4c3c-92b4-7acb812b8657",
-     "1fae7938-8db0-4c0a-bfa5-827152e80a16",
-     "8914bec4-23e9-4fcc-abf8-e0c5d546664d"
+     "403cd8ea-9310-4220-bca0-dd5d1603f7c7",
+     "5e061cd1-c7d8-407f-99a5-a3bb6d2ab816",
+     "ad1a506f-a3ed-44eb-bc3a-9e4d8a0d206a",
+     "fcd01819-97ab-4ac0-9f8f-59bb3b13899f",
+     "99e94017-96b9-4db8-9256-40233c112f7a"
     ],
     "file_issue_count": 13,
     "category_prevalence": 255,
@@ -6542,7 +6542,7 @@
    }
   },
   {
-   "id": "fa30c862-f1cf-4e52-b557-784044ea5eea",
+   "id": "7a3e3b6f-9218-480d-84b1-efc5bbc52bc5",
    "title": "1 Blank Line After Summary",
    "description": "1 Blank Line After Summary",
    "details": "Add summary line and blank line in docstring.",
@@ -6585,20 +6585,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996923",
+   "timestamp": "2026-11-28T19:26:06.241261",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D205",
     "readability_category": "documentation",
     "cross_references": [
-     "bcb9255f-3969-4785-be2c-db52ad1e26a8",
-     "3a4b433b-4a3a-4383-81cf-738ab90bb6f5",
-     "94f5587f-e8fe-4fb7-b9bb-f2b305034f7c",
-     "cca28266-e52b-468a-af02-fb9482bc760f"
+     "6ace528e-1041-4fbd-8e27-354dcf16fc55",
+     "269e1837-09bd-4726-96e5-5fe6e9f06ae0",
+     "919343fe-9d8c-470a-903d-8ca9cf4dd66f",
+     "402d8746-bf8f-455e-b01a-fb05b7934807"
     ],
     "file_issue_count": 5,
     "category_prevalence": 255,
@@ -6607,7 +6607,7 @@
    }
   },
   {
-   "id": "3a4b433b-4a3a-4383-81cf-738ab90bb6f5",
+   "id": "269e1837-09bd-4726-96e5-5fe6e9f06ae0",
    "title": "Missing Module Documentation",
    "description": "Missing docstring in public module",
    "details": "The module is missing a top-level docstring. Add a descriptive docstring at the top of the file to explain its purpose.",
@@ -6633,20 +6633,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996919",
+   "timestamp": "2026-11-28T19:26:06.241257",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D100",
     "readability_category": "documentation",
     "cross_references": [
-     "fa30c862-f1cf-4e52-b557-784044ea5eea",
-     "bcb9255f-3969-4785-be2c-db52ad1e26a8",
-     "cca28266-e52b-468a-af02-fb9482bc760f",
-     "94f5587f-e8fe-4fb7-b9bb-f2b305034f7c"
+     "6ace528e-1041-4fbd-8e27-354dcf16fc55",
+     "7a3e3b6f-9218-480d-84b1-efc5bbc52bc5",
+     "919343fe-9d8c-470a-903d-8ca9cf4dd66f",
+     "402d8746-bf8f-455e-b01a-fb05b7934807"
     ],
     "file_issue_count": 5,
     "category_prevalence": 255,
@@ -6655,7 +6655,7 @@
    }
   },
   {
-   "id": "cca28266-e52b-468a-af02-fb9482bc760f",
+   "id": "402d8746-bf8f-455e-b01a-fb05b7934807",
    "title": "Missing Magic Method Docstring",
    "description": "Missing docstring in public method",
    "details": "Magic methods should include a docstring.",
@@ -6681,20 +6681,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996928",
+   "timestamp": "2026-11-28T19:26:06.241267",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D102",
     "readability_category": "documentation",
     "cross_references": [
-     "fa30c862-f1cf-4e52-b557-784044ea5eea",
-     "bcb9255f-3969-4785-be2c-db52ad1e26a8",
-     "3a4b433b-4a3a-4383-81cf-738ab90bb6f5",
-     "94f5587f-e8fe-4fb7-b9bb-f2b305034f7c"
+     "6ace528e-1041-4fbd-8e27-354dcf16fc55",
+     "7a3e3b6f-9218-480d-84b1-efc5bbc52bc5",
+     "269e1837-09bd-4726-96e5-5fe6e9f06ae0",
+     "919343fe-9d8c-470a-903d-8ca9cf4dd66f"
     ],
     "file_issue_count": 5,
     "category_prevalence": 255,
@@ -6703,7 +6703,7 @@
    }
   },
   {
-   "id": "4b62b360-3773-4f09-be36-208371dcf0ce",
+   "id": "b3158ff9-2efb-4e33-9d58-ba1a5b172547",
    "title": "Missing Function Documentation",
    "description": "Missing Function Documentation",
    "details": "The function does not have a docstring. Add a docstring describing its parameters and return value.",
@@ -6738,20 +6738,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996938",
+   "timestamp": "2026-11-28T19:26:06.241277",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D103",
     "readability_category": "documentation",
     "cross_references": [
-     "3487cf9e-1fdc-43fa-acf3-3dc00591c072",
-     "42a9a627-a462-4b66-a474-78b77485f753",
-     "a7f1f119-330f-4049-a886-6aad7d538b56",
-     "579c4738-8352-4327-8bd7-dd2c9f9d9e74"
+     "87cc9cc1-78e9-418d-8f73-4b4397ce99bd",
+     "5ac1c5bf-3dde-4fcd-b575-4ee49f46d446",
+     "2c65ec78-d9e6-4de8-9ec5-3e7b9b4f23d4",
+     "76f48ba3-ecc3-44b4-bbe9-ad992c7828f4"
     ],
     "file_issue_count": 13,
     "category_prevalence": 255,
@@ -6760,7 +6760,7 @@
    }
   },
   {
-   "id": "579c4738-8352-4327-8bd7-dd2c9f9d9e74",
+   "id": "2c65ec78-d9e6-4de8-9ec5-3e7b9b4f23d4",
    "title": "1 Blank Line After Summary",
    "description": "1 Blank Line After Summary",
    "details": "Add summary line and blank line in docstring.",
@@ -6849,20 +6849,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996943",
+   "timestamp": "2026-11-28T19:26:06.241282",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D205",
     "readability_category": "documentation",
     "cross_references": [
-     "3487cf9e-1fdc-43fa-acf3-3dc00591c072",
-     "42a9a627-a462-4b66-a474-78b77485f753",
-     "4b62b360-3773-4f09-be36-208371dcf0ce",
-     "a7f1f119-330f-4049-a886-6aad7d538b56"
+     "b3158ff9-2efb-4e33-9d58-ba1a5b172547",
+     "5ac1c5bf-3dde-4fcd-b575-4ee49f46d446",
+     "87cc9cc1-78e9-418d-8f73-4b4397ce99bd",
+     "76f48ba3-ecc3-44b4-bbe9-ad992c7828f4"
     ],
     "file_issue_count": 13,
     "category_prevalence": 255,
@@ -6871,7 +6871,7 @@
    }
   },
   {
-   "id": "42a9a627-a462-4b66-a474-78b77485f753",
+   "id": "87cc9cc1-78e9-418d-8f73-4b4397ce99bd",
    "title": "Imperative Mood in Summary",
    "description": "Imperative Mood in Summary",
    "details": "First line should be in imperative mood.",
@@ -6932,20 +6932,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996962",
+   "timestamp": "2026-11-28T19:26:06.241302",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D401",
     "readability_category": "documentation",
     "cross_references": [
-     "3487cf9e-1fdc-43fa-acf3-3dc00591c072",
-     "4b62b360-3773-4f09-be36-208371dcf0ce",
-     "a7f1f119-330f-4049-a886-6aad7d538b56",
-     "579c4738-8352-4327-8bd7-dd2c9f9d9e74"
+     "b3158ff9-2efb-4e33-9d58-ba1a5b172547",
+     "5ac1c5bf-3dde-4fcd-b575-4ee49f46d446",
+     "2c65ec78-d9e6-4de8-9ec5-3e7b9b4f23d4",
+     "76f48ba3-ecc3-44b4-bbe9-ad992c7828f4"
     ],
     "file_issue_count": 13,
     "category_prevalence": 255,
@@ -6954,7 +6954,7 @@
    }
   },
   {
-   "id": "93be061f-d91e-440b-983e-775c8cb4ee80",
+   "id": "c45859c3-9b45-436f-ae13-ce8f448701b3",
    "title": "Missing Module Documentation",
    "description": "Missing docstring in public module",
    "details": "The module is missing a top-level docstring. Add a descriptive docstring at the top of the file to explain its purpose.",
@@ -6980,21 +6980,21 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996933",
+   "timestamp": "2026-11-28T19:26:06.241272",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D100",
     "readability_category": "documentation",
     "cross_references": [
-     "3487cf9e-1fdc-43fa-acf3-3dc00591c072",
-     "a7f1f119-330f-4049-a886-6aad7d538b56",
-     "579c4738-8352-4327-8bd7-dd2c9f9d9e74",
-     "4b62b360-3773-4f09-be36-208371dcf0ce",
-     "42a9a627-a462-4b66-a474-78b77485f753"
+     "b3158ff9-2efb-4e33-9d58-ba1a5b172547",
+     "87cc9cc1-78e9-418d-8f73-4b4397ce99bd",
+     "5ac1c5bf-3dde-4fcd-b575-4ee49f46d446",
+     "2c65ec78-d9e6-4de8-9ec5-3e7b9b4f23d4",
+     "76f48ba3-ecc3-44b4-bbe9-ad992c7828f4"
     ],
     "file_issue_count": 13,
     "category_prevalence": 255,
@@ -7003,7 +7003,7 @@
    }
   },
   {
-   "id": "452aac90-cc00-461b-a2c7-ce74fceee9df",
+   "id": "ffbf3f1f-5af4-412f-b17e-94167bdebeeb",
    "title": "Missing Magic Method Docstring",
    "description": "Missing docstring in magic method",
    "details": "Add a docstring for this magic method.",
@@ -7029,21 +7029,21 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996948",
+   "timestamp": "2026-11-28T19:26:06.241287",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D105",
     "readability_category": "documentation",
     "cross_references": [
-     "3487cf9e-1fdc-43fa-acf3-3dc00591c072",
-     "a7f1f119-330f-4049-a886-6aad7d538b56",
-     "579c4738-8352-4327-8bd7-dd2c9f9d9e74",
-     "4b62b360-3773-4f09-be36-208371dcf0ce",
-     "42a9a627-a462-4b66-a474-78b77485f753"
+     "b3158ff9-2efb-4e33-9d58-ba1a5b172547",
+     "87cc9cc1-78e9-418d-8f73-4b4397ce99bd",
+     "5ac1c5bf-3dde-4fcd-b575-4ee49f46d446",
+     "2c65ec78-d9e6-4de8-9ec5-3e7b9b4f23d4",
+     "76f48ba3-ecc3-44b4-bbe9-ad992c7828f4"
     ],
     "file_issue_count": 13,
     "category_prevalence": 255,
@@ -7052,7 +7052,7 @@
    }
   },
   {
-   "id": "9b117631-1145-405f-b37a-3378d861765c",
+   "id": "00881221-f273-46f4-bc49-f1a30d411a66",
    "title": "Missing __init__ Docstring",
    "description": "Missing docstring in `__init__`",
    "details": "Add docstring for this __init__ method.",
@@ -7078,21 +7078,21 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996957",
+   "timestamp": "2026-11-28T19:26:06.241297",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D107",
     "readability_category": "documentation",
     "cross_references": [
-     "3487cf9e-1fdc-43fa-acf3-3dc00591c072",
-     "a7f1f119-330f-4049-a886-6aad7d538b56",
-     "579c4738-8352-4327-8bd7-dd2c9f9d9e74",
-     "4b62b360-3773-4f09-be36-208371dcf0ce",
-     "42a9a627-a462-4b66-a474-78b77485f753"
+     "b3158ff9-2efb-4e33-9d58-ba1a5b172547",
+     "87cc9cc1-78e9-418d-8f73-4b4397ce99bd",
+     "5ac1c5bf-3dde-4fcd-b575-4ee49f46d446",
+     "2c65ec78-d9e6-4de8-9ec5-3e7b9b4f23d4",
+     "76f48ba3-ecc3-44b4-bbe9-ad992c7828f4"
     ],
     "file_issue_count": 13,
     "category_prevalence": 255,
@@ -7101,7 +7101,7 @@
    }
   },
   {
-   "id": "1f0b9903-5d83-4137-9a83-5f9da3b0a51e",
+   "id": "e5bc41fc-4b23-4dd6-a4bd-8a7b0d4cc231",
    "title": "First Line Ends with Period",
    "description": "First line should end with a period",
    "details": "First line should end with period.",
@@ -7127,21 +7127,21 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.996967",
+   "timestamp": "2026-11-28T19:26:06.241306",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D400",
     "readability_category": "documentation",
     "cross_references": [
-     "3487cf9e-1fdc-43fa-acf3-3dc00591c072",
-     "a7f1f119-330f-4049-a886-6aad7d538b56",
-     "579c4738-8352-4327-8bd7-dd2c9f9d9e74",
-     "4b62b360-3773-4f09-be36-208371dcf0ce",
-     "42a9a627-a462-4b66-a474-78b77485f753"
+     "b3158ff9-2efb-4e33-9d58-ba1a5b172547",
+     "87cc9cc1-78e9-418d-8f73-4b4397ce99bd",
+     "5ac1c5bf-3dde-4fcd-b575-4ee49f46d446",
+     "2c65ec78-d9e6-4de8-9ec5-3e7b9b4f23d4",
+     "76f48ba3-ecc3-44b4-bbe9-ad992c7828f4"
     ],
     "file_issue_count": 13,
     "category_prevalence": 255,
@@ -7150,7 +7150,7 @@
    }
   },
   {
-   "id": "d1564adb-2dc7-4314-b415-14fc4804ca9b",
+   "id": "5081c0a6-8cdb-4702-8579-e4dbd3f25a87",
    "title": "1 Blank Line After Summary",
    "description": "1 Blank Line After Summary",
    "details": "Add summary line and blank line in docstring.",
@@ -7191,20 +7191,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997032",
+   "timestamp": "2026-11-28T19:26:06.241376",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D205",
     "readability_category": "documentation",
     "cross_references": [
-     "f56f7e6c-09d0-4329-89c7-5fd14d58d334",
-     "e38250db-4857-4fe1-ab1c-d62487ea0322",
-     "0dc5350f-fbd0-412f-a8aa-9c55e87b84ca",
-     "93646298-9576-496e-9419-be4bff55bd6f"
+     "92bf21c6-06ae-4885-a1f9-45025228c99e",
+     "03ccfd19-5fa4-4c5b-9b26-f2402a8ead59",
+     "f61ce347-738d-4608-b6ec-0f21e97b1912",
+     "736e087e-c42d-49f5-bd93-d8976ead3387"
     ],
     "file_issue_count": 7,
     "category_prevalence": 255,
@@ -7213,7 +7213,7 @@
    }
   },
   {
-   "id": "93646298-9576-496e-9419-be4bff55bd6f",
+   "id": "f61ce347-738d-4608-b6ec-0f21e97b1912",
    "title": "Missing __init__ Docstring",
    "description": "Missing __init__ Docstring",
    "details": "Add docstring for this __init__ method.",
@@ -7250,20 +7250,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997037",
+   "timestamp": "2026-11-28T19:26:06.241381",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D107",
     "readability_category": "documentation",
     "cross_references": [
-     "f56f7e6c-09d0-4329-89c7-5fd14d58d334",
-     "d1564adb-2dc7-4314-b415-14fc4804ca9b",
-     "e38250db-4857-4fe1-ab1c-d62487ea0322",
-     "0dc5350f-fbd0-412f-a8aa-9c55e87b84ca"
+     "92bf21c6-06ae-4885-a1f9-45025228c99e",
+     "03ccfd19-5fa4-4c5b-9b26-f2402a8ead59",
+     "5081c0a6-8cdb-4702-8579-e4dbd3f25a87",
+     "736e087e-c42d-49f5-bd93-d8976ead3387"
     ],
     "file_issue_count": 7,
     "category_prevalence": 255,
@@ -7272,7 +7272,7 @@
    }
   },
   {
-   "id": "f56f7e6c-09d0-4329-89c7-5fd14d58d334",
+   "id": "736e087e-c42d-49f5-bd93-d8976ead3387",
    "title": "Missing Magic Method Docstring",
    "description": "Missing Magic Method Docstring",
    "details": "Add a docstring for this magic method.",
@@ -7307,20 +7307,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997049",
+   "timestamp": "2026-11-28T19:26:06.241391",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D105",
     "readability_category": "documentation",
     "cross_references": [
-     "d1564adb-2dc7-4314-b415-14fc4804ca9b",
-     "e38250db-4857-4fe1-ab1c-d62487ea0322",
-     "0dc5350f-fbd0-412f-a8aa-9c55e87b84ca",
-     "93646298-9576-496e-9419-be4bff55bd6f"
+     "92bf21c6-06ae-4885-a1f9-45025228c99e",
+     "03ccfd19-5fa4-4c5b-9b26-f2402a8ead59",
+     "f61ce347-738d-4608-b6ec-0f21e97b1912",
+     "5081c0a6-8cdb-4702-8579-e4dbd3f25a87"
     ],
     "file_issue_count": 7,
     "category_prevalence": 255,
@@ -7329,7 +7329,7 @@
    }
   },
   {
-   "id": "e38250db-4857-4fe1-ab1c-d62487ea0322",
+   "id": "03ccfd19-5fa4-4c5b-9b26-f2402a8ead59",
    "title": "Missing Module Documentation",
    "description": "Missing docstring in public module",
    "details": "The module is missing a top-level docstring. Add a descriptive docstring at the top of the file to explain its purpose.",
@@ -7355,20 +7355,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997027",
+   "timestamp": "2026-11-28T19:26:06.241371",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D100",
     "readability_category": "documentation",
     "cross_references": [
-     "f56f7e6c-09d0-4329-89c7-5fd14d58d334",
-     "d1564adb-2dc7-4314-b415-14fc4804ca9b",
-     "0dc5350f-fbd0-412f-a8aa-9c55e87b84ca",
-     "93646298-9576-496e-9419-be4bff55bd6f"
+     "92bf21c6-06ae-4885-a1f9-45025228c99e",
+     "f61ce347-738d-4608-b6ec-0f21e97b1912",
+     "5081c0a6-8cdb-4702-8579-e4dbd3f25a87",
+     "736e087e-c42d-49f5-bd93-d8976ead3387"
     ],
     "file_issue_count": 7,
     "category_prevalence": 255,
@@ -7377,7 +7377,7 @@
    }
   },
   {
-   "id": "61402463-35bb-46e4-ac37-b520db5d442a",
+   "id": "e9e85bd5-1b5b-470b-9a23-ffb035772ed0",
    "title": "Missing Magic Method Docstring",
    "description": "Missing docstring in public method",
    "details": "Magic methods should include a docstring.",
@@ -7403,21 +7403,21 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997044",
+   "timestamp": "2026-11-28T19:26:06.241386",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D102",
     "readability_category": "documentation",
     "cross_references": [
-     "f56f7e6c-09d0-4329-89c7-5fd14d58d334",
-     "0dc5350f-fbd0-412f-a8aa-9c55e87b84ca",
-     "d1564adb-2dc7-4314-b415-14fc4804ca9b",
-     "e38250db-4857-4fe1-ab1c-d62487ea0322",
-     "93646298-9576-496e-9419-be4bff55bd6f"
+     "736e087e-c42d-49f5-bd93-d8976ead3387",
+     "5081c0a6-8cdb-4702-8579-e4dbd3f25a87",
+     "92bf21c6-06ae-4885-a1f9-45025228c99e",
+     "03ccfd19-5fa4-4c5b-9b26-f2402a8ead59",
+     "f61ce347-738d-4608-b6ec-0f21e97b1912"
     ],
     "file_issue_count": 7,
     "category_prevalence": 255,
@@ -7426,7 +7426,7 @@
    }
   },
   {
-   "id": "18d39eb1-9cac-4632-8597-215ea871c628",
+   "id": "672d1425-4ffd-4555-8eb5-06086ee79f36",
    "title": "Imperative Mood in Summary",
    "description": "First line of docstring should be in imperative mood: \"Invokes a CLI command in an isolated environment. See\"",
    "details": "First line should be in imperative mood.",
@@ -7452,21 +7452,21 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997054",
+   "timestamp": "2026-11-28T19:26:06.241395",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D401",
     "readability_category": "documentation",
     "cross_references": [
-     "f56f7e6c-09d0-4329-89c7-5fd14d58d334",
-     "0dc5350f-fbd0-412f-a8aa-9c55e87b84ca",
-     "d1564adb-2dc7-4314-b415-14fc4804ca9b",
-     "e38250db-4857-4fe1-ab1c-d62487ea0322",
-     "93646298-9576-496e-9419-be4bff55bd6f"
+     "736e087e-c42d-49f5-bd93-d8976ead3387",
+     "5081c0a6-8cdb-4702-8579-e4dbd3f25a87",
+     "92bf21c6-06ae-4885-a1f9-45025228c99e",
+     "03ccfd19-5fa4-4c5b-9b26-f2402a8ead59",
+     "f61ce347-738d-4608-b6ec-0f21e97b1912"
     ],
     "file_issue_count": 7,
     "category_prevalence": 255,
@@ -7475,7 +7475,7 @@
    }
   },
   {
-   "id": "1568b50c-6c73-467c-9d08-f2242b796217",
+   "id": "7fdc52a4-8443-4ea3-8ffd-7077607efb7c",
    "title": "1 Blank Line After Summary",
    "description": "1 Blank Line After Summary",
    "details": "Add summary line and blank line in docstring.",
@@ -7526,20 +7526,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997063",
+   "timestamp": "2026-11-28T19:26:06.241406",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D205",
     "readability_category": "documentation",
     "cross_references": [
-     "93284a8a-7edd-4be8-ab75-e08198d7efb8",
-     "5ea7c198-5674-48eb-94da-a8de5d9c92c1",
-     "e8d5ee1e-4505-43cb-8b13-300c54441880",
-     "c40a7b49-530c-470e-bb2f-95e9b00fc416"
+     "3fed5b24-45a1-4943-9664-63c73f319125",
+     "fe1a48e9-640a-4332-a893-058ab3b8cc87",
+     "ec767917-ba50-4c69-a460-c4c0820afbb6",
+     "78a4f7c0-6864-4734-87b7-e4111e69b99c"
     ],
     "file_issue_count": 8,
     "category_prevalence": 255,
@@ -7548,7 +7548,7 @@
    }
   },
   {
-   "id": "93284a8a-7edd-4be8-ab75-e08198d7efb8",
+   "id": "fe1a48e9-640a-4332-a893-058ab3b8cc87",
    "title": "Imperative Mood in Summary",
    "description": "Imperative Mood in Summary",
    "details": "First line should be in imperative mood.",
@@ -7583,20 +7583,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997078",
+   "timestamp": "2026-11-28T19:26:06.241421",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D401",
     "readability_category": "documentation",
     "cross_references": [
-     "5ea7c198-5674-48eb-94da-a8de5d9c92c1",
-     "e8d5ee1e-4505-43cb-8b13-300c54441880",
-     "1568b50c-6c73-467c-9d08-f2242b796217",
-     "c40a7b49-530c-470e-bb2f-95e9b00fc416"
+     "3fed5b24-45a1-4943-9664-63c73f319125",
+     "ec767917-ba50-4c69-a460-c4c0820afbb6",
+     "7fdc52a4-8443-4ea3-8ffd-7077607efb7c",
+     "78a4f7c0-6864-4734-87b7-e4111e69b99c"
     ],
     "file_issue_count": 8,
     "category_prevalence": 255,
@@ -7605,7 +7605,7 @@
    }
   },
   {
-   "id": "e8d5ee1e-4505-43cb-8b13-300c54441880",
+   "id": "ec767917-ba50-4c69-a460-c4c0820afbb6",
    "title": "Missing Module Documentation",
    "description": "Missing docstring in public module",
    "details": "The module is missing a top-level docstring. Add a descriptive docstring at the top of the file to explain its purpose.",
@@ -7631,20 +7631,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997058",
+   "timestamp": "2026-11-28T19:26:06.241400",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D100",
     "readability_category": "documentation",
     "cross_references": [
-     "93284a8a-7edd-4be8-ab75-e08198d7efb8",
-     "5ea7c198-5674-48eb-94da-a8de5d9c92c1",
-     "1568b50c-6c73-467c-9d08-f2242b796217",
-     "c40a7b49-530c-470e-bb2f-95e9b00fc416"
+     "3fed5b24-45a1-4943-9664-63c73f319125",
+     "fe1a48e9-640a-4332-a893-058ab3b8cc87",
+     "7fdc52a4-8443-4ea3-8ffd-7077607efb7c",
+     "78a4f7c0-6864-4734-87b7-e4111e69b99c"
     ],
     "file_issue_count": 8,
     "category_prevalence": 255,
@@ -7653,7 +7653,7 @@
    }
   },
   {
-   "id": "1f3cbb23-81ee-497c-9e1c-17efdb45a406",
+   "id": "829fba0c-9431-43a0-891e-933c86c76bf0",
    "title": "Invalid Function Argument Name",
    "description": "Argument name `Response` should be lowercase",
    "details": "Use snake_case for function arguments.",
@@ -7679,7 +7679,7 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997068",
+   "timestamp": "2026-11-28T19:26:06.241411",
    "tags": [
     "readability",
     "naming",
@@ -7689,11 +7689,11 @@
     "ruff_rule_id": "N803",
     "readability_category": "naming",
     "cross_references": [
-     "93284a8a-7edd-4be8-ab75-e08198d7efb8",
-     "c40a7b49-530c-470e-bb2f-95e9b00fc416",
-     "e8d5ee1e-4505-43cb-8b13-300c54441880",
-     "5ea7c198-5674-48eb-94da-a8de5d9c92c1",
-     "1568b50c-6c73-467c-9d08-f2242b796217"
+     "ec767917-ba50-4c69-a460-c4c0820afbb6",
+     "fe1a48e9-640a-4332-a893-058ab3b8cc87",
+     "78a4f7c0-6864-4734-87b7-e4111e69b99c",
+     "3fed5b24-45a1-4943-9664-63c73f319125",
+     "7fdc52a4-8443-4ea3-8ffd-7077607efb7c"
     ],
     "file_issue_count": 8,
     "category_prevalence": 255,
@@ -7702,7 +7702,7 @@
    }
   },
   {
-   "id": "a3839311-1572-47f3-94f0-b787adec3cc6",
+   "id": "673fd737-9340-467f-a36f-be6d383cdab3",
    "title": "First Line Ends with Period",
    "description": "First line should end with a period",
    "details": "First line should end with period.",
@@ -7728,21 +7728,21 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997073",
+   "timestamp": "2026-11-28T19:26:06.241416",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D400",
     "readability_category": "documentation",
     "cross_references": [
-     "93284a8a-7edd-4be8-ab75-e08198d7efb8",
-     "c40a7b49-530c-470e-bb2f-95e9b00fc416",
-     "e8d5ee1e-4505-43cb-8b13-300c54441880",
-     "5ea7c198-5674-48eb-94da-a8de5d9c92c1",
-     "1568b50c-6c73-467c-9d08-f2242b796217"
+     "ec767917-ba50-4c69-a460-c4c0820afbb6",
+     "fe1a48e9-640a-4332-a893-058ab3b8cc87",
+     "78a4f7c0-6864-4734-87b7-e4111e69b99c",
+     "3fed5b24-45a1-4943-9664-63c73f319125",
+     "7fdc52a4-8443-4ea3-8ffd-7077607efb7c"
     ],
     "file_issue_count": 8,
     "category_prevalence": 255,
@@ -7751,7 +7751,7 @@
    }
   },
   {
-   "id": "6b896a5b-c44c-48c3-bea9-d293c0868ebc",
+   "id": "3fa38aa3-4e68-41f3-b031-53a1a44faa8d",
    "title": "1 Blank Line After Summary",
    "description": "1 Blank Line After Summary",
    "details": "Add summary line and blank line in docstring.",
@@ -7820,20 +7820,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997177",
+   "timestamp": "2026-11-28T19:26:06.241517",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D205",
     "readability_category": "documentation",
     "cross_references": [
-     "8f20b929-152d-4ade-aacc-8e5d83520598",
-     "7804989a-a1d3-4336-b5d1-c5da8c082ef9",
-     "ea3e17fd-eb3d-4acb-be79-5881f74295fd",
-     "2924d560-13da-4114-9a48-298136f4c6d9"
+     "2a394cf3-eec8-42f3-b742-2095a73a86bf",
+     "3aab1217-c586-452a-9225-7381b09c8395",
+     "9238868a-b2bf-4d83-99be-c5e1a0d2d203",
+     "d224d378-f345-482d-8a6d-162f5f54140d"
     ],
     "file_issue_count": 9,
     "category_prevalence": 255,
@@ -7842,7 +7842,7 @@
    }
   },
   {
-   "id": "8f20b929-152d-4ade-aacc-8e5d83520598",
+   "id": "3aab1217-c586-452a-9225-7381b09c8395",
    "title": "Missing __init__ Docstring",
    "description": "Missing __init__ Docstring",
    "details": "Add docstring for this __init__ method.",
@@ -7877,20 +7877,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997182",
+   "timestamp": "2026-11-28T19:26:06.241522",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D107",
     "readability_category": "documentation",
     "cross_references": [
-     "7804989a-a1d3-4336-b5d1-c5da8c082ef9",
-     "6b896a5b-c44c-48c3-bea9-d293c0868ebc",
-     "ea3e17fd-eb3d-4acb-be79-5881f74295fd",
-     "2924d560-13da-4114-9a48-298136f4c6d9"
+     "2a394cf3-eec8-42f3-b742-2095a73a86bf",
+     "3fa38aa3-4e68-41f3-b031-53a1a44faa8d",
+     "9238868a-b2bf-4d83-99be-c5e1a0d2d203",
+     "d224d378-f345-482d-8a6d-162f5f54140d"
     ],
     "file_issue_count": 9,
     "category_prevalence": 255,
@@ -7899,7 +7899,7 @@
    }
   },
   {
-   "id": "d0db37b5-d5ff-41cc-b7d0-4b84d4dda512",
+   "id": "c6a474ef-f2a2-420a-814a-2552a79fc9f4",
    "title": "Imperative Mood in Summary",
    "description": "Imperative Mood in Summary",
    "details": "First line should be in imperative mood.",
@@ -7938,21 +7938,21 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997186",
+   "timestamp": "2026-11-28T19:26:06.241527",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D401",
     "readability_category": "documentation",
     "cross_references": [
-     "6b896a5b-c44c-48c3-bea9-d293c0868ebc",
-     "7804989a-a1d3-4336-b5d1-c5da8c082ef9",
-     "8f20b929-152d-4ade-aacc-8e5d83520598",
-     "ea3e17fd-eb3d-4acb-be79-5881f74295fd",
-     "2924d560-13da-4114-9a48-298136f4c6d9"
+     "3fa38aa3-4e68-41f3-b031-53a1a44faa8d",
+     "9238868a-b2bf-4d83-99be-c5e1a0d2d203",
+     "3aab1217-c586-452a-9225-7381b09c8395",
+     "d224d378-f345-482d-8a6d-162f5f54140d",
+     "2a394cf3-eec8-42f3-b742-2095a73a86bf"
     ],
     "file_issue_count": 9,
     "category_prevalence": 255,
@@ -7961,7 +7961,7 @@
    }
   },
   {
-   "id": "0a46b525-486a-4fa1-8b44-c02a5a76851e",
+   "id": "f42f16dd-f0c1-46ef-ae48-c94b93a1ce57",
    "title": "Missing Module Documentation",
    "description": "Missing docstring in public module",
    "details": "The module is missing a top-level docstring. Add a descriptive docstring at the top of the file to explain its purpose.",
@@ -7987,21 +7987,21 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997172",
+   "timestamp": "2026-11-28T19:26:06.241512",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D100",
     "readability_category": "documentation",
     "cross_references": [
-     "6b896a5b-c44c-48c3-bea9-d293c0868ebc",
-     "7804989a-a1d3-4336-b5d1-c5da8c082ef9",
-     "8f20b929-152d-4ade-aacc-8e5d83520598",
-     "ea3e17fd-eb3d-4acb-be79-5881f74295fd",
-     "2924d560-13da-4114-9a48-298136f4c6d9"
+     "3fa38aa3-4e68-41f3-b031-53a1a44faa8d",
+     "9238868a-b2bf-4d83-99be-c5e1a0d2d203",
+     "3aab1217-c586-452a-9225-7381b09c8395",
+     "d224d378-f345-482d-8a6d-162f5f54140d",
+     "2a394cf3-eec8-42f3-b742-2095a73a86bf"
     ],
     "file_issue_count": 9,
     "category_prevalence": 255,
@@ -8010,7 +8010,7 @@
    }
   },
   {
-   "id": "d12f2bd9-60f3-4a35-8c79-bc5ec4af8ef5",
+   "id": "3f26b466-f58d-4eec-927e-69c9f9096222",
    "title": "1 Blank Line After Summary",
    "description": "1 Blank Line After Summary",
    "details": "Add summary line and blank line in docstring.",
@@ -8077,20 +8077,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997201",
+   "timestamp": "2026-11-28T19:26:06.241541",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D205",
     "readability_category": "documentation",
     "cross_references": [
-     "13133f3e-b7f0-4909-a239-b53f49ce4efd",
-     "802f7b4e-5b34-46b8-939e-b3609a9ee73b",
-     "9946895c-8dac-4d59-93c4-537a1497537b",
-     "d6986ea7-37d1-48e2-a439-93129d4e2764"
+     "4df91ba1-bc5e-4c0a-8296-0b1faa4e8c12",
+     "86ec5d22-4be5-4374-a048-63928551e06a",
+     "433394e0-0d83-437d-b7c8-d4f1d5fafec2",
+     "18fe6311-e9bf-47e5-8a98-18a091ab1e1f"
     ],
     "file_issue_count": 9,
     "category_prevalence": 255,
@@ -8099,7 +8099,7 @@
    }
   },
   {
-   "id": "802f7b4e-5b34-46b8-939e-b3609a9ee73b",
+   "id": "18fe6311-e9bf-47e5-8a98-18a091ab1e1f",
    "title": "Imperative Mood in Summary",
    "description": "Imperative Mood in Summary",
    "details": "First line should be in imperative mood.",
@@ -8154,20 +8154,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997218",
+   "timestamp": "2026-11-28T19:26:06.241557",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D401",
     "readability_category": "documentation",
     "cross_references": [
-     "13133f3e-b7f0-4909-a239-b53f49ce4efd",
-     "9946895c-8dac-4d59-93c4-537a1497537b",
-     "d6986ea7-37d1-48e2-a439-93129d4e2764",
-     "d12f2bd9-60f3-4a35-8c79-bc5ec4af8ef5"
+     "4df91ba1-bc5e-4c0a-8296-0b1faa4e8c12",
+     "86ec5d22-4be5-4374-a048-63928551e06a",
+     "433394e0-0d83-437d-b7c8-d4f1d5fafec2",
+     "3f26b466-f58d-4eec-927e-69c9f9096222"
     ],
     "file_issue_count": 9,
     "category_prevalence": 255,
@@ -8176,7 +8176,7 @@
    }
   },
   {
-   "id": "d6986ea7-37d1-48e2-a439-93129d4e2764",
+   "id": "86ec5d22-4be5-4374-a048-63928551e06a",
    "title": "Missing Magic Method Docstring",
    "description": "Missing Magic Method Docstring",
    "details": "Magic methods should include a docstring.",
@@ -8211,20 +8211,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997225",
+   "timestamp": "2026-11-28T19:26:06.241562",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D102",
     "readability_category": "documentation",
     "cross_references": [
-     "13133f3e-b7f0-4909-a239-b53f49ce4efd",
-     "802f7b4e-5b34-46b8-939e-b3609a9ee73b",
-     "9946895c-8dac-4d59-93c4-537a1497537b",
-     "d12f2bd9-60f3-4a35-8c79-bc5ec4af8ef5"
+     "4df91ba1-bc5e-4c0a-8296-0b1faa4e8c12",
+     "433394e0-0d83-437d-b7c8-d4f1d5fafec2",
+     "18fe6311-e9bf-47e5-8a98-18a091ab1e1f",
+     "3f26b466-f58d-4eec-927e-69c9f9096222"
     ],
     "file_issue_count": 9,
     "category_prevalence": 255,
@@ -8233,7 +8233,7 @@
    }
   },
   {
-   "id": "35b28ad0-7750-4f2f-8eaa-9defd260a1d8",
+   "id": "47fd793f-b3df-4444-8083-fd9e89254d5d",
    "title": "Missing Module Documentation",
    "description": "Missing docstring in public module",
    "details": "The module is missing a top-level docstring. Add a descriptive docstring at the top of the file to explain its purpose.",
@@ -8259,21 +8259,21 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997196",
+   "timestamp": "2026-11-28T19:26:06.241536",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D100",
     "readability_category": "documentation",
     "cross_references": [
-     "13133f3e-b7f0-4909-a239-b53f49ce4efd",
-     "9946895c-8dac-4d59-93c4-537a1497537b",
-     "d6986ea7-37d1-48e2-a439-93129d4e2764",
-     "d12f2bd9-60f3-4a35-8c79-bc5ec4af8ef5",
-     "802f7b4e-5b34-46b8-939e-b3609a9ee73b"
+     "4df91ba1-bc5e-4c0a-8296-0b1faa4e8c12",
+     "86ec5d22-4be5-4374-a048-63928551e06a",
+     "3f26b466-f58d-4eec-927e-69c9f9096222",
+     "18fe6311-e9bf-47e5-8a98-18a091ab1e1f",
+     "433394e0-0d83-437d-b7c8-d4f1d5fafec2"
     ],
     "file_issue_count": 9,
     "category_prevalence": 255,
@@ -8282,7 +8282,7 @@
    }
   },
   {
-   "id": "770eceec-103a-4ec7-b38c-e638d59492b5",
+   "id": "4c83aea4-ef43-47a1-9368-03f914a2f24a",
    "title": "Missing __init__ Docstring",
    "description": "Missing docstring in `__init__`",
    "details": "Add docstring for this __init__ method.",
@@ -8308,21 +8308,21 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997213",
+   "timestamp": "2026-11-28T19:26:06.241551",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D107",
     "readability_category": "documentation",
     "cross_references": [
-     "13133f3e-b7f0-4909-a239-b53f49ce4efd",
-     "9946895c-8dac-4d59-93c4-537a1497537b",
-     "d6986ea7-37d1-48e2-a439-93129d4e2764",
-     "d12f2bd9-60f3-4a35-8c79-bc5ec4af8ef5",
-     "802f7b4e-5b34-46b8-939e-b3609a9ee73b"
+     "4df91ba1-bc5e-4c0a-8296-0b1faa4e8c12",
+     "86ec5d22-4be5-4374-a048-63928551e06a",
+     "3f26b466-f58d-4eec-927e-69c9f9096222",
+     "18fe6311-e9bf-47e5-8a98-18a091ab1e1f",
+     "433394e0-0d83-437d-b7c8-d4f1d5fafec2"
     ],
     "file_issue_count": 9,
     "category_prevalence": 255,
@@ -8331,7 +8331,7 @@
    }
   },
   {
-   "id": "79b5d09b-5571-4326-9c19-c2b42e59f90d",
+   "id": "8f04eb44-d8ff-47f5-a941-c080228b480d",
    "title": "Missing Module Documentation",
    "description": "Missing docstring in public module",
    "details": "The module is missing a top-level docstring. Add a descriptive docstring at the top of the file to explain its purpose.",
@@ -8357,11 +8357,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997298",
+   "timestamp": "2026-11-28T19:26:06.241632",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D100",
@@ -8373,7 +8373,7 @@
    }
   },
   {
-   "id": "abd47a3f-30e0-4bcf-98a6-61dd724fe11d",
+   "id": "56dcb8af-d55c-4eb4-b6ad-931dbffeef9e",
    "title": "Missing Function Documentation",
    "description": "Missing Function Documentation",
    "details": "The function does not have a docstring. Add a docstring describing its parameters and return value.",
@@ -8408,11 +8408,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997312",
+   "timestamp": "2026-11-28T19:26:06.241647",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D103",
@@ -8424,7 +8424,7 @@
    }
   },
   {
-   "id": "6e75b712-53c8-4464-9a67-0da63c435735",
+   "id": "732b45c8-fee4-43e1-975e-b963adb4f12a",
    "title": "Missing Module Documentation",
    "description": "Missing docstring in public module",
    "details": "The module is missing a top-level docstring. Add a descriptive docstring at the top of the file to explain its purpose.",
@@ -8450,19 +8450,19 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997327",
+   "timestamp": "2026-11-28T19:26:06.241661",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D100",
     "readability_category": "documentation",
     "cross_references": [
-     "98c8a57d-8fee-4d94-91f7-8ba91108e8f7",
-     "d8579e6c-8cd9-4e07-9d19-da164921bab9",
-     "504ada83-b47e-48d8-ac7e-f3164a3c54ea"
+     "3fb28944-972e-40c9-89cd-737e1c90b724",
+     "70fd5b1c-33b4-4db2-954b-f080efe39f4b",
+     "411329d9-89be-4744-bb50-779ea55b0771"
     ],
     "file_issue_count": 4,
     "category_prevalence": 255,
@@ -8471,7 +8471,7 @@
    }
   },
   {
-   "id": "504ada83-b47e-48d8-ac7e-f3164a3c54ea",
+   "id": "3fb28944-972e-40c9-89cd-737e1c90b724",
    "title": "1 Blank Line After Summary",
    "description": "1 blank line required between summary line and description",
    "details": "Add summary line and blank line in docstring.",
@@ -8497,19 +8497,19 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997332",
+   "timestamp": "2026-11-28T19:26:06.241666",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D205",
     "readability_category": "documentation",
     "cross_references": [
-     "98c8a57d-8fee-4d94-91f7-8ba91108e8f7",
-     "d8579e6c-8cd9-4e07-9d19-da164921bab9",
-     "6e75b712-53c8-4464-9a67-0da63c435735"
+     "732b45c8-fee4-43e1-975e-b963adb4f12a",
+     "70fd5b1c-33b4-4db2-954b-f080efe39f4b",
+     "411329d9-89be-4744-bb50-779ea55b0771"
     ],
     "file_issue_count": 4,
     "category_prevalence": 255,
@@ -8518,7 +8518,7 @@
    }
   },
   {
-   "id": "6134421b-d126-4582-be60-50643d77b055",
+   "id": "028b02d3-9c31-4380-9c5b-326461d6ca24",
    "title": "1 Blank Line After Summary",
    "description": "1 Blank Line After Summary",
    "details": "Add summary line and blank line in docstring.",
@@ -8555,11 +8555,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997341",
+   "timestamp": "2026-11-28T19:26:06.241676",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D205",
@@ -8571,7 +8571,7 @@
    }
   },
   {
-   "id": "ed86c486-b9bd-4547-9cac-3a8ccfef96c9",
+   "id": "d2c11171-891d-4cab-b023-4b6cd9957770",
    "title": "Missing Module Documentation",
    "description": "Missing docstring in public module",
    "details": "The module is missing a top-level docstring. Add a descriptive docstring at the top of the file to explain its purpose.",
@@ -8597,11 +8597,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997337",
+   "timestamp": "2026-11-28T19:26:06.241671",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D100",
@@ -8613,7 +8613,7 @@
    }
   },
   {
-   "id": "41738bcd-8505-4bab-9cee-13d21862e689",
+   "id": "0bb575a2-c52b-4956-a4eb-206b580418ed",
    "title": "Missing Module Documentation",
    "description": "Missing docstring in public module",
    "details": "The module is missing a top-level docstring. Add a descriptive docstring at the top of the file to explain its purpose.",
@@ -8639,11 +8639,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997346",
+   "timestamp": "2026-11-28T19:26:06.241680",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D100",
@@ -8655,7 +8655,7 @@
    }
   },
   {
-   "id": "b3de2b97-d1a1-411e-a4d7-d869a40809e2",
+   "id": "cce5a88c-78c8-494f-83ac-0002cc990e2b",
    "title": "Missing Function Documentation",
    "description": "Missing Function Documentation",
    "details": "The function does not have a docstring. Add a docstring describing its parameters and return value.",
@@ -8696,11 +8696,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997377",
+   "timestamp": "2026-11-28T19:26:06.241712",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D103",
@@ -8712,7 +8712,7 @@
    }
   },
   {
-   "id": "4fa0ef79-6495-40f2-9f2e-0094e866611a",
+   "id": "cee73f9a-f020-47ea-aa14-0175d66ff8df",
    "title": "Missing Module Documentation",
    "description": "Missing docstring in public module",
    "details": "The module is missing a top-level docstring. Add a descriptive docstring at the top of the file to explain its purpose.",
@@ -8738,11 +8738,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997372",
+   "timestamp": "2026-11-28T19:26:06.241706",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D100",
@@ -8754,7 +8754,7 @@
    }
   },
   {
-   "id": "7aee1a8e-738c-4280-941a-895be054330e",
+   "id": "fb993a03-e8ef-48b9-895c-f6f544755c68",
    "title": "Missing Function Documentation",
    "description": "Missing Function Documentation",
    "details": "The function does not have a docstring. Add a docstring describing its parameters and return value.",
@@ -8801,11 +8801,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997407",
+   "timestamp": "2026-11-28T19:26:06.241741",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D103",
@@ -8817,7 +8817,7 @@
    }
   },
   {
-   "id": "f975f5bf-6cc4-4c1a-ae7c-825d17ae7b60",
+   "id": "1e3007d7-3864-4a2d-a050-e9bf3818f91a",
    "title": "Missing Module Documentation",
    "description": "Missing docstring in public module",
    "details": "The module is missing a top-level docstring. Add a descriptive docstring at the top of the file to explain its purpose.",
@@ -8843,11 +8843,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997402",
+   "timestamp": "2026-11-28T19:26:06.241736",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D100",
@@ -8859,7 +8859,7 @@
    }
   },
   {
-   "id": "2fee7f45-f11b-44a7-a130-28a630b6ddb8",
+   "id": "50b1edd2-dd22-4505-9105-f89adad29191",
    "title": "Missing Function Documentation",
    "description": "Missing Function Documentation",
    "details": "The function does not have a docstring. Add a docstring describing its parameters and return value.",
@@ -9062,20 +9062,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997431",
+   "timestamp": "2026-11-28T19:26:06.241764",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D103",
     "readability_category": "documentation",
     "cross_references": [
-     "d2a4acf2-491e-42bd-9704-da2e623b4b1f",
-     "d8b3dbbb-c749-4d9d-85bb-307eaae628aa",
-     "d2b0e6ed-5830-431c-a68e-248e09c428b4",
-     "619e7fce-5c45-465b-9929-daead535fed6"
+     "a0b8ecf3-521d-4ddd-98fc-6933053f8d14",
+     "c07cf61a-9854-4583-ad2d-178223f92247",
+     "11074956-44e1-431f-bac9-ddcff6e422bd",
+     "fd76383f-804d-46b9-9e42-557af7223876"
     ],
     "file_issue_count": 14,
     "category_prevalence": 255,
@@ -9084,7 +9084,7 @@
    }
   },
   {
-   "id": "619e7fce-5c45-465b-9929-daead535fed6",
+   "id": "a0b8ecf3-521d-4ddd-98fc-6933053f8d14",
    "title": "Missing Module Documentation",
    "description": "Missing docstring in public module",
    "details": "The module is missing a top-level docstring. Add a descriptive docstring at the top of the file to explain its purpose.",
@@ -9110,20 +9110,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997426",
+   "timestamp": "2026-11-28T19:26:06.241760",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D100",
     "readability_category": "documentation",
     "cross_references": [
-     "2fee7f45-f11b-44a7-a130-28a630b6ddb8",
-     "d2a4acf2-491e-42bd-9704-da2e623b4b1f",
-     "d8b3dbbb-c749-4d9d-85bb-307eaae628aa",
-     "d2b0e6ed-5830-431c-a68e-248e09c428b4"
+     "c07cf61a-9854-4583-ad2d-178223f92247",
+     "11074956-44e1-431f-bac9-ddcff6e422bd",
+     "50b1edd2-dd22-4505-9105-f89adad29191",
+     "fd76383f-804d-46b9-9e42-557af7223876"
     ],
     "file_issue_count": 14,
     "category_prevalence": 255,
@@ -9132,7 +9132,7 @@
    }
   },
   {
-   "id": "a1bdc2ef-7af3-41f7-b326-cf2c16bb8819",
+   "id": "5b0c8bd2-9e7f-4ffc-92da-dab07d5e7ff2",
    "title": "1 Blank Line After Summary",
    "description": "1 blank line required between summary line and description",
    "details": "Add summary line and blank line in docstring.",
@@ -9158,21 +9158,21 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997436",
+   "timestamp": "2026-11-28T19:26:06.241769",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D205",
     "readability_category": "documentation",
     "cross_references": [
-     "2fee7f45-f11b-44a7-a130-28a630b6ddb8",
-     "d2a4acf2-491e-42bd-9704-da2e623b4b1f",
-     "d2b0e6ed-5830-431c-a68e-248e09c428b4",
-     "d8b3dbbb-c749-4d9d-85bb-307eaae628aa",
-     "619e7fce-5c45-465b-9929-daead535fed6"
+     "11074956-44e1-431f-bac9-ddcff6e422bd",
+     "50b1edd2-dd22-4505-9105-f89adad29191",
+     "c07cf61a-9854-4583-ad2d-178223f92247",
+     "fd76383f-804d-46b9-9e42-557af7223876",
+     "a0b8ecf3-521d-4ddd-98fc-6933053f8d14"
     ],
     "file_issue_count": 14,
     "category_prevalence": 255,
@@ -9181,7 +9181,7 @@
    }
   },
   {
-   "id": "a8a95abe-fe68-4a36-ae24-b12aa381a011",
+   "id": "0fa025ad-8d63-43af-9104-bfe5cd2ab536",
    "title": "Variable in Class Scope Not Lowercase",
    "description": "Variable `Data` in function should be lowercase",
    "details": "Use snake_case variable names in class scope.",
@@ -9207,7 +9207,7 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997485",
+   "timestamp": "2026-11-28T19:26:06.241817",
    "tags": [
     "readability",
     "naming",
@@ -9217,11 +9217,11 @@
     "ruff_rule_id": "N806",
     "readability_category": "naming",
     "cross_references": [
-     "2fee7f45-f11b-44a7-a130-28a630b6ddb8",
-     "d2a4acf2-491e-42bd-9704-da2e623b4b1f",
-     "d2b0e6ed-5830-431c-a68e-248e09c428b4",
-     "d8b3dbbb-c749-4d9d-85bb-307eaae628aa",
-     "619e7fce-5c45-465b-9929-daead535fed6"
+     "11074956-44e1-431f-bac9-ddcff6e422bd",
+     "50b1edd2-dd22-4505-9105-f89adad29191",
+     "c07cf61a-9854-4583-ad2d-178223f92247",
+     "fd76383f-804d-46b9-9e42-557af7223876",
+     "a0b8ecf3-521d-4ddd-98fc-6933053f8d14"
     ],
     "file_issue_count": 14,
     "category_prevalence": 255,
@@ -9230,7 +9230,7 @@
    }
   },
   {
-   "id": "56afa008-adf7-429f-aa39-790ab9287962",
+   "id": "cc3ac131-2df4-402e-9f73-b89c15bf0d76",
    "title": "Missing Function Documentation",
    "description": "Missing Function Documentation",
    "details": "The function does not have a docstring. Add a docstring describing its parameters and return value.",
@@ -9265,11 +9265,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997500",
+   "timestamp": "2026-11-28T19:26:06.241832",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D103",
@@ -9281,7 +9281,7 @@
    }
   },
   {
-   "id": "2724d2e8-9b82-4312-86da-3d560f57b0b7",
+   "id": "6e3c1f07-a3e0-4deb-9a4d-36534ba19926",
    "title": "Missing Module Documentation",
    "description": "Missing docstring in public module",
    "details": "The module is missing a top-level docstring. Add a descriptive docstring at the top of the file to explain its purpose.",
@@ -9307,11 +9307,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997495",
+   "timestamp": "2026-11-28T19:26:06.241827",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D100",
@@ -9323,7 +9323,7 @@
    }
   },
   {
-   "id": "d07202a9-9d1b-46b4-b276-421cc6bd8d47",
+   "id": "0d7e151e-2753-41d7-a883-f7104e539d81",
    "title": "Missing Function Documentation",
    "description": "Missing Function Documentation",
    "details": "The function does not have a docstring. Add a docstring describing its parameters and return value.",
@@ -9368,11 +9368,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997520",
+   "timestamp": "2026-11-28T19:26:06.241851",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D103",
@@ -9384,7 +9384,7 @@
    }
   },
   {
-   "id": "e4320b43-dafc-46b5-8949-fb1cccdbeb14",
+   "id": "d65029ed-26e4-488b-9735-68601536f0ad",
    "title": "Missing Module Documentation",
    "description": "Missing docstring in public module",
    "details": "The module is missing a top-level docstring. Add a descriptive docstring at the top of the file to explain its purpose.",
@@ -9410,11 +9410,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997515",
+   "timestamp": "2026-11-28T19:26:06.241846",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D100",
@@ -9426,7 +9426,7 @@
    }
   },
   {
-   "id": "eae12477-52d4-4d9a-bba5-f758b8f95f6d",
+   "id": "aeab08f1-ee67-4e34-9c37-d28c022691e3",
    "title": "Missing Function Documentation",
    "description": "Missing Function Documentation",
    "details": "The function does not have a docstring. Add a docstring describing its parameters and return value.",
@@ -9463,20 +9463,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997529",
+   "timestamp": "2026-11-28T19:26:06.241860",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D103",
     "readability_category": "documentation",
     "cross_references": [
-     "f040250a-256e-4969-8a48-15d91ef15f02",
-     "e8b9c713-61d1-4f2a-ac8b-d6b0554a3654",
-     "0fc6892c-021a-47c0-ad46-ac94c5eaa07c",
-     "b8d9426b-29c6-45a6-a2b0-41e499105a3b"
+     "d196f000-af69-4e11-8720-125e12ca7c08",
+     "60e1db13-997a-45b0-ac8c-53e4bd429f67",
+     "48eca35f-7883-4670-8797-fc79064139e3",
+     "c2af862f-9a3f-409b-86c2-67807382bb1f"
     ],
     "file_issue_count": 5,
     "category_prevalence": 255,
@@ -9485,7 +9485,7 @@
    }
   },
   {
-   "id": "e8b9c713-61d1-4f2a-ac8b-d6b0554a3654",
+   "id": "d196f000-af69-4e11-8720-125e12ca7c08",
    "title": "Missing Module Documentation",
    "description": "Missing docstring in public module",
    "details": "The module is missing a top-level docstring. Add a descriptive docstring at the top of the file to explain its purpose.",
@@ -9511,20 +9511,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:05:57.997524",
+   "timestamp": "2026-11-28T19:26:06.241856",
    "tags": [
     "readability",
-    "ruff",
-    "documentation"
+    "documentation",
+    "ruff"
    ],
    "extra_data": {
     "ruff_rule_id": "D100",
     "readability_category": "documentation",
     "cross_references": [
-     "f040250a-256e-4969-8a48-15d91ef15f02",
-     "eae12477-52d4-4d9a-bba5-f758b8f95f6d",
-     "0fc6892c-021a-47c0-ad46-ac94c5eaa07c",
-     "b8d9426b-29c6-45a6-a2b0-41e499105a3b"
+     "c2af862f-9a3f-409b-86c2-67807382bb1f",
+     "60e1db13-997a-45b0-ac8c-53e4bd429f67",
+     "48eca35f-7883-4670-8797-fc79064139e3",
+     "aeab08f1-ee67-4e34-9c37-d28c022691e3"
     ],
     "file_issue_count": 5,
     "category_prevalence": 255,
@@ -9536,7 +9536,7 @@
  "analysis_metrics": [
   {
    "analyzer_name": "robustness",
-   "execution_time_seconds": 8.353101968765259,
+   "execution_time_seconds": 8.794047117233276,
    "files_analyzed": 83,
    "findings_count": 36,
    "error_count": 0,
@@ -9547,7 +9547,7 @@
   },
   {
    "analyzer_name": "maintainability",
-   "execution_time_seconds": 1.4132490158081055,
+   "execution_time_seconds": 1.4179649353027344,
    "files_analyzed": 83,
    "findings_count": 45,
    "error_count": 0,
@@ -9558,7 +9558,7 @@
   },
   {
    "analyzer_name": "observability",
-   "execution_time_seconds": 0.05293130874633789,
+   "execution_time_seconds": 0.0554041862487793,
    "files_analyzed": 83,
    "findings_count": 23,
    "error_count": 0,
@@ -9569,7 +9569,7 @@
   },
   {
    "analyzer_name": "readability",
-   "execution_time_seconds": 0.9252550601959229,
+   "execution_time_seconds": 0.9198629856109619,
    "files_analyzed": 83,
    "findings_count": 220,
    "error_count": 0,
@@ -9579,9 +9579,9 @@
    "capped_by_severity": {}
   }
  ],
- "total_execution_time": 10.765524864196777,
+ "total_execution_time": 11.207287788391113,
  "summary": {
-  "timestamp": "2026-11-26T23:05:58.017807",
+  "timestamp": "2026-11-28T19:26:06.261779",
   "target_path": "https://github.com/pallets/flask",
   "analysis_duration": 0.0,
   "total_findings": 323,
@@ -9652,15 +9652,15 @@
   "quick_wins": 0,
   "compliance_issues": {},
   "analyzer_performance": {
-   "total_execution_time": 10.744537353515625,
-   "average_time_per_analyzer": 2.6861343383789062,
+   "total_execution_time": 11.187279224395752,
+   "average_time_per_analyzer": 2.796819806098938,
    "fastest_analyzer": "observability",
    "slowest_analyzer": "robustness",
    "success_rate": 1.0
   },
   "trend_analysis": {
    "note": "Trend analysis requires historical data",
-   "current_timestamp": "2026-11-26T23:05:47.252692",
+   "current_timestamp": "2026-11-28T19:25:55.054882",
    "baseline_established": true
   },
   "analyzed_lines": 14119,

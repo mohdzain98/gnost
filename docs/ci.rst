@@ -55,8 +55,8 @@ ruff's docstring rules) report more, so pick the threshold from your own first r
 .. note::
 
    **0.7.1 changed the score.** JS/TS/Java projects usually go up by 0.5 to 1.2, Python projects down by 0.8
-   to 1.3. If a job that passed with 0.7.0 now fails ``--fail-under``, run once and move the threshold, or set
-   ``[analyze] score = "average"`` to keep the old formula for now (it is removed in 0.8.0).
+   to 1.3. If a job that passed with 0.7.0 now fails ``--fail-under``, run once and move the threshold. The old
+   formula (``[analyze] score = "average"``) was removed in 0.8.0; the setting is now ignored with a warning.
 
 Only new findings: the baseline
 -------------------------------
@@ -116,14 +116,14 @@ The GitHub Action
          - uses: actions/checkout@v4
            with:
              fetch-depth: 0     # full history, for the change features
-         - uses: mohdzain98/gnost@v0.7.2
+         - uses: mohdzain98/gnost@v0.8.0
            with:
              fail-under: "7.5"
              baseline: .gnost/baseline.json
              fail-on-new: "true"
 
 The action runs GNOST's Docker image, writes the SARIF file and uploads it, adds the score to the job
-summary, and then fails the job if the gate failed. Pinning ``@v0.7.2`` also pins the GNOST version.
+summary, and then fails the job if the gate failed. Pinning ``@v0.8.0`` also pins the GNOST version.
 
 **When it runs.** ``gnost init --github-action`` writes a workflow that runs on pull requests into ``main`` or
 ``master`` only: that is where the gate, the change report and the comment are useful, and it does not run a

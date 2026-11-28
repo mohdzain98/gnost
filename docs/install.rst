@@ -65,7 +65,7 @@ Pick the channel you already use.
 
       .. code-block:: bash
 
-         mvn io.github.mohdzain98:gnost-maven-plugin:0.7.2:onboard
+         mvn io.github.mohdzain98:gnost-maven-plugin:0.8.0:onboard
 
       Or add the plugin once and use the short form:
 
@@ -74,7 +74,7 @@ Pick the channel you already use.
          <plugin>
            <groupId>io.github.mohdzain98</groupId>
            <artifactId>gnost-maven-plugin</artifactId>
-           <version>0.7.2</version>
+           <version>0.8.0</version>
          </plugin>
 
       .. code-block:: bash
@@ -119,6 +119,10 @@ used only if it is on your ``PATH``.
 
 ``gnost open`` writes a self-contained HTML page and opens it. The page works
 offline and can be sent as a file.
+
+The rotating project-map GIF (``onboard --inject-mindmap --mindmap-format gif``) needs Pillow, an optional
+extra: ``pip install "gnost[media]"`` or ``uvx --from "gnost[media]" gnost onboard .``. The binaries (npm,
+Maven) and the Docker image already include it.
 
 Binaries and security prompts
 -----------------------------

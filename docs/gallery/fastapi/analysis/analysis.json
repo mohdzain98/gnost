@@ -1,10 +1,10 @@
 {
- "id": "d4fc2380-b1cf-4c09-9e5a-c0373c9700bd",
- "timestamp": "2026-11-26T23:06:04.151904",
+ "id": "4a5eaf66-839f-4ae2-be58-a152f204f74a",
+ "timestamp": "2026-11-28T19:28:31.266880",
  "target_path": "https://github.com/fastapi/fastapi",
  "findings": [
   {
-   "id": "71cbfa65-24de-49a2-ba6c-f711507aee13",
+   "id": "d61893fe-6862-413b-ad31-56303e031288",
    "title": "Unescaped HTML assignment",
    "description": "`innerHTML` is set from a value that is not a literal",
    "details": null,
@@ -30,12 +30,12 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "robustness",
-   "timestamp": "2026-11-26T23:08:03.015180",
+   "timestamp": "2026-11-28T19:30:28.897418",
    "tags": [
     "javascript",
+    "xss",
     "rule_engine",
-    "security",
-    "xss"
+    "security"
    ],
    "extra_data": {
     "language": "javascript",
@@ -46,7 +46,7 @@
    }
   },
   {
-   "id": "d7537847-54fe-49a7-b4ff-3842ff742bb4",
+   "id": "73039926-fe95-477b-b413-3351f3c41f36",
    "title": "Poor Observability Coverage",
    "description": "Overall Folder Logging coverage is 10.2%, below recommended 60.0%",
    "details": null,
@@ -72,11 +72,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901277",
+   "timestamp": "2026-11-28T19:31:45.380974",
    "tags": [
-    "monitoring",
+    "observability",
     "logging",
-    "observability"
+    "monitoring"
    ],
    "extra_data": {
     "observability_score": 10.216110019646365,
@@ -89,7 +89,7 @@
    }
   },
   {
-   "id": "94ebf385-392c-4d33-9a23-318fc63af533",
+   "id": "8826cad9-b678-430f-8e29-6a82c2204fd9",
    "title": "Complexity Risk Ranking",
    "description": "File is marked as Maintainable for cyclomatic complexity distribution. Moderate: 8.8%, High: 1.4%, Very High: 2.4%. Reason: Meets Baseline (moderate\u226450%, high\u226415%, very_high\u22645%) but not higher due to very_high>0%.",
    "details": {
@@ -153,17 +153,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672084",
+   "timestamp": "2026-11-28T19:31:45.151323",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "183557fa-653a-435a-bb2a-3a299e33cbc0",
-     "2e9042ab-4a1c-49d1-a822-45d0fc9b5283",
-     "cd7cfc39-32b6-4603-905d-5c268885bf0a",
-     "e76380c5-5bd3-492a-9ebb-7fb85cc184ba"
+     "9fa7a035-f0d0-4993-8adf-97bf6a54e04c",
+     "2c6cd93f-ec83-415a-9a42-69190c80c170",
+     "61ce5e58-9b16-42f9-b79f-295c44fdbbf9",
+     "eaa4d77e-9507-4f2b-8149-31905eba4ee3"
     ],
     "file_issue_count": 11,
     "category_prevalence": 387,
@@ -172,7 +172,7 @@
    }
   },
   {
-   "id": "e76380c5-5bd3-492a-9ebb-7fb85cc184ba",
+   "id": "61ce5e58-9b16-42f9-b79f-295c44fdbbf9",
    "title": "Maintainability Index",
    "description": "File `routing.py` has maintainability index (0.0) and is ranked as C.",
    "details": {
@@ -215,17 +215,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672251",
+   "timestamp": "2026-11-28T19:31:45.151485",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "183557fa-653a-435a-bb2a-3a299e33cbc0",
-     "2e9042ab-4a1c-49d1-a822-45d0fc9b5283",
-     "cd7cfc39-32b6-4603-905d-5c268885bf0a",
-     "94ebf385-392c-4d33-9a23-318fc63af533"
+     "8826cad9-b678-430f-8e29-6a82c2204fd9",
+     "9fa7a035-f0d0-4993-8adf-97bf6a54e04c",
+     "2c6cd93f-ec83-415a-9a42-69190c80c170",
+     "eaa4d77e-9507-4f2b-8149-31905eba4ee3"
     ],
     "file_issue_count": 11,
     "category_prevalence": 387,
@@ -234,7 +234,7 @@
    }
   },
   {
-   "id": "5feb5135-d5e2-42bc-9de2-2d6b13a5f00e",
+   "id": "56108582-51ef-4b93-8863-46a0ac569b39",
    "title": "Cyclomatic Complexity",
    "description": "Function _populate_api_route_state has High cyclomatic complexity (31, rank E) in routing.py.",
    "details": {
@@ -282,18 +282,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671892",
+   "timestamp": "2026-11-28T19:31:45.151136",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "cd7cfc39-32b6-4603-905d-5c268885bf0a",
-     "94ebf385-392c-4d33-9a23-318fc63af533",
-     "2e9042ab-4a1c-49d1-a822-45d0fc9b5283",
-     "e76380c5-5bd3-492a-9ebb-7fb85cc184ba",
-     "183557fa-653a-435a-bb2a-3a299e33cbc0"
+     "9fa7a035-f0d0-4993-8adf-97bf6a54e04c",
+     "61ce5e58-9b16-42f9-b79f-295c44fdbbf9",
+     "eaa4d77e-9507-4f2b-8149-31905eba4ee3",
+     "2c6cd93f-ec83-415a-9a42-69190c80c170",
+     "8826cad9-b678-430f-8e29-6a82c2204fd9"
     ],
     "file_issue_count": 11,
     "category_prevalence": 387,
@@ -302,7 +302,7 @@
    }
   },
   {
-   "id": "cdcaf0df-db87-4710-a7fa-f4f0a2fc9df0",
+   "id": "705a02f1-b2f7-48f4-a94d-f0569e320a15",
    "title": "Cyclomatic Complexity",
    "description": "Function app has More than Moderate cyclomatic complexity (25, rank D) in routing.py.",
    "details": {
@@ -350,18 +350,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671896",
+   "timestamp": "2026-11-28T19:31:45.151140",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "cd7cfc39-32b6-4603-905d-5c268885bf0a",
-     "94ebf385-392c-4d33-9a23-318fc63af533",
-     "2e9042ab-4a1c-49d1-a822-45d0fc9b5283",
-     "e76380c5-5bd3-492a-9ebb-7fb85cc184ba",
-     "183557fa-653a-435a-bb2a-3a299e33cbc0"
+     "9fa7a035-f0d0-4993-8adf-97bf6a54e04c",
+     "61ce5e58-9b16-42f9-b79f-295c44fdbbf9",
+     "eaa4d77e-9507-4f2b-8149-31905eba4ee3",
+     "2c6cd93f-ec83-415a-9a42-69190c80c170",
+     "8826cad9-b678-430f-8e29-6a82c2204fd9"
     ],
     "file_issue_count": 11,
     "category_prevalence": 387,
@@ -370,7 +370,7 @@
    }
   },
   {
-   "id": "de914bea-728d-470f-a8ec-049e4eea0022",
+   "id": "65e995ed-02c9-4690-9e98-9dc31f52bc28",
    "title": "Complexity Risk Ranking",
    "description": "File is marked as Poorly Maintainable for cyclomatic complexity distribution. Moderate: 12.2%, High: 51.7%, Very High: 0.0%. Reason: high 51.7% > 15%.",
    "details": {
@@ -428,16 +428,16 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672096",
+   "timestamp": "2026-11-28T19:31:45.151335",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "0477dbe6-8b28-41c0-9db0-8b36c9478aa9",
-     "5bd76822-57c3-4a3a-af5e-72154215f90e",
-     "27f9f28a-bd1b-457c-a0c7-b03c0e024987"
+     "bb0acedd-f699-46c2-a074-0ff869ac954d",
+     "fbe7f66f-278a-416c-9202-0932eba800ed",
+     "3476694c-2837-49ec-9911-3c2316cc719d"
     ],
     "file_issue_count": 4,
     "category_prevalence": 387,
@@ -446,7 +446,7 @@
    }
   },
   {
-   "id": "5bd76822-57c3-4a3a-af5e-72154215f90e",
+   "id": "3476694c-2837-49ec-9911-3c2316cc719d",
    "title": "Cyclomatic Complexity",
    "description": "Function _configure_from_environment has More than Moderate cyclomatic complexity (23, rank D) in _runtime.py.",
    "details": {
@@ -494,16 +494,16 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671984",
+   "timestamp": "2026-11-28T19:31:45.151226",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "0477dbe6-8b28-41c0-9db0-8b36c9478aa9",
-     "27f9f28a-bd1b-457c-a0c7-b03c0e024987",
-     "de914bea-728d-470f-a8ec-049e4eea0022"
+     "bb0acedd-f699-46c2-a074-0ff869ac954d",
+     "65e995ed-02c9-4690-9e98-9dc31f52bc28",
+     "fbe7f66f-278a-416c-9202-0932eba800ed"
     ],
     "file_issue_count": 4,
     "category_prevalence": 387,
@@ -512,7 +512,7 @@
    }
   },
   {
-   "id": "287d0feb-e4eb-4345-93c5-9857db8ba4a7",
+   "id": "2e3feca5-bc67-457b-9bb4-25780293ac5b",
    "title": "Complexity Risk Ranking",
    "description": "File is marked as Poorly Maintainable for cyclomatic complexity distribution. Moderate: 77.0%, High: 0.0%, Very High: 50.3%. Reason: very_high 50.3% > 5%.",
    "details": {
@@ -572,17 +572,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672100",
+   "timestamp": "2026-11-28T19:31:45.151339",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "d89a3319-0146-4585-9101-cc02b8b0d690",
-     "c947112d-dd11-4fa3-9843-ec6aefeb84f3",
-     "04edc5b2-531b-4c82-9f19-c6c4b092df8e",
-     "d636e3df-813a-4132-abb4-f19e3c3fc3ae"
+     "dd9cc86e-e3ad-4188-8066-f912e66d1e0a",
+     "0fb59992-5ca5-44c9-8c6f-ab9e7900af29",
+     "647ccb69-3a30-4c70-a7bc-965837a07ede",
+     "9f0cdae3-0698-4f62-8a9b-4c38f4b0cf79"
     ],
     "file_issue_count": 8,
     "category_prevalence": 387,
@@ -591,7 +591,7 @@
    }
   },
   {
-   "id": "aa60d468-9d78-4180-9e74-e3bb8ecd65ec",
+   "id": "9ed5069f-c881-4d3b-8e85-81fc56347b45",
    "title": "Cyclomatic Complexity",
    "description": "Function __call__ has Very High cyclomatic complexity (50, rank F) in _asgi.py.",
    "details": {
@@ -639,18 +639,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671992",
+   "timestamp": "2026-11-28T19:31:45.151234",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "04edc5b2-531b-4c82-9f19-c6c4b092df8e",
-     "d636e3df-813a-4132-abb4-f19e3c3fc3ae",
-     "d89a3319-0146-4585-9101-cc02b8b0d690",
-     "287d0feb-e4eb-4345-93c5-9857db8ba4a7",
-     "c947112d-dd11-4fa3-9843-ec6aefeb84f3"
+     "9f0cdae3-0698-4f62-8a9b-4c38f4b0cf79",
+     "0fb59992-5ca5-44c9-8c6f-ab9e7900af29",
+     "2e3feca5-bc67-457b-9bb4-25780293ac5b",
+     "dd9cc86e-e3ad-4188-8066-f912e66d1e0a",
+     "647ccb69-3a30-4c70-a7bc-965837a07ede"
     ],
     "file_issue_count": 8,
     "category_prevalence": 387,
@@ -659,7 +659,7 @@
    }
   },
   {
-   "id": "eec86d29-49f9-460a-9c21-fd38b0f3f4ce",
+   "id": "c2dfc0c4-0d29-429d-a5aa-ce3ef0a8f4d2",
    "title": "Complexity Risk Ranking",
    "description": "File is marked as Poorly Maintainable for cyclomatic complexity distribution. Moderate: 9.2%, High: 14.2%, Very High: 34.3%. Reason: very_high 34.3% > 5%.",
    "details": {
@@ -720,17 +720,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672092",
+   "timestamp": "2026-11-28T19:31:45.151331",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "ac00e601-d61d-4316-8553-7a5763cf2e18",
-     "afd227f0-4bb8-442d-8e35-d2711402cc2d",
-     "d4467d12-5827-4a23-8f0e-5f1848d570a2",
-     "aafe770a-9728-4212-ac7a-60641b26656a"
+     "da35b9b9-81e2-42c1-acf0-bc6e44c18561",
+     "7e411c07-6a12-4624-bfa8-4383593f0d8d",
+     "270cf6cd-693b-4330-ad3c-fe01e0de92b6",
+     "c24b0c71-f294-43e8-8229-ccf7a14bc7d6"
     ],
     "file_issue_count": 8,
     "category_prevalence": 387,
@@ -739,7 +739,7 @@
    }
   },
   {
-   "id": "bb2f8539-214d-4477-a8ce-94025c235c48",
+   "id": "83a89b8f-8e3e-45ae-bbc5-3f515afa9dad",
    "title": "Cyclomatic Complexity",
    "description": "Function get_openapi_path has Very High cyclomatic complexity (46, rank F) in utils.py.",
    "details": {
@@ -787,18 +787,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671972",
+   "timestamp": "2026-11-28T19:31:45.151214",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "eec86d29-49f9-460a-9c21-fd38b0f3f4ce",
-     "ac00e601-d61d-4316-8553-7a5763cf2e18",
-     "afd227f0-4bb8-442d-8e35-d2711402cc2d",
-     "d4467d12-5827-4a23-8f0e-5f1848d570a2",
-     "aafe770a-9728-4212-ac7a-60641b26656a"
+     "7e411c07-6a12-4624-bfa8-4383593f0d8d",
+     "270cf6cd-693b-4330-ad3c-fe01e0de92b6",
+     "c2dfc0c4-0d29-429d-a5aa-ce3ef0a8f4d2",
+     "da35b9b9-81e2-42c1-acf0-bc6e44c18561",
+     "c24b0c71-f294-43e8-8229-ccf7a14bc7d6"
     ],
     "file_issue_count": 8,
     "category_prevalence": 387,
@@ -807,7 +807,7 @@
    }
   },
   {
-   "id": "6f6f8ec5-2d2e-40fd-828f-48236747d8f5",
+   "id": "b8ac9884-c930-4195-81ed-5cfdb4ffe476",
    "title": "Cyclomatic Complexity",
    "description": "Function get_openapi has More than Moderate cyclomatic complexity (27, rank D) in utils.py.",
    "details": {
@@ -855,18 +855,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671976",
+   "timestamp": "2026-11-28T19:31:45.151218",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "eec86d29-49f9-460a-9c21-fd38b0f3f4ce",
-     "ac00e601-d61d-4316-8553-7a5763cf2e18",
-     "afd227f0-4bb8-442d-8e35-d2711402cc2d",
-     "d4467d12-5827-4a23-8f0e-5f1848d570a2",
-     "aafe770a-9728-4212-ac7a-60641b26656a"
+     "7e411c07-6a12-4624-bfa8-4383593f0d8d",
+     "270cf6cd-693b-4330-ad3c-fe01e0de92b6",
+     "c2dfc0c4-0d29-429d-a5aa-ce3ef0a8f4d2",
+     "da35b9b9-81e2-42c1-acf0-bc6e44c18561",
+     "c24b0c71-f294-43e8-8229-ccf7a14bc7d6"
     ],
     "file_issue_count": 8,
     "category_prevalence": 387,
@@ -875,7 +875,7 @@
    }
   },
   {
-   "id": "0b1f3d6a-2ec9-4f2f-b42e-97cee50b7e70",
+   "id": "8e4e29fb-113e-4ad9-8068-c371c6e63a51",
    "title": "Complexity Risk Ranking",
    "description": "File is marked as Poorly Maintainable for cyclomatic complexity distribution. Moderate: 19.3%, High: 25.8%, Very High: 12.9%. Reason: very_high 12.9% > 5%.",
    "details": {
@@ -945,17 +945,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672088",
+   "timestamp": "2026-11-28T19:31:45.151327",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "ff1f44d8-cb1d-4bc5-8795-2900aa5e9021",
-     "f1d6d911-869a-47d2-b7e1-3b57cf96fb47",
-     "43488c34-5713-40c3-af13-6b2159b4f9e2",
-     "c930e3cc-c1c8-449d-b026-2b17ac7db5b6"
+     "63b49eb6-8e93-4ddb-b39a-cc63b00e8cc0",
+     "e0a761b0-8692-40d9-b60a-5e296a61672f",
+     "dd285196-5886-4db6-82f7-ad6a73f32caa",
+     "1af6a8f3-7764-4bae-84fa-52100c3fee71"
     ],
     "file_issue_count": 17,
     "category_prevalence": 387,
@@ -964,7 +964,7 @@
    }
   },
   {
-   "id": "f1d6d911-869a-47d2-b7e1-3b57cf96fb47",
+   "id": "1af6a8f3-7764-4bae-84fa-52100c3fee71",
    "title": "Maintainability Index",
    "description": "File `utils.py` has maintainability index (0.0) and is ranked as C.",
    "details": {
@@ -1007,17 +1007,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672255",
+   "timestamp": "2026-11-28T19:31:45.151489",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "0b1f3d6a-2ec9-4f2f-b42e-97cee50b7e70",
-     "ff1f44d8-cb1d-4bc5-8795-2900aa5e9021",
-     "c930e3cc-c1c8-449d-b026-2b17ac7db5b6",
-     "43488c34-5713-40c3-af13-6b2159b4f9e2"
+     "63b49eb6-8e93-4ddb-b39a-cc63b00e8cc0",
+     "8e4e29fb-113e-4ad9-8068-c371c6e63a51",
+     "dd285196-5886-4db6-82f7-ad6a73f32caa",
+     "e0a761b0-8692-40d9-b60a-5e296a61672f"
     ],
     "file_issue_count": 17,
     "category_prevalence": 387,
@@ -1026,7 +1026,7 @@
    }
   },
   {
-   "id": "e2b959bd-1e2c-454d-b25d-a2c46b48bcf3",
+   "id": "bd5fede6-5540-4b8c-918a-e1e718878180",
    "title": "Cyclomatic Complexity",
    "description": "Function analyze_param has Very High cyclomatic complexity (54, rank F) in utils.py.",
    "details": {
@@ -1074,18 +1074,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671923",
+   "timestamp": "2026-11-28T19:31:45.151165",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "f1d6d911-869a-47d2-b7e1-3b57cf96fb47",
-     "43488c34-5713-40c3-af13-6b2159b4f9e2",
-     "ff1f44d8-cb1d-4bc5-8795-2900aa5e9021",
-     "c930e3cc-c1c8-449d-b026-2b17ac7db5b6",
-     "0b1f3d6a-2ec9-4f2f-b42e-97cee50b7e70"
+     "e0a761b0-8692-40d9-b60a-5e296a61672f",
+     "8e4e29fb-113e-4ad9-8068-c371c6e63a51",
+     "1af6a8f3-7764-4bae-84fa-52100c3fee71",
+     "63b49eb6-8e93-4ddb-b39a-cc63b00e8cc0",
+     "dd285196-5886-4db6-82f7-ad6a73f32caa"
     ],
     "file_issue_count": 17,
     "category_prevalence": 387,
@@ -1094,7 +1094,7 @@
    }
   },
   {
-   "id": "5570d826-5d50-4024-8b67-a3e2bb162cf2",
+   "id": "67522545-85a9-4d16-8598-ebbde1023fa6",
    "title": "Cyclomatic Complexity",
    "description": "Function solve_dependencies has More than Moderate cyclomatic complexity (30, rank D) in utils.py.",
    "details": {
@@ -1142,18 +1142,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671927",
+   "timestamp": "2026-11-28T19:31:45.151169",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "f1d6d911-869a-47d2-b7e1-3b57cf96fb47",
-     "43488c34-5713-40c3-af13-6b2159b4f9e2",
-     "ff1f44d8-cb1d-4bc5-8795-2900aa5e9021",
-     "c930e3cc-c1c8-449d-b026-2b17ac7db5b6",
-     "0b1f3d6a-2ec9-4f2f-b42e-97cee50b7e70"
+     "e0a761b0-8692-40d9-b60a-5e296a61672f",
+     "8e4e29fb-113e-4ad9-8068-c371c6e63a51",
+     "1af6a8f3-7764-4bae-84fa-52100c3fee71",
+     "63b49eb6-8e93-4ddb-b39a-cc63b00e8cc0",
+     "dd285196-5886-4db6-82f7-ad6a73f32caa"
     ],
     "file_issue_count": 17,
     "category_prevalence": 387,
@@ -1162,7 +1162,7 @@
    }
   },
   {
-   "id": "40e41662-643d-404a-8d73-a1e2713fa6c0",
+   "id": "a327b3b8-6a85-4108-aa8e-a322a5d30b29",
    "title": "Cyclomatic Complexity",
    "description": "Function _request_param_model_to_args has More than Moderate cyclomatic complexity (22, rank D) in utils.py.",
    "details": {
@@ -1210,18 +1210,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671940",
+   "timestamp": "2026-11-28T19:31:45.151181",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "f1d6d911-869a-47d2-b7e1-3b57cf96fb47",
-     "43488c34-5713-40c3-af13-6b2159b4f9e2",
-     "ff1f44d8-cb1d-4bc5-8795-2900aa5e9021",
-     "c930e3cc-c1c8-449d-b026-2b17ac7db5b6",
-     "0b1f3d6a-2ec9-4f2f-b42e-97cee50b7e70"
+     "e0a761b0-8692-40d9-b60a-5e296a61672f",
+     "8e4e29fb-113e-4ad9-8068-c371c6e63a51",
+     "1af6a8f3-7764-4bae-84fa-52100c3fee71",
+     "63b49eb6-8e93-4ddb-b39a-cc63b00e8cc0",
+     "dd285196-5886-4db6-82f7-ad6a73f32caa"
     ],
     "file_issue_count": 17,
     "category_prevalence": 387,
@@ -1230,7 +1230,7 @@
    }
   },
   {
-   "id": "a318a454-ecee-4843-a521-166402a24b2d",
+   "id": "0d4b21c5-67ab-41d6-bf32-61d49eecbddc",
    "title": "Cyclomatic Complexity",
    "description": "Function request_body_to_args has More than Moderate cyclomatic complexity (23, rank D) in utils.py.",
    "details": {
@@ -1278,18 +1278,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671936",
+   "timestamp": "2026-11-28T19:31:45.151177",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "f1d6d911-869a-47d2-b7e1-3b57cf96fb47",
-     "43488c34-5713-40c3-af13-6b2159b4f9e2",
-     "ff1f44d8-cb1d-4bc5-8795-2900aa5e9021",
-     "c930e3cc-c1c8-449d-b026-2b17ac7db5b6",
-     "0b1f3d6a-2ec9-4f2f-b42e-97cee50b7e70"
+     "e0a761b0-8692-40d9-b60a-5e296a61672f",
+     "8e4e29fb-113e-4ad9-8068-c371c6e63a51",
+     "1af6a8f3-7764-4bae-84fa-52100c3fee71",
+     "63b49eb6-8e93-4ddb-b39a-cc63b00e8cc0",
+     "dd285196-5886-4db6-82f7-ad6a73f32caa"
     ],
     "file_issue_count": 17,
     "category_prevalence": 387,
@@ -1298,7 +1298,7 @@
    }
   },
   {
-   "id": "c4fd2806-0d8f-4378-8384-dc4417f694e9",
+   "id": "ec9ad75b-df06-41df-922f-1122fca2e3c1",
    "title": "Cyclomatic Complexity",
    "description": "Function _get_body_field has More than Moderate cyclomatic complexity (26, rank D) in utils.py.",
    "details": {
@@ -1346,18 +1346,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671931",
+   "timestamp": "2026-11-28T19:31:45.151173",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "f1d6d911-869a-47d2-b7e1-3b57cf96fb47",
-     "43488c34-5713-40c3-af13-6b2159b4f9e2",
-     "ff1f44d8-cb1d-4bc5-8795-2900aa5e9021",
-     "c930e3cc-c1c8-449d-b026-2b17ac7db5b6",
-     "0b1f3d6a-2ec9-4f2f-b42e-97cee50b7e70"
+     "e0a761b0-8692-40d9-b60a-5e296a61672f",
+     "8e4e29fb-113e-4ad9-8068-c371c6e63a51",
+     "1af6a8f3-7764-4bae-84fa-52100c3fee71",
+     "63b49eb6-8e93-4ddb-b39a-cc63b00e8cc0",
+     "dd285196-5886-4db6-82f7-ad6a73f32caa"
     ],
     "file_issue_count": 17,
     "category_prevalence": 387,
@@ -1366,7 +1366,7 @@
    }
   },
   {
-   "id": "9a36f546-9b3e-472a-a970-e0977882e5f6",
+   "id": "91f3f38d-750d-44f9-90a7-85cf7d3e69c0",
    "title": "Maintainability Index",
    "description": "File `test_frontend.py` has maintainability index (0.0) and is ranked as C.",
    "details": {
@@ -1409,10 +1409,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672121",
+   "timestamp": "2026-11-28T19:31:45.151359",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 3,
@@ -1422,7 +1422,7 @@
    }
   },
   {
-   "id": "29b14562-0ab2-4ff7-8d91-605ee5df0962",
+   "id": "bf900c05-df10-4380-ac4e-62a264dc1392",
    "title": "Maintainability Index",
    "description": "File `test_forms_multiple_unions.py` has maintainability index (3.1) and is ranked as C.",
    "details": {
@@ -1465,10 +1465,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672129",
+   "timestamp": "2026-11-28T19:31:45.151367",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 3,
@@ -1478,7 +1478,7 @@
    }
   },
   {
-   "id": "989df02b-4236-4e7d-aca9-884ff5f310c5",
+   "id": "bd4cb60a-cf33-46b0-be18-da1b432d31d8",
    "title": "Maintainability Index",
    "description": "File `test_router_include_context.py` has maintainability index (5.2) and is ranked as C.",
    "details": {
@@ -1521,16 +1521,16 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672133",
+   "timestamp": "2026-11-28T19:31:45.151371",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "1c2ccfec-6f42-4dd3-8336-4b840f4b62fd",
-     "4d7948c3-4a17-4a5d-88a1-53f5acf95937",
-     "aaaf5697-5418-4ce2-9c6d-b03fa4248274"
+     "92cc2f84-6f46-418e-8d5c-d19288331e1f",
+     "382ac61e-8284-415e-9d36-7531fcc005f6",
+     "5e41e861-8801-4793-8ef1-778849d6f4a4"
     ],
     "file_issue_count": 4,
     "category_prevalence": 387,
@@ -1539,7 +1539,7 @@
    }
   },
   {
-   "id": "fba650e3-a224-4fab-86fd-bdbc5ec811d0",
+   "id": "170564fd-d7f7-4d26-af01-3b27a1e2bd0e",
    "title": "Maintainability Index",
    "description": "File `test_forms_optional_models.py` has maintainability index (0.0) and is ranked as C.",
    "details": {
@@ -1582,17 +1582,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672149",
+   "timestamp": "2026-11-28T19:31:45.151386",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "23f2a389-02be-4436-b19b-6f659e82b227",
-     "f61cba2e-9bc9-4987-b909-13fbc89c498d",
-     "86f739fe-14b6-4c1c-a4e5-c5f54622ecc8",
-     "f7461b94-1a4f-438b-817e-0bf5b4cb872f"
+     "2e837bdb-a2c3-4a1a-a352-5dbc2f28cfdd",
+     "ca7e41c1-8099-42eb-90f4-0da3ab13154e",
+     "128f214f-da8a-4e9e-9f65-89c6316ddc5d",
+     "3cd3fa91-e67f-48ac-9e0b-0646c25dd196"
     ],
     "file_issue_count": 9,
     "category_prevalence": 387,
@@ -1601,7 +1601,7 @@
    }
   },
   {
-   "id": "f61cba2e-9bc9-4987-b909-13fbc89c498d",
+   "id": "3cd3fa91-e67f-48ac-9e0b-0646c25dd196",
    "title": "Cyclomatic Complexity",
    "description": "Function test_unknown_fields_and_sibling_models has More than Moderate cyclomatic complexity (28, rank D) in test_forms_optional_models.py.",
    "details": {
@@ -1649,17 +1649,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671670",
+   "timestamp": "2026-11-28T19:31:45.150921",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "23f2a389-02be-4436-b19b-6f659e82b227",
-     "fba650e3-a224-4fab-86fd-bdbc5ec811d0",
-     "86f739fe-14b6-4c1c-a4e5-c5f54622ecc8",
-     "f7461b94-1a4f-438b-817e-0bf5b4cb872f"
+     "2e837bdb-a2c3-4a1a-a352-5dbc2f28cfdd",
+     "ca7e41c1-8099-42eb-90f4-0da3ab13154e",
+     "128f214f-da8a-4e9e-9f65-89c6316ddc5d",
+     "170564fd-d7f7-4d26-af01-3b27a1e2bd0e"
     ],
     "file_issue_count": 9,
     "category_prevalence": 387,
@@ -1668,7 +1668,7 @@
    }
   },
   {
-   "id": "370f8bac-cdcf-4eee-b2ae-146cceb41f39",
+   "id": "edba71fa-2b06-4c1c-b9f0-4b2bcceffb30",
    "title": "Maintainability Index",
    "description": "File `test_header_cookie_optional_models.py` has maintainability index (8.6) and is ranked as C.",
    "details": {
@@ -1711,10 +1711,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672157",
+   "timestamp": "2026-11-28T19:31:45.151394",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 3,
@@ -1724,7 +1724,7 @@
    }
   },
   {
-   "id": "424b8116-90b6-4267-a592-b321b77bc349",
+   "id": "16feee46-d3fe-4aac-827b-d394749f4b4d",
    "title": "Maintainability Index",
    "description": "File `test_forms_multiple_models.py` has maintainability index (9.0) and is ranked as C.",
    "details": {
@@ -1767,17 +1767,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672219",
+   "timestamp": "2026-11-28T19:31:45.151454",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "863ba015-64ee-4afb-bb0c-91d5e1fe620c",
-     "bc4b6dcd-f4a4-403f-8cc8-9ee5257f7f2c",
-     "2e7047ca-7db1-4467-aec9-f3516c90879d",
-     "0ac6e1ae-02e4-43cc-a458-4ec4eb0aeba5"
+     "aa46f3e6-c6b5-4ec4-91da-4596dc63e958",
+     "8408f3ae-d10f-4a6d-9554-9bff1aa63e30",
+     "e43c661c-f038-4cf6-bce2-624276638326",
+     "591c176f-8bd2-4adb-beb1-e0b31c7c0788"
     ],
     "file_issue_count": 5,
     "category_prevalence": 387,
@@ -1786,7 +1786,7 @@
    }
   },
   {
-   "id": "01b55769-e087-4ef7-9aba-e52b25f6610f",
+   "id": "d8eae6db-c948-4be9-bb23-0769c3f68097",
    "title": "Complexity Risk Ranking",
    "description": "File is marked as Poorly Maintainable for cyclomatic complexity distribution. Moderate: 0.6%, High: 23.1%, Very High: 0.0%. Reason: high 23.1% > 15%.",
    "details": {
@@ -1845,17 +1845,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672056",
+   "timestamp": "2026-11-28T19:31:45.151296",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "90caabec-8dbb-4608-9836-f81ca25ae891",
-     "20837a2f-6e1c-4d5e-81b8-7eca46a460fa",
-     "49beea71-2bbd-40fe-9229-0ff38bc2edf9",
-     "5a46e732-8bc5-4e2f-8b09-bc474ad0ce90"
+     "9ebf4aa8-9bc4-4111-bbd7-bc9b3eeebbe6",
+     "95a657c1-44f0-4320-ac63-6c57b2a13f86",
+     "9b65a787-c80a-414a-83af-9bc7636f80f6",
+     "3546fa60-66a0-488d-aada-18496f708b45"
     ],
     "file_issue_count": 5,
     "category_prevalence": 387,
@@ -1864,7 +1864,7 @@
    }
   },
   {
-   "id": "20837a2f-6e1c-4d5e-81b8-7eca46a460fa",
+   "id": "9ebf4aa8-9bc4-4111-bbd7-bc9b3eeebbe6",
    "title": "Cyclomatic Complexity",
    "description": "Function test_current_contrib has More than Moderate cyclomatic complexity (22, rank D) in test_integrations.py.",
    "details": {
@@ -1912,17 +1912,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671756",
+   "timestamp": "2026-11-28T19:31:45.151007",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "90caabec-8dbb-4608-9836-f81ca25ae891",
-     "01b55769-e087-4ef7-9aba-e52b25f6610f",
-     "49beea71-2bbd-40fe-9229-0ff38bc2edf9",
-     "5a46e732-8bc5-4e2f-8b09-bc474ad0ce90"
+     "d8eae6db-c948-4be9-bb23-0769c3f68097",
+     "95a657c1-44f0-4320-ac63-6c57b2a13f86",
+     "9b65a787-c80a-414a-83af-9bc7636f80f6",
+     "3546fa60-66a0-488d-aada-18496f708b45"
     ],
     "file_issue_count": 5,
     "category_prevalence": 387,
@@ -1931,7 +1931,7 @@
    }
   },
   {
-   "id": "7c58164c-e222-4005-9456-6cbdabac5772",
+   "id": "d795dae9-abc9-4916-b607-65b7be1082a7",
    "title": "Complexity Risk Ranking",
    "description": "File is marked as Poorly Maintainable for cyclomatic complexity distribution. Moderate: 7.0%, High: 0.0%, Very High: 15.9%. Reason: very_high 15.9% > 5%.",
    "details": {
@@ -1989,17 +1989,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672060",
+   "timestamp": "2026-11-28T19:31:45.151300",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "432ab2b7-bfa6-4967-b9ea-e6da379880a3",
-     "89eccaf1-a6ee-49bb-8bba-283e12ccde4a",
-     "7b247269-8ce9-48ec-bacb-02a048f4df95",
-     "67fc2c15-4ee8-4443-8a77-864f0b7779e4"
+     "1fc2c7c3-f9ea-4804-92f7-47ee0f85a986",
+     "d62ce378-268b-4665-8cd2-cebbb90464c7",
+     "692da973-5452-4275-9112-716bd93991c3",
+     "1ce7affd-b977-49ae-8e54-0ca2476e00f3"
     ],
     "file_issue_count": 5,
     "category_prevalence": 387,
@@ -2008,7 +2008,7 @@
    }
   },
   {
-   "id": "432ab2b7-bfa6-4967-b9ea-e6da379880a3",
+   "id": "1ce7affd-b977-49ae-8e54-0ca2476e00f3",
    "title": "Maintainability Index",
    "description": "File `test_runtime.py` has maintainability index (8.7) and is ranked as C.",
    "details": {
@@ -2051,17 +2051,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672235",
+   "timestamp": "2026-11-28T19:31:45.151470",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "7c58164c-e222-4005-9456-6cbdabac5772",
-     "89eccaf1-a6ee-49bb-8bba-283e12ccde4a",
-     "7b247269-8ce9-48ec-bacb-02a048f4df95",
-     "67fc2c15-4ee8-4443-8a77-864f0b7779e4"
+     "d795dae9-abc9-4916-b607-65b7be1082a7",
+     "d62ce378-268b-4665-8cd2-cebbb90464c7",
+     "692da973-5452-4275-9112-716bd93991c3",
+     "1fc2c7c3-f9ea-4804-92f7-47ee0f85a986"
     ],
     "file_issue_count": 5,
     "category_prevalence": 387,
@@ -2070,7 +2070,7 @@
    }
   },
   {
-   "id": "89eccaf1-a6ee-49bb-8bba-283e12ccde4a",
+   "id": "1fc2c7c3-f9ea-4804-92f7-47ee0f85a986",
    "title": "Cyclomatic Complexity",
    "description": "Function test_real_otlp_export_and_repeated_lifespans has High cyclomatic complexity (38, rank E) in test_runtime.py.",
    "details": {
@@ -2118,17 +2118,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671772",
+   "timestamp": "2026-11-28T19:31:45.151023",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "7c58164c-e222-4005-9456-6cbdabac5772",
-     "432ab2b7-bfa6-4967-b9ea-e6da379880a3",
-     "7b247269-8ce9-48ec-bacb-02a048f4df95",
-     "67fc2c15-4ee8-4443-8a77-864f0b7779e4"
+     "d795dae9-abc9-4916-b607-65b7be1082a7",
+     "d62ce378-268b-4665-8cd2-cebbb90464c7",
+     "692da973-5452-4275-9112-716bd93991c3",
+     "1ce7affd-b977-49ae-8e54-0ca2476e00f3"
     ],
     "file_issue_count": 5,
     "category_prevalence": 387,
@@ -2137,7 +2137,7 @@
    }
   },
   {
-   "id": "4fa54e4e-2d08-4946-9a95-796fe76c8a14",
+   "id": "dd99755b-0a98-4e18-9579-4789a1710dd5",
    "title": "Cyclomatic Complexity",
    "description": "Function test_unexpected_exception has More than Moderate cyclomatic complexity (23, rank D) in test_websockets.py.",
    "details": {
@@ -2185,16 +2185,16 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671792",
+   "timestamp": "2026-11-28T19:31:45.151042",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "60baf375-c6c0-4558-9993-6629f8681dc3",
-     "e5ddba97-9e51-4fa9-b693-79769e7bac4a",
-     "72f37acf-ccb1-4ac9-a228-c1c29f2f0330"
+     "7e568d39-317c-48ef-a473-07b0da1e3fe8",
+     "e0fd4f3d-0dce-43e5-87c3-811bd35d9841",
+     "4064d150-7646-4ba2-aab7-ab8a4a68ad70"
     ],
     "file_issue_count": 4,
     "category_prevalence": 387,
@@ -2203,7 +2203,7 @@
    }
   },
   {
-   "id": "98d93c6d-ca89-490e-9414-5e48cf3ac270",
+   "id": "73648a36-1836-49bf-b2f2-70da0701561a",
    "title": "Maintainability Index",
    "description": "File `test_http.py` has maintainability index (0.0) and is ranked as C.",
    "details": {
@@ -2246,17 +2246,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672243",
+   "timestamp": "2026-11-28T19:31:45.151478",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "ae182a50-511b-49bd-a523-31114afeeb12",
-     "b52cf9c1-cd82-40a6-af64-8a1bf5d586b4",
-     "1a5c5729-1dfe-4d4a-9d08-61beac691ea7",
-     "6cae9861-5769-4c50-bc24-ca381bbdf1a5"
+     "9e9eea5e-d0bd-436c-ad51-3e1561db0a83",
+     "aaaadf00-6e85-4c27-b463-3084c0743cdd",
+     "49311077-45a6-46e1-87d2-9f1d07d705c8",
+     "e1eb38b1-1c49-4397-9e44-0b0b002d0c5b"
     ],
     "file_issue_count": 6,
     "category_prevalence": 387,
@@ -2265,7 +2265,7 @@
    }
   },
   {
-   "id": "b52cf9c1-cd82-40a6-af64-8a1bf5d586b4",
+   "id": "49311077-45a6-46e1-87d2-9f1d07d705c8",
    "title": "Cyclomatic Complexity",
    "description": "Function test_request_context_and_span_attributes has More than Moderate cyclomatic complexity (24, rank D) in test_http.py.",
    "details": {
@@ -2313,17 +2313,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671804",
+   "timestamp": "2026-11-28T19:31:45.151055",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "ae182a50-511b-49bd-a523-31114afeeb12",
-     "98d93c6d-ca89-490e-9414-5e48cf3ac270",
-     "1a5c5729-1dfe-4d4a-9d08-61beac691ea7",
-     "6cae9861-5769-4c50-bc24-ca381bbdf1a5"
+     "9e9eea5e-d0bd-436c-ad51-3e1561db0a83",
+     "73648a36-1836-49bf-b2f2-70da0701561a",
+     "aaaadf00-6e85-4c27-b463-3084c0743cdd",
+     "e1eb38b1-1c49-4397-9e44-0b0b002d0c5b"
     ],
     "file_issue_count": 6,
     "category_prevalence": 387,
@@ -2332,7 +2332,7 @@
    }
   },
   {
-   "id": "f20cf442-d1b2-422d-b0ab-e63e66eb60e7",
+   "id": "c9b9a63a-6a04-4e5d-b179-eac85a875e21",
    "title": "Complexity Risk Ranking",
    "description": "File is marked as Maintainable for cyclomatic complexity distribution. Moderate: 43.4%, High: 0.3%, Very High: 0.0%. Reason: Meets Baseline (moderate\u226450%, high\u226415%, very_high\u22645%) but not higher due to moderate>40%.",
    "details": {
@@ -2390,16 +2390,16 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672064",
+   "timestamp": "2026-11-28T19:31:45.151304",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "347d803e-efcd-45e2-b418-e67ddaae43d1",
-     "04aa06c0-372e-45c7-be99-4b8e44391490",
-     "d5a0eb5b-d4ac-4596-a088-34a11da4a4f8"
+     "b325b9e0-bb9f-490e-a3cc-d7bfe0b984bb",
+     "b045f54f-eac3-481b-b826-c1911bf1f568",
+     "a0aa9003-43df-4630-b868-bfdce48e785e"
     ],
     "file_issue_count": 4,
     "category_prevalence": 387,
@@ -2408,7 +2408,7 @@
    }
   },
   {
-   "id": "347d803e-efcd-45e2-b418-e67ddaae43d1",
+   "id": "b045f54f-eac3-481b-b826-c1911bf1f568",
    "title": "Cyclomatic Complexity",
    "description": "Function test_logfire_native_spans_and_exception_logs has More than Moderate cyclomatic complexity (29, rank D) in test_native_integrations.py.",
    "details": {
@@ -2456,16 +2456,16 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671816",
+   "timestamp": "2026-11-28T19:31:45.151067",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "f20cf442-d1b2-422d-b0ab-e63e66eb60e7",
-     "04aa06c0-372e-45c7-be99-4b8e44391490",
-     "d5a0eb5b-d4ac-4596-a088-34a11da4a4f8"
+     "b325b9e0-bb9f-490e-a3cc-d7bfe0b984bb",
+     "a0aa9003-43df-4630-b868-bfdce48e785e",
+     "c9b9a63a-6a04-4e5d-b179-eac85a875e21"
     ],
     "file_issue_count": 4,
     "category_prevalence": 387,
@@ -2474,7 +2474,7 @@
    }
   },
   {
-   "id": "200aafc1-2c7c-4fe5-97fa-de281c24c03d",
+   "id": "e4bb60d9-d91f-48c6-9717-e1648e11de4d",
    "title": "Complexity Risk Ranking",
    "description": "File is marked as Poorly Maintainable for cyclomatic complexity distribution. Moderate: 14.7%, High: 24.1%, Very High: 0.0%. Reason: high 24.1% > 15%.",
    "details": {
@@ -2533,17 +2533,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672069",
+   "timestamp": "2026-11-28T19:31:45.151308",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "6d56696a-18c3-4142-bbb3-89221504e502",
-     "2b0747a6-e4d9-4868-9d7e-40ef381e91de",
-     "771ad099-5cb1-46a8-a74d-9081b136789c",
-     "60715bc3-42b8-44fe-b5e6-fcf84609f298"
+     "e961d7e9-6891-4251-892e-91b6ae987722",
+     "62c719be-4ad0-4546-bdf4-9442c63ef128",
+     "38ea0623-ca4a-467d-b08e-46126f32182a",
+     "b1c0e423-9177-4286-90c0-8e7b867c02ba"
     ],
     "file_issue_count": 6,
     "category_prevalence": 387,
@@ -2552,7 +2552,7 @@
    }
   },
   {
-   "id": "828ea1de-ccca-4a6a-8b47-2b9aacfe7917",
+   "id": "27e45f99-a20f-44f7-8f5d-1779b59903b5",
    "title": "Cyclomatic Complexity",
    "description": "Function test_request_objects_are_not_exported has More than Moderate cyclomatic complexity (24, rank D) in test_data.py.",
    "details": {
@@ -2600,18 +2600,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671837",
+   "timestamp": "2026-11-28T19:31:45.151087",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "6d56696a-18c3-4142-bbb3-89221504e502",
-     "200aafc1-2c7c-4fe5-97fa-de281c24c03d",
-     "2b0747a6-e4d9-4868-9d7e-40ef381e91de",
-     "771ad099-5cb1-46a8-a74d-9081b136789c",
-     "60715bc3-42b8-44fe-b5e6-fcf84609f298"
+     "62c719be-4ad0-4546-bdf4-9442c63ef128",
+     "38ea0623-ca4a-467d-b08e-46126f32182a",
+     "e4bb60d9-d91f-48c6-9717-e1648e11de4d",
+     "e961d7e9-6891-4251-892e-91b6ae987722",
+     "b1c0e423-9177-4286-90c0-8e7b867c02ba"
     ],
     "file_issue_count": 6,
     "category_prevalence": 387,
@@ -2620,7 +2620,7 @@
    }
   },
   {
-   "id": "7e3e6dc0-ac2a-479b-a39b-4a8336325f32",
+   "id": "34eef20f-1ae2-4740-af4c-8bc78bc3abdb",
    "title": "Complexity Risk Ranking",
    "description": "File is marked as Poorly Maintainable for cyclomatic complexity distribution. Moderate: 0.0%, High: 0.0%, Very High: 91.4%. Reason: very_high 91.4% > 5%.",
    "details": {
@@ -2675,10 +2675,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672072",
+   "timestamp": "2026-11-28T19:31:45.151312",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 3,
@@ -2688,7 +2688,7 @@
    }
   },
   {
-   "id": "24793d4c-a5bf-485d-9006-879e4f8a18c7",
+   "id": "7f0510b1-d79c-42b5-98e8-ef6c54a12678",
    "title": "Cyclomatic Complexity",
    "description": "Function test_environment_export_with_existing_integrations has Very High cyclomatic complexity (49, rank F) in test_environment_integrations.py.",
    "details": {
@@ -2736,10 +2736,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671854",
+   "timestamp": "2026-11-28T19:31:45.151099",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 3,
@@ -2749,7 +2749,7 @@
    }
   },
   {
-   "id": "9970f67b-533e-48b6-ad7c-19f1133176eb",
+   "id": "108e16dc-e862-405e-8ff6-bc285b8fa661",
    "title": "Maintainability Index",
    "description": "File `test_nullable_and_defaults.py` has maintainability index (0.0) and is ranked as C.",
    "details": {
@@ -2792,17 +2792,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672223",
+   "timestamp": "2026-11-28T19:31:45.151458",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "e7ec5f30-689a-4c57-b445-e1bb9210ac62",
-     "9a7b19ca-a58a-4122-beab-80fc46da549a",
-     "9aeb56d8-d7df-41ca-9700-8d905bde1666",
-     "2ec6af95-e083-48ac-b5af-5c070e5f3c2c"
+     "2ddd746c-627c-4108-93fa-afa8ecb640ca",
+     "3bf2de84-3db9-43eb-aa0f-498a1aa428fa",
+     "fd5624e6-c2df-4f80-a00b-6cddfcb6a561",
+     "8a0d069f-388d-49e7-85d5-de3c9584ff50"
     ],
     "file_issue_count": 9,
     "category_prevalence": 387,
@@ -2811,7 +2811,7 @@
    }
   },
   {
-   "id": "a01caf59-5d68-412b-9850-59c7aa7d9464",
+   "id": "f2d12afc-8e1e-4a38-8741-c6a779c460c5",
    "title": "Maintainability Index",
    "description": "File `test_nullable_and_defaults.py` has maintainability index (0.0) and is ranked as C.",
    "details": {
@@ -2854,16 +2854,16 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672231",
+   "timestamp": "2026-11-28T19:31:45.151466",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "b5988577-ec98-43a7-a6ee-4215c7e348f6",
-     "5c8c991f-5ca2-4e86-8a0a-9e3bc3d7e674",
-     "ff0a9008-3c36-4381-a553-74ec05c14c13"
+     "5634edfa-5c36-4a5a-a76d-78555ea4d3a3",
+     "91b7f7d9-586f-4a58-9244-10cb569e5afc",
+     "68a07c61-493f-47b0-933c-6e2f65e8604c"
     ],
     "file_issue_count": 4,
     "category_prevalence": 387,
@@ -2872,7 +2872,7 @@
    }
   },
   {
-   "id": "3686ae83-863b-4faf-9dab-5192a37df85a",
+   "id": "6fb69c4d-c38e-4346-8528-88122367bde7",
    "title": "Cyclomatic Complexity",
    "description": "Function test_router_events has More than Moderate cyclomatic complexity (21, rank D) in test_router_events.py.",
    "details": {
@@ -2920,10 +2920,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671641",
+   "timestamp": "2026-11-28T19:31:45.150892",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 3,
@@ -2933,7 +2933,7 @@
    }
   },
   {
-   "id": "a9d52842-26cd-434b-a095-d0a4b46f4e78",
+   "id": "1a093cf2-3a77-4f4b-837c-d7798f1e3c8c",
    "title": "Cyclomatic Complexity",
    "description": "Function test_router_nested_lifespan_state has More than Moderate cyclomatic complexity (21, rank D) in test_router_events.py.",
    "details": {
@@ -2981,10 +2981,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671645",
+   "timestamp": "2026-11-28T19:31:45.150896",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 3,
@@ -2994,7 +2994,7 @@
    }
   },
   {
-   "id": "30b764dc-26ba-4c68-a38e-022c23d8c1ce",
+   "id": "0719cfc8-393a-48c3-b90c-9a577befd712",
    "title": "Cyclomatic Complexity",
    "description": "Function test_startup_shutdown_handlers_as_parameters has More than Moderate cyclomatic complexity (21, rank D) in test_router_events.py.",
    "details": {
@@ -3042,10 +3042,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671649",
+   "timestamp": "2026-11-28T19:31:45.150900",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 3,
@@ -3055,7 +3055,7 @@
    }
   },
   {
-   "id": "662da396-5466-4016-a81f-40791645166f",
+   "id": "18467e1e-60ae-4e84-ab56-ebf2ad308b34",
    "title": "Complexity Risk Ranking",
    "description": "File is marked as Poorly Maintainable for cyclomatic complexity distribution. Moderate: 0.0%, High: 21.8%, Very High: 0.0%. Reason: high 21.8% > 15%.",
    "details": {
@@ -3110,10 +3110,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672076",
+   "timestamp": "2026-11-28T19:31:45.151315",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 2,
@@ -3123,7 +3123,7 @@
    }
   },
   {
-   "id": "30372a8c-192d-417d-a83a-bccf6205ae58",
+   "id": "cb6bda12-9844-49d4-ae2b-df8cee1e5102",
    "title": "Cyclomatic Complexity",
    "description": "Function test_crud_app has More than Moderate cyclomatic complexity (25, rank D) in test_tutorial002.py.",
    "details": {
@@ -3171,10 +3171,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671874",
+   "timestamp": "2026-11-28T19:31:45.151119",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 2,
@@ -3184,7 +3184,7 @@
    }
   },
   {
-   "id": "2e9a3ffa-f9b4-4846-98c9-5917118b44ec",
+   "id": "773c277c-4c2b-427d-92c3-0613e0692b44",
    "title": "Complexity Risk Ranking",
    "description": "File is marked as Poorly Maintainable for cyclomatic complexity distribution. Moderate: 0.0%, High: 0.0%, Very High: 64.8%. Reason: very_high 64.8% > 5%.",
    "details": {
@@ -3239,16 +3239,16 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672080",
+   "timestamp": "2026-11-28T19:31:45.151319",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "d0c30cc0-0bbf-4a3e-8dc6-a2f25b3a12fd",
-     "26f057fd-5e32-4b26-a0b8-811cc347eca6",
-     "d3f2b1a1-3c6f-4fb1-9fc8-b6d9dcfd6bc7"
+     "d2f1ecdf-6f9a-412a-a1c8-bbb6eb740a91",
+     "922bf028-2e21-4b31-a336-0a718f765137",
+     "fc8e1c35-076a-4c7f-8db4-4388319928d0"
     ],
     "file_issue_count": 4,
     "category_prevalence": 387,
@@ -3257,7 +3257,7 @@
    }
   },
   {
-   "id": "26f057fd-5e32-4b26-a0b8-811cc347eca6",
+   "id": "922bf028-2e21-4b31-a336-0a718f765137",
    "title": "Cyclomatic Complexity",
    "description": "Function jsonable_encoder has High cyclomatic complexity (35, rank E) in encoders.py.",
    "details": {
@@ -3305,16 +3305,16 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671887",
+   "timestamp": "2026-11-28T19:31:45.151132",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "2e9a3ffa-f9b4-4846-98c9-5917118b44ec",
-     "d0c30cc0-0bbf-4a3e-8dc6-a2f25b3a12fd",
-     "d3f2b1a1-3c6f-4fb1-9fc8-b6d9dcfd6bc7"
+     "d2f1ecdf-6f9a-412a-a1c8-bbb6eb740a91",
+     "773c277c-4c2b-427d-92c3-0613e0692b44",
+     "fc8e1c35-076a-4c7f-8db4-4388319928d0"
     ],
     "file_issue_count": 4,
     "category_prevalence": 387,
@@ -3323,7 +3323,7 @@
    }
   },
   {
-   "id": "b3c64d15-73ba-40a3-9c3a-8a060d9bf054",
+   "id": "7ed2f65f-6a90-4663-85a8-bdd1dfdbf4ee",
    "title": "Complexity Risk Ranking",
    "description": "File is marked as Poorly Maintainable for cyclomatic complexity distribution. Moderate: 0.0%, High: 81.2%, Very High: 0.0%. Reason: high 81.2% > 15%.",
    "details": {
@@ -3378,10 +3378,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672108",
+   "timestamp": "2026-11-28T19:31:45.151347",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 2,
@@ -3391,7 +3391,7 @@
    }
   },
   {
-   "id": "7e83cd3a-18cb-47b0-a5eb-ce7c230838a3",
+   "id": "f4084def-f4ce-416a-9474-57edd654591c",
    "title": "Cyclomatic Complexity",
    "description": "Function main has More than Moderate cyclomatic complexity (27, rank D) in deploy_docs_status.py.",
    "details": {
@@ -3439,10 +3439,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672048",
+   "timestamp": "2026-11-28T19:31:45.151288",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 2,
@@ -3452,7 +3452,7 @@
    }
   },
   {
-   "id": "38846ff7-1b59-4cd3-9cf9-63c1182cadc5",
+   "id": "4cf4f67b-8763-4ed9-995a-6341fc4bceb4",
    "title": "Maintainability Index",
    "description": "File `test_dependency_concurrency.py` has maintainability index (5.1) and is ranked as C.",
    "details": {
@@ -3495,10 +3495,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672137",
+   "timestamp": "2026-11-28T19:31:45.151375",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 3,
@@ -3508,7 +3508,7 @@
    }
   },
   {
-   "id": "d1f023e3-836d-4d49-b699-fe3e21bf0b17",
+   "id": "ec7b55ce-d818-46c1-9126-c311e7b47105",
    "title": "Maintainability Index",
    "description": "File `test_path.py` has maintainability index (0.0) and is ranked as C.",
    "details": {
@@ -3551,10 +3551,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672153",
+   "timestamp": "2026-11-28T19:31:45.151390",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 1,
@@ -3564,7 +3564,7 @@
    }
   },
   {
-   "id": "63c270be-ea4d-4cc5-8ce5-b72bbdebb623",
+   "id": "cb42af11-ab82-49ba-bdf7-a3912a9ce854",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 2 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -3599,11 +3599,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901370",
+   "timestamp": "2026-11-28T19:31:45.381056",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -3612,10 +3612,10 @@
     ],
     "critical_function_count": 2,
     "cross_references": [
-     "d85c1f2b-7c4d-4583-9095-ccbc96d7b90f",
-     "c7dbf883-3ea0-42c4-bc21-9315498a0c91",
-     "9dcef76c-22b4-4084-82c0-d8964f06b779",
-     "28e3d819-676f-4fab-a37d-a83e6b7337ae"
+     "d8f644e3-a1bd-461e-bc38-d40476359369",
+     "cbdecdfb-3c48-4459-ad4f-15d82efe6bd4",
+     "87e1b9e6-d6a6-4e6a-bc37-1c596bb68332",
+     "76ebd541-7dd3-4c52-bad6-2438bd324bcd"
     ],
     "file_issue_count": 5,
     "category_prevalence": 51,
@@ -3624,7 +3624,7 @@
    }
   },
   {
-   "id": "c2fb0e8c-a76c-4bd4-a821-17aa645557d5",
+   "id": "c429487e-b21a-4193-83b0-a0f877346243",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 2 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -3659,11 +3659,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901375",
+   "timestamp": "2026-11-28T19:31:45.381061",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -3672,10 +3672,10 @@
     ],
     "critical_function_count": 2,
     "cross_references": [
-     "26bd46c4-1b3d-4fa7-9e57-0b8633d7d567",
-     "99eef953-5132-466d-af27-45ee662d9105",
-     "7e2943ec-3d7d-43c8-be35-800ee2eed809",
-     "ddf7655b-c069-4632-83fc-17f1b9e14684"
+     "581c5c2c-0ae7-4c42-9649-1b839a0da84f",
+     "f3f5b63c-ddf7-45d3-8a8c-91c42063f518",
+     "0e5b151c-5da3-42b5-82f3-c726ce234b19",
+     "c8bb0b99-5ab4-4747-945e-dc532b7e22f2"
     ],
     "file_issue_count": 5,
     "category_prevalence": 51,
@@ -3684,7 +3684,7 @@
    }
   },
   {
-   "id": "ccff1e7b-d7f4-44f3-83df-540692fdc939",
+   "id": "6dfe9f80-8ec3-451f-9061-ad0e87c765fd",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 5 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -3725,11 +3725,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901521",
+   "timestamp": "2026-11-28T19:31:45.381203",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -3741,10 +3741,10 @@
     ],
     "critical_function_count": 5,
     "cross_references": [
-     "820ea173-04e6-4cb7-af91-1ab8dcc60de9",
-     "24e476c5-426c-4363-a3f5-26389499fe98",
-     "34c63a05-92ce-4721-afe3-22b88b40451a",
-     "dfed2d3a-50bb-403c-8666-5f7158c022ea"
+     "17644236-ed29-4572-91a8-a3b00bd32194",
+     "eb147560-8807-4e58-a764-4e1df8a4f834",
+     "243dc346-adf7-4cc0-b13b-f9bb19a98cee",
+     "b755fc6e-49c3-455d-9340-34dcad3ad83d"
     ],
     "file_issue_count": 8,
     "category_prevalence": 51,
@@ -3753,7 +3753,7 @@
    }
   },
   {
-   "id": "bfd36569-dce5-4323-9df6-f2d56ca48f07",
+   "id": "7e871014-cb29-459f-943b-264488f3acd4",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 7 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -3798,11 +3798,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901530",
+   "timestamp": "2026-11-28T19:31:45.381211",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -3816,10 +3816,10 @@
     ],
     "critical_function_count": 7,
     "cross_references": [
-     "8a51bb8f-6e69-45bf-b5c4-8fbfd0e6422f",
-     "a7937bd4-c018-4662-bba2-d3bdc3127677",
-     "c81bb846-d1fe-42e4-8e6f-9bc939b98fbc",
-     "47c71d0f-a999-416e-8be3-d023affb6c71"
+     "2debacfa-772d-4392-bd30-03cdb0be3a38",
+     "6c91979d-6f72-44da-8a8e-f5ccb01008f3",
+     "adb0e155-2cbb-4319-bfad-1d92e199b783",
+     "4680b1cd-5081-4678-a763-b05e1618ad59"
     ],
     "file_issue_count": 5,
     "category_prevalence": 51,
@@ -3828,7 +3828,7 @@
    }
   },
   {
-   "id": "513507cd-326e-4923-a9ad-022e103358c1",
+   "id": "0d16c508-5aa7-48af-be0a-f49edf774531",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 3 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -3865,11 +3865,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901547",
+   "timestamp": "2026-11-28T19:31:45.381228",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -3885,7 +3885,7 @@
    }
   },
   {
-   "id": "affc1493-8c86-4206-9b47-f4e36e41b84e",
+   "id": "501dd7c4-810a-4e92-a6d8-aa875cb973de",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 11 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -3938,11 +3938,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901555",
+   "timestamp": "2026-11-28T19:31:45.381235",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -3966,7 +3966,7 @@
    }
   },
   {
-   "id": "cd7cfc39-32b6-4603-905d-5c268885bf0a",
+   "id": "2c6cd93f-ec83-415a-9a42-69190c80c170",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 21 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -4039,11 +4039,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901581",
+   "timestamp": "2026-11-28T19:31:45.381261",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -4071,10 +4071,10 @@
     ],
     "critical_function_count": 21,
     "cross_references": [
-     "183557fa-653a-435a-bb2a-3a299e33cbc0",
-     "2e9042ab-4a1c-49d1-a822-45d0fc9b5283",
-     "e76380c5-5bd3-492a-9ebb-7fb85cc184ba",
-     "94ebf385-392c-4d33-9a23-318fc63af533"
+     "8826cad9-b678-430f-8e29-6a82c2204fd9",
+     "9fa7a035-f0d0-4993-8adf-97bf6a54e04c",
+     "61ce5e58-9b16-42f9-b79f-295c44fdbbf9",
+     "eaa4d77e-9507-4f2b-8149-31905eba4ee3"
     ],
     "file_issue_count": 11,
     "category_prevalence": 51,
@@ -4083,7 +4083,7 @@
    }
   },
   {
-   "id": "0c791085-b7d9-474a-b55b-e8bc9d2eb2cd",
+   "id": "2714f454-9cf7-4136-a2ac-f81dd9642e47",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 2 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -4118,11 +4118,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901602",
+   "timestamp": "2026-11-28T19:31:45.381283",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -4131,9 +4131,9 @@
     ],
     "critical_function_count": 2,
     "cross_references": [
-     "b64fde13-50f2-4d03-b7f3-13136910b021",
-     "d888cf57-e38a-44e5-83d2-d5b3c920b3fc",
-     "e0f6c06f-3ab9-40f0-b2d0-ece07c9974c1"
+     "eb09cf96-ca97-402d-9c04-4891a7797834",
+     "a9a2cf15-1ce9-4ecd-872c-d2376c6560ca",
+     "8a2c9165-7f7f-466a-b9db-2ba7e74125b6"
     ],
     "file_issue_count": 4,
     "category_prevalence": 51,
@@ -4142,7 +4142,7 @@
    }
   },
   {
-   "id": "c947112d-dd11-4fa3-9843-ec6aefeb84f3",
+   "id": "647ccb69-3a30-4c70-a7bc-965837a07ede",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -4175,11 +4175,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901608",
+   "timestamp": "2026-11-28T19:31:45.381288",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -4187,10 +4187,10 @@
     ],
     "critical_function_count": 1,
     "cross_references": [
-     "d89a3319-0146-4585-9101-cc02b8b0d690",
-     "04edc5b2-531b-4c82-9f19-c6c4b092df8e",
-     "287d0feb-e4eb-4345-93c5-9857db8ba4a7",
-     "d636e3df-813a-4132-abb4-f19e3c3fc3ae"
+     "dd9cc86e-e3ad-4188-8066-f912e66d1e0a",
+     "0fb59992-5ca5-44c9-8c6f-ab9e7900af29",
+     "9f0cdae3-0698-4f62-8a9b-4c38f4b0cf79",
+     "2e3feca5-bc67-457b-9bb4-25780293ac5b"
     ],
     "file_issue_count": 8,
     "category_prevalence": 51,
@@ -4199,7 +4199,7 @@
    }
   },
   {
-   "id": "d4467d12-5827-4a23-8f0e-5f1848d570a2",
+   "id": "270cf6cd-693b-4330-ad3c-fe01e0de92b6",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -4232,11 +4232,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901618",
+   "timestamp": "2026-11-28T19:31:45.381298",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -4244,10 +4244,10 @@
     ],
     "critical_function_count": 1,
     "cross_references": [
-     "ac00e601-d61d-4316-8553-7a5763cf2e18",
-     "afd227f0-4bb8-442d-8e35-d2711402cc2d",
-     "aafe770a-9728-4212-ac7a-60641b26656a",
-     "eec86d29-49f9-460a-9c21-fd38b0f3f4ce"
+     "da35b9b9-81e2-42c1-acf0-bc6e44c18561",
+     "c2dfc0c4-0d29-429d-a5aa-ce3ef0a8f4d2",
+     "7e411c07-6a12-4624-bfa8-4383593f0d8d",
+     "c24b0c71-f294-43e8-8229-ccf7a14bc7d6"
     ],
     "file_issue_count": 8,
     "category_prevalence": 51,
@@ -4256,7 +4256,7 @@
    }
   },
   {
-   "id": "c930e3cc-c1c8-449d-b026-2b17ac7db5b6",
+   "id": "e0a761b0-8692-40d9-b60a-5e296a61672f",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 2 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -4291,11 +4291,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901623",
+   "timestamp": "2026-11-28T19:31:45.381303",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -4304,10 +4304,10 @@
     ],
     "critical_function_count": 2,
     "cross_references": [
-     "0b1f3d6a-2ec9-4f2f-b42e-97cee50b7e70",
-     "ff1f44d8-cb1d-4bc5-8795-2900aa5e9021",
-     "f1d6d911-869a-47d2-b7e1-3b57cf96fb47",
-     "43488c34-5713-40c3-af13-6b2159b4f9e2"
+     "63b49eb6-8e93-4ddb-b39a-cc63b00e8cc0",
+     "8e4e29fb-113e-4ad9-8068-c371c6e63a51",
+     "dd285196-5886-4db6-82f7-ad6a73f32caa",
+     "1af6a8f3-7764-4bae-84fa-52100c3fee71"
     ],
     "file_issue_count": 17,
     "category_prevalence": 51,
@@ -4316,7 +4316,7 @@
    }
   },
   {
-   "id": "d3f2b1a1-3c6f-4fb1-9fc8-b6d9dcfd6bc7",
+   "id": "d2f1ecdf-6f9a-412a-a1c8-bbb6eb740a91",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -4349,11 +4349,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901562",
+   "timestamp": "2026-11-28T19:31:45.381241",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -4361,9 +4361,9 @@
     ],
     "critical_function_count": 1,
     "cross_references": [
-     "2e9a3ffa-f9b4-4846-98c9-5917118b44ec",
-     "d0c30cc0-0bbf-4a3e-8dc6-a2f25b3a12fd",
-     "26f057fd-5e32-4b26-a0b8-811cc347eca6"
+     "773c277c-4c2b-427d-92c3-0613e0692b44",
+     "922bf028-2e21-4b31-a336-0a718f765137",
+     "fc8e1c35-076a-4c7f-8db4-4388319928d0"
     ],
     "file_issue_count": 4,
     "category_prevalence": 51,
@@ -4372,7 +4372,7 @@
    }
   },
   {
-   "id": "2acca4fe-8690-4435-bca7-f9fed3e6c927",
+   "id": "e699cdb1-199c-4442-848a-0720d650fdfe",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -4405,11 +4405,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901323",
+   "timestamp": "2026-11-28T19:31:45.381014",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -4417,10 +4417,10 @@
     ],
     "critical_function_count": 1,
     "cross_references": [
-     "9d48b37b-ebfb-4c5c-9c13-4195ffd17714",
-     "0bf916ab-dec1-42d4-92d6-0377b649873f",
-     "1ed18cad-e7f8-4f43-bf5f-fdc7045addb0",
-     "0231bea5-8941-4d9a-bc84-683d0de948b2"
+     "715685f8-8962-407f-b664-2a3a7370e0b0",
+     "b74c3c64-bbc8-4c40-bfe9-40d67ec52788",
+     "1b5a3d22-dbfd-464a-9d9a-4cfe6531fccf",
+     "cc869a59-109f-4c8b-99a3-4ad16124c690"
     ],
     "file_issue_count": 5,
     "category_prevalence": 51,
@@ -4429,7 +4429,7 @@
    }
   },
   {
-   "id": "91d01436-dc39-480f-9571-51269423bd9f",
+   "id": "0744ce1e-ee65-46ba-82a2-00140f5dc56a",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -4462,11 +4462,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901332",
+   "timestamp": "2026-11-28T19:31:45.381022",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -4474,10 +4474,10 @@
     ],
     "critical_function_count": 1,
     "cross_references": [
-     "c2f570e5-2ad7-4a6d-8e2f-5df6f83e0721",
-     "a3715a23-0350-455c-9bd5-0522b160f4ef",
-     "b7ed95be-6714-4ebc-8bc7-f15beeadd053",
-     "a2c17204-0d1d-4eee-8de0-6817fa893654"
+     "a74b8bba-58e9-4da2-9138-60e49733e629",
+     "918e5a51-8f84-4f3a-bc5f-d8de2ce81dd7",
+     "5c9910b7-af8f-443b-b8df-3232323bf502",
+     "4c98e0b3-07b2-4b0e-b15a-b638dc669501"
     ],
     "file_issue_count": 5,
     "category_prevalence": 51,
@@ -4486,7 +4486,7 @@
    }
   },
   {
-   "id": "fa43ce15-281f-4697-bddb-4b337f9d07eb",
+   "id": "e55ee89e-af1a-4690-bdda-f68b220f305d",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -4519,11 +4519,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901339",
+   "timestamp": "2026-11-28T19:31:45.381029",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -4531,10 +4531,10 @@
     ],
     "critical_function_count": 1,
     "cross_references": [
-     "c1b64fff-c711-48a8-912d-927000b0e8cd",
-     "15ef1d5b-61ba-42fd-95bb-0811c13d131e",
-     "b76d9a6d-2580-4572-89e9-bdebbf572748",
-     "1a7a05fe-eb13-410b-b80b-5ad18d8025a0"
+     "f2cf481c-090a-4cd4-b6cb-0a05c659197d",
+     "ea3bdae8-891a-4ad8-919c-43ca212ecf54",
+     "2731473c-81b0-4f55-91aa-eb130b7fc29d",
+     "8cf5f742-a27c-47e3-b5e6-849c01fbeab7"
     ],
     "file_issue_count": 5,
     "category_prevalence": 51,
@@ -4543,7 +4543,7 @@
    }
   },
   {
-   "id": "3f916243-895c-4370-ab51-0e999c7bbff2",
+   "id": "dbf3c4e7-b90a-4e9a-89ab-a10c5a9ce74c",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -4576,11 +4576,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901344",
+   "timestamp": "2026-11-28T19:31:45.381035",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -4588,10 +4588,10 @@
     ],
     "critical_function_count": 1,
     "cross_references": [
-     "4b54fe2b-5c90-4de5-a9af-704d8dba90d4",
-     "5fc7b4ea-6e6a-4b58-a36e-36c96a8857ff",
-     "a7ff857d-cb8a-4879-ba4d-d892ab9785cc",
-     "f97ba42e-6a42-4eef-aeb8-63d565d2c69f"
+     "387322b1-805c-47e3-8336-2d0cc7a1aa7f",
+     "eae52e76-9a35-4939-81cb-6e8e52df9324",
+     "949fb799-29ed-4c3b-a2cf-d65a99a9ff70",
+     "23073a5f-1040-4aff-8740-c4561ea2b054"
     ],
     "file_issue_count": 5,
     "category_prevalence": 51,
@@ -4600,7 +4600,7 @@
    }
   },
   {
-   "id": "2dbe72bf-3338-43ca-807a-91c23c10bed7",
+   "id": "519282c0-29e2-4eee-9aaa-93ad90e55b6e",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -4633,11 +4633,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901380",
+   "timestamp": "2026-11-28T19:31:45.381066",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -4645,9 +4645,9 @@
     ],
     "critical_function_count": 1,
     "cross_references": [
-     "ef8d3f90-8552-4ad6-ac1c-e2390db685de",
-     "39324827-8d26-4a96-9ba3-b7b1af68d67b",
-     "8f047c9d-064e-444f-a289-88059e47f231"
+     "46c71088-f81a-4d62-bb06-8a4e1e201f25",
+     "ad2ccd8a-0154-40c4-a07e-ff4e9699fc12",
+     "efac499f-f0fe-4500-8407-06a2f008f7d6"
     ],
     "file_issue_count": 4,
     "category_prevalence": 51,
@@ -4656,7 +4656,7 @@
    }
   },
   {
-   "id": "93087569-69ff-4a64-bd78-57ae64b73da6",
+   "id": "afe98f12-8375-4c7d-8412-d7443e130962",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -4689,11 +4689,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901385",
+   "timestamp": "2026-11-28T19:31:45.381071",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -4701,9 +4701,9 @@
     ],
     "critical_function_count": 1,
     "cross_references": [
-     "aa7ea8a6-081f-4b34-9f7e-4e306071ae1a",
-     "92260ffa-776e-4d41-92a8-40f0bf1ea3c9",
-     "03f37beb-4bdf-44fe-941a-740e77daf63c"
+     "9b03532a-21e2-4fd3-b433-f75cda645013",
+     "9e366354-91cc-461f-89d4-064420a10b63",
+     "43ec676f-e795-45de-9019-151a7a827af7"
     ],
     "file_issue_count": 4,
     "category_prevalence": 51,
@@ -4712,7 +4712,7 @@
    }
   },
   {
-   "id": "c02d025a-51a6-476c-8f56-f9bc0d4e7d7b",
+   "id": "29b864d4-d293-4c2a-b630-5ca1e0a2364d",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -4745,11 +4745,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901390",
+   "timestamp": "2026-11-28T19:31:45.381077",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -4757,9 +4757,9 @@
     ],
     "critical_function_count": 1,
     "cross_references": [
-     "ba10aacc-a59e-4ebd-9caf-0c07081f05bf",
-     "2473f87e-4888-4c37-80c6-6510110d43e0",
-     "621528aa-4fb0-476d-ae92-488f8af7bc75"
+     "68ec4b7f-4f3a-4817-8682-6958f7d500bc",
+     "1a57e427-79d2-488d-8685-a845988111f6",
+     "52413fb4-6581-4eba-80b9-92f6c3451399"
     ],
     "file_issue_count": 4,
     "category_prevalence": 51,
@@ -4768,7 +4768,7 @@
    }
   },
   {
-   "id": "d3e91f72-3afb-403a-a0a7-0f02b2bc05ff",
+   "id": "7f323b13-a02a-4124-addf-05eaa2b69321",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -4801,11 +4801,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901396",
+   "timestamp": "2026-11-28T19:31:45.381082",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -4813,9 +4813,9 @@
     ],
     "critical_function_count": 1,
     "cross_references": [
-     "4cfd5078-c486-41bd-ac5c-eb2575867ef5",
-     "0103ae87-000f-4f3a-b0a5-0b92b172a43e",
-     "4af072d7-03e9-472b-8f98-b39aa1365de8"
+     "62c561d7-0e74-4c3a-a331-b3b8e23b0b48",
+     "cb192cef-1e9c-4495-a9ea-e25ac91d5c79",
+     "f21e50cb-21c2-41e7-bff4-8a418dd156d9"
     ],
     "file_issue_count": 4,
     "category_prevalence": 51,
@@ -4824,7 +4824,7 @@
    }
   },
   {
-   "id": "5afaf2d1-23d9-48ba-b2ad-2436d8fee81c",
+   "id": "18df638d-7e5b-4adc-b31b-672448c16329",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -4857,11 +4857,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901401",
+   "timestamp": "2026-11-28T19:31:45.381088",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -4869,9 +4869,9 @@
     ],
     "critical_function_count": 1,
     "cross_references": [
-     "d30153df-0d33-4242-a432-0bab2706a4c4",
-     "2555125f-ccba-4ff2-bd7d-886439c2826e",
-     "61531158-e219-4c97-85ff-66931766a292"
+     "e48bb2e2-aa7e-46ac-9658-2b971e245846",
+     "e0a24dd3-5ab7-4c2f-bec8-0af98c9f5b9c",
+     "b2ec0db5-9c1b-48e2-9875-3c2fe119f687"
     ],
     "file_issue_count": 4,
     "category_prevalence": 51,
@@ -4880,7 +4880,7 @@
    }
   },
   {
-   "id": "7bf648a4-0664-49f9-8b98-9889e977ac61",
+   "id": "a205b1c4-28d7-40a9-894f-e4dd87912f9d",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -4913,11 +4913,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901407",
+   "timestamp": "2026-11-28T19:31:45.381093",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -4925,9 +4925,9 @@
     ],
     "critical_function_count": 1,
     "cross_references": [
-     "245ca1fe-6ee0-4a5f-b148-cf5a00748f3e",
-     "743b8227-7cea-41b9-b8f2-d571f0b1e459",
-     "23beecd6-047d-4bd1-8ff1-e1efa8f3b320"
+     "7934f8d7-8ad3-4d67-b335-f0cab3717237",
+     "3e066001-838d-4d18-8296-2651554f23a9",
+     "553c73fe-7b1e-4022-98ea-5ead73525310"
     ],
     "file_issue_count": 4,
     "category_prevalence": 51,
@@ -4936,7 +4936,7 @@
    }
   },
   {
-   "id": "08439b34-c366-4891-bda2-ffb6b2bad122",
+   "id": "bc9d5bc2-afca-486e-88af-116976b7b97a",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -4969,11 +4969,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901422",
+   "timestamp": "2026-11-28T19:31:45.381105",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -4987,7 +4987,7 @@
    }
   },
   {
-   "id": "0453f89e-2f75-491d-af4d-212acb36707a",
+   "id": "c1e0ac49-453b-4306-b53c-bbd58ff8ddb7",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 3 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -5024,11 +5024,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901430",
+   "timestamp": "2026-11-28T19:31:45.381113",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -5038,9 +5038,9 @@
     ],
     "critical_function_count": 3,
     "cross_references": [
-     "3122e97a-b88e-43c5-9bc5-0b898af1d68c",
-     "db0dd3bb-9f95-4798-901d-3dd291ab4bc3",
-     "958e4888-c7a4-4909-8d30-027125cd0c31"
+     "3d41ff98-15fc-47e4-9b40-1e13cd4bf4c5",
+     "6ad77577-ae31-4c06-8d22-576c395de242",
+     "20852e3b-1cfb-4288-b8a2-46e838fa3258"
     ],
     "file_issue_count": 4,
     "category_prevalence": 51,
@@ -5049,7 +5049,7 @@
    }
   },
   {
-   "id": "51bcba2c-b3bb-46b0-ae79-1b5edde6dd73",
+   "id": "b1854b1a-21f2-482e-8aba-84f63bd9e99f",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 3 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -5086,11 +5086,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901435",
+   "timestamp": "2026-11-28T19:31:45.381118",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -5100,9 +5100,9 @@
     ],
     "critical_function_count": 3,
     "cross_references": [
-     "7d10de0c-3f4c-464c-9064-cc982e97cb8f",
-     "9cbf32e3-0ca1-4108-b1d2-62ae8903b1dc",
-     "57414910-013a-4fa5-94e0-780bbb892315"
+     "66572849-c7f1-4210-a7b6-cff49bf93dbc",
+     "39a87fb5-9b6e-4e6d-b69c-1c6dcf4cd690",
+     "ed238997-01f6-4b14-b236-ac4a26e32a13"
     ],
     "file_issue_count": 4,
     "category_prevalence": 51,
@@ -5111,7 +5111,7 @@
    }
   },
   {
-   "id": "48249d23-3e3d-4709-a43e-bbb507594998",
+   "id": "2419d5ea-347d-4440-a96f-06cb0929b725",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 2 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -5146,11 +5146,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901441",
+   "timestamp": "2026-11-28T19:31:45.381123",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -5159,9 +5159,9 @@
     ],
     "critical_function_count": 2,
     "cross_references": [
-     "e46d907c-1610-4598-9733-6a1ec0c92eac",
-     "f7fc366e-0c9f-4ea6-a883-9b7cfa798f8d",
-     "419581ab-6549-4415-8e26-e7d0917e0000"
+     "93890d21-e89a-4454-9ae3-68a626d4865a",
+     "84434106-ec0c-444c-a182-a666fbccb104",
+     "6f0e79c6-0b65-452e-8571-f1688b2b40f2"
     ],
     "file_issue_count": 4,
     "category_prevalence": 51,
@@ -5170,7 +5170,7 @@
    }
   },
   {
-   "id": "a0bed561-9cbf-4d1f-8c86-c0ddb7246f4d",
+   "id": "fd778356-b61b-4491-9238-19175f8c7e87",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 2 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -5205,11 +5205,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901446",
+   "timestamp": "2026-11-28T19:31:45.381128",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -5218,9 +5218,9 @@
     ],
     "critical_function_count": 2,
     "cross_references": [
-     "5f38444a-ff13-481d-987f-4a3b773f8ad8",
-     "759580fd-6016-4933-9ca4-50db35ce3211",
-     "efbf4d8c-0eda-4b46-a62d-96deda544cba"
+     "9bff853d-09f1-4472-8ed7-fd694ae227e6",
+     "da0c581e-06b5-4779-88af-c89da7cf7ae3",
+     "c201c65e-dd88-48d8-b2f5-6699d4f1c550"
     ],
     "file_issue_count": 4,
     "category_prevalence": 51,
@@ -5229,7 +5229,7 @@
    }
   },
   {
-   "id": "53a3b34f-ca26-45ae-a561-e102f0b38704",
+   "id": "c5639750-acb7-47ee-b8f7-e11ab015b066",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -5262,11 +5262,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901454",
+   "timestamp": "2026-11-28T19:31:45.381136",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -5280,7 +5280,7 @@
    }
   },
   {
-   "id": "d8d2c3b7-d02f-4cb1-9292-9957e7dce2e8",
+   "id": "ad72584e-f410-40ea-b4c1-6f43ae3ac8c9",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -5313,11 +5313,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901460",
+   "timestamp": "2026-11-28T19:31:45.381141",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -5325,10 +5325,10 @@
     ],
     "critical_function_count": 1,
     "cross_references": [
-     "8d9afab6-ae57-47a4-bfb2-c10e298ec9a9",
-     "7f44a05e-051a-4920-bc2d-d0b524dfe1e5",
-     "f42a5521-0265-48b4-815a-00e07dc650fb",
-     "9b8899e1-7f05-4e56-8ccb-19ec3a1e9e39"
+     "84c2f448-7449-4816-8ab2-71c29b23faf5",
+     "cdf50a32-0e51-4dc3-a782-4d5aff00ddca",
+     "3c4c0bbb-f686-4270-828f-37878df03589",
+     "970b3939-96fd-4b1f-a94b-46f76685408d"
     ],
     "file_issue_count": 5,
     "category_prevalence": 51,
@@ -5337,7 +5337,7 @@
    }
   },
   {
-   "id": "d56884ee-cbe5-45a3-9156-b55566f88d1d",
+   "id": "f0d3a7d1-fb3a-4e9f-9843-8cd0b5cec33e",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -5370,11 +5370,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901465",
+   "timestamp": "2026-11-28T19:31:45.381147",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -5382,10 +5382,10 @@
     ],
     "critical_function_count": 1,
     "cross_references": [
-     "ecb7d555-50fe-4ac0-8a7e-e87a1db5dc51",
-     "b3a8611a-1fa0-4084-9a5c-219d5f5cd23c",
-     "e962a3dc-094a-4051-957b-21c9a0318c44",
-     "71686f0c-6c47-4d24-959e-345bc774667d"
+     "cf9e6a95-f32f-4244-a836-2b37e531f607",
+     "c25c8ab0-9f98-4c94-9f9f-6baa85a76373",
+     "75c2842a-d467-49e3-9c1a-ac79d850e2f6",
+     "a6dfccec-8030-4549-870a-28178713dbb1"
     ],
     "file_issue_count": 5,
     "category_prevalence": 51,
@@ -5394,7 +5394,7 @@
    }
   },
   {
-   "id": "d4c521ea-0780-4328-9a5d-a1adeb10af5c",
+   "id": "28a78897-d7a2-401d-aee5-d7b31f98335b",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -5427,11 +5427,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901470",
+   "timestamp": "2026-11-28T19:31:45.381152",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -5445,7 +5445,7 @@
    }
   },
   {
-   "id": "08d43da4-6d40-45f0-9c93-4a6a614b376d",
+   "id": "4cd1d909-d842-4d22-ba4d-4c72072732c0",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -5478,11 +5478,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901475",
+   "timestamp": "2026-11-28T19:31:45.381157",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -5490,10 +5490,10 @@
     ],
     "critical_function_count": 1,
     "cross_references": [
-     "e46f4ee5-689c-4467-8fcc-4b3024210282",
-     "541d7445-7d5d-4a29-8ba2-865742aee843",
-     "7377e63a-a4ec-4c76-b450-39182e5df74f",
-     "09cbf655-ab47-4980-9a5a-eccaaec25586"
+     "5f230d25-b458-42b9-a4bf-68a7791961a8",
+     "b729fd25-aa8a-4e50-befd-d0858a6bafc7",
+     "17a06230-a842-476d-84be-3c62d6062334",
+     "e0f2a1ba-dbb3-46d0-bab2-e3bf8ff74855"
     ],
     "file_issue_count": 5,
     "category_prevalence": 51,
@@ -5502,7 +5502,7 @@
    }
   },
   {
-   "id": "9707ed0c-881a-4014-b7cf-5534f68abda1",
+   "id": "89e8a060-c216-4fcf-8d38-51f93a45f3e9",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -5535,11 +5535,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901481",
+   "timestamp": "2026-11-28T19:31:45.381162",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -5547,10 +5547,10 @@
     ],
     "critical_function_count": 1,
     "cross_references": [
-     "0d67a918-85f9-4bb0-8543-27c45618bece",
-     "9ae290db-b1b0-438f-aa42-b75ac9678a02",
-     "7325bec9-1343-4e8e-9297-e097be2809b9",
-     "1e40cc63-2727-4763-bdde-26d8fa5de2b3"
+     "84bca483-8458-4881-abf5-cb9949486967",
+     "06d4819f-6b27-4990-a7a4-45e789acd794",
+     "8b178802-c43b-4be8-9871-61d5e8a9ccc1",
+     "3ed7e00e-1d20-4d89-b9c5-b716d9c73326"
     ],
     "file_issue_count": 5,
     "category_prevalence": 51,
@@ -5559,7 +5559,7 @@
    }
   },
   {
-   "id": "87e7c663-27ab-42f2-b95b-f7873389c13d",
+   "id": "3f1368c7-cc1c-4bb1-88a5-21d7f2c923e3",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -5592,11 +5592,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901489",
+   "timestamp": "2026-11-28T19:31:45.381171",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -5610,7 +5610,7 @@
    }
   },
   {
-   "id": "219090c9-8aba-45b0-949e-6abd34d4eaae",
+   "id": "9df823e2-43ff-4ece-9506-ec5f463c179a",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -5643,11 +5643,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901502",
+   "timestamp": "2026-11-28T19:31:45.381183",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -5655,10 +5655,10 @@
     ],
     "critical_function_count": 1,
     "cross_references": [
-     "02e8c0a1-0850-43d1-9618-ba2ff7b81a6b",
-     "07851483-8a8f-4982-893a-7e1a481efe4a",
-     "d0d113b1-342c-47e3-b15a-cd4e42c22c81",
-     "e5b56bc0-e849-4ad3-ab49-3c425d25ced7"
+     "00a5f890-95a2-4701-93ab-1f8129618982",
+     "dd975b5e-2716-434c-837b-14bf47ea8a17",
+     "1dd69cb9-7251-4f68-bc87-bed2b6a2d0c8",
+     "3e0dcf63-ae99-4f3b-a842-095219a677a6"
     ],
     "file_issue_count": 5,
     "category_prevalence": 51,
@@ -5667,7 +5667,7 @@
    }
   },
   {
-   "id": "97ef2c98-1723-4c2c-9fc4-56a34b72bc83",
+   "id": "f0f9fd40-a6e1-47ba-affb-a202be40e65d",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 2 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -5702,11 +5702,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901513",
+   "timestamp": "2026-11-28T19:31:45.381196",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -5721,7 +5721,7 @@
    }
   },
   {
-   "id": "3f0fac58-03c2-4f1b-9f1d-b2d31cda10bb",
+   "id": "ef0ced6a-9af4-49f4-9b01-2053d08bcbd5",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 5 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -5762,11 +5762,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901536",
+   "timestamp": "2026-11-28T19:31:45.381217",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -5784,7 +5784,7 @@
    }
   },
   {
-   "id": "8bed6a22-e8e1-45f9-993a-aec1fb3c8b92",
+   "id": "5719fafc-431c-4253-aad0-39445326c92b",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -5817,11 +5817,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901568",
+   "timestamp": "2026-11-28T19:31:45.381246",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -5835,7 +5835,7 @@
    }
   },
   {
-   "id": "8f0ca494-c120-4bf4-81cf-d5215cc2750e",
+   "id": "6b20dfee-ba18-423e-b0b1-40ee0b04a22b",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -5868,11 +5868,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901574",
+   "timestamp": "2026-11-28T19:31:45.381252",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -5886,7 +5886,7 @@
    }
   },
   {
-   "id": "22de8ec4-0b18-4120-be1e-33a0e7ed834f",
+   "id": "94d6195e-486b-43da-9fb0-49615addcfa7",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -5919,11 +5919,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901586",
+   "timestamp": "2026-11-28T19:31:45.381266",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -5937,7 +5937,7 @@
    }
   },
   {
-   "id": "ad03597e-c8fd-4aef-abff-6ee2dfc6d450",
+   "id": "8272eb0e-48a2-4972-b5fe-e358af4bd42d",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 7 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -5982,11 +5982,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901591",
+   "timestamp": "2026-11-28T19:31:45.381271",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -6006,7 +6006,7 @@
    }
   },
   {
-   "id": "9f8cdc74-8516-42f8-a6e9-7472bd5e1d82",
+   "id": "9e8a3814-a55b-466d-9249-28d9d776c29b",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 3 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -6043,11 +6043,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901597",
+   "timestamp": "2026-11-28T19:31:45.381277",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -6063,7 +6063,7 @@
    }
   },
   {
-   "id": "c0696189-3996-43f2-8000-e2412346a240",
+   "id": "bce51fa3-d286-4b5c-bea8-27b05691814e",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -6096,11 +6096,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901613",
+   "timestamp": "2026-11-28T19:31:45.381293",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -6114,7 +6114,7 @@
    }
   },
   {
-   "id": "3b3002b1-9177-4958-85cd-c5099f24096b",
+   "id": "2e5db595-ad81-410d-ba74-63e9be0d8e6b",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -6147,11 +6147,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901628",
+   "timestamp": "2026-11-28T19:31:45.381308",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -6165,7 +6165,7 @@
    }
   },
   {
-   "id": "e8a3480d-c5e3-48f7-8d89-587e40dfcf9b",
+   "id": "05ccdb11-7726-44c5-b144-52d7452a18a4",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 1 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -6198,11 +6198,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901633",
+   "timestamp": "2026-11-28T19:31:45.381312",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -6216,7 +6216,7 @@
    }
   },
   {
-   "id": "2fa41855-3c86-48f4-9b47-23cf8869dc8b",
+   "id": "fda73a7b-4124-4b5f-87af-85e9818e08b5",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 2 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -6251,11 +6251,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901638",
+   "timestamp": "2026-11-28T19:31:45.381317",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -6270,7 +6270,7 @@
    }
   },
   {
-   "id": "7892878b-df3d-4e95-a858-5adeb868e2a8",
+   "id": "3c2860f3-21e9-4032-bd1f-c5d92d2a127a",
    "title": "Critical Functions Missing Logging",
    "description": "Critical functions without logging: 3 ",
    "details": "Critical Function are those functions which have error, exception, process, validate, authenticate, authorize, handle type names or function contain try-except block or contains raise, error, exceptions.",
@@ -6307,11 +6307,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "observability",
-   "timestamp": "2026-11-26T23:09:20.901643",
+   "timestamp": "2026-11-28T19:31:45.381322",
    "tags": [
+    "critical_functions",
     "error_handling",
-    "logging",
-    "critical_functions"
+    "logging"
    ],
    "extra_data": {
     "critical_functions": [
@@ -6327,7 +6327,7 @@
    }
   },
   {
-   "id": "ed64d6ba-931a-4b42-866c-3cdad7b7e9b7",
+   "id": "3e705f85-3435-4ab4-a02c-b8acc566b36a",
    "title": "Function is too complex",
    "description": "`constructor` has a cyclomatic complexity of 19 (limit 10)",
    "details": null,
@@ -6353,7 +6353,7 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.684317",
+   "timestamp": "2026-11-28T19:31:45.163411",
    "tags": [
     "javascript",
     "complexity",
@@ -6368,7 +6368,7 @@
    }
   },
   {
-   "id": "3038b2c6-697c-44ab-9967-1951a62f37df",
+   "id": "1be94945-3f27-4582-935c-ea1d94839831",
    "title": "Empty catch block",
    "description": "The catch block is empty",
    "details": null,
@@ -6394,7 +6394,7 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "robustness",
-   "timestamp": "2026-11-26T23:08:03.009446",
+   "timestamp": "2026-11-28T19:30:28.891515",
    "tags": [
     "javascript",
     "error_handling",
@@ -6404,10 +6404,10 @@
     "language": "javascript",
     "priority_score": 59.0,
     "cross_references": [
-     "8c170fe9-d1c5-4247-a8bc-ce9d12d8a0f5",
-     "9037858c-e266-4356-8f64-0fce764c4a0d",
-     "6cfff142-3491-4780-89af-6ca0d70103e2",
-     "c12698a5-a14e-45a8-8d2e-61353a2db564"
+     "6d0b72b2-937f-49a8-97df-47cec2f06720",
+     "6974daa4-c8ec-43bc-aa4b-4df74c3b1510",
+     "8e3e9f48-d7d4-41f4-9753-53b702a83233",
+     "41f669e0-28f1-4364-860b-23bedb526979"
     ],
     "file_issue_count": 5,
     "category_prevalence": 1173,
@@ -6415,7 +6415,7 @@
    }
   },
   {
-   "id": "af12e578-23ba-4137-a4c2-c24f264ed5e4",
+   "id": "95530228-fc75-42a2-90ea-75b39bdc8cd6",
    "title": "Too Many Function Arguments",
    "description": "Too many arguments in function definition (6 > 5)",
    "details": "This function has too many arguments.",
@@ -6441,11 +6441,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:09:34.213016",
+   "timestamp": "2026-11-28T19:31:58.523804",
    "tags": [
     "readability",
-    "clarity",
-    "ruff"
+    "ruff",
+    "clarity"
    ],
    "extra_data": {
     "ruff_rule_id": "PLR0913",
@@ -6457,7 +6457,7 @@
    }
   },
   {
-   "id": "0441a50c-f5cd-4dc9-89cd-23a8570429aa",
+   "id": "96f3ff99-3193-4b56-bed8-cd7bd235bf9b",
    "title": "Too Many Function Arguments",
    "description": "Too Many Function Arguments",
    "details": "This function has too many arguments.",
@@ -6504,11 +6504,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:09:34.213484",
+   "timestamp": "2026-11-28T19:31:58.524277",
    "tags": [
     "readability",
-    "clarity",
-    "ruff"
+    "ruff",
+    "clarity"
    ],
    "extra_data": {
     "ruff_rule_id": "PLR0913",
@@ -6520,7 +6520,7 @@
    }
   },
   {
-   "id": "3a44b051-9115-401c-a65b-b25642c69423",
+   "id": "15c6d431-4e87-4373-9d9a-c627979e5c89",
    "title": "Too Many Function Arguments",
    "description": "Too Many Function Arguments",
    "details": "This function has too many arguments.",
@@ -6575,11 +6575,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:09:34.213538",
+   "timestamp": "2026-11-28T19:31:58.524327",
    "tags": [
     "readability",
-    "clarity",
-    "ruff"
+    "ruff",
+    "clarity"
    ],
    "extra_data": {
     "ruff_rule_id": "PLR0913",
@@ -6591,7 +6591,7 @@
    }
   },
   {
-   "id": "183557fa-653a-435a-bb2a-3a299e33cbc0",
+   "id": "eaa4d77e-9507-4f2b-8149-31905eba4ee3",
    "title": "Too Many Function Arguments",
    "description": "Too Many Function Arguments",
    "details": "This function has too many arguments.",
@@ -6658,20 +6658,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:09:34.213743",
+   "timestamp": "2026-11-28T19:31:58.524539",
    "tags": [
     "readability",
-    "clarity",
-    "ruff"
+    "ruff",
+    "clarity"
    ],
    "extra_data": {
     "ruff_rule_id": "PLR0913",
     "readability_category": "clarity",
     "cross_references": [
-     "2e9042ab-4a1c-49d1-a822-45d0fc9b5283",
-     "e76380c5-5bd3-492a-9ebb-7fb85cc184ba",
-     "cd7cfc39-32b6-4603-905d-5c268885bf0a",
-     "94ebf385-392c-4d33-9a23-318fc63af533"
+     "8826cad9-b678-430f-8e29-6a82c2204fd9",
+     "9fa7a035-f0d0-4993-8adf-97bf6a54e04c",
+     "2c6cd93f-ec83-415a-9a42-69190c80c170",
+     "61ce5e58-9b16-42f9-b79f-295c44fdbbf9"
     ],
     "file_issue_count": 11,
     "category_prevalence": 1173,
@@ -6680,7 +6680,7 @@
    }
   },
   {
-   "id": "b64fde13-50f2-4d03-b7f3-13136910b021",
+   "id": "8a2c9165-7f7f-466a-b9db-2ba7e74125b6",
    "title": "Too Many Function Arguments",
    "description": "Too Many Function Arguments",
    "details": "This function has too many arguments.",
@@ -6715,19 +6715,19 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:09:34.213898",
+   "timestamp": "2026-11-28T19:31:58.524690",
    "tags": [
     "readability",
-    "clarity",
-    "ruff"
+    "ruff",
+    "clarity"
    ],
    "extra_data": {
     "ruff_rule_id": "PLR0913",
     "readability_category": "clarity",
     "cross_references": [
-     "e0f6c06f-3ab9-40f0-b2d0-ece07c9974c1",
-     "d888cf57-e38a-44e5-83d2-d5b3c920b3fc",
-     "0c791085-b7d9-474a-b55b-e8bc9d2eb2cd"
+     "eb09cf96-ca97-402d-9c04-4891a7797834",
+     "a9a2cf15-1ce9-4ecd-872c-d2376c6560ca",
+     "2714f454-9cf7-4136-a2ac-f81dd9642e47"
     ],
     "file_issue_count": 4,
     "category_prevalence": 1173,
@@ -6736,7 +6736,7 @@
    }
   },
   {
-   "id": "b6fef1f0-951d-45a2-87db-141092306990",
+   "id": "615b6dd8-9fec-4195-84b0-01f1e0edd885",
    "title": "Too Many Function Arguments",
    "description": "Too many arguments in function definition (14 > 5)",
    "details": "This function has too many arguments.",
@@ -6762,21 +6762,21 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:09:34.213990",
+   "timestamp": "2026-11-28T19:31:58.524788",
    "tags": [
     "readability",
-    "clarity",
-    "ruff"
+    "ruff",
+    "clarity"
    ],
    "extra_data": {
     "ruff_rule_id": "PLR0913",
     "readability_category": "clarity",
     "cross_references": [
-     "eec86d29-49f9-460a-9c21-fd38b0f3f4ce",
-     "ac00e601-d61d-4316-8553-7a5763cf2e18",
-     "afd227f0-4bb8-442d-8e35-d2711402cc2d",
-     "d4467d12-5827-4a23-8f0e-5f1848d570a2",
-     "aafe770a-9728-4212-ac7a-60641b26656a"
+     "7e411c07-6a12-4624-bfa8-4383593f0d8d",
+     "270cf6cd-693b-4330-ad3c-fe01e0de92b6",
+     "c2dfc0c4-0d29-429d-a5aa-ce3ef0a8f4d2",
+     "da35b9b9-81e2-42c1-acf0-bc6e44c18561",
+     "c24b0c71-f294-43e8-8229-ccf7a14bc7d6"
     ],
     "file_issue_count": 8,
     "category_prevalence": 1173,
@@ -6785,7 +6785,7 @@
    }
   },
   {
-   "id": "ff1f44d8-cb1d-4bc5-8795-2900aa5e9021",
+   "id": "63b49eb6-8e93-4ddb-b39a-cc63b00e8cc0",
    "title": "Too Many Function Arguments",
    "description": "Too Many Function Arguments",
    "details": "This function has too many arguments.",
@@ -6820,20 +6820,20 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:09:34.214013",
+   "timestamp": "2026-11-28T19:31:58.524812",
    "tags": [
     "readability",
-    "clarity",
-    "ruff"
+    "ruff",
+    "clarity"
    ],
    "extra_data": {
     "ruff_rule_id": "PLR0913",
     "readability_category": "clarity",
     "cross_references": [
-     "0b1f3d6a-2ec9-4f2f-b42e-97cee50b7e70",
-     "f1d6d911-869a-47d2-b7e1-3b57cf96fb47",
-     "43488c34-5713-40c3-af13-6b2159b4f9e2",
-     "c930e3cc-c1c8-449d-b026-2b17ac7db5b6"
+     "8e4e29fb-113e-4ad9-8068-c371c6e63a51",
+     "dd285196-5886-4db6-82f7-ad6a73f32caa",
+     "1af6a8f3-7764-4bae-84fa-52100c3fee71",
+     "e0a761b0-8692-40d9-b60a-5e296a61672f"
     ],
     "file_issue_count": 17,
     "category_prevalence": 1173,
@@ -6842,7 +6842,7 @@
    }
   },
   {
-   "id": "9ca2b4f4-e022-4cb0-b58b-a9c3fe798c6e",
+   "id": "950199b2-8479-44ef-9d07-496b8cbf4e44",
    "title": "Too Many Function Arguments",
    "description": "Too many arguments in function definition (7 > 5)",
    "details": "This function has too many arguments.",
@@ -6868,11 +6868,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:09:34.214780",
+   "timestamp": "2026-11-28T19:31:58.525584",
    "tags": [
     "readability",
-    "clarity",
-    "ruff"
+    "ruff",
+    "clarity"
    ],
    "extra_data": {
     "ruff_rule_id": "PLR0913",
@@ -6884,7 +6884,7 @@
    }
   },
   {
-   "id": "587daab0-1ed9-4813-9bea-3acca6b620d9",
+   "id": "5882efa0-2e5c-43da-aac4-915d7d836a5d",
    "title": "Too Many Function Arguments",
    "description": "Too Many Function Arguments",
    "details": "This function has too many arguments.",
@@ -6919,11 +6919,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:09:34.215051",
+   "timestamp": "2026-11-28T19:31:58.525861",
    "tags": [
     "readability",
-    "clarity",
-    "ruff"
+    "ruff",
+    "clarity"
    ],
    "extra_data": {
     "ruff_rule_id": "PLR0913",
@@ -6935,7 +6935,7 @@
    }
   },
   {
-   "id": "2cc52595-9065-4a49-8356-86c888ef299c",
+   "id": "d8808929-93cc-455b-9f82-752ada27b5b6",
    "title": "Too Many Function Arguments",
    "description": "Too many arguments in function definition (7 > 5)",
    "details": "This function has too many arguments.",
@@ -6961,11 +6961,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:09:34.215567",
+   "timestamp": "2026-11-28T19:31:58.526383",
    "tags": [
     "readability",
-    "clarity",
-    "ruff"
+    "ruff",
+    "clarity"
    ],
    "extra_data": {
     "ruff_rule_id": "PLR0913",
@@ -6977,7 +6977,7 @@
    }
   },
   {
-   "id": "52d3bad7-d971-4520-af2b-0254e69090e0",
+   "id": "0f9b0acf-45e0-4bee-94ed-f7e5385c0dae",
    "title": "Too Many Function Arguments",
    "description": "Too many arguments in function definition (6 > 5)",
    "details": "This function has too many arguments.",
@@ -7003,21 +7003,21 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:09:34.221775",
+   "timestamp": "2026-11-28T19:31:58.532631",
    "tags": [
     "readability",
-    "clarity",
-    "ruff"
+    "ruff",
+    "clarity"
    ],
    "extra_data": {
     "ruff_rule_id": "PLR0913",
     "readability_category": "clarity",
     "cross_references": [
-     "98d93c6d-ca89-490e-9414-5e48cf3ac270",
-     "b52cf9c1-cd82-40a6-af64-8a1bf5d586b4",
-     "6cae9861-5769-4c50-bc24-ca381bbdf1a5",
-     "1a5c5729-1dfe-4d4a-9d08-61beac691ea7",
-     "ae182a50-511b-49bd-a523-31114afeeb12"
+     "49311077-45a6-46e1-87d2-9f1d07d705c8",
+     "73648a36-1836-49bf-b2f2-70da0701561a",
+     "9e9eea5e-d0bd-436c-ad51-3e1561db0a83",
+     "aaaadf00-6e85-4c27-b463-3084c0743cdd",
+     "e1eb38b1-1c49-4397-9e44-0b0b002d0c5b"
     ],
     "file_issue_count": 6,
     "category_prevalence": 1173,
@@ -7026,7 +7026,7 @@
    }
   },
   {
-   "id": "d0c30cc0-0bbf-4a3e-8dc6-a2f25b3a12fd",
+   "id": "fc8e1c35-076a-4c7f-8db4-4388319928d0",
    "title": "Too Many Function Arguments",
    "description": "Too many arguments in function definition (9 > 5)",
    "details": "This function has too many arguments.",
@@ -7052,19 +7052,19 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:09:34.213636",
+   "timestamp": "2026-11-28T19:31:58.524435",
    "tags": [
     "readability",
-    "clarity",
-    "ruff"
+    "ruff",
+    "clarity"
    ],
    "extra_data": {
     "ruff_rule_id": "PLR0913",
     "readability_category": "clarity",
     "cross_references": [
-     "2e9a3ffa-f9b4-4846-98c9-5917118b44ec",
-     "26f057fd-5e32-4b26-a0b8-811cc347eca6",
-     "d3f2b1a1-3c6f-4fb1-9fc8-b6d9dcfd6bc7"
+     "d2f1ecdf-6f9a-412a-a1c8-bbb6eb740a91",
+     "773c277c-4c2b-427d-92c3-0613e0692b44",
+     "922bf028-2e21-4b31-a336-0a718f765137"
     ],
     "file_issue_count": 4,
     "category_prevalence": 1173,
@@ -7073,7 +7073,7 @@
    }
   },
   {
-   "id": "1626cb2f-69f9-4a78-ad98-5723bbf8d4dd",
+   "id": "406a27d3-4db6-4ba0-9aa6-c4af5074911c",
    "title": "Too Many Function Arguments",
    "description": "Too many arguments in function definition (6 > 5)",
    "details": "This function has too many arguments.",
@@ -7099,11 +7099,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:09:34.213706",
+   "timestamp": "2026-11-28T19:31:58.524502",
    "tags": [
     "readability",
-    "clarity",
-    "ruff"
+    "ruff",
+    "clarity"
    ],
    "extra_data": {
     "ruff_rule_id": "PLR0913",
@@ -7115,7 +7115,7 @@
    }
   },
   {
-   "id": "efad4f4a-028b-45bb-a30a-524bac7c4aa3",
+   "id": "2e35dea0-63d7-4788-9652-d222c7885362",
    "title": "Too Many Function Arguments",
    "description": "Too Many Function Arguments",
    "details": "This function has too many arguments.",
@@ -7160,11 +7160,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:09:34.213837",
+   "timestamp": "2026-11-28T19:31:58.524630",
    "tags": [
     "readability",
-    "clarity",
-    "ruff"
+    "ruff",
+    "clarity"
    ],
    "extra_data": {
     "ruff_rule_id": "PLR0913",
@@ -7176,7 +7176,7 @@
    }
   },
   {
-   "id": "e536e80a-d886-4900-bf9e-0af772f62d17",
+   "id": "d5ecc15e-1b70-4ebc-b952-4fa1ea8435f0",
    "title": "Too Many Function Arguments",
    "description": "Too many arguments in function definition (8 > 5)",
    "details": "This function has too many arguments.",
@@ -7202,11 +7202,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:09:34.213957",
+   "timestamp": "2026-11-28T19:31:58.524755",
    "tags": [
     "readability",
-    "clarity",
-    "ruff"
+    "ruff",
+    "clarity"
    ],
    "extra_data": {
     "ruff_rule_id": "PLR0913",
@@ -7218,7 +7218,7 @@
    }
   },
   {
-   "id": "2653f368-4a96-42c2-9fb4-84d2b488d125",
+   "id": "84348a2b-ab5d-4f65-9c5f-ea1912ad4fb5",
    "title": "Too Many Function Arguments",
    "description": "Too Many Function Arguments",
    "details": "This function has too many arguments.",
@@ -7257,11 +7257,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:09:34.214091",
+   "timestamp": "2026-11-28T19:31:58.524886",
    "tags": [
     "readability",
-    "clarity",
-    "ruff"
+    "ruff",
+    "clarity"
    ],
    "extra_data": {
     "ruff_rule_id": "PLR0913",
@@ -7273,7 +7273,7 @@
    }
   },
   {
-   "id": "984881dc-6607-4f6b-a852-1986d9b6589e",
+   "id": "5aa1677b-5099-46db-9d24-6d58eda975e8",
    "title": "Too Many Function Arguments",
    "description": "Too many arguments in function definition (6 > 5)",
    "details": "This function has too many arguments.",
@@ -7299,11 +7299,11 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "readability",
-   "timestamp": "2026-11-26T23:09:34.214934",
+   "timestamp": "2026-11-28T19:31:58.525736",
    "tags": [
     "readability",
-    "clarity",
-    "ruff"
+    "ruff",
+    "clarity"
    ],
    "extra_data": {
     "ruff_rule_id": "PLR0913",
@@ -7315,7 +7315,7 @@
    }
   },
   {
-   "id": "820ea173-04e6-4cb7-af91-1ab8dcc60de9",
+   "id": "b755fc6e-49c3-455d-9340-34dcad3ad83d",
    "title": "Complexity Risk Ranking",
    "description": "File is marked as Moderately Maintainable for cyclomatic complexity distribution. Moderate: 40.0%, High: 0.0%, Very High: 0.0%. Reason: moderate 40.0% > 30%.",
    "details": {
@@ -7374,17 +7374,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672104",
+   "timestamp": "2026-11-28T19:31:45.151343",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "dfed2d3a-50bb-403c-8666-5f7158c022ea",
-     "24e476c5-426c-4363-a3f5-26389499fe98",
-     "ccff1e7b-d7f4-44f3-83df-540692fdc939",
-     "34c63a05-92ce-4721-afe3-22b88b40451a"
+     "17644236-ed29-4572-91a8-a3b00bd32194",
+     "6dfe9f80-8ec3-451f-9061-ad0e87c765fd",
+     "eb147560-8807-4e58-a764-4e1df8a4f834",
+     "243dc346-adf7-4cc0-b13b-f9bb19a98cee"
     ],
     "file_issue_count": 8,
     "category_prevalence": 387,
@@ -7393,7 +7393,7 @@
    }
   },
   {
-   "id": "34c63a05-92ce-4721-afe3-22b88b40451a",
+   "id": "243dc346-adf7-4cc0-b13b-f9bb19a98cee",
    "title": "Cyclomatic Complexity",
    "description": "Function extract_header_permalinks has Moderate cyclomatic complexity (14, rank C) in doc_parsing_utils.py.",
    "details": {
@@ -7441,17 +7441,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672014",
+   "timestamp": "2026-11-28T19:31:45.151254",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "820ea173-04e6-4cb7-af91-1ab8dcc60de9",
-     "24e476c5-426c-4363-a3f5-26389499fe98",
-     "ccff1e7b-d7f4-44f3-83df-540692fdc939",
-     "dfed2d3a-50bb-403c-8666-5f7158c022ea"
+     "17644236-ed29-4572-91a8-a3b00bd32194",
+     "6dfe9f80-8ec3-451f-9061-ad0e87c765fd",
+     "eb147560-8807-4e58-a764-4e1df8a4f834",
+     "b755fc6e-49c3-455d-9340-34dcad3ad83d"
     ],
     "file_issue_count": 8,
     "category_prevalence": 387,
@@ -7460,7 +7460,7 @@
    }
   },
   {
-   "id": "dfed2d3a-50bb-403c-8666-5f7158c022ea",
+   "id": "eb147560-8807-4e58-a764-4e1df8a4f834",
    "title": "Cyclomatic Complexity",
    "description": "Function extract_html_links has Moderate cyclomatic complexity (11, rank C) in doc_parsing_utils.py.",
    "details": {
@@ -7508,17 +7508,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672026",
+   "timestamp": "2026-11-28T19:31:45.151266",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "820ea173-04e6-4cb7-af91-1ab8dcc60de9",
-     "24e476c5-426c-4363-a3f5-26389499fe98",
-     "ccff1e7b-d7f4-44f3-83df-540692fdc939",
-     "34c63a05-92ce-4721-afe3-22b88b40451a"
+     "17644236-ed29-4572-91a8-a3b00bd32194",
+     "6dfe9f80-8ec3-451f-9061-ad0e87c765fd",
+     "243dc346-adf7-4cc0-b13b-f9bb19a98cee",
+     "b755fc6e-49c3-455d-9340-34dcad3ad83d"
     ],
     "file_issue_count": 8,
     "category_prevalence": 387,
@@ -7527,7 +7527,7 @@
    }
   },
   {
-   "id": "0ee2235a-27b1-4c3a-9745-749774f6e0f0",
+   "id": "8f60ca67-bfa1-4794-aec2-1ab2dcdcdd69",
    "title": "Cyclomatic Complexity",
    "description": "Function extract_multiline_code_blocks has Moderate cyclomatic complexity (13, rank C) in doc_parsing_utils.py.",
    "details": {
@@ -7575,18 +7575,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672018",
+   "timestamp": "2026-11-28T19:31:45.151258",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "34c63a05-92ce-4721-afe3-22b88b40451a",
-     "820ea173-04e6-4cb7-af91-1ab8dcc60de9",
-     "dfed2d3a-50bb-403c-8666-5f7158c022ea",
-     "24e476c5-426c-4363-a3f5-26389499fe98",
-     "ccff1e7b-d7f4-44f3-83df-540692fdc939"
+     "eb147560-8807-4e58-a764-4e1df8a4f834",
+     "6dfe9f80-8ec3-451f-9061-ad0e87c765fd",
+     "17644236-ed29-4572-91a8-a3b00bd32194",
+     "243dc346-adf7-4cc0-b13b-f9bb19a98cee",
+     "b755fc6e-49c3-455d-9340-34dcad3ad83d"
     ],
     "file_issue_count": 8,
     "category_prevalence": 387,
@@ -7595,7 +7595,7 @@
    }
   },
   {
-   "id": "2290e3cf-4da1-4d75-a911-45a9773e20b7",
+   "id": "9c62cc13-686e-408d-8c0a-f27969529e48",
    "title": "Cyclomatic Complexity",
    "description": "Function replace_multiline_code_block has Moderate cyclomatic complexity (12, rank C) in doc_parsing_utils.py.",
    "details": {
@@ -7643,18 +7643,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672022",
+   "timestamp": "2026-11-28T19:31:45.151262",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "34c63a05-92ce-4721-afe3-22b88b40451a",
-     "820ea173-04e6-4cb7-af91-1ab8dcc60de9",
-     "dfed2d3a-50bb-403c-8666-5f7158c022ea",
-     "24e476c5-426c-4363-a3f5-26389499fe98",
-     "ccff1e7b-d7f4-44f3-83df-540692fdc939"
+     "eb147560-8807-4e58-a764-4e1df8a4f834",
+     "6dfe9f80-8ec3-451f-9061-ad0e87c765fd",
+     "17644236-ed29-4572-91a8-a3b00bd32194",
+     "243dc346-adf7-4cc0-b13b-f9bb19a98cee",
+     "b755fc6e-49c3-455d-9340-34dcad3ad83d"
     ],
     "file_issue_count": 8,
     "category_prevalence": 387,
@@ -7663,7 +7663,7 @@
    }
   },
   {
-   "id": "7fb67b7f-012f-49bf-887f-4166ef9b96c1",
+   "id": "449bd7d2-193e-4cfc-8f99-c89384cea065",
    "title": "Cyclomatic Complexity",
    "description": "Function check_translation has Moderate cyclomatic complexity (11, rank C) in doc_parsing_utils.py.",
    "details": {
@@ -7711,18 +7711,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672030",
+   "timestamp": "2026-11-28T19:31:45.151271",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "34c63a05-92ce-4721-afe3-22b88b40451a",
-     "820ea173-04e6-4cb7-af91-1ab8dcc60de9",
-     "dfed2d3a-50bb-403c-8666-5f7158c022ea",
-     "24e476c5-426c-4363-a3f5-26389499fe98",
-     "ccff1e7b-d7f4-44f3-83df-540692fdc939"
+     "eb147560-8807-4e58-a764-4e1df8a4f834",
+     "6dfe9f80-8ec3-451f-9061-ad0e87c765fd",
+     "17644236-ed29-4572-91a8-a3b00bd32194",
+     "243dc346-adf7-4cc0-b13b-f9bb19a98cee",
+     "b755fc6e-49c3-455d-9340-34dcad3ad83d"
     ],
     "file_issue_count": 8,
     "category_prevalence": 387,
@@ -7731,7 +7731,7 @@
    }
   },
   {
-   "id": "47c71d0f-a999-416e-8be3-d023affb6c71",
+   "id": "6c91979d-6f72-44da-8a8e-f5ccb01008f3",
    "title": "Cyclomatic Complexity",
    "description": "Function stage_zensical_docs has Moderate cyclomatic complexity (19, rank C) in docs.py.",
    "details": {
@@ -7779,17 +7779,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672040",
+   "timestamp": "2026-11-28T19:31:45.151280",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "bfd36569-dce5-4323-9df6-f2d56ca48f07",
-     "a7937bd4-c018-4662-bba2-d3bdc3127677",
-     "c81bb846-d1fe-42e4-8e6f-9bc939b98fbc",
-     "8a51bb8f-6e69-45bf-b5c4-8fbfd0e6422f"
+     "2debacfa-772d-4392-bd30-03cdb0be3a38",
+     "7e871014-cb29-459f-943b-264488f3acd4",
+     "adb0e155-2cbb-4319-bfad-1d92e199b783",
+     "4680b1cd-5081-4678-a763-b05e1618ad59"
     ],
     "file_issue_count": 5,
     "category_prevalence": 387,
@@ -7798,7 +7798,7 @@
    }
   },
   {
-   "id": "8a51bb8f-6e69-45bf-b5c4-8fbfd0e6422f",
+   "id": "4680b1cd-5081-4678-a763-b05e1618ad59",
    "title": "Cyclomatic Complexity",
    "description": "Function remove_unused_docs_src has Moderate cyclomatic complexity (20, rank C) in docs.py.",
    "details": {
@@ -7846,17 +7846,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672035",
+   "timestamp": "2026-11-28T19:31:45.151274",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "bfd36569-dce5-4323-9df6-f2d56ca48f07",
-     "a7937bd4-c018-4662-bba2-d3bdc3127677",
-     "c81bb846-d1fe-42e4-8e6f-9bc939b98fbc",
-     "47c71d0f-a999-416e-8be3-d023affb6c71"
+     "2debacfa-772d-4392-bd30-03cdb0be3a38",
+     "7e871014-cb29-459f-943b-264488f3acd4",
+     "6c91979d-6f72-44da-8a8e-f5ccb01008f3",
+     "adb0e155-2cbb-4319-bfad-1d92e199b783"
     ],
     "file_issue_count": 5,
     "category_prevalence": 387,
@@ -7865,7 +7865,7 @@
    }
   },
   {
-   "id": "a7937bd4-c018-4662-bba2-d3bdc3127677",
+   "id": "adb0e155-2cbb-4319-bfad-1d92e199b783",
    "title": "Cyclomatic Complexity",
    "description": "Function add_permalinks_page has Moderate cyclomatic complexity (19, rank C) in docs.py.",
    "details": {
@@ -7913,17 +7913,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672044",
+   "timestamp": "2026-11-28T19:31:45.151284",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "8a51bb8f-6e69-45bf-b5c4-8fbfd0e6422f",
-     "bfd36569-dce5-4323-9df6-f2d56ca48f07",
-     "c81bb846-d1fe-42e4-8e6f-9bc939b98fbc",
-     "47c71d0f-a999-416e-8be3-d023affb6c71"
+     "2debacfa-772d-4392-bd30-03cdb0be3a38",
+     "7e871014-cb29-459f-943b-264488f3acd4",
+     "6c91979d-6f72-44da-8a8e-f5ccb01008f3",
+     "4680b1cd-5081-4678-a763-b05e1618ad59"
     ],
     "file_issue_count": 5,
     "category_prevalence": 387,
@@ -7932,7 +7932,7 @@
    }
   },
   {
-   "id": "7f7f895a-5654-4491-b8a8-96e338b7fa1f",
+   "id": "795d0fd6-df8e-42d5-9aad-ed1d488fad45",
    "title": "Cyclomatic Complexity",
    "description": "Function get_response has Moderate cyclomatic complexity (13, rank C) in routing.py.",
    "details": {
@@ -7980,18 +7980,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671907",
+   "timestamp": "2026-11-28T19:31:45.151149",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "cd7cfc39-32b6-4603-905d-5c268885bf0a",
-     "94ebf385-392c-4d33-9a23-318fc63af533",
-     "2e9042ab-4a1c-49d1-a822-45d0fc9b5283",
-     "e76380c5-5bd3-492a-9ebb-7fb85cc184ba",
-     "183557fa-653a-435a-bb2a-3a299e33cbc0"
+     "9fa7a035-f0d0-4993-8adf-97bf6a54e04c",
+     "61ce5e58-9b16-42f9-b79f-295c44fdbbf9",
+     "eaa4d77e-9507-4f2b-8149-31905eba4ee3",
+     "2c6cd93f-ec83-415a-9a42-69190c80c170",
+     "8826cad9-b678-430f-8e29-6a82c2204fd9"
     ],
     "file_issue_count": 11,
     "category_prevalence": 387,
@@ -8000,7 +8000,7 @@
    }
   },
   {
-   "id": "fd33861f-1d71-41ed-b358-dc35d493d50b",
+   "id": "2addb04d-15e6-4d3a-a41d-85037fc6cc61",
    "title": "Cyclomatic Complexity",
    "description": "Function __init__ has Moderate cyclomatic complexity (14, rank C) in routing.py.",
    "details": {
@@ -8048,18 +8048,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671900",
+   "timestamp": "2026-11-28T19:31:45.151144",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "cd7cfc39-32b6-4603-905d-5c268885bf0a",
-     "94ebf385-392c-4d33-9a23-318fc63af533",
-     "2e9042ab-4a1c-49d1-a822-45d0fc9b5283",
-     "e76380c5-5bd3-492a-9ebb-7fb85cc184ba",
-     "183557fa-653a-435a-bb2a-3a299e33cbc0"
+     "9fa7a035-f0d0-4993-8adf-97bf6a54e04c",
+     "61ce5e58-9b16-42f9-b79f-295c44fdbbf9",
+     "eaa4d77e-9507-4f2b-8149-31905eba4ee3",
+     "2c6cd93f-ec83-415a-9a42-69190c80c170",
+     "8826cad9-b678-430f-8e29-6a82c2204fd9"
     ],
     "file_issue_count": 11,
     "category_prevalence": 387,
@@ -8068,7 +8068,7 @@
    }
   },
   {
-   "id": "c991a5ce-35a4-40e8-825a-30f3467549d9",
+   "id": "35f2ad90-c926-4380-96c9-e8594673eb0c",
    "title": "Cyclomatic Complexity",
    "description": "Function _match_low_priority has Moderate cyclomatic complexity (13, rank C) in routing.py.",
    "details": {
@@ -8116,18 +8116,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671911",
+   "timestamp": "2026-11-28T19:31:45.151153",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "cd7cfc39-32b6-4603-905d-5c268885bf0a",
-     "94ebf385-392c-4d33-9a23-318fc63af533",
-     "2e9042ab-4a1c-49d1-a822-45d0fc9b5283",
-     "e76380c5-5bd3-492a-9ebb-7fb85cc184ba",
-     "183557fa-653a-435a-bb2a-3a299e33cbc0"
+     "9fa7a035-f0d0-4993-8adf-97bf6a54e04c",
+     "61ce5e58-9b16-42f9-b79f-295c44fdbbf9",
+     "eaa4d77e-9507-4f2b-8149-31905eba4ee3",
+     "2c6cd93f-ec83-415a-9a42-69190c80c170",
+     "8826cad9-b678-430f-8e29-6a82c2204fd9"
     ],
     "file_issue_count": 11,
     "category_prevalence": 387,
@@ -8136,7 +8136,7 @@
    }
   },
   {
-   "id": "fe610a1c-c6d1-40c9-b6ac-f2d2af98c4ce",
+   "id": "d84a42e9-a1fa-4c32-ba40-44ebf5b621a2",
    "title": "Cyclomatic Complexity",
    "description": "Function include_router has Moderate cyclomatic complexity (13, rank C) in routing.py.",
    "details": {
@@ -8184,18 +8184,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671915",
+   "timestamp": "2026-11-28T19:31:45.151157",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "cd7cfc39-32b6-4603-905d-5c268885bf0a",
-     "94ebf385-392c-4d33-9a23-318fc63af533",
-     "2e9042ab-4a1c-49d1-a822-45d0fc9b5283",
-     "e76380c5-5bd3-492a-9ebb-7fb85cc184ba",
-     "183557fa-653a-435a-bb2a-3a299e33cbc0"
+     "9fa7a035-f0d0-4993-8adf-97bf6a54e04c",
+     "61ce5e58-9b16-42f9-b79f-295c44fdbbf9",
+     "eaa4d77e-9507-4f2b-8149-31905eba4ee3",
+     "2c6cd93f-ec83-415a-9a42-69190c80c170",
+     "8826cad9-b678-430f-8e29-6a82c2204fd9"
     ],
     "file_issue_count": 11,
     "category_prevalence": 387,
@@ -8204,7 +8204,7 @@
    }
   },
   {
-   "id": "e0f6c06f-3ab9-40f0-b2d0-ece07c9974c1",
+   "id": "eb09cf96-ca97-402d-9c04-4891a7797834",
    "title": "Cyclomatic Complexity",
    "description": "Function get_definitions has Moderate cyclomatic complexity (15, rank C) in v2.py.",
    "details": {
@@ -8252,16 +8252,16 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672010",
+   "timestamp": "2026-11-28T19:31:45.151250",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "b64fde13-50f2-4d03-b7f3-13136910b021",
-     "d888cf57-e38a-44e5-83d2-d5b3c920b3fc",
-     "0c791085-b7d9-474a-b55b-e8bc9d2eb2cd"
+     "a9a2cf15-1ce9-4ecd-872c-d2376c6560ca",
+     "2714f454-9cf7-4136-a2ac-f81dd9642e47",
+     "8a2c9165-7f7f-466a-b9db-2ba7e74125b6"
     ],
     "file_issue_count": 4,
     "category_prevalence": 387,
@@ -8270,7 +8270,7 @@
    }
   },
   {
-   "id": "0477dbe6-8b28-41c0-9db0-8b36c9478aa9",
+   "id": "bb0acedd-f699-46c2-a074-0ff869ac954d",
    "title": "Cyclomatic Complexity",
    "description": "Function _export_endpoint has Moderate cyclomatic complexity (12, rank C) in _runtime.py.",
    "details": {
@@ -8318,16 +8318,16 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671988",
+   "timestamp": "2026-11-28T19:31:45.151230",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "5bd76822-57c3-4a3a-af5e-72154215f90e",
-     "27f9f28a-bd1b-457c-a0c7-b03c0e024987",
-     "de914bea-728d-470f-a8ec-049e4eea0022"
+     "65e995ed-02c9-4690-9e98-9dc31f52bc28",
+     "fbe7f66f-278a-416c-9202-0932eba800ed",
+     "3476694c-2837-49ec-9911-3c2316cc719d"
     ],
     "file_issue_count": 4,
     "category_prevalence": 387,
@@ -8336,7 +8336,7 @@
    }
   },
   {
-   "id": "d636e3df-813a-4132-abb4-f19e3c3fc3ae",
+   "id": "dd9cc86e-e3ad-4188-8066-f912e66d1e0a",
    "title": "Maintainability Index",
    "description": "File `_asgi.py` has maintainability index (19.8) and is ranked as A.",
    "details": {
@@ -8379,17 +8379,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672263",
+   "timestamp": "2026-11-28T19:31:45.151497",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "d89a3319-0146-4585-9101-cc02b8b0d690",
-     "c947112d-dd11-4fa3-9843-ec6aefeb84f3",
-     "04edc5b2-531b-4c82-9f19-c6c4b092df8e",
-     "287d0feb-e4eb-4345-93c5-9857db8ba4a7"
+     "0fb59992-5ca5-44c9-8c6f-ab9e7900af29",
+     "647ccb69-3a30-4c70-a7bc-965837a07ede",
+     "9f0cdae3-0698-4f62-8a9b-4c38f4b0cf79",
+     "2e3feca5-bc67-457b-9bb4-25780293ac5b"
     ],
     "file_issue_count": 8,
     "category_prevalence": 387,
@@ -8398,7 +8398,7 @@
    }
   },
   {
-   "id": "d89a3319-0146-4585-9101-cc02b8b0d690",
+   "id": "0fb59992-5ca5-44c9-8c6f-ab9e7900af29",
    "title": "Cyclomatic Complexity",
    "description": "Function _exception has Moderate cyclomatic complexity (11, rank C) in _asgi.py.",
    "details": {
@@ -8446,17 +8446,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672000",
+   "timestamp": "2026-11-28T19:31:45.151243",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "c947112d-dd11-4fa3-9843-ec6aefeb84f3",
-     "04edc5b2-531b-4c82-9f19-c6c4b092df8e",
-     "287d0feb-e4eb-4345-93c5-9857db8ba4a7",
-     "d636e3df-813a-4132-abb4-f19e3c3fc3ae"
+     "dd9cc86e-e3ad-4188-8066-f912e66d1e0a",
+     "647ccb69-3a30-4c70-a7bc-965837a07ede",
+     "9f0cdae3-0698-4f62-8a9b-4c38f4b0cf79",
+     "2e3feca5-bc67-457b-9bb4-25780293ac5b"
     ],
     "file_issue_count": 8,
     "category_prevalence": 387,
@@ -8465,7 +8465,7 @@
    }
   },
   {
-   "id": "00cde539-d326-4e74-b1c0-979884d601c1",
+   "id": "ef4ea861-8f60-4c85-96cb-f96ecfd92d27",
    "title": "Cyclomatic Complexity",
    "description": "Function _server_attributes has Moderate cyclomatic complexity (11, rank C) in _asgi.py.",
    "details": {
@@ -8513,18 +8513,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672005",
+   "timestamp": "2026-11-28T19:31:45.151246",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "04edc5b2-531b-4c82-9f19-c6c4b092df8e",
-     "d636e3df-813a-4132-abb4-f19e3c3fc3ae",
-     "d89a3319-0146-4585-9101-cc02b8b0d690",
-     "287d0feb-e4eb-4345-93c5-9857db8ba4a7",
-     "c947112d-dd11-4fa3-9843-ec6aefeb84f3"
+     "9f0cdae3-0698-4f62-8a9b-4c38f4b0cf79",
+     "0fb59992-5ca5-44c9-8c6f-ab9e7900af29",
+     "2e3feca5-bc67-457b-9bb4-25780293ac5b",
+     "dd9cc86e-e3ad-4188-8066-f912e66d1e0a",
+     "647ccb69-3a30-4c70-a7bc-965837a07ede"
     ],
     "file_issue_count": 8,
     "category_prevalence": 387,
@@ -8533,7 +8533,7 @@
    }
   },
   {
-   "id": "37b0609e-5f22-4001-aa9f-b210d9794acb",
+   "id": "2b871dd4-a021-49d7-b9d5-ac3f7d216fae",
    "title": "Cyclomatic Complexity",
    "description": "Function NativeTelemetry has Moderate cyclomatic complexity (15, rank C) in _asgi.py.",
    "details": {
@@ -8581,18 +8581,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671996",
+   "timestamp": "2026-11-28T19:31:45.151238",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "04edc5b2-531b-4c82-9f19-c6c4b092df8e",
-     "d636e3df-813a-4132-abb4-f19e3c3fc3ae",
-     "d89a3319-0146-4585-9101-cc02b8b0d690",
-     "287d0feb-e4eb-4345-93c5-9857db8ba4a7",
-     "c947112d-dd11-4fa3-9843-ec6aefeb84f3"
+     "9f0cdae3-0698-4f62-8a9b-4c38f4b0cf79",
+     "0fb59992-5ca5-44c9-8c6f-ab9e7900af29",
+     "2e3feca5-bc67-457b-9bb4-25780293ac5b",
+     "dd9cc86e-e3ad-4188-8066-f912e66d1e0a",
+     "647ccb69-3a30-4c70-a7bc-965837a07ede"
     ],
     "file_issue_count": 8,
     "category_prevalence": 387,
@@ -8601,7 +8601,7 @@
    }
   },
   {
-   "id": "aafe770a-9728-4212-ac7a-60641b26656a",
+   "id": "7e411c07-6a12-4624-bfa8-4383593f0d8d",
    "title": "Maintainability Index",
    "description": "File `utils.py` has maintainability index (15.1) and is ranked as B.",
    "details": {
@@ -8644,17 +8644,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672259",
+   "timestamp": "2026-11-28T19:31:45.151493",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "ac00e601-d61d-4316-8553-7a5763cf2e18",
-     "afd227f0-4bb8-442d-8e35-d2711402cc2d",
-     "d4467d12-5827-4a23-8f0e-5f1848d570a2",
-     "eec86d29-49f9-460a-9c21-fd38b0f3f4ce"
+     "da35b9b9-81e2-42c1-acf0-bc6e44c18561",
+     "c2dfc0c4-0d29-429d-a5aa-ce3ef0a8f4d2",
+     "270cf6cd-693b-4330-ad3c-fe01e0de92b6",
+     "c24b0c71-f294-43e8-8229-ccf7a14bc7d6"
     ],
     "file_issue_count": 8,
     "category_prevalence": 387,
@@ -8663,7 +8663,7 @@
    }
   },
   {
-   "id": "ac00e601-d61d-4316-8553-7a5763cf2e18",
+   "id": "da35b9b9-81e2-42c1-acf0-bc6e44c18561",
    "title": "Cyclomatic Complexity",
    "description": "Function _get_openapi_operation_parameters has Moderate cyclomatic complexity (13, rank C) in utils.py.",
    "details": {
@@ -8711,17 +8711,17 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671980",
+   "timestamp": "2026-11-28T19:31:45.151222",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "afd227f0-4bb8-442d-8e35-d2711402cc2d",
-     "d4467d12-5827-4a23-8f0e-5f1848d570a2",
-     "aafe770a-9728-4212-ac7a-60641b26656a",
-     "eec86d29-49f9-460a-9c21-fd38b0f3f4ce"
+     "c2dfc0c4-0d29-429d-a5aa-ce3ef0a8f4d2",
+     "7e411c07-6a12-4624-bfa8-4383593f0d8d",
+     "270cf6cd-693b-4330-ad3c-fe01e0de92b6",
+     "c24b0c71-f294-43e8-8229-ccf7a14bc7d6"
     ],
     "file_issue_count": 8,
     "category_prevalence": 387,
@@ -8730,7 +8730,7 @@
    }
   },
   {
-   "id": "7b4c26c6-3282-4a4b-8ea4-59cb8f80b95a",
+   "id": "e2a1b37b-dfc7-4d3a-bc22-7f1c5a3bb717",
    "title": "Cyclomatic Complexity",
    "description": "Function _is_coroutine_callable_cached has Moderate cyclomatic complexity (11, rank C) in models.py.",
    "details": {
@@ -8778,10 +8778,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671919",
+   "timestamp": "2026-11-28T19:31:45.151161",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 2,
@@ -8791,7 +8791,7 @@
    }
   },
   {
-   "id": "c27e549b-f08e-4b08-a65c-6c021774fc3f",
+   "id": "36779544-b23f-4af1-b179-25708151f999",
    "title": "Cyclomatic Complexity",
    "description": "Function get_dependant has Moderate cyclomatic complexity (17, rank C) in utils.py.",
    "details": {
@@ -8839,18 +8839,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671948",
+   "timestamp": "2026-11-28T19:31:45.151189",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "f1d6d911-869a-47d2-b7e1-3b57cf96fb47",
-     "43488c34-5713-40c3-af13-6b2159b4f9e2",
-     "ff1f44d8-cb1d-4bc5-8795-2900aa5e9021",
-     "c930e3cc-c1c8-449d-b026-2b17ac7db5b6",
-     "0b1f3d6a-2ec9-4f2f-b42e-97cee50b7e70"
+     "e0a761b0-8692-40d9-b60a-5e296a61672f",
+     "8e4e29fb-113e-4ad9-8068-c371c6e63a51",
+     "1af6a8f3-7764-4bae-84fa-52100c3fee71",
+     "63b49eb6-8e93-4ddb-b39a-cc63b00e8cc0",
+     "dd285196-5886-4db6-82f7-ad6a73f32caa"
     ],
     "file_issue_count": 17,
     "category_prevalence": 387,
@@ -8859,7 +8859,7 @@
    }
   },
   {
-   "id": "efd9b25a-5dd4-4da0-b852-a33f3989471c",
+   "id": "06caefcd-1ad9-414f-8e75-96f5e70f3669",
    "title": "Cyclomatic Complexity",
    "description": "Function _get_multidict_value has Moderate cyclomatic complexity (14, rank C) in utils.py.",
    "details": {
@@ -8907,18 +8907,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671956",
+   "timestamp": "2026-11-28T19:31:45.151198",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "f1d6d911-869a-47d2-b7e1-3b57cf96fb47",
-     "43488c34-5713-40c3-af13-6b2159b4f9e2",
-     "ff1f44d8-cb1d-4bc5-8795-2900aa5e9021",
-     "c930e3cc-c1c8-449d-b026-2b17ac7db5b6",
-     "0b1f3d6a-2ec9-4f2f-b42e-97cee50b7e70"
+     "e0a761b0-8692-40d9-b60a-5e296a61672f",
+     "8e4e29fb-113e-4ad9-8068-c371c6e63a51",
+     "1af6a8f3-7764-4bae-84fa-52100c3fee71",
+     "63b49eb6-8e93-4ddb-b39a-cc63b00e8cc0",
+     "dd285196-5886-4db6-82f7-ad6a73f32caa"
     ],
     "file_issue_count": 17,
     "category_prevalence": 387,
@@ -8927,7 +8927,7 @@
    }
   },
   {
-   "id": "702b955b-87d8-43d2-bbdf-98e44cd8190b",
+   "id": "e9aa7d92-1a77-46b9-97e3-e7a816fe41b3",
    "title": "Cyclomatic Complexity",
    "description": "Function _should_embed_body_fields has Moderate cyclomatic complexity (12, rank C) in utils.py.",
    "details": {
@@ -8975,18 +8975,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671964",
+   "timestamp": "2026-11-28T19:31:45.151205",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "f1d6d911-869a-47d2-b7e1-3b57cf96fb47",
-     "43488c34-5713-40c3-af13-6b2159b4f9e2",
-     "ff1f44d8-cb1d-4bc5-8795-2900aa5e9021",
-     "c930e3cc-c1c8-449d-b026-2b17ac7db5b6",
-     "0b1f3d6a-2ec9-4f2f-b42e-97cee50b7e70"
+     "e0a761b0-8692-40d9-b60a-5e296a61672f",
+     "8e4e29fb-113e-4ad9-8068-c371c6e63a51",
+     "1af6a8f3-7764-4bae-84fa-52100c3fee71",
+     "63b49eb6-8e93-4ddb-b39a-cc63b00e8cc0",
+     "dd285196-5886-4db6-82f7-ad6a73f32caa"
     ],
     "file_issue_count": 17,
     "category_prevalence": 387,
@@ -8995,7 +8995,7 @@
    }
   },
   {
-   "id": "65d44718-ee2c-42ed-a311-c4e9c629cfb0",
+   "id": "9d340f5f-0b9d-4828-a036-324bdfcf930a",
    "title": "Cyclomatic Complexity",
    "description": "Function _extract_form_body has Moderate cyclomatic complexity (11, rank C) in utils.py.",
    "details": {
@@ -9043,18 +9043,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671968",
+   "timestamp": "2026-11-28T19:31:45.151210",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "f1d6d911-869a-47d2-b7e1-3b57cf96fb47",
-     "43488c34-5713-40c3-af13-6b2159b4f9e2",
-     "ff1f44d8-cb1d-4bc5-8795-2900aa5e9021",
-     "c930e3cc-c1c8-449d-b026-2b17ac7db5b6",
-     "0b1f3d6a-2ec9-4f2f-b42e-97cee50b7e70"
+     "e0a761b0-8692-40d9-b60a-5e296a61672f",
+     "8e4e29fb-113e-4ad9-8068-c371c6e63a51",
+     "1af6a8f3-7764-4bae-84fa-52100c3fee71",
+     "63b49eb6-8e93-4ddb-b39a-cc63b00e8cc0",
+     "dd285196-5886-4db6-82f7-ad6a73f32caa"
     ],
     "file_issue_count": 17,
     "category_prevalence": 387,
@@ -9063,7 +9063,7 @@
    }
   },
   {
-   "id": "0603d12c-8437-4d39-8b71-574b05566985",
+   "id": "d4fb5dc5-f4d1-4064-8ba6-9b6f5121b08c",
    "title": "Cyclomatic Complexity",
    "description": "Function _get_form_model_schema has Moderate cyclomatic complexity (14, rank C) in utils.py.",
    "details": {
@@ -9111,18 +9111,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671960",
+   "timestamp": "2026-11-28T19:31:45.151201",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "f1d6d911-869a-47d2-b7e1-3b57cf96fb47",
-     "43488c34-5713-40c3-af13-6b2159b4f9e2",
-     "ff1f44d8-cb1d-4bc5-8795-2900aa5e9021",
-     "c930e3cc-c1c8-449d-b026-2b17ac7db5b6",
-     "0b1f3d6a-2ec9-4f2f-b42e-97cee50b7e70"
+     "e0a761b0-8692-40d9-b60a-5e296a61672f",
+     "8e4e29fb-113e-4ad9-8068-c371c6e63a51",
+     "1af6a8f3-7764-4bae-84fa-52100c3fee71",
+     "63b49eb6-8e93-4ddb-b39a-cc63b00e8cc0",
+     "dd285196-5886-4db6-82f7-ad6a73f32caa"
     ],
     "file_issue_count": 17,
     "category_prevalence": 387,
@@ -9131,7 +9131,7 @@
    }
   },
   {
-   "id": "28612310-c21f-4a1a-9a42-75c235d5eeed",
+   "id": "f88554e9-c1fd-4f48-87d3-5ece55b45531",
    "title": "Cyclomatic Complexity",
    "description": "Function _apply_form_body_schema has Moderate cyclomatic complexity (19, rank C) in utils.py.",
    "details": {
@@ -9179,18 +9179,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671944",
+   "timestamp": "2026-11-28T19:31:45.151185",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "f1d6d911-869a-47d2-b7e1-3b57cf96fb47",
-     "43488c34-5713-40c3-af13-6b2159b4f9e2",
-     "ff1f44d8-cb1d-4bc5-8795-2900aa5e9021",
-     "c930e3cc-c1c8-449d-b026-2b17ac7db5b6",
-     "0b1f3d6a-2ec9-4f2f-b42e-97cee50b7e70"
+     "e0a761b0-8692-40d9-b60a-5e296a61672f",
+     "8e4e29fb-113e-4ad9-8068-c371c6e63a51",
+     "1af6a8f3-7764-4bae-84fa-52100c3fee71",
+     "63b49eb6-8e93-4ddb-b39a-cc63b00e8cc0",
+     "dd285196-5886-4db6-82f7-ad6a73f32caa"
     ],
     "file_issue_count": 17,
     "category_prevalence": 387,
@@ -9199,7 +9199,7 @@
    }
   },
   {
-   "id": "34d60b41-ff1c-4979-ab06-ade6680bbd2a",
+   "id": "3d3430f5-09bf-45ed-a9ca-c60c83a7eecb",
    "title": "Cyclomatic Complexity",
    "description": "Function _get_param_aliases has Moderate cyclomatic complexity (16, rank C) in utils.py.",
    "details": {
@@ -9247,18 +9247,18 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.671952",
+   "timestamp": "2026-11-28T19:31:45.151194",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "cross_references": [
-     "f1d6d911-869a-47d2-b7e1-3b57cf96fb47",
-     "43488c34-5713-40c3-af13-6b2159b4f9e2",
-     "ff1f44d8-cb1d-4bc5-8795-2900aa5e9021",
-     "c930e3cc-c1c8-449d-b026-2b17ac7db5b6",
-     "0b1f3d6a-2ec9-4f2f-b42e-97cee50b7e70"
+     "e0a761b0-8692-40d9-b60a-5e296a61672f",
+     "8e4e29fb-113e-4ad9-8068-c371c6e63a51",
+     "1af6a8f3-7764-4bae-84fa-52100c3fee71",
+     "63b49eb6-8e93-4ddb-b39a-cc63b00e8cc0",
+     "dd285196-5886-4db6-82f7-ad6a73f32caa"
     ],
     "file_issue_count": 17,
     "category_prevalence": 387,
@@ -9267,7 +9267,7 @@
    }
   },
   {
-   "id": "951bf93d-f15f-4d25-afc1-e2a8042e7439",
+   "id": "539c72a0-3007-4567-b4de-51359444a182",
    "title": "Maintainability Index",
    "description": "File `test_union_form_normalization.py` has maintainability index (10.2) and is ranked as B.",
    "details": {
@@ -9310,10 +9310,10 @@
    "compliance_frameworks": [],
    "owasp_category": null,
    "source_analyzer": "maintainability",
-   "timestamp": "2026-11-26T23:09:20.672112",
+   "timestamp": "2026-11-28T19:31:45.151351",
    "tags": [
-    "test_files",
-    "econ_files"
+    "econ_files",
+    "test_files"
    ],
    "extra_data": {
     "file_issue_count": 2,
@@ -9326,7 +9326,7 @@
  "analysis_metrics": [
   {
    "analyzer_name": "robustness",
-   "execution_time_seconds": 118.86260175704956,
+   "execution_time_seconds": 117.62985301017761,
    "files_analyzed": 1237,
    "findings_count": 168,
    "error_count": 0,
@@ -9337,7 +9337,7 @@
   },
   {
    "analyzer_name": "maintainability",
-   "execution_time_seconds": 77.67118501663208,
+   "execution_time_seconds": 76.26814126968384,
    "files_analyzed": 1237,
    "findings_count": 393,
    "error_count": 0,
@@ -9348,7 +9348,7 @@
   },
   {
    "analyzer_name": "observability",
-   "execution_time_seconds": 0.22026515007019043,
+   "execution_time_seconds": 0.22110390663146973,
    "files_analyzed": 1237,
    "findings_count": 51,
    "error_count": 0,
@@ -9359,7 +9359,7 @@
   },
   {
    "analyzer_name": "readability",
-   "execution_time_seconds": 13.323901891708374,
+   "execution_time_seconds": 13.156148910522461,
    "files_analyzed": 1237,
    "findings_count": 1000,
    "error_count": 0,
@@ -9372,9 +9372,9 @@
    }
   }
  ],
- "total_execution_time": 210.54917693138123,
+ "total_execution_time": 207.7255198955536,
  "summary": {
-  "timestamp": "2026-11-26T23:09:34.699291",
+  "timestamp": "2026-11-28T19:31:58.990662",
   "target_path": "https://github.com/fastapi/fastapi",
   "analysis_duration": 0.0,
   "total_findings": 1612,
@@ -9445,15 +9445,15 @@
   "quick_wins": 0,
   "compliance_issues": {},
   "analyzer_performance": {
-   "total_execution_time": 210.0779538154602,
-   "average_time_per_analyzer": 52.51948845386505,
+   "total_execution_time": 207.27524709701538,
+   "average_time_per_analyzer": 51.818811774253845,
    "fastest_analyzer": "observability",
    "slowest_analyzer": "robustness",
    "success_rate": 1.0
   },
   "trend_analysis": {
    "note": "Trend analysis requires historical data",
-   "current_timestamp": "2026-11-26T23:06:04.151904",
+   "current_timestamp": "2026-11-28T19:28:31.266880",
    "baseline_established": true
   },
   "analyzed_lines": 117671,

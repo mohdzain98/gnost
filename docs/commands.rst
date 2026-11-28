@@ -198,6 +198,15 @@ Options for every goal:
    * - ``gnost.inject``
      - ``--inject``
      - Add a link to ``ONBOARD.md`` in ``README.md``.
+   * - ``gnost.threeD``
+     - ``--3d``
+     - Also write the 3D view of the flow (``.gnost/flow-3d.html``).
+   * - ``gnost.injectMindmap``
+     - ``--inject-mindmap``
+     - Put the project map at the end of ``README.md``.
+   * - ``gnost.mindmapFormat``
+     - ``--mindmap-format F``
+     - ``svg`` (default), ``gif`` (turning in 3D) or ``mermaid``.
    * - ``gnost.progress``
      - ``--progress``
      - Always show the progress bar.
@@ -301,6 +310,27 @@ Options for every goal:
    * - ``gnost.progress``
      - ``--progress``
      - Show a progress bar.
+   * - ``gnost.git``
+     - ``--git``
+     - Languages as GitHub's language bar shows them (see below).
+
+GitHub's language bar: ``gnost summary --git``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Plain ``gnost summary`` counts lines in every file GNOST scans. ``--git`` counts the way GitHub's language
+bar does (GitHub's Linguist), so you can see your repository's bar before you push:
+
+- **bytes**, not lines, of the files in the **last commit** (``HEAD``); uncommitted files do not count;
+- only **programming and markup** languages (Python, Java, HTML, CSS...); data and prose such as JSON, YAML
+  and Markdown are left out;
+- no **vendored** files (``vendor/``, ``node_modules/``, ``dist/``, ``fixtures/``, ``*.min.js``, Maven and
+  Gradle wrappers...), **documentation** (``docs/``, ``README``, ``LICENSE``...) or **generated** files;
+- ``.gitattributes`` overrides apply as on GitHub: ``linguist-vendored``, ``linguist-generated``,
+  ``linguist-documentation``, ``linguist-detectable`` and ``linguist-language``.
+
+It prints a coloured bar in GitHub's colours, then each language's share, files and bytes, and what was left
+out. On GNOST's own repository it matches GitHub's numbers byte for byte. Linguist also reads the contents of
+a few ambiguous extensions (``.h``, ``.m``); GNOST decides by the extension, so those can differ.
 
 ``gnost:stats``, ``gnost:folders``, ``gnost:files`` (same as the commands)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

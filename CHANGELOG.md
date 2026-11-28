@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.8.0] — 2026-11-28
+
+### Added
+
+- **Mind map view in the flow explorer** (`flow.html`, "Mind map" button). The whole project as a tree: folders as branches, files on the outer ring, entry points and the most imported files highlighted. Imports are hidden except those of the entry points and of the file you click, so it stays readable on projects with hundreds of files. Deep or large folders start closed.
+- **3D view of the flow: `gnost onboard . --3d`** writes `.gnost/flow-3d.html` and adds a "3D view" button to the explorer; `gnost open flow --3d` opens it (building it from `insights.json` if needed). It turns slowly by default (untick "Rotate" to stop). Folders are clusters; click a file to fly to it and see its imports and importers by name; isolate a folder, search, or show only circular imports. The 3D library (3d-force-graph 1.80.2, MIT) is bundled into this page only, so `flow.html` stays the same size. Maven: `gnost.threeD`.
+- **`gnost summary --git`: your repository's GitHub language bar, before you push.** Counts like GitHub's Linguist: bytes of the files in the last commit, only programming and markup languages, without vendored (`vendor/`, `node_modules/`, `fixtures/`, `*.min.js`...), documentation (`docs/`, `README`...) or generated files, and with `.gitattributes` overrides (`linguist-vendored`, `linguist-language`...). Prints a bar in GitHub's colours, then each language's share. On GNOST's own repository it matches GitHub byte for byte. Plain `gnost summary` is unchanged. Maven: `gnost.git`.
+- **The project map in your README: `gnost onboard . --inject-mindmap`.** Writes `.gnost/mindmap.svg` (the same map as a static image that follows the reader's light or dark theme) and adds it at the end of `README.md`; re-running replaces it. `--mindmap-format gif` writes `.gnost/mindmap.gif`, the same tree turning in 3D (one turn every 6.6 s, drawn by GNOST, deterministic, about 1 to 2.5 MB); it needs Pillow, the new optional extra `gnost[media]`, which the binaries and the Docker image include. `--mindmap-format mermaid` writes a Mermaid `mindmap` block instead, with no image file to commit. Maven: `gnost.injectMindmap`, `gnost.mindmapFormat`.
+
+### Fixed
+
+- `onboard --inject` no longer adds a blank line after the onboarding block each time it runs.
+
+### Removed
+
+- **The old score formula, `[analyze] score = "average"`.** It was kept for one release after the size-aware score in 0.7.1. A `.gnost.toml` that still sets it gets a warning, and the density score is used.
+
 ## [0.7.2] — 2026-11-28
 
 ### Added

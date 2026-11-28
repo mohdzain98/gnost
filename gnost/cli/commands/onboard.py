@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import os
 import re
-from typing import Optional
+import sys
+from typing import Any, Dict, Optional
 
 from rich.console import Console
 from rich.markup import escape
@@ -35,7 +36,12 @@ from gnost.reporters.mermaid import (
     render_function_flows,
 )
 from gnost.reporters.pages import PagesPublisher, PagesRequest, PagesResult
-from gnost.reporters.readme import ReadmeInjector
+from gnost.reporters.mindmap.gif import MindMapGif
+from gnost.reporters.mindmap.mermaid import MindMapMermaid
+from gnost.reporters.mindmap.model import MindMap, MindMapSettings
+from gnost.reporters.mindmap.svg import MindMapSvg
+from gnost.reporters.readme import MindMapInjector, ReadmeInjector
+from gnost.reporters.flow3d import Flow3dPage
 from gnost.reporters.insights_json import build_payload, write_payload
 from gnost.quickstart import QuickstartDetector
 from gnost.utils.footer import Footer
@@ -43,6 +49,80 @@ from gnost.utils.layout import LEGACY_OUTPUT_PATHS, OutputLayout
 from gnost.utils.progress import StepProgress
 from gnost.vcs.git import GitError, GitRepository
 from gnost.vcs.history import HistoryReader, HistorySettings
+
+
+def _project_name(scan_root: str, source: Optional[str]) -> str:
+    """The project's name: from the URL for a remote repository, not from its temp folder."""
+    name = os.path.basename((source or scan_root).rstrip("/\\"))
+    return name[: -len(".git")] if name.endswith(".git") else name
+
+
+def _page_meta(scan: Any, scan_root: str, source: Optional[str]) -> Dict[str, Any]:
+    """What the flow explorer's mind map needs beyond the graph.
+
+    The project name, the entry points and the shared mind-map settings.
+    """
+    rel = relative_to(scan_root)
+    return {
+        "project": _project_name(scan_root, source),
+        "entry": sorted({rel(ep.file) for ep in scan.entry_points}),
+        "mind": MindMapSettings().to_meta(),
+    }
+
+
+def _mind_map(scan: Any, graph: Any, scan_root: str, source: Optional[str]) -> MindMap:
+    """The project's mind map, from the import graph (paths relative to the scan root)."""
+    rel = relative_to(scan_root)
+    nodes = graph.all_nodes()
+    return MindMap(
+        files=sorted(rel(n) for n in nodes),
+        edges=[(rel(s), rel(t)) for s in nodes for t in graph.dependencies_of(s)],
+        entry=[rel(ep.file) for ep in scan.entry_points],
+        project=_project_name(scan_root, source),
+    )
+
+
+def _inject_mindmap(
+    mind: MindMap, layout: OutputLayout, output_root: str, fmt: str
+) -> None:
+    """Write the map (SVG by default, a GIF, or Mermaid) and put it at the end of README.md.
+
+    The GIF needs Pillow (`gnost[media]`); without it GNOST says so and writes the SVG.
+    """
+    if fmt == "gif" and not MindMapGif.available():
+        print(
+            'gnost: the GIF needs Pillow: pip install "gnost[media]" '
+            '(or uvx --from "gnost[media]" gnost ...). Writing the SVG instead.',
+            file=sys.stderr,
+        )
+        fmt = "svg"
+    if fmt == "mermaid":
+        injector = MindMapInjector(output_root, mermaid=MindMapMermaid(mind).render())
+    elif fmt == "gif":
+        os.makedirs(layout.folder, exist_ok=True)
+        with open(layout.mindmap_gif, "wb") as handle:
+            handle.write(MindMapGif(mind).render())
+        print(f"Project map written to {layout.mindmap_gif}")
+        injector = MindMapInjector(
+            output_root, image=f"./{layout.relative_name}/mindmap.gif"
+        )
+    else:
+        os.makedirs(layout.folder, exist_ok=True)
+        with open(layout.mindmap_svg, "w", encoding="utf-8", newline="\n") as handle:
+            handle.write(MindMapSvg(mind).render())
+        print(f"Project map written to {layout.mindmap_svg}")
+        injector = MindMapInjector(
+            output_root, image=f"./{layout.relative_name}/mindmap.svg"
+        )
+    if not injector.inject():
+        print("ℹ️  README.md not found, skipping the project map")
+    elif fmt == "mermaid":
+        print("✅ README.md updated with the project map (Mermaid)")
+    else:
+        print(
+            "✅ README.md updated with the project map. Commit "
+            f"{layout.relative_name}/mindmap.{fmt} too, or the image will not show."
+        )
 
 
 def _print_pages(published: PagesResult, output_name: str) -> None:
@@ -189,11 +269,15 @@ def run(
     footer: bool = True,
     architecture: Optional[ArchitectureSettings] = None,
     pages: Optional[PagesRequest] = None,
+    mindmap: Optional[str] = None,
+    three_d: bool = False,
 ) -> None:
     """Onboard a codebase: write the guide, diagrams, insights JSON and explorer page.
 
     Everything goes into the output folder (`.gnost/`, see OutputLayout). `diagram_only` writes only the diagram.
     `pages` also copies the explorer where GitHub Pages serves it; raises PagesError instead of overwriting.
+    `mindmap` ("svg" or "mermaid") also puts the project map at the end of README.md.
+    `three_d` also writes flow-3d.html, the 3D view, and links it from the explorer.
     """
     scan_root = os.path.abspath(path or ".")
     # A remote clone passes output_root so the files land in the current folder.
@@ -602,14 +686,21 @@ def run(
             architecture=arch_report,
         ).write()
 
+        if three_d:
+            with open(layout.flow3d_html, "w", encoding="utf-8") as f:
+                f.write(Flow3dPage(payload).render())
+
         if html:
             from gnost.cli.commands.show import build_page
 
-            page = build_page(os.path.join(flow_dir, "flow-complete.mmd"))
+            meta = _page_meta(scan_result, scan_root, source)
+            mmd = os.path.join(flow_dir, "flow-complete.mmd")
+            page = build_page(mmd, meta=dict(meta, has3d=three_d))
             with open(layout.flow_html, "w", encoding="utf-8") as f:
                 f.write(page)
             if publisher is not None:
-                published = publisher.publish(page)
+                # Pages serves only the explorer, so its copy has no 3D link
+                published = publisher.publish(build_page(mmd, meta=meta))
 
         if inject:
             injector = ReadmeInjector(
@@ -621,6 +712,14 @@ def run(
                 print("✅ README.md updated with onboarding link")
             else:
                 print("ℹ️  README.md not found, skipping injection")
+
+        if mindmap:
+            _inject_mindmap(
+                _mind_map(scan_result, graph, scan_root, source),
+                layout,
+                output_root,
+                mindmap,
+            )
 
         bar.advance()
 
