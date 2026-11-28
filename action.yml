@@ -146,7 +146,7 @@ runs:
 
     - name: Upload findings to code scanning
       if: ${{ always() && inputs.sarif == 'true' && hashFiles('.gnost/analysis/analysis.sarif') != '' }}
-      uses: github/codeql-action/upload-sarif@v3
+      uses: github/codeql-action/upload-sarif@v4
       with:
         sarif_file: .gnost/analysis/analysis.sarif
         category: gnost

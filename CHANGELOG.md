@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [Unreleased]
+
+### Added
+- **`gnost changes` shows how big each change is:** `+12 -3` next to every changed file in the Markdown report and the terminal, `binary` for binary files, and `added` / `removed` per file in `changes.json` (`null` for binary files). Thanks to @playlikeboy (#24).
+- **Troubleshooting page** in the docs: shallow clones, git missing from `PATH`, the npm package on an unsupported platform, private repositories, and what each exit code means. Thanks to @playlikeboy (#22).
+
+### Fixed
+- **SARIF uploads to GitHub code scanning no longer fail** with "expected at least one location". Findings about the whole project (such as the observability coverage summaries) had no file, and code scanning rejects the whole SARIF file for one such result. They are now notifications of the run (`invocations[].toolExecutionNotifications`), so the upload succeeds; they are still in the JSON and HTML reports.
+- The action uploads SARIF with `github/codeql-action/upload-sarif@v4` (v3 is deprecated in December 2026).
+- The release workflow caches Maven for the plugin jobs, since Maven Central rate-limited the download (429) during the 0.7.1 release.
+
 ## [0.7.1] — 2026-11-27
 
 ### Added
