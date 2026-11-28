@@ -14,6 +14,7 @@ import pytest
 import yaml
 
 import gnost.cli.app as app
+from gnost.utils.integrations import MAVEN_PLUGIN_VERSION
 from gnost.cli.commands.init import InitCommand, default_config_text
 from gnost.config.settings import (
     ANALYZE_MAX_FINDINGS,
@@ -166,7 +167,7 @@ def _plugins_of(xml: str) -> List[str]:
 def test_the_plugin_goes_into_the_real_build_plugins_only() -> None:
     out = ig.PomIntegration().edit(POM_WITH_PLUGINS)
     assert _plugins_of(out) == ["maven-compiler-plugin", "gnost-maven-plugin"]
-    assert "<version>0.7.0</version>" in out
+    assert f"<version>{MAVEN_PLUGIN_VERSION}</version>" in out
     # Only additions: every original line is still there, in order.
     import difflib
 
@@ -427,3 +428,17 @@ def test_the_command_and_its_flags_come_from_the_registry() -> None:
     ).stdout
     for flag in flags:
         assert f"--{flag}" in help_text
+
+
+def test_a_final_release_suggests_its_own_maven_plugin() -> None:
+    """A final version's `gnost init --maven` points at the plugin released with it.
+
+    Release candidates never reach Maven Central, so they keep the last published one.
+    """
+    import re
+
+    from gnost import __version__
+
+    if not re.fullmatch(r"\d+\.\d+\.\d+", __version__):
+        pytest.skip("release candidate: the plugin pin stays at the published version")
+    assert MAVEN_PLUGIN_VERSION == __version__
