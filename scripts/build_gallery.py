@@ -1,7 +1,8 @@
 """Build the showcase gallery: run `gnost onboard` on well-known projects and keep the guides.
 
 Usage: python scripts/build_gallery.py [--analysis-only] [name ...]   (needs network and git)
-Writes docs/gallery/<name>/ONBOARD.md, its flow/ pages and analysis/analysis.json; docs/gallery.rst links to them.
+Writes docs/gallery/<name>/ONBOARD.md, its flow/ pages, mindmap.svg (the project map) and
+analysis/analysis.json; docs/gallery.rst links to them.
 """
 
 from __future__ import annotations
@@ -98,7 +99,15 @@ def build(name: str, url: str, analysis_only: bool = False) -> bool:
         if analysis_only:
             return analyze_into(url, work, target)
         done = subprocess.run(
-            [sys.executable, "-m", "gnost.cli.app", "onboard", url, "--no-html"],
+            [
+                sys.executable,
+                "-m",
+                "gnost.cli.app",
+                "onboard",
+                url,
+                "--no-html",
+                "--inject-mindmap",  # no README in the work folder: only writes the SVG
+            ],
             cwd=work,
             env=dict(os.environ, GNOST_NO_UPDATE_CHECK="1"),
         )
@@ -111,6 +120,8 @@ def build(name: str, url: str, analysis_only: bool = False) -> bool:
         shutil.rmtree(target, ignore_errors=True)
         (target / "flow").mkdir(parents=True)
         shutil.copy(guide, target / "ONBOARD.md")
+        if (folder / "mindmap.svg").is_file():
+            shutil.copy(folder / "mindmap.svg", target / "mindmap.svg")
         for page in (folder / "flow").iterdir():
             if page.suffix in (".md", ".mmd"):  # the pages ONBOARD.md links to
                 shutil.copy(page, target / "flow" / page.name)

@@ -116,14 +116,14 @@ The GitHub Action
          - uses: actions/checkout@v4
            with:
              fetch-depth: 0     # full history, for the change features
-         - uses: mohdzain98/gnost@v0.7.2
+         - uses: mohdzain98/gnost@v0.8.0
            with:
              fail-under: "7.5"
              baseline: .gnost/baseline.json
              fail-on-new: "true"
 
 The action runs GNOST's Docker image, writes the SARIF file and uploads it, adds the score to the job
-summary, and then fails the job if the gate failed. Pinning ``@v0.7.2`` also pins the GNOST version.
+summary, and then fails the job if the gate failed. Pinning ``@v0.8.0`` also pins the GNOST version.
 
 **When it runs.** ``gnost init --github-action`` writes a workflow that runs on pull requests into ``main`` or
 ``master`` only: that is where the gate, the change report and the comment are useful, and it does not run a

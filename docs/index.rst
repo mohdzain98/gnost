@@ -253,7 +253,7 @@ or add the action to a workflow yourself (it runs on pull requests into ``main``
 
    - uses: actions/checkout@v4
      with: { fetch-depth: 0 }      # full history, for hotspots and `gnost changes`
-   - uses: mohdzain98/gnost@v0.7.2
+   - uses: mohdzain98/gnost@v0.8.0
      with: { comment: "true", fail-under: "7.5" }   # needs `pull-requests: write`
 
 Pull requests from forks get a read-only token, so by default they get the report in the job summary instead

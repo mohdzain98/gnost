@@ -1,10 +1,10 @@
 flowchart TD
-  dir_src_flask["src/flask<br/>16 files"]
   dir_src_flask_sansio["src/flask/sansio<br/>3 files"]
+  dir_src_flask["src/flask<br/>16 files"]
   dir_examples_tutorial_flaskr["examples/tutorial/flaskr<br/>4 files"]
-  dir_examples_celery_src_task_app["examples/celery/src/task_app<br/>3 files"]
   dir_src_flask_json["src/flask/json<br/>3 files"]
   dir_examples_javascript_js_example["examples/javascript/js_example<br/>2 files"]
+  dir_examples_celery_src_task_app["examples/celery/src/task_app<br/>3 files"]
   dir_examples_celery_src_task_app -->|2| dir_src_flask
   dir_examples_javascript_js_example -->|2| dir_src_flask
   dir_examples_tutorial_flaskr -->|4| dir_src_flask
@@ -18,4 +18,4 @@ flowchart TD
   linkStyle 4,7 stroke:#d32f2f,stroke-width:3px
   linkStyle 5,6 stroke:#f57c00,stroke-width:2px
   classDef cycle stroke:#d32f2f,stroke-width:3px
-  class dir_src_flask,dir_src_flask_sansio cycle
+  class dir_src_flask_sansio,dir_src_flask cycle
