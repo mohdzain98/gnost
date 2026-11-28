@@ -20,6 +20,18 @@ public class OnboardMojo extends RepositoryMojo {
     @Parameter(property = "gnost.inject", defaultValue = "false")
     boolean inject;
 
+    /** Also write the 3D view of the flow (.gnost/flow-3d.html). */
+    @Parameter(property = "gnost.threeD", defaultValue = "false")
+    boolean threeD;
+
+    /** Put the project map at the end of README.md. */
+    @Parameter(property = "gnost.injectMindmap", defaultValue = "false")
+    boolean injectMindmap;
+
+    /** Format of the project map: svg (default) or mermaid. */
+    @Parameter(property = "gnost.mindmapFormat")
+    String mindmapFormat;
+
     /** Show a progress bar. */
     @Parameter(property = "gnost.progress", defaultValue = "false")
     boolean progress;
@@ -59,6 +71,9 @@ public class OnboardMojo extends RepositoryMojo {
         flag(cmd, mermaid, "--mermaid");
         flag(cmd, layered, "--layered");
         flag(cmd, inject, "--inject");
+        flag(cmd, threeD, "--3d");
+        flag(cmd, injectMindmap, "--inject-mindmap");
+        option(cmd, mindmapFormat, "--mindmap-format");
         flag(cmd, progress, "--progress");
         flag(cmd, noProgress, "--no-progress");
         flag(cmd, insightsOnly, "--insights-only");

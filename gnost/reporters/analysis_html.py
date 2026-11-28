@@ -59,11 +59,11 @@ def _score_note(summary: Dict[str, Any]) -> str:
 def _density_kpi(summary: Dict[str, Any]) -> Tuple[str, str]:
     """The Finding Density card: the value and the line under it.
 
-    Reports scored with the old average formula have no density, so the card says so.
+    Reports written before 0.7.1, or with the removed average formula, have no density.
     """
     card = _score_card(summary)
     if card is None:
-        return "n/a", "Not computed with score = average"
+        return "n/a", "Not in this report (written before 0.7.1)"
     lines = _safe_int(card.get("analyzed_lines"))
     density = _safe_float(card.get("density"))
     return (

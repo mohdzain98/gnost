@@ -37,7 +37,7 @@ Example::
     [analyze]
     analyzers = ["maintainability", "readability"]
     fail_under = 7.5         # CI: exit 3 when the final score (0-10) is lower
-    score = "density"        # or "average": the 0.7 formula, kept for one release
+    score = "density"        # the only formula since 0.8.0 ("average" is ignored)
     badge = true             # write .gnost/badge.svg for the README (or a path)
     timeout = 600
     max_findings = 500
@@ -367,11 +367,14 @@ def _validate_section(
         and not 0 <= out["fail_under"] <= 10
     ):
         raise ConfigError(f"{where}: 'analyze.fail_under' must be between 0 and 10")
-    if section == "analyze" and out.get("score", "density") not in (
-        "density",
-        "average",
-    ):
-        raise ConfigError(f'{where}: \'analyze.score\' must be "density" or "average"')
+    if section == "analyze" and out.get("score") == "average":
+        config.warnings.append(
+            f'{where}: analyze.score = "average" was removed in 0.8.0; '
+            "the density score is used (see https://gnost.readthedocs.io/en/latest/scoring.html)"
+        )
+        del out["score"]
+    elif section == "analyze" and out.get("score", "density") != "density":
+        raise ConfigError(f"{where}: 'analyze.score' must be \"density\"")
     if section == "analyze" and "analyzers" in out:
         if not all(isinstance(a, str) for a in out["analyzers"]):
             raise ConfigError(f"{where}: 'analyze.analyzers' must be a list of strings")

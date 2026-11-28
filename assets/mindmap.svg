@@ -1,0 +1,462 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-641.9 -588.4 1211.8 1149.7" width="900" height="854" role="img" aria-labelledby="t">
+<title id="t">Project map of gnost: 183 files</title>
+<style>
+  .b { stroke:#4f7cff; stroke-opacity:.35; fill:none }
+  .l { stroke:#2da44e; stroke-opacity:.45; fill:none; stroke-width:1.2 }
+  .d { fill:#4f7cff } .c { fill:#4f7cff; fill-opacity:.35; stroke:#4f7cff; stroke-width:1.5 }
+  .f { fill:#8b949e } .t { fill:#d29922 } .e { fill:#2da44e; stroke:#2da44e; stroke-width:2 }
+  text { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+         dominant-baseline:central; paint-order:stroke; stroke:#ffffff; stroke-width:3px;
+         stroke-linejoin:round; fill:#1f2328 }
+  text.fl { font-size:10px; fill:#656d76; stroke-width:0 }
+  text.tl { font-size:12px; font-weight:600; fill:#9a6700; stroke-width:0 }
+  text.el { font-size:13px; font-weight:700; fill:#1a7f37; stroke-width:0 }
+  text.dl { font-size:12px; font-weight:700 }
+  text.rl { font-size:15px; font-weight:700; text-anchor:middle }
+  @media (prefers-color-scheme: dark) {
+    text { stroke:#0d1117; fill:#e6edf3 }
+    text.fl { fill:#8b949e } text.tl { fill:#d29922 } text.el { fill:#3fb950 }
+  }
+</style>
+<line class="b" stroke-width="3" x1="0.0" y1="0.0" x2="-149.9" y2="-4.1"/>
+<line class="b" stroke-width="1.5" x1="-149.9" y1="-4.1" x2="-449.8" y2="-12.3"/>
+<line class="b" stroke-width="3" x1="0.0" y1="0.0" x2="144.4" y2="-40.5"/>
+<line class="b" stroke-width="1.5" x1="144.4" y1="-40.5" x2="-292.9" y2="-65.0"/>
+<line class="b" stroke-width="1.5" x1="-292.9" y1="-65.0" x2="-448.5" y2="-36.8"/>
+<line class="b" stroke-width="1.5" x1="-292.9" y1="-65.0" x2="-445.8" y2="-61.3"/>
+<line class="b" stroke-width="1.5" x1="-292.9" y1="-65.0" x2="-441.8" y2="-85.5"/>
+<line class="b" stroke-width="1.5" x1="-292.9" y1="-65.0" x2="-436.5" y2="-109.5"/>
+<line class="b" stroke-width="1.5" x1="-292.9" y1="-65.0" x2="-429.8" y2="-133.2"/>
+<line class="b" stroke-width="1.5" x1="-292.9" y1="-65.0" x2="-421.9" y2="-156.5"/>
+<line class="b" stroke-width="1.5" x1="144.4" y1="-40.5" x2="-247.4" y2="-169.6"/>
+<line class="b" stroke-width="1.5" x1="-247.4" y1="-169.6" x2="-412.7" y2="-179.3"/>
+<line class="b" stroke-width="1.5" x1="-247.4" y1="-169.6" x2="-402.3" y2="-201.6"/>
+<line class="b" stroke-width="1.5" x1="-247.4" y1="-169.6" x2="-390.7" y2="-223.2"/>
+<line class="b" stroke-width="1.5" x1="-247.4" y1="-169.6" x2="-378.0" y2="-244.2"/>
+<line class="b" stroke-width="1.5" x1="-247.4" y1="-169.6" x2="-364.1" y2="-264.5"/>
+<line class="b" stroke-width="1.5" x1="-247.4" y1="-169.6" x2="-349.1" y2="-284.0"/>
+<line class="b" stroke-width="1.5" x1="-247.4" y1="-169.6" x2="-333.0" y2="-302.6"/>
+<line class="b" stroke-width="1.5" x1="-247.4" y1="-169.6" x2="-316.0" y2="-320.4"/>
+<line class="b" stroke-width="1.5" x1="144.4" y1="-40.5" x2="-145.2" y2="-262.5"/>
+<line class="b" stroke-width="1.5" x1="-145.2" y1="-262.5" x2="-298.1" y2="-337.1"/>
+<line class="b" stroke-width="1.5" x1="-145.2" y1="-262.5" x2="-279.2" y2="-352.9"/>
+<line class="b" stroke-width="1.5" x1="-145.2" y1="-262.5" x2="-259.5" y2="-367.6"/>
+<line class="b" stroke-width="1.5" x1="-145.2" y1="-262.5" x2="-239.0" y2="-381.3"/>
+<line class="b" stroke-width="1.5" x1="-145.2" y1="-262.5" x2="-217.9" y2="-393.7"/>
+<line class="b" stroke-width="1.5" x1="-145.2" y1="-262.5" x2="-196.0" y2="-405.1"/>
+<line class="b" stroke-width="1.5" x1="-145.2" y1="-262.5" x2="-173.6" y2="-415.2"/>
+<line class="b" stroke-width="1.5" x1="-145.2" y1="-262.5" x2="-150.7" y2="-424.0"/>
+<line class="b" stroke-width="1.5" x1="-145.2" y1="-262.5" x2="-127.3" y2="-431.6"/>
+<line class="b" stroke-width="1.5" x1="144.4" y1="-40.5" x2="-53.0" y2="-295.3"/>
+<line class="b" stroke-width="1.5" x1="-53.0" y1="-295.3" x2="-103.6" y2="-437.9"/>
+<line class="b" stroke-width="1.5" x1="-53.0" y1="-295.3" x2="-79.5" y2="-442.9"/>
+<line class="b" stroke-width="1.5" x1="-53.0" y1="-295.3" x2="-55.2" y2="-446.6"/>
+<line class="b" stroke-width="1.5" x1="144.4" y1="-40.5" x2="-4.1" y2="-300.0"/>
+<line class="b" stroke-width="1.5" x1="-4.1" y1="-300.0" x2="-30.7" y2="-449.0"/>
+<line class="b" stroke-width="1.5" x1="-4.1" y1="-300.0" x2="-6.1" y2="-450.0"/>
+<line class="b" stroke-width="1.5" x1="-4.1" y1="-300.0" x2="18.4" y2="-449.6"/>
+<line class="b" stroke-width="1.5" x1="144.4" y1="-40.5" x2="108.1" y2="-279.8"/>
+<line class="b" stroke-width="1.5" x1="108.1" y1="-279.8" x2="43.0" y2="-447.9"/>
+<line class="b" stroke-width="1.5" x1="108.1" y1="-279.8" x2="67.4" y2="-444.9"/>
+<line class="b" stroke-width="1.5" x1="108.1" y1="-279.8" x2="91.6" y2="-440.6"/>
+<line class="b" stroke-width="1.5" x1="108.1" y1="-279.8" x2="115.5" y2="-434.9"/>
+<line class="b" stroke-width="1.5" x1="108.1" y1="-279.8" x2="139.1" y2="-428.0"/>
+<line class="b" stroke-width="1.5" x1="108.1" y1="-279.8" x2="162.2" y2="-419.7"/>
+<line class="b" stroke-width="1.5" x1="108.1" y1="-279.8" x2="184.9" y2="-410.3"/>
+<line class="b" stroke-width="1.5" x1="108.1" y1="-279.8" x2="207.0" y2="-399.5"/>
+<line class="b" stroke-width="1.5" x1="108.1" y1="-279.8" x2="228.5" y2="-387.6"/>
+<line class="b" stroke-width="1.5" x1="108.1" y1="-279.8" x2="249.4" y2="-374.6"/>
+<line class="b" stroke-width="1.5" x1="108.1" y1="-279.8" x2="269.5" y2="-360.4"/>
+<line class="b" stroke-width="1.5" x1="144.4" y1="-40.5" x2="222.0" y2="-201.8"/>
+<line class="b" stroke-width="1.5" x1="222.0" y1="-201.8" x2="288.7" y2="-345.2"/>
+<line class="b" stroke-width="1.5" x1="222.0" y1="-201.8" x2="307.1" y2="-328.9"/>
+<line class="b" stroke-width="1.5" x1="222.0" y1="-201.8" x2="324.7" y2="-311.6"/>
+<line class="b" stroke-width="1.5" x1="222.0" y1="-201.8" x2="341.2" y2="-293.4"/>
+<line class="b" stroke-width="1.5" x1="222.0" y1="-201.8" x2="356.7" y2="-274.3"/>
+<line class="b" stroke-width="1.5" x1="222.0" y1="-201.8" x2="371.1" y2="-254.5"/>
+<line class="b" stroke-width="1.5" x1="144.4" y1="-40.5" x2="268.2" y2="-134.4"/>
+<line class="b" stroke-width="1.5" x1="268.2" y1="-134.4" x2="384.5" y2="-233.8"/>
+<line class="b" stroke-width="1.5" x1="268.2" y1="-134.4" x2="396.7" y2="-212.5"/>
+<line class="b" stroke-width="1.5" x1="268.2" y1="-134.4" x2="407.7" y2="-190.5"/>
+<line class="b" stroke-width="1.5" x1="268.2" y1="-134.4" x2="417.5" y2="-167.9"/>
+<line class="b" stroke-width="1.5" x1="144.4" y1="-40.5" x2="286.6" y2="-88.8"/>
+<line class="b" stroke-width="1.5" x1="286.6" y1="-88.8" x2="426.0" y2="-144.9"/>
+<line class="b" stroke-width="1.5" x1="286.6" y1="-88.8" x2="433.3" y2="-121.4"/>
+<line class="b" stroke-width="1.5" x1="144.4" y1="-40.5" x2="297.2" y2="-40.8"/>
+<line class="b" stroke-width="1.5" x1="297.2" y1="-40.8" x2="439.3" y2="-97.6"/>
+<line class="b" stroke-width="1.5" x1="297.2" y1="-40.8" x2="444.0" y2="-73.4"/>
+<line class="b" stroke-width="1.5" x1="297.2" y1="-40.8" x2="447.3" y2="-49.1"/>
+<line class="b" stroke-width="1.5" x1="297.2" y1="-40.8" x2="449.3" y2="-24.6"/>
+<line class="b" stroke-width="1.5" x1="144.4" y1="-40.5" x2="299.0" y2="24.6"/>
+<line class="b" stroke-width="1.5" x1="299.0" y1="24.6" x2="450.0" y2="0.0"/>
+<line class="b" stroke-width="1.5" x1="299.0" y1="24.6" x2="449.3" y2="24.6"/>
+<line class="b" stroke-width="1.5" x1="299.0" y1="24.6" x2="447.3" y2="49.1"/>
+<line class="b" stroke-width="1.5" x1="299.0" y1="24.6" x2="444.0" y2="73.4"/>
+<line class="b" stroke-width="1.5" x1="144.4" y1="-40.5" x2="237.8" y2="182.9"/>
+<line class="b" stroke-width="1.5" x1="237.8" y1="182.9" x2="439.3" y2="97.6"/>
+<line class="b" stroke-width="1.5" x1="237.8" y1="182.9" x2="433.3" y2="121.4"/>
+<line class="b" stroke-width="1.5" x1="237.8" y1="182.9" x2="426.0" y2="144.9"/>
+<line class="b" stroke-width="1.5" x1="237.8" y1="182.9" x2="417.5" y2="167.9"/>
+<line class="b" stroke-width="1.5" x1="237.8" y1="182.9" x2="407.7" y2="190.5"/>
+<line class="b" stroke-width="1.5" x1="237.8" y1="182.9" x2="396.7" y2="212.5"/>
+<line class="b" stroke-width="1.5" x1="237.8" y1="182.9" x2="384.5" y2="233.8"/>
+<line class="b" stroke-width="1.5" x1="237.8" y1="182.9" x2="371.1" y2="254.5"/>
+<line class="b" stroke-width="1.5" x1="237.8" y1="182.9" x2="356.7" y2="274.3"/>
+<line class="b" stroke-width="1.5" x1="237.8" y1="182.9" x2="341.2" y2="293.4"/>
+<line class="b" stroke-width="1.5" x1="237.8" y1="182.9" x2="324.7" y2="311.6"/>
+<line class="b" stroke-width="1.5" x1="237.8" y1="182.9" x2="307.1" y2="328.9"/>
+<line class="b" stroke-width="1.5" x1="237.8" y1="182.9" x2="288.7" y2="345.2"/>
+<line class="b" stroke-width="1.5" x1="237.8" y1="182.9" x2="269.5" y2="360.4"/>
+<line class="b" stroke-width="1.5" x1="237.8" y1="182.9" x2="249.4" y2="374.6"/>
+<line class="b" stroke-width="1.5" x1="237.8" y1="182.9" x2="228.5" y2="387.6"/>
+<line class="b" stroke-width="1.5" x1="237.8" y1="182.9" x2="207.0" y2="399.5"/>
+<line class="b" stroke-width="1.5" x1="144.4" y1="-40.5" x2="92.7" y2="285.3"/>
+<line class="b" stroke-width="1.5" x1="92.7" y1="285.3" x2="184.9" y2="410.3"/>
+<line class="b" stroke-width="1.5" x1="92.7" y1="285.3" x2="162.2" y2="419.7"/>
+<line class="b" stroke-width="1.5" x1="92.7" y1="285.3" x2="139.1" y2="428.0"/>
+<line class="b" stroke-width="1.5" x1="92.7" y1="285.3" x2="115.5" y2="434.9"/>
+<line class="b" stroke-width="1.5" x1="92.7" y1="285.3" x2="91.6" y2="440.6"/>
+<line class="b" stroke-width="1.5" x1="144.4" y1="-40.5" x2="4.1" y2="300.0"/>
+<line class="b" stroke-width="1.5" x1="4.1" y1="300.0" x2="67.4" y2="444.9"/>
+<line class="b" stroke-width="1.5" x1="4.1" y1="300.0" x2="43.0" y2="447.9"/>
+<line class="b" stroke-width="1.5" x1="4.1" y1="300.0" x2="18.4" y2="449.6"/>
+<line class="b" stroke-width="1.5" x1="4.1" y1="300.0" x2="-6.1" y2="450.0"/>
+<line class="b" stroke-width="1.5" x1="4.1" y1="300.0" x2="-30.7" y2="449.0"/>
+<line class="b" stroke-width="1.5" x1="4.1" y1="300.0" x2="-55.2" y2="446.6"/>
+<line class="b" stroke-width="1.5" x1="144.4" y1="-40.5" x2="-123.3" y2="273.5"/>
+<line class="b" stroke-width="1.5" x1="-123.3" y1="273.5" x2="-79.5" y2="442.9"/>
+<line class="b" stroke-width="1.5" x1="-123.3" y1="273.5" x2="-103.6" y2="437.9"/>
+<line class="b" stroke-width="1.5" x1="-123.3" y1="273.5" x2="-127.3" y2="431.6"/>
+<line class="b" stroke-width="1.5" x1="-123.3" y1="273.5" x2="-150.7" y2="424.0"/>
+<line class="b" stroke-width="1.5" x1="-123.3" y1="273.5" x2="-173.6" y2="415.2"/>
+<line class="b" stroke-width="1.5" x1="-123.3" y1="273.5" x2="-196.0" y2="405.1"/>
+<line class="b" stroke-width="1.5" x1="-123.3" y1="273.5" x2="-217.9" y2="393.7"/>
+<line class="b" stroke-width="1.5" x1="-123.3" y1="273.5" x2="-239.0" y2="381.3"/>
+<line class="b" stroke-width="1.5" x1="-123.3" y1="273.5" x2="-259.5" y2="367.6"/>
+<line class="b" stroke-width="1.5" x1="-123.3" y1="273.5" x2="-279.2" y2="352.9"/>
+<line class="b" stroke-width="1.5" x1="144.4" y1="-40.5" x2="-216.4" y2="207.7"/>
+<line class="b" stroke-width="1.5" x1="-216.4" y1="207.7" x2="-298.1" y2="337.1"/>
+<line class="b" stroke-width="1.5" x1="-216.4" y1="207.7" x2="-316.0" y2="320.4"/>
+<line class="b" stroke-width="1.5" x1="-216.4" y1="207.7" x2="-333.0" y2="302.6"/>
+<line class="b" stroke-width="1.5" x1="-216.4" y1="207.7" x2="-349.1" y2="284.0"/>
+<line class="b" stroke-width="1.5" x1="144.4" y1="-40.5" x2="-364.1" y2="264.5"/>
+<line class="b" stroke-width="3" x1="0.0" y1="0.0" x2="-130.2" y2="74.4"/>
+<line class="b" stroke-width="1.5" x1="-130.2" y1="74.4" x2="-252.0" y2="162.8"/>
+<line class="b" stroke-width="1.5" x1="-252.0" y1="162.8" x2="-378.0" y2="244.2"/>
+<line class="b" stroke-width="1.5" x1="-130.2" y1="74.4" x2="-260.5" y2="148.8"/>
+<line class="b" stroke-width="1.5" x1="-260.5" y1="148.8" x2="-390.7" y2="223.2"/>
+<line class="b" stroke-width="1.5" x1="-130.2" y1="74.4" x2="-402.3" y2="201.6"/>
+<line class="b" stroke-width="3" x1="0.0" y1="0.0" x2="-146.4" y2="32.5"/>
+<line class="b" stroke-width="1.5" x1="-146.4" y1="32.5" x2="-412.7" y2="179.3"/>
+<line class="b" stroke-width="1.5" x1="-146.4" y1="32.5" x2="-421.9" y2="156.5"/>
+<line class="b" stroke-width="1.5" x1="-146.4" y1="32.5" x2="-429.8" y2="133.2"/>
+<line class="b" stroke-width="1.5" x1="-146.4" y1="32.5" x2="-436.5" y2="109.5"/>
+<line class="b" stroke-width="1.5" x1="-146.4" y1="32.5" x2="-441.8" y2="85.5"/>
+<line class="b" stroke-width="1.5" x1="-146.4" y1="32.5" x2="-445.8" y2="61.3"/>
+<line class="b" stroke-width="1.5" x1="-146.4" y1="32.5" x2="-448.5" y2="36.8"/>
+<line class="b" stroke-width="1.5" x1="-146.4" y1="32.5" x2="-449.8" y2="12.3"/>
+<path class="l" d="M-55.2,-446.6 Q-246.3,-107.0 -364.1,264.5"/>
+<path class="l" d="M-55.2,-446.6 Q-278.6,-282.4 -445.8,-61.3"/>
+<path class="l" d="M-55.2,-446.6 Q-263.4,-332.9 -421.9,-156.5"/>
+<path class="l" d="M-55.2,-446.6 Q-272.3,-308.0 -436.5,-109.5"/>
+<path class="l" d="M-55.2,-446.6 Q-182.6,-436.7 -279.2,-352.9"/>
+<path class="l" d="M-55.2,-446.6 Q-171.8,-444.4 -259.5,-367.6"/>
+<path class="l" d="M-55.2,-446.6 Q-124.7,-469.5 -173.6,-415.2"/>
+<path class="l" d="M-55.2,-446.6 Q-99.4,-478.3 -127.3,-431.6"/>
+<path class="l" d="M-55.2,-446.6 Q-86.4,-481.6 -103.6,-437.9"/>
+<path class="l" d="M-55.2,-446.6 Q-16.7,-408.1 18.4,-449.6"/>
+<path class="l" d="M-55.2,-446.6 Q158.7,-136.5 433.3,121.4"/>
+<path class="l" d="M-55.2,-446.6 Q154.4,-125.6 426.0,144.9"/>
+<path class="l" d="M-55.2,-446.6 Q149.4,-114.9 417.5,167.9"/>
+<path class="l" d="M-55.2,-446.6 Q137.8,-94.4 396.7,212.5"/>
+<path class="l" d="M-55.2,-446.6 Q131.1,-84.7 384.5,233.8"/>
+<path class="l" d="M-55.2,-446.6 Q123.8,-75.3 371.1,254.5"/>
+<path class="l" d="M-55.2,-446.6 Q107.7,-57.7 341.2,293.4"/>
+<path class="l" d="M-55.2,-446.6 Q89.7,-41.9 307.1,328.9"/>
+<path class="l" d="M-55.2,-446.6 Q70.0,-28.2 269.5,360.4"/>
+<path class="l" d="M-55.2,-446.6 Q48.8,-16.6 228.5,387.6"/>
+<path class="l" d="M-55.2,-446.6 Q-82.9,2.3 -30.7,449.0"/>
+<path class="l" d="M-55.2,-446.6 Q-154.0,-21.2 -173.6,415.2"/>
+<path class="l" d="M-55.2,-446.6 Q-165.1,-27.3 -196.0,405.1"/>
+<path class="l" d="M-55.2,-446.6 Q-196.1,-49.2 -259.5,367.6"/>
+<path class="l" d="M-55.2,-446.6 Q-205.7,-57.6 -279.2,352.9"/>
+<path class="l" d="M-55.2,-446.6 Q-239.2,-96.2 -349.1,284.0"/>
+<path class="l" d="M-402.3,201.6 Q-205.1,-102.8 -79.5,-442.9"/>
+<path class="l" d="M-429.8,133.2 Q-424.7,227.5 -349.1,284.0"/>
+<circle class="d" cx="0.0" cy="0.0" r="23.0"/>
+<circle class="d" cx="-149.9" cy="-4.1" r="7.0"/>
+<circle class="f" cx="-449.8" cy="-12.3" r="3.0"/>
+<circle class="d" cx="144.4" cy="-40.5" r="16.0"/>
+<circle class="d" cx="-292.9" cy="-65.0" r="12.5"/>
+<rect class="c" x="-455.7" y="-44.1" width="14.5" height="14.5" rx="4"/>
+<rect class="c" x="-453.6" y="-69.1" width="15.7" height="15.7" rx="4"/>
+<rect class="c" x="-451.2" y="-94.9" width="18.7" height="18.7" rx="4"/>
+<rect class="c" x="-444.3" y="-117.4" width="15.7" height="15.7" rx="4"/>
+<circle class="f" cx="-429.8" cy="-133.2" r="3.0"/>
+<circle class="f" cx="-421.9" cy="-156.5" r="7.2"/>
+<circle class="d" cx="-247.4" cy="-169.6" r="8.8"/>
+<circle class="f" cx="-412.7" cy="-179.3" r="3.0"/>
+<circle class="f" cx="-402.3" cy="-201.6" r="4.5"/>
+<circle class="f" cx="-390.7" cy="-223.2" r="4.5"/>
+<circle class="f" cx="-378.0" cy="-244.2" r="6.0"/>
+<circle class="f" cx="-364.1" cy="-264.5" r="6.5"/>
+<circle class="f" cx="-349.1" cy="-284.0" r="4.5"/>
+<circle class="f" cx="-333.0" cy="-302.6" r="6.5"/>
+<circle class="f" cx="-316.0" cy="-320.4" r="4.5"/>
+<circle class="d" cx="-145.2" cy="-262.5" r="9.0"/>
+<circle class="f" cx="-298.1" cy="-337.1" r="3.0"/>
+<circle class="f" cx="-279.2" cy="-352.9" r="5.4"/>
+<circle class="f" cx="-259.5" cy="-367.6" r="6.0"/>
+<circle class="f" cx="-239.0" cy="-381.3" r="6.0"/>
+<circle class="f" cx="-217.9" cy="-393.7" r="4.5"/>
+<circle class="f" cx="-196.0" cy="-405.1" r="6.5"/>
+<circle class="f" cx="-173.6" cy="-415.2" r="4.5"/>
+<circle class="f" cx="-150.7" cy="-424.0" r="4.5"/>
+<circle class="f" cx="-127.3" cy="-431.6" r="5.4"/>
+<circle class="d" cx="-53.0" cy="-295.3" r="9.2"/>
+<rect class="c" x="-111.4" y="-445.8" width="15.7" height="15.7" rx="4"/>
+<circle class="f" cx="-79.5" cy="-442.9" r="4.5"/>
+<circle class="e" cx="-55.2" cy="-446.6" r="8.0"/>
+<circle class="d" cx="-4.1" cy="-300.0" r="7.7"/>
+<circle class="f" cx="-30.7" cy="-449.0" r="3.0"/>
+<circle class="f" cx="-6.1" cy="-450.0" r="6.5"/>
+<circle class="f" cx="18.4" cy="-449.6" r="6.9"/>
+<circle class="d" cx="108.1" cy="-279.8" r="9.3"/>
+<circle class="f" cx="43.0" cy="-447.9" r="3.0"/>
+<circle class="f" cx="67.4" cy="-444.9" r="6.9"/>
+<circle class="f" cx="91.6" cy="-440.6" r="4.5"/>
+<circle class="f" cx="115.5" cy="-434.9" r="7.2"/>
+<circle class="f" cx="139.1" cy="-428.0" r="7.2"/>
+<circle class="f" cx="162.2" cy="-419.7" r="7.8"/>
+<circle class="t" cx="184.9" cy="-410.3" r="8.4"/>
+<circle class="f" cx="207.0" cy="-399.5" r="4.5"/>
+<circle class="f" cx="228.5" cy="-387.6" r="5.4"/>
+<circle class="f" cx="249.4" cy="-374.6" r="7.2"/>
+<circle class="f" cx="269.5" cy="-360.4" r="6.5"/>
+<circle class="d" cx="222.0" cy="-201.8" r="8.4"/>
+<circle class="f" cx="288.7" cy="-345.2" r="8.0"/>
+<circle class="f" cx="307.1" cy="-328.9" r="5.4"/>
+<circle class="f" cx="324.7" cy="-311.6" r="6.0"/>
+<circle class="f" cx="341.2" cy="-293.4" r="6.5"/>
+<circle class="f" cx="356.7" cy="-274.3" r="5.4"/>
+<circle class="f" cx="371.1" cy="-254.5" r="5.4"/>
+<circle class="d" cx="268.2" cy="-134.4" r="8.0"/>
+<circle class="f" cx="384.5" cy="-233.8" r="4.5"/>
+<circle class="f" cx="396.7" cy="-212.5" r="6.0"/>
+<circle class="f" cx="407.7" cy="-190.5" r="4.5"/>
+<circle class="f" cx="417.5" cy="-167.9" r="5.4"/>
+<circle class="d" cx="286.6" cy="-88.8" r="7.4"/>
+<circle class="f" cx="426.0" cy="-144.9" r="3.0"/>
+<circle class="f" cx="433.3" cy="-121.4" r="6.5"/>
+<circle class="d" cx="297.2" cy="-40.8" r="8.0"/>
+<circle class="t" cx="439.3" cy="-97.6" r="8.2"/>
+<circle class="f" cx="444.0" cy="-73.4" r="4.5"/>
+<circle class="f" cx="447.3" cy="-49.1" r="5.4"/>
+<circle class="f" cx="449.3" cy="-24.6" r="6.0"/>
+<circle class="d" cx="299.0" cy="24.6" r="8.0"/>
+<circle class="f" cx="450.0" cy="0.0" r="6.5"/>
+<circle class="f" cx="449.3" cy="24.6" r="4.5"/>
+<circle class="f" cx="447.3" cy="49.1" r="6.0"/>
+<circle class="f" cx="444.0" cy="73.4" r="4.5"/>
+<circle class="d" cx="237.8" cy="182.9" r="10.7"/>
+<rect class="c" x="431.8" y="90.1" width="14.9" height="14.9" rx="4"/>
+<circle class="f" cx="433.3" cy="121.4" r="4.5"/>
+<circle class="f" cx="426.0" cy="144.9" r="5.4"/>
+<circle class="f" cx="417.5" cy="167.9" r="4.5"/>
+<circle class="f" cx="407.7" cy="190.5" r="5.4"/>
+<circle class="f" cx="396.7" cy="212.5" r="5.4"/>
+<circle class="f" cx="384.5" cy="233.8" r="5.4"/>
+<circle class="f" cx="371.1" cy="254.5" r="5.4"/>
+<circle class="f" cx="356.7" cy="274.3" r="5.4"/>
+<circle class="f" cx="341.2" cy="293.4" r="5.4"/>
+<circle class="f" cx="324.7" cy="311.6" r="4.5"/>
+<circle class="f" cx="307.1" cy="328.9" r="6.5"/>
+<circle class="f" cx="288.7" cy="345.2" r="4.5"/>
+<circle class="f" cx="269.5" cy="360.4" r="5.4"/>
+<circle class="f" cx="249.4" cy="374.6" r="4.5"/>
+<circle class="f" cx="228.5" cy="387.6" r="5.4"/>
+<circle class="f" cx="207.0" cy="399.5" r="5.4"/>
+<circle class="d" cx="92.7" cy="285.3" r="8.2"/>
+<circle class="f" cx="184.9" cy="410.3" r="5.4"/>
+<circle class="f" cx="162.2" cy="419.7" r="4.5"/>
+<circle class="f" cx="139.1" cy="428.0" r="4.5"/>
+<circle class="f" cx="115.5" cy="434.9" r="6.9"/>
+<circle class="f" cx="91.6" cy="440.6" r="4.5"/>
+<circle class="d" cx="4.1" cy="300.0" r="8.4"/>
+<circle class="f" cx="67.4" cy="444.9" r="3.0"/>
+<circle class="f" cx="43.0" cy="447.9" r="4.5"/>
+<circle class="f" cx="18.4" cy="449.6" r="6.0"/>
+<circle class="f" cx="-6.1" cy="450.0" r="6.0"/>
+<circle class="f" cx="-30.7" cy="449.0" r="6.0"/>
+<circle class="t" cx="-55.2" cy="446.6" r="8.6"/>
+<circle class="d" cx="-123.3" cy="273.5" r="9.2"/>
+<circle class="f" cx="-79.5" cy="442.9" r="3.0"/>
+<circle class="f" cx="-103.6" cy="437.9" r="6.5"/>
+<circle class="f" cx="-127.3" cy="431.6" r="5.4"/>
+<circle class="f" cx="-150.7" cy="424.0" r="4.5"/>
+<circle class="f" cx="-173.6" cy="415.2" r="7.8"/>
+<circle class="t" cx="-196.0" cy="405.1" r="8.7"/>
+<circle class="f" cx="-217.9" cy="393.7" r="8.0"/>
+<circle class="f" cx="-239.0" cy="381.3" r="4.5"/>
+<circle class="f" cx="-259.5" cy="367.6" r="6.0"/>
+<circle class="f" cx="-279.2" cy="352.9" r="4.5"/>
+<circle class="d" cx="-216.4" cy="207.7" r="8.0"/>
+<circle class="f" cx="-298.1" cy="337.1" r="3.0"/>
+<circle class="f" cx="-316.0" cy="320.4" r="7.8"/>
+<circle class="f" cx="-333.0" cy="302.6" r="6.9"/>
+<circle class="f" cx="-349.1" cy="284.0" r="6.0"/>
+<circle class="f" cx="-364.1" cy="264.5" r="7.8"/>
+<circle class="d" cx="-130.2" cy="74.4" r="10.8"/>
+<circle class="d" cx="-252.0" cy="162.8" r="10.5"/>
+<rect class="c" x="-387.4" y="234.8" width="18.9" height="18.9" rx="4"/>
+<circle class="d" cx="-260.5" cy="148.8" r="7.4"/>
+<rect class="c" x="-397.1" y="216.8" width="12.8" height="12.8" rx="4"/>
+<circle class="e" cx="-402.3" cy="201.6" r="8.0"/>
+<circle class="d" cx="-146.4" cy="32.5" r="8.8"/>
+<circle class="f" cx="-412.7" cy="179.3" r="3.0"/>
+<circle class="e" cx="-421.9" cy="156.5" r="8.0"/>
+<circle class="e" cx="-429.8" cy="133.2" r="8.0"/>
+<circle class="e" cx="-436.5" cy="109.5" r="8.0"/>
+<circle class="e" cx="-441.8" cy="85.5" r="8.0"/>
+<circle class="e" cx="-445.8" cy="61.3" r="8.0"/>
+<circle class="e" cx="-448.5" cy="36.8" r="8.0"/>
+<circle class="e" cx="-449.8" cy="12.3" r="8.0"/>
+<text class="rl"><tspan x="0" y="0">gnost</tspan></text>
+<text class="dl" text-anchor="end" x="-162.9" y="-4.1" transform="rotate(1.57 -149.9 -4.1)">docs</text>
+<text class="fl" text-anchor="end" x="-458.8" y="-12.3" transform="rotate(1.57 -449.8 -12.3)">conf.py</text>
+<text class="dl" text-anchor="start" x="166.4" y="-40.5" transform="rotate(-15.65 144.4 -40.5)">gnost</text>
+<text class="dl" text-anchor="end" x="-311.3" y="-65.0" transform="rotate(12.52 -292.9 -65.0)">analysis</text>
+<text class="dl" text-anchor="end" x="-461.7" y="-36.8" transform="rotate(4.70 -448.5 -36.8)">analyzers (5)</text>
+<text class="dl" text-anchor="end" x="-459.6" y="-61.3" transform="rotate(7.83 -445.8 -61.3)">core (8)</text>
+<text class="dl" text-anchor="end" x="-457.2" y="-85.5" transform="rotate(10.96 -441.8 -85.5)">rules (19)</text>
+<text class="dl" text-anchor="end" x="-450.3" y="-109.5" transform="rotate(14.09 -436.5 -109.5)">utils (8)</text>
+<text class="fl" text-anchor="end" x="-438.8" y="-133.2" transform="rotate(17.22 -429.8 -133.2)">__init__.py</text>
+<text class="fl" text-anchor="end" x="-435.1" y="-156.5" transform="rotate(20.35 -421.9 -156.5)">languages.py</text>
+<text class="dl" text-anchor="end" x="-262.3" y="-169.6" transform="rotate(34.43 -247.4 -169.6)">changes</text>
+<text class="fl" text-anchor="end" x="-421.7" y="-179.3" transform="rotate(23.48 -412.7 -179.3)">__init__.py</text>
+<text class="fl" text-anchor="end" x="-412.8" y="-201.6" transform="rotate(26.61 -402.3 -201.6)">analyzer.py</text>
+<text class="fl" text-anchor="end" x="-401.2" y="-223.2" transform="rotate(29.74 -390.7 -223.2)">findings.py</text>
+<text class="fl" text-anchor="end" x="-390.0" y="-244.2" transform="rotate(32.87 -378.0 -244.2)">impact.py</text>
+<text class="fl" text-anchor="end" x="-376.5" y="-264.5" transform="rotate(36.00 -364.1 -264.5)">refs.py</text>
+<text class="fl" text-anchor="end" x="-359.6" y="-284.0" transform="rotate(39.13 -349.1 -284.0)">render.py</text>
+<text class="fl" text-anchor="end" x="-345.5" y="-302.6" transform="rotate(42.26 -333.0 -302.6)">report.py</text>
+<text class="fl" text-anchor="end" x="-326.5" y="-320.4" transform="rotate(45.39 -316.0 -320.4)">snapshot.py</text>
+<text class="dl" text-anchor="end" x="-160.2" y="-262.5" transform="rotate(61.04 -145.2 -262.5)">ci</text>
+<text class="fl" text-anchor="end" x="-307.1" y="-337.1" transform="rotate(48.52 -298.1 -337.1)">__init__.py</text>
+<text class="fl" text-anchor="end" x="-290.6" y="-352.9" transform="rotate(51.65 -279.2 -352.9)">baseline.py</text>
+<text class="fl" text-anchor="end" x="-271.5" y="-367.6" transform="rotate(54.78 -259.5 -367.6)">exit_codes.py</text>
+<text class="fl" text-anchor="end" x="-251.0" y="-381.3" transform="rotate(57.91 -239.0 -381.3)">fingerprint.py</text>
+<text class="fl" text-anchor="end" x="-228.4" y="-393.7" transform="rotate(61.04 -217.9 -393.7)">gate.py</text>
+<text class="fl" text-anchor="end" x="-208.5" y="-405.1" transform="rotate(64.17 -196.0 -405.1)">paths.py</text>
+<text class="fl" text-anchor="end" x="-184.1" y="-415.2" transform="rotate(67.30 -173.6 -415.2)">run.py</text>
+<text class="fl" text-anchor="end" x="-161.2" y="-424.0" transform="rotate(70.43 -150.7 -424.0)">sarif.py</text>
+<text class="fl" text-anchor="end" x="-138.7" y="-431.6" transform="rotate(73.57 -127.3 -431.6)">scorecard.py</text>
+<text class="dl" text-anchor="end" x="-68.2" y="-295.3" transform="rotate(79.83 -53.0 -295.3)">cli</text>
+<text class="dl" text-anchor="end" x="-117.4" y="-437.9" transform="rotate(76.70 -103.6 -437.9)">commands (8)</text>
+<text class="fl" text-anchor="end" x="-90.0" y="-442.9" transform="rotate(79.83 -79.5 -442.9)">__init__.py</text>
+<text class="el" text-anchor="end" x="-69.2" y="-446.6" transform="rotate(82.96 -55.2 -446.6)">app.py</text>
+<text class="dl" text-anchor="end" x="-17.8" y="-300.0" transform="rotate(89.22 -4.1 -300.0)">config</text>
+<text class="fl" text-anchor="end" x="-39.7" y="-449.0" transform="rotate(86.09 -30.7 -449.0)">__init__.py</text>
+<text class="fl" text-anchor="end" x="-18.6" y="-450.0" transform="rotate(89.22 -6.1 -450.0)">languages.py</text>
+<text class="fl" text-anchor="start" x="31.3" y="-449.6" transform="rotate(-87.65 18.4 -449.6)">settings.py</text>
+<text class="dl" text-anchor="start" x="123.5" y="-279.8" transform="rotate(-68.87 108.1 -279.8)">core</text>
+<text class="fl" text-anchor="start" x="52.0" y="-447.9" transform="rotate(-84.52 43.0 -447.9)">__init__.py</text>
+<text class="fl" text-anchor="start" x="80.2" y="-444.9" transform="rotate(-81.39 67.4 -444.9)">architecture.py</text>
+<text class="fl" text-anchor="start" x="102.1" y="-440.6" transform="rotate(-78.26 91.6 -440.6)">callgraph.py</text>
+<text class="fl" text-anchor="start" x="128.7" y="-434.9" transform="rotate(-75.13 115.5 -434.9)">caution.py</text>
+<text class="fl" text-anchor="start" x="152.3" y="-428.0" transform="rotate(-72.00 139.1 -428.0)">cycles.py</text>
+<text class="fl" text-anchor="start" x="176.0" y="-419.7" transform="rotate(-68.87 162.2 -419.7)">flow.py</text>
+<text class="tl" text-anchor="start" x="199.3" y="-410.3" transform="rotate(-65.74 184.9 -410.3)">graph.py</text>
+<text class="fl" text-anchor="start" x="217.5" y="-399.5" transform="rotate(-62.61 207.0 -399.5)">insight_builder.py</text>
+<text class="fl" text-anchor="start" x="239.9" y="-387.6" transform="rotate(-59.48 228.5 -387.6)">ranker.py</text>
+<text class="fl" text-anchor="start" x="262.6" y="-374.6" transform="rotate(-56.35 249.4 -374.6)">resolver.py</text>
+<text class="fl" text-anchor="start" x="281.9" y="-360.4" transform="rotate(-53.22 269.5 -360.4)">risk.py</text>
+<text class="dl" text-anchor="start" x="236.5" y="-201.8" transform="rotate(-42.26 222.0 -201.8)">languages</text>
+<text class="fl" text-anchor="start" x="302.7" y="-345.2" transform="rotate(-50.09 288.7 -345.2)">base.py</text>
+<text class="fl" text-anchor="start" x="318.5" y="-328.9" transform="rotate(-46.96 307.1 -328.9)">java.py</text>
+<text class="fl" text-anchor="start" x="336.7" y="-311.6" transform="rotate(-43.83 324.7 -311.6)">javascript.py</text>
+<text class="fl" text-anchor="start" x="353.7" y="-293.4" transform="rotate(-40.70 341.2 -293.4)">manifests.py</text>
+<text class="fl" text-anchor="start" x="368.1" y="-274.3" transform="rotate(-37.57 356.7 -274.3)">python.py</text>
+<text class="fl" text-anchor="start" x="382.5" y="-254.5" transform="rotate(-34.43 371.1 -254.5)">typescript.py</text>
+<text class="dl" text-anchor="start" x="282.2" y="-134.4" transform="rotate(-26.61 268.2 -134.4)">mcp</text>
+<text class="fl" text-anchor="start" x="395.0" y="-233.8" transform="rotate(-31.30 384.5 -233.8)">__init__.py</text>
+<text class="fl" text-anchor="start" x="408.7" y="-212.5" transform="rotate(-28.17 396.7 -212.5)">project.py</text>
+<text class="fl" text-anchor="start" x="418.2" y="-190.5" transform="rotate(-25.04 407.7 -190.5)">server.py</text>
+<text class="fl" text-anchor="start" x="428.9" y="-167.9" transform="rotate(-21.91 417.5 -167.9)">tools.py</text>
+<text class="dl" text-anchor="start" x="300.0" y="-88.8" transform="rotate(-17.22 286.6 -88.8)">models</text>
+<text class="fl" text-anchor="start" x="435.0" y="-144.9" transform="rotate(-18.78 426.0 -144.9)">__init__.py</text>
+<text class="fl" text-anchor="start" x="445.8" y="-121.4" transform="rotate(-15.65 433.3 -121.4)">insights.py</text>
+<text class="dl" text-anchor="start" x="311.2" y="-40.8" transform="rotate(-7.83 297.2 -40.8)">parsing</text>
+<text class="tl" text-anchor="start" x="453.5" y="-97.6" transform="rotate(-12.52 439.3 -97.6)">__init__.py</text>
+<text class="fl" text-anchor="start" x="454.5" y="-73.4" transform="rotate(-9.39 444.0 -73.4)">factory.py</text>
+<text class="fl" text-anchor="start" x="458.7" y="-49.1" transform="rotate(-6.26 447.3 -49.1)">queries.py</text>
+<text class="fl" text-anchor="start" x="461.3" y="-24.6" transform="rotate(-3.13 449.3 -24.6)">tree.py</text>
+<text class="dl" text-anchor="start" x="313.0" y="24.6" transform="rotate(4.70 299.0 24.6)">quickstart</text>
+<text class="fl" text-anchor="start" x="462.5" y="0.0" transform="rotate(0.00 450.0 0.0)">__init__.py</text>
+<text class="fl" text-anchor="start" x="459.8" y="24.6" transform="rotate(3.13 449.3 24.6)">detector.py</text>
+<text class="fl" text-anchor="start" x="459.3" y="49.1" transform="rotate(6.26 447.3 49.1)">models.py</text>
+<text class="fl" text-anchor="start" x="454.5" y="73.4" transform="rotate(9.39 444.0 73.4)">readers.py</text>
+<text class="dl" text-anchor="start" x="254.5" y="182.9" transform="rotate(37.57 237.8 182.9)">reporters</text>
+<text class="dl" text-anchor="start" x="452.7" y="97.6" transform="rotate(12.52 439.3 97.6)">mindmap (6)</text>
+<text class="fl" text-anchor="start" x="443.8" y="121.4" transform="rotate(15.65 433.3 121.4)">__init__.py</text>
+<text class="fl" text-anchor="start" x="437.4" y="144.9" transform="rotate(18.78 426.0 144.9)">analysis_html.py</text>
+<text class="fl" text-anchor="start" x="428.0" y="167.9" transform="rotate(21.91 417.5 167.9)">badge.py</text>
+<text class="fl" text-anchor="start" x="419.1" y="190.5" transform="rotate(25.04 407.7 190.5)">diagram_viewer.py</text>
+<text class="fl" text-anchor="start" x="408.1" y="212.5" transform="rotate(28.17 396.7 212.5)">files.py</text>
+<text class="fl" text-anchor="start" x="395.9" y="233.8" transform="rotate(31.30 384.5 233.8)">flow3d.py</text>
+<text class="fl" text-anchor="start" x="382.5" y="254.5" transform="rotate(34.43 371.1 254.5)">folders.py</text>
+<text class="fl" text-anchor="start" x="368.1" y="274.3" transform="rotate(37.57 356.7 274.3)">insights_json.py</text>
+<text class="fl" text-anchor="start" x="352.6" y="293.4" transform="rotate(40.70 341.2 293.4)">loc_summary.py</text>
+<text class="fl" text-anchor="start" x="335.2" y="311.6" transform="rotate(43.83 324.7 311.6)">markdown.py</text>
+<text class="fl" text-anchor="start" x="319.6" y="328.9" transform="rotate(46.96 307.1 328.9)">mermaid.py</text>
+<text class="fl" text-anchor="start" x="299.2" y="345.2" transform="rotate(50.09 288.7 345.2)">mermaid_graph.py</text>
+<text class="fl" text-anchor="start" x="280.8" y="360.4" transform="rotate(53.22 269.5 360.4)">pages.py</text>
+<text class="fl" text-anchor="start" x="259.9" y="374.6" transform="rotate(56.35 249.4 374.6)">readme.py</text>
+<text class="fl" text-anchor="start" x="239.9" y="387.6" transform="rotate(59.48 228.5 387.6)">stats.py</text>
+<text class="fl" text-anchor="start" x="218.4" y="399.5" transform="rotate(62.61 207.0 399.5)">summary.py</text>
+<text class="dl" text-anchor="start" x="106.9" y="285.3" transform="rotate(72.00 92.7 285.3)">routes</text>
+<text class="fl" text-anchor="start" x="196.3" y="410.3" transform="rotate(65.74 184.9 410.3)">__init__.py</text>
+<text class="fl" text-anchor="start" x="172.7" y="419.7" transform="rotate(68.87 162.2 419.7)">java.py</text>
+<text class="fl" text-anchor="start" x="149.6" y="428.0" transform="rotate(72.00 139.1 428.0)">javascript.py</text>
+<text class="fl" text-anchor="start" x="128.4" y="434.9" transform="rotate(75.13 115.5 434.9)">models.py</text>
+<text class="fl" text-anchor="start" x="102.1" y="440.6" transform="rotate(78.26 91.6 440.6)">python.py</text>
+<text class="dl" text-anchor="start" x="18.5" y="300.0" transform="rotate(89.22 4.1 300.0)">scanner</text>
+<text class="fl" text-anchor="start" x="76.4" y="444.9" transform="rotate(81.39 67.4 444.9)">__init__.py</text>
+<text class="fl" text-anchor="start" x="53.5" y="447.9" transform="rotate(84.52 43.0 447.9)">classify.py</text>
+<text class="fl" text-anchor="start" x="30.4" y="449.6" transform="rotate(87.65 18.4 449.6)">engine.py</text>
+<text class="fl" text-anchor="end" x="-18.1" y="450.0" transform="rotate(270.78 -6.1 450.0)">filters.py</text>
+<text class="fl" text-anchor="end" x="-42.7" y="449.0" transform="rotate(273.91 -30.7 449.0)">loc.py</text>
+<text class="tl" text-anchor="end" x="-69.7" y="446.6" transform="rotate(277.04 -55.2 446.6)">models.py</text>
+<text class="dl" text-anchor="end" x="-138.4" y="273.5" transform="rotate(294.26 -123.3 273.5)">utils</text>
+<text class="fl" text-anchor="end" x="-88.5" y="442.9" transform="rotate(280.17 -79.5 442.9)">__init__.py</text>
+<text class="fl" text-anchor="end" x="-116.0" y="437.9" transform="rotate(283.30 -103.6 437.9)">footer.py</text>
+<text class="fl" text-anchor="end" x="-138.7" y="431.6" transform="rotate(286.43 -127.3 431.6)">fs.py</text>
+<text class="fl" text-anchor="end" x="-161.2" y="424.0" transform="rotate(289.57 -150.7 424.0)">integrations.py</text>
+<text class="fl" text-anchor="end" x="-187.4" y="415.2" transform="rotate(292.70 -173.6 415.2)">layout.py</text>
+<text class="tl" text-anchor="end" x="-210.7" y="405.1" transform="rotate(295.83 -196.0 405.1)">logger.py</text>
+<text class="fl" text-anchor="end" x="-231.8" y="393.7" transform="rotate(298.96 -217.9 393.7)">paths.py</text>
+<text class="fl" text-anchor="end" x="-249.5" y="381.3" transform="rotate(302.09 -239.0 381.3)">printer.py</text>
+<text class="fl" text-anchor="end" x="-271.5" y="367.6" transform="rotate(305.22 -259.5 367.6)">progress.py</text>
+<text class="fl" text-anchor="end" x="-289.7" y="352.9" transform="rotate(308.35 -279.2 352.9)">update_check.py</text>
+<text class="dl" text-anchor="end" x="-230.4" y="207.7" transform="rotate(316.17 -216.4 207.7)">vcs</text>
+<text class="fl" text-anchor="end" x="-307.1" y="337.1" transform="rotate(311.48 -298.1 337.1)">__init__.py</text>
+<text class="fl" text-anchor="end" x="-329.8" y="320.4" transform="rotate(314.61 -316.0 320.4)">git.py</text>
+<text class="fl" text-anchor="end" x="-345.9" y="302.6" transform="rotate(317.74 -333.0 302.6)">history.py</text>
+<text class="fl" text-anchor="end" x="-361.1" y="284.0" transform="rotate(320.87 -349.1 284.0)">remote.py</text>
+<text class="fl" text-anchor="end" x="-377.8" y="264.5" transform="rotate(324.00 -364.1 264.5)">__init__.py</text>
+<text class="dl" text-anchor="end" x="-147.0" y="74.4" transform="rotate(330.26 -130.2 74.4)">packaging</text>
+<text class="dl" text-anchor="end" x="-268.4" y="162.8" transform="rotate(327.13 -252.0 162.8)">maven</text>
+<text class="dl" text-anchor="end" x="-393.4" y="244.2" transform="rotate(327.13 -378.0 244.2)">gnost-maven-plugin (20)</text>
+<text class="dl" text-anchor="end" x="-273.9" y="148.8" transform="rotate(330.26 -260.5 148.8)">npm</text>
+<text class="dl" text-anchor="end" x="-403.1" y="223.2" transform="rotate(330.26 -390.7 223.2)">gnost-cli (2)</text>
+<text class="el" text-anchor="end" x="-416.3" y="201.6" transform="rotate(333.39 -402.3 201.6)">entry.py</text>
+<text class="dl" text-anchor="end" x="-161.3" y="32.5" transform="rotate(347.48 -146.4 32.5)">scripts</text>
+<text class="fl" text-anchor="end" x="-421.7" y="179.3" transform="rotate(336.52 -412.7 179.3)">archive_utils.py</text>
+<text class="el" text-anchor="end" x="-435.9" y="156.5" transform="rotate(339.65 -421.9 156.5)">build_binary.py</text>
+<text class="el" text-anchor="end" x="-443.8" y="133.2" transform="rotate(342.78 -429.8 133.2)">build_gallery.py</text>
+<text class="el" text-anchor="end" x="-450.5" y="109.5" transform="rotate(345.91 -436.5 109.5)">build_maven.py</text>
+<text class="el" text-anchor="end" x="-455.8" y="85.5" transform="rotate(349.04 -441.8 85.5)">build_npm.py</text>
+<text class="el" text-anchor="end" x="-459.8" y="61.3" transform="rotate(352.17 -445.8 61.3)">channel_versions.py</text>
+<text class="el" text-anchor="end" x="-462.5" y="36.8" transform="rotate(355.30 -448.5 36.8)">check_binary_size.py</text>
+<text class="el" text-anchor="end" x="-463.8" y="12.3" transform="rotate(358.43 -449.8 12.3)">vendor_js.py</text>
+</svg>

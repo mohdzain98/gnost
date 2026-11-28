@@ -244,6 +244,48 @@ class _VersionAction(argparse.Action):
         parser.exit()
 
 
+def _open_3d(layout: OutputLayout, args: argparse.Namespace) -> int:
+    """Open flow-3d.html, writing it first from insights.json when it is missing or -o is given."""
+    from gnost.reporters.flow3d import Flow3dPage
+
+    page = args.output or layout.flow3d_html
+    if args.output or not os.path.isfile(page):
+        if not os.path.isfile(layout.insights_json):
+            logger.error(f"No insights.json in {layout.folder}")
+            logger.error("Run `gnost onboard .` first")
+            return 1
+        with open(layout.insights_json, encoding="utf-8") as handle:
+            payload = json.load(handle)
+        with open(page, "w", encoding="utf-8") as handle:
+            handle.write(Flow3dPage(payload).render())
+    print(f"3D view: {page}")
+    if not args.no_open and not webbrowser.open(pathlib.Path(page).resolve().as_uri()):
+        print("Could not open a browser; open the file above manually.")
+    return 0
+
+
+def _summary_git(args: argparse.Namespace) -> int:
+    """`gnost summary --git`: the language shares GitHub shows for the last commit."""
+    from gnost.vcs.linguist import GitError, LinguistCounter
+
+    if args.include or args.exclude:
+        print(
+            "gnost: --include and --exclude are ignored with --git "
+            "(use linguist-vendored in .gitattributes, as on GitHub)",
+            file=sys.stderr,
+        )
+    try:
+        result = LinguistCounter(args.path).count()
+    except GitError as exc:
+        print(
+            f"gnost: summary --git needs a git repository with a commit: {exc}",
+            file=sys.stderr,
+        )
+        return 2
+    loc_summary.render_git(result)
+    return 0
+
+
 def _open(args: argparse.Namespace) -> int:
     """gnost open: the flow explorer, the analysis report or a file."""
     from gnost.cli.commands.onboard import resolve_repo_root
@@ -258,6 +300,8 @@ def _open(args: argparse.Namespace) -> int:
     )
     target = str(args.target).lower()
 
+    if target == "flow" and getattr(args, "three_d", False):
+        return _open_3d(layout, args)
     if target == "flow":
         flow_file = args.path
         explicit_view = args.view != "auto"
@@ -331,12 +375,16 @@ def main():
             "  summary|stats|folders|files:\n"
             "    --include            Comma-separated folder names to include\n"
             "    --exclude            Comma-separated folder names to exclude\n"
-            "    --progress           Show a progress bar while scanning\n\n"
+            "    --progress           Show a progress bar while scanning\n"
+            "    --git                summary: languages as GitHub's language bar shows them\n\n"
             "  onboard:\n"
             "    --progress           Always show the progress bar (default: in a terminal only)\n"
             "    --no-progress        Never show the progress bar\n"
             "    --mermaid            Generate only Mermaid flow diagram\n"
             "    --inject             Inject onboarding link into README.md\n"
+            "    --3d                 Also write the 3D view of the flow (.gnost/flow-3d.html)\n"
+            "    --inject-mindmap     Put the project map (.gnost/mindmap.svg) at the end of README.md\n"
+            "    --mindmap-format F   svg (default), gif (turning in 3D, needs gnost[media]) or mermaid\n"
             "    --layered            Produce Layered mermaid as Entry -> Core -> Leaf\n"
             "    --depth DEPTH        Limit execution flow depth (e.g. --depth 2)\n"
             "    --json FILE          Write the insights JSON to FILE instead of .gnost/insights.json\n"
@@ -385,6 +433,7 @@ def main():
             "                         (`show` takes only a file)\n"
             "    --path FILE          Custom report or diagram path\n"
             "    --view MODE          auto|graph|mermaid: the explorer (default); mermaid draws one flat picture\n"
+            "    --3d                 flow: open the 3D view (built from .gnost/insights.json if missing)\n"
             "    -o, --output FILE    Where to save the HTML page (default: a temp file)\n"
             "    --no-open            Write the HTML but do not open a browser\n\n"
             "Use `gnost <command> --help` for full command options."
@@ -415,7 +464,15 @@ def main():
         help="Show a progress bar while scanning",
     )
 
-    sub.add_parser("summary", parents=[base], help="Show a summary table")
+    summary_parser = sub.add_parser(
+        "summary", parents=[base], help="Show a summary table"
+    )
+    summary_parser.add_argument(
+        "--git",
+        action="store_true",
+        help="Languages as GitHub's language bar shows them (bytes of committed files, "
+        "without vendored, documentation or generated files)",
+    )
     sub.add_parser("stats", parents=[base], help="Show detailed stats per language")
     sub.add_parser("folders", parents=[base], help="Show LOC grouped by folder")
 
@@ -451,6 +508,24 @@ def main():
         "--inject",
         action="store_true",
         help="Inject onboarding link into README.md",
+    )
+    onboard.add_argument(
+        "--3d",
+        dest="three_d",
+        action="store_true",
+        help="Also write the 3D view of the flow (.gnost/flow-3d.html)",
+    )
+    onboard.add_argument(
+        "--inject-mindmap",
+        action="store_true",
+        help="Put the project map (.gnost/mindmap.svg) at the end of README.md",
+    )
+    onboard.add_argument(
+        "--mindmap-format",
+        choices=("svg", "gif", "mermaid"),
+        default="svg",
+        help="Project map format for --inject-mindmap: svg (default), gif (turning in 3D, "
+        'needs "gnost[media]") or mermaid',
     )
     onboard.add_argument(
         "--layered",
@@ -643,6 +718,12 @@ def main():
         choices=["auto", "graph", "mermaid"],
         default="auto",
         help="auto and graph: the interactive explorer (default); mermaid: one flat Mermaid picture",
+    )
+    open_cmd.add_argument(
+        "--3d",
+        dest="three_d",
+        action="store_true",
+        help="flow only: the 3D view (.gnost/flow-3d.html), built from insights.json if missing",
     )
     open_cmd.add_argument("-o", "--output", help="Where to save the HTML page")
     open_cmd.add_argument(
@@ -883,6 +964,12 @@ def _dispatch(args: argparse.Namespace) -> int:
                 footer=config.footer,
                 architecture=config.architecture_settings(),
                 pages=pages,
+                three_d=getattr(args, "three_d", False),
+                mindmap=(
+                    getattr(args, "mindmap_format", "svg")
+                    if getattr(args, "inject_mindmap", False)
+                    else None
+                ),
             )
         except PagesError as exc:
             print(f"gnost: {exc}", file=sys.stderr)
@@ -1068,6 +1155,9 @@ def _dispatch(args: argparse.Namespace) -> int:
 
     if args.cmd == "open":
         return _open(args)
+
+    if args.cmd == "summary" and getattr(args, "git", False):
+        return _summary_git(args)
 
     include = args.include.split(",") if args.include else []
     exclude = args.exclude.split(",") if args.exclude else []

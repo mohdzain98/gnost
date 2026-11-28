@@ -81,13 +81,6 @@ def test_exit_codes_are_documented_numbers() -> None:
 # ---------------------------------------------------------------- score card
 
 
-def test_risk_converts_to_a_score_out_of_ten() -> None:
-    assert ScoreCard.risk_to_score(0) == 10.0
-    assert ScoreCard.risk_to_score(100) == 0.0
-    assert ScoreCard.risk_to_score(25) == 7.5
-    assert ScoreCard.risk_to_score(-5) == 10.0 and ScoreCard.risk_to_score(500) == 0.0
-
-
 def test_critical_findings_count_as_high() -> None:
     found = [
         finding(severity=SeverityLevel.CRITICAL),
@@ -120,7 +113,6 @@ def test_the_score_card_reads_a_report() -> None:
     assert (
         card.final_score == 8.72
     )  # weight 0.9 in fewer than 1,000 lines: 10 - 2 ln 1.9
-    assert ScoreCard.from_report(report, "average").final_score == 7.0  # risk_score 30
     clean = next(a for a in card.analyzers if a.name == "robustness")
     assert clean.score == 10.0 and clean.findings == 0
     assert (
@@ -194,16 +186,16 @@ def test_count_lines_skips_blank_lines_and_missing_files(tmp_path: Path) -> None
     assert ScoreCard.count_lines([str(source), str(tmp_path / "gone.py")]) == 2
 
 
-def test_the_score_method_comes_from_the_config(tmp_path: Path) -> None:
+def test_the_removed_average_score_is_ignored_with_a_warning() -> None:
     from gnost.config.settings import ConfigError
 
     config = GnostConfig()
     _validate({"analyze": {"score": "average"}}, config)
-    options = CiOptions.from_args(
-        argparse.Namespace(), config, OutputLayout(str(tmp_path))
-    )
-    assert options.score_method == "average"
-    assert CiOptions().score_method == "density"
+    assert config.get("analyze", "score") is None
+    assert any("removed in 0.8.0" in w for w in config.warnings)
+    clean = GnostConfig()
+    _validate({"analyze": {"score": "density"}}, clean)
+    assert clean.get("analyze", "score") == "density" and not clean.warnings
     with pytest.raises(ConfigError):
         _validate({"analyze": {"score": "median"}}, GnostConfig())
 
@@ -581,7 +573,9 @@ def test_the_html_report_has_a_light_theme(tmp_path: Path) -> None:
     assert '<html lang="en" data-theme="dark">' in page
     assert ':root[data-theme="light"] {' in page  # braces unescaped
     assert 'id="themeBtn"' in page
-    assert "Not computed with score = average" in page  # no density in this report
+    assert (
+        "Not in this report (written before 0.7.1)" in page
+    )  # no density in this report
     assert 'localStorage.getItem("gnost-theme")' in page  # shared with flow.html
 
 

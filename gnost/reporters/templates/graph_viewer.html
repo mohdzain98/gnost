@@ -47,6 +47,8 @@
   <button id="home">All folders</button>
   <span class="crumb" id="crumb"></span><span class="sp"></span>
   <label><input id="hubs" type="checkbox" checked> hide arrows into shared folders</label>
+  <button id="to3d" hidden title="The import graph in 3D, folders as clusters (flow-3d.html)">3D view</button>
+  <button id="mind" title="The whole project as a tree: folders as branches, files as leaves">Mind map</button>
   <button id="all">Show everything</button><button id="fit">Fit</button><button id="theme" title="Switch theme">Light</button>
 </header>
 <div id="cy"></div>
@@ -65,6 +67,7 @@
 __LIBS__
 <script>
 const SOURCE = __SOURCE__;
+const META = __META__;  // {project, entry}: from `gnost onboard`; empty when the page is built from a .mmd file
 const RED = "#d32f2f", ORANGE = "#f57c00", GREEN = "#2da44e", BLUE = "#0969da", GREY = "#8b949e";
 
 function parse(src) {
@@ -80,6 +83,88 @@ function parse(src) {
   edges.forEach((e, i) => { e.cyc = colors[i] || (e.hard ? RED : null); });
   return { nodes, edges };
 }
+
+// mind-layout:start
+// The mind map's model and radial layout, kept free of the page so a test can run it under
+// Node and compare it with gnost/reporters/mindmap (the README image), which must match.
+const MIND = Object.assign({ depth: 2, big: 40, gap: 15, ring: 150, topShare: 0.03, topMin: 5 }, META.mind || {});
+const mindCmp = (a, b) => (a < b ? -1 : a > b ? 1 : 0);  // code-point order, like Python's sorted()
+
+// nodes: id -> path; edges: [{source, target}]. Builds the folder tree and the highlights.
+function mindModel(nodes, edges, meta) {
+  const ids = Object.keys(nodes), idOf = {}, importers = {};
+  ids.forEach(i => { idOf[nodes[i]] = i; importers[i] = new Set(); });
+  edges.forEach(e => { if (importers[e.target] && nodes[e.source] !== undefined) importers[e.target].add(e.source); });
+  const fanIn = {}; ids.forEach(i => { fanIn[i] = importers[i].size; });
+  const entry = new Set((meta.entry || []).map(f => idOf[f]).filter(i => i !== undefined));
+  const top = new Set(ids.filter(i => fanIn[i] > 1 && !entry.has(i))
+    .sort((a, b) => fanIn[b] - fanIn[a] || mindCmp(nodes[a], nodes[b]))
+    .slice(0, Math.max(MIND.topMin, Math.ceil(ids.length * MIND.topShare))));
+  const root = { name: "", path: "", dirs: {}, files: [] };
+  ids.forEach(id => {
+    const parts = nodes[id].split("/"); let cur = root;
+    for (let k = 0; k < parts.length - 1; k++)
+      cur = cur.dirs[parts[k]] = cur.dirs[parts[k]] ||
+        { name: parts[k], path: parts.slice(0, k + 1).join("/"), dirs: {}, files: [] };
+    cur.files.push(id);
+  });
+  // a shared prefix (src/app/...) is one chain of single folders: start below it
+  const prefix = []; let tree = root;
+  while (!tree.files.length && Object.keys(tree.dirs).length === 1) { tree = Object.values(tree.dirs)[0]; prefix.push(tree.name); }
+  const count = d => (d.n = d.files.length + Object.values(d.dirs).reduce((s, c) => s + count(c), 0));
+  count(tree);
+  const name = meta.project || "project", shared = prefix.join("/");
+  tree.label = name + (shared && shared !== name ? "\n" + shared : "");  // no "flask / flask"
+  return { nodes, tree, fanIn, entry, top };
+}
+
+// a folder with many files directly inside is drawn closed, so it does not take over the circle
+const mindIsOpen = (open, d, depth) => d.path in open ? open[d.path] : depth <= MIND.depth && d.files.length <= MIND.big;
+const mindFind = (tree, path) => path.slice(tree.path ? tree.path.length + 1 : 0).split("/")
+  .reduce((d, part) => d.dirs[part], tree);
+
+// Positions: the project in the middle, open folders on inner rings, every leaf (file or closed
+// folder) on the outer ring, each child given an angle in proportion to its number of leaves.
+// Returns the items to draw and, for every file, the id it is drawn as (itself or a closed folder).
+function mindLayout(model, open) {
+  const { nodes, tree, fanIn } = model;
+  const isOpen = (d, depth) => depth === 0 || mindIsOpen(open, d, depth);
+  const kids = d => [...Object.values(d.dirs).sort((a, b) => mindCmp(a.name, b.name)),
+    ...d.files.slice().sort((a, b) => mindCmp(nodes[a], nodes[b]))];
+  const leaves = (d, depth) => isOpen(d, depth)
+    ? Math.max(1, kids(d).reduce((s, c) => s + (typeof c === "string" ? 1 : leaves(c, depth + 1)), 0)) : 1;
+  const deepest = (d, depth) => !isOpen(d, depth) ? depth
+    : Math.max(depth + (d.files.length ? 1 : 0), ...Object.values(d.dirs).map(c => deepest(c, depth + 1)));
+  const total = leaves(tree, 0), rings = Math.max(1, deepest(tree, 0));
+  const R = Math.max(MIND.ring, (total * MIND.gap) / (2 * Math.PI * rings));
+  const items = [{ id: "m:", kind: "root", label: tree.label, x: 0, y: 0, angle: 0, size: 46, parent: null }];
+  const at = {};
+  const hold = (d, holder) => { d.files.forEach(f => { at[f] = holder; }); Object.values(d.dirs).forEach(c => hold(c, holder)); };
+  const place = (d, depth, a0, a1) => {
+    const list = kids(d), sizes = list.map(c => typeof c === "string" ? 1 : leaves(c, depth + 1));
+    const sum = sizes.reduce((s, x) => s + x, 0) || 1, parent = depth === 0 ? "m:" : "m:" + d.path;
+    let a = a0;
+    list.forEach((c, k) => {
+      const span = (a1 - a0) * sizes[k] / sum, mid = a + span / 2;
+      if (typeof c === "string") {
+        const r = rings * R;
+        items.push({ id: c, kind: "file", label: nodes[c].split("/").pop(), x: r * Math.cos(mid), y: r * Math.sin(mid),
+          angle: mid, size: model.entry.has(c) ? 16 : 6 + 3 * Math.log2(1 + fanIn[c]), parent });
+        at[c] = c;
+      } else {
+        const opened = isOpen(c, depth + 1), r = (opened ? depth + 1 : rings) * R, id = "m:" + c.path;
+        items.push({ id, kind: "dir", label: opened ? c.name : c.name + " (" + c.n + ")", dir: c.path, n: c.n,
+          open: opened, x: r * Math.cos(mid), y: r * Math.sin(mid), angle: mid,
+          size: Math.min(32, (opened ? 12 : 10) + 2 * Math.sqrt(c.n)), parent });
+        if (opened) place(c, depth + 1, a, a + span); else hold(c, id);
+      }
+      a += span;
+    });
+  };
+  place(tree, 0, -Math.PI, Math.PI);
+  return { items, at };
+}
+// mind-layout:end
 
 if (typeof cytoscape === "undefined") {
   document.getElementById("err").textContent =
@@ -136,6 +221,34 @@ if (typeof cytoscape === "undefined") {
       { selector: "edge.detail", style: { display: "none" } },
       { selector: "edge.detail.hot", style: { display: "element" } },
       { selector: "edge.hot", style: { opacity: 1, label: "data(label)", "z-index": 9 } },
+      // mind map
+      { selector: "node.mroot", style: { shape: "ellipse", "background-color": "#4f7cff", width: 46, height: 46,
+        "font-size": 15, "font-weight": "bold", "text-valign": "center", "text-halign": "center",
+        "text-margin-y": 0, "text-outline-width": 3, "text-outline-color": "#0d1117", color: "#e6edf3" } },
+      { selector: "node.mdir", style: { "background-color": "#4f7cff", "font-size": 12, "font-weight": "bold",
+        "text-valign": "top", "text-margin-y": -4, color: "#c9d1d9", "text-outline-width": 2,
+        "text-outline-color": "#0d1117" } },
+      { selector: "node.mdir.mopen", style: { "text-background-color": "#0d1117", "text-background-opacity": 0.85,
+        "text-background-padding": 2, "text-background-shape": "round-rectangle", "min-zoomed-font-size": 0 } },
+      { selector: "node.mdir.mshut", style: { shape: "round-rectangle", "background-opacity": 0.35,
+        "border-width": 1.5, "border-color": "#4f7cff" } },
+      { selector: "node.mleaf", style: { "text-valign": "center", "text-rotation": "data(rot)",
+        "font-weight": "normal", "text-margin-y": 0, "min-zoomed-font-size": 7, "text-outline-width": 0 } },
+      { selector: "node.mleaf.mR", style: { "text-halign": "right", "text-margin-x": 6 } },
+      { selector: "node.mleaf.mL", style: { "text-halign": "left", "text-margin-x": -6 } },
+      { selector: "node.mdir.mleaf", style: { "font-weight": "bold", "text-outline-width": 2 } },
+      { selector: "node.mfile", style: { "background-color": "#8b949e", "font-size": 10, color: "#8b949e" } },
+      { selector: "node.mtop", style: { "background-color": "#d29922", color: "#d29922", "font-size": 12,
+        "font-weight": "bold", "min-zoomed-font-size": 0 } },
+      { selector: "node.mentry", style: { "background-color": GREEN, color: GREEN, "font-size": 13,
+        "font-weight": "bold", "min-zoomed-font-size": 0, "border-width": 2, "border-color": GREEN } },
+      { selector: "node.mpick", style: { "border-width": 3, "border-color": "#58a6ff" } },
+      { selector: "edge.branch", style: { "target-arrow-shape": "none", "curve-style": "straight",
+        "line-color": "#4f7cff", width: "data(w)", opacity: 0.35 } },
+      { selector: "edge.entry", style: { "line-color": GREEN, "target-arrow-color": GREEN, opacity: 0.3,
+        "curve-style": "unbundled-bezier", "control-point-distances": 40, "control-point-weights": 0.5 } },
+      { selector: "edge.mlink", style: { "curve-style": "unbundled-bezier", "control-point-distances": 40,
+        "control-point-weights": 0.5, opacity: 0.85, width: 1.6 } },
     ],
   });
 
@@ -336,15 +449,72 @@ if (typeof cytoscape === "undefined") {
       u.map(i => '<li class="lnk" data-file="' + i + '">' + esc(nodes[i]) + "</li>").join("") + "</ul>" : "";
   };
 
-  function render() { state.mode === "folders" ? foldersView() : filesView(); }
+  // ---------- mind map ----------
+  // The layout is mindModel/mindLayout above; this draws it and adds the import lines:
+  // those of the entry points, and those of the clicked file.
+  const mind = { open: {}, pick: null, model: null };
+  function mindView() {
+    const model = mind.model = mind.model || mindModel(nodes, E, META);
+    const { items, at } = mindLayout(model, mind.open);
+    const els = [], pos = {};
+    items.forEach(it => {
+      pos[it.id] = { x: it.x, y: it.y };
+      const left = Math.cos(it.angle) < 0, side = left ? " mL" : " mR", rot = left ? it.angle + Math.PI : it.angle;
+      if (it.kind === "root") els.push({ data: { id: it.id, label: it.label, size: it.size }, classes: "mroot" });
+      else if (it.kind === "file") els.push({ data: { id: it.id, label: it.label, size: it.size, rot },
+        classes: "mfile mleaf" + side + (model.entry.has(it.id) ? " mentry" : model.top.has(it.id) ? " mtop" : "") });
+      else els.push({ data: { id: it.id, label: it.label, dir: it.dir, n: it.n, size: it.size, rot },
+        classes: "mdir mleaf" + side + (it.open ? " mopen" : " mshut") });
+      if (it.parent !== null) els.push({ data: { id: "b:" + it.id, source: it.parent, target: it.id,
+        w: it.parent === "m:" ? 3 : 1.5 }, classes: "branch" });
+    });
+    const links = (f, cls) => {
+      const seen = new Set();
+      outs[f].forEach(e => { const t = at[e.target]; if (t && t !== at[f] && !seen.has(t)) { seen.add(t);
+        els.push({ data: { id: "l:" + cls + f + ">" + t, source: at[f], target: t, w: 1.2 }, classes: cls + " out" }); } });
+      if (cls === "mlink") ins[f].forEach(e => { const s = at[e.source]; if (s && s !== at[f] && !seen.has("<" + s)) {
+        seen.add("<" + s);
+        els.push({ data: { id: "l:in" + s + ">" + f, source: s, target: at[f], w: 1.2 }, classes: "mlink in" }); } });
+    };
+    model.entry.forEach(f => { if (at[f]) links(f, "entry"); });
+    if (mind.pick && at[mind.pick]) links(mind.pick, "mlink");
+    cy.elements().remove(); cy.add(els);
+    if (mind.pick && cy.getElementById(mind.pick).length) cy.getElementById(mind.pick).addClass("mpick");
+    cy.layout({ name: "preset", positions: n => pos[n.id()], fit: !mind.keep, padding: 40 }).run();
+    mind.keep = false;
+    $("crumb").innerHTML = "<b>Mind map</b>";
+    const f = mind.pick;
+    $("info").innerHTML = f
+      ? "<b>" + esc(nodes[f]) + "</b>" + (model.entry.has(f) ? ' <span style="color:' + GREEN + '">entry point</span>' : "") +
+        list("Imports", outs[f].map(e => e.target), GREEN) + list("Imported by", ins[f].map(e => e.source), BLUE) +
+        '<p class="muted">Click a name to open it in the files view.</p>'
+      : "<b>Mind map</b> of " + plural(ids.length, "file") + ". Folders are branches and files are leaves. " +
+        '<p class="muted">Bigger dots are imported by more files. <span style="color:' + GREEN + '">Green</span>: entry points, with their imports. ' +
+        '<span style="color:#d29922">Amber</span>: the most imported files. Folders deeper than ' + MIND.depth +
+        " levels or with more than " + MIND.big + " files of their own start closed; click one to open or close it. Click a file to see its imports.</p>";
+  }
+  function mindTap(n) {
+    if (n.hasClass("mdir")) {
+      const d = n.data("dir"), depth = d.split("/").length - (mind.model.tree.path ? mind.model.tree.path.split("/").length : 0);
+      mind.open[d] = !mindIsOpen(mind.open, mindFind(mind.model.tree, d), depth);
+    } else if (n.hasClass("mfile")) mind.pick = mind.pick === n.id() ? null : n.id();
+    else mind.pick = null;
+    mind.keep = n.hasClass("mfile") || n.hasClass("mroot");
+    mindView();
+  }
+
+  function render() { state.mode === "mind" ? mindView() : state.mode === "folders" ? foldersView() : filesView(); }
   const openFolder = f => { Object.assign(state, { mode: "files", folder: f, file: null, all: false }); render(); };
   const openFile = f => { Object.assign(state, { mode: "files", file: f, folder: dirOf(f), all: false }); render(); };
 
   // ---------- hover hint (bottom line) ----------
+  const plural = (n, w) => n + " " + w + (n === 1 ? "" : "s");
   const DEFAULT_HINT = "Hover over any file or folder to see its connections. Click to open it, scroll to zoom, drag to pan.";
   const hint = $("hint"); hint.textContent = DEFAULT_HINT;
-  const plural = (n, w) => n + " " + w + (n === 1 ? "" : "s");
   function describe(n) {
+    if (n.hasClass("mroot")) return "<b>" + esc(META.project || "project") + "</b>: " + plural(ids.length, "file");
+    if (n.hasClass("mdir")) return "<b>" + esc(n.data("dir")) + "</b>: " + plural(n.data("n"), "file") +
+      (n.hasClass("mshut") ? " &middot; click to open" : " &middot; click to close");
     if (n.isEdge()) {
       const a = n.source(), b = n.target(), c = +n.data("label") || 1;
       return "<b>" + esc(a.data("full") || a.data("dir") || a.data("label")) + "</b> imports <b>" +
@@ -380,12 +550,17 @@ if (typeof cytoscape === "undefined") {
   cy.on("mouseout", "node, edge", () => { unfocus(); hint.textContent = DEFAULT_HINT; });
   cy.on("tap", "node.folder", e => openFolder(e.target.id().slice(2)));
   cy.on("tap", "node.parent", e => openFolder(e.target.data("dir")));
-  cy.on("tap", "node", e => { if (!e.target.hasClass("folder") && !e.target.hasClass("parent")) openFile(e.target.id()); });
+  cy.on("tap", "node", e => {
+    if (state.mode === "mind") return mindTap(e.target);
+    if (!e.target.hasClass("folder") && !e.target.hasClass("parent")) openFile(e.target.id());
+  });
   $("info").addEventListener("click", e => {
     const t = e.target.closest("[data-file],[data-folder]"); if (!t) return;
     t.dataset.file ? openFile(t.dataset.file) : openFolder(t.dataset.folder);
   });
   $("home").onclick = () => { state.mode = "folders"; render(); };
+  if (META.has3d) { $("to3d").hidden = false; $("to3d").onclick = () => { location.href = "flow-3d.html"; }; }
+  $("mind").onclick = () => { Object.assign(state, { mode: "mind", file: null, all: false }); render(); };
   $("all").onclick = () => { Object.assign(state, { mode: "files", all: true, file: null }); render(); };
   $("fit").onclick = () => cy.fit(undefined, 40);
   const zoomBy = f => cy.zoom({ level: Math.min(cy.maxZoom(), Math.max(cy.minZoom(), cy.zoom() * f)),
@@ -416,7 +591,10 @@ if (typeof cytoscape === "undefined") {
   function applyTheme(t) {
     document.documentElement.dataset.theme = t;
     $("theme").textContent = t === "dark" ? "Light" : "Dark";
-    cy.style().selector("node.colL, node.colR, node.colC, node.folder").style("color", t === "dark" ? "#c9d1d9" : "#24292f")
+    const outline = t === "dark" ? "#0d1117" : "#ffffff";
+    cy.style().selector("node.mroot, node.mdir").style({ "text-outline-color": outline, color: t === "dark" ? "#e6edf3" : "#1f2328" })
+      .selector("node.mdir.mopen").style("text-background-color", outline)
+      .selector("node.colL, node.colR, node.colC, node.folder").style("color", t === "dark" ? "#c9d1d9" : "#24292f")
       .selector("node.focus").style("color", t === "dark" ? GREEN : "#1a7f37").update();
   }
   let theme = "dark";

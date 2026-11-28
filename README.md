@@ -31,6 +31,7 @@ Perfect for first-day onboarding, audits, and codebase exploration.
 - Identifies **hotspot files** (most important code)
 - Generates **onboarding documentation**
 - Produces **Mermaid flow diagrams**, plus an interactive **browser explorer** (`gnost open flow`)
+- Draws the whole project as a **mind map**, a **3D view** (`--3d`) and a **map for your README** (SVG, rotating GIF or Mermaid, `--inject-mindmap`)
 - Finds **HTTP routes** (Flask, FastAPI, Django, Express, NestJS, Spring), **circular imports** and **caution areas** (risky files to read carefully)
 - Traces **function-level flows** for Python, and exports everything as **JSON** for tools and AI
 - Reads an optional **`.gnost.toml`** for excludes, weights and thresholds
@@ -97,6 +98,27 @@ gnost open flow
 | ![Folder overview](https://raw.githubusercontent.com/mohdzain98/gnost/main/assets/viewer_folders.png) | ![File view with hover](https://raw.githubusercontent.com/mohdzain98/gnost/main/assets/viewer_file_hover.png) |
 
 The example above is GNOST analysing its own source code.
+
+## A map of the whole project (since 0.8.0)
+
+Big projects turn the full import graph into a hairball. 0.8.0 adds three ways to see the whole project at once:
+
+- **Mind map** (the "Mind map" button in the explorer). The project in the middle, folders as branches, every file on
+  the outer ring. Entry points are green, the most imported files amber, and bigger dots are imported by more files.
+  Imports stay hidden until you click a file. Deep or crowded folders start closed; click one to open it.
+- **3D view**: `gnost onboard . --3d`, then the "3D view" button (or `gnost open flow --3d`). Every folder is a
+  cluster you can rotate and fly through; click a file to see what it imports and what imports it, by name.
+- **A map in your README**: `gnost onboard . --inject-mindmap` adds the map as an image at the end of `README.md`
+  (`.gnost/mindmap.svg`, light or dark with the reader's theme). `--mindmap-format gif` makes it turn in 3D
+  (needs `pip install "gnost[media]"`; the npm, Maven and Docker builds include it), `mermaid` writes a Mermaid block.
+
+| Mind map (a file clicked) | 3D view (a file clicked) |
+| --- | --- |
+| ![Mind map](https://raw.githubusercontent.com/mohdzain98/gnost/main/assets/viewer_mindmap.png) | ![3D view](https://raw.githubusercontent.com/mohdzain98/gnost/main/assets/viewer_3d.png) |
+
+The README map of GNOST itself, as the GIF:
+
+![GNOST's own project map, turning in 3D](https://raw.githubusercontent.com/mohdzain98/gnost/main/assets/mindmap.gif)
 
 ## Minimal usage examples
 

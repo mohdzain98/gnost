@@ -67,6 +67,14 @@ LIBS: List[Dict[str, str]] = [
         "file": "cytoscape-fcose.js",
         "url": "https://cdn.jsdelivr.net/npm/cytoscape-fcose@2.2.0/cytoscape-fcose.js",
     },
+    {
+        # only in flow-3d.html (`onboard --3d`), so the default page stays small
+        "name": "3d-force-graph",
+        "version": "1.80.2",
+        "license": "MIT",
+        "file": "3d-force-graph.min.js",
+        "url": "https://cdn.jsdelivr.net/npm/3d-force-graph@1.80.2/dist/3d-force-graph.min.js",
+    },
 ]
 
 

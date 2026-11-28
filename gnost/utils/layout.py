@@ -25,10 +25,13 @@ that explains a codebase: where it starts, how it flows and which files matter.
 | `insights.json` | The same facts as data, for tools and AI (schema: `insights.schema.json`) |
 | `flow/` | Mermaid diagrams (`.mmd`) and Markdown pages that GitHub renders |
 | `flow.html` | The interactive flow explorer, one page that works offline (not committed) |
+| `flow-3d.html` | The 3D view of the flow, from `gnost onboard --3d` (not committed) |
 | `analysis/` | The code quality report from `gnost analyze -o` (`analysis.json`, `analysis.html`, `analysis.sarif`) |
 | `changes/` | The report from `gnost changes BASE`: changed files, blast radius, risk (`changes.md`, `changes.json`) |
 | `baseline.json` | Known findings, from `gnost analyze --write-baseline`, so CI can report only new ones |
 | `badge.svg` | The final score as a README badge, from `gnost analyze --badge` |
+| `mindmap.svg` | The project map for the README, from `gnost onboard --inject-mindmap` |
+| `mindmap.gif` | The same map turning in 3D, from `--inject-mindmap --mindmap-format gif` |
 
 It is safe to commit this folder. The `.html` pages are ignored (see `.gitignore` here)
 because they are large and can be rebuilt.
@@ -57,6 +60,7 @@ class OutputLayout:
         self.insights_json = os.path.join(self.folder, "insights.json")
         self.flow_dir = os.path.join(self.folder, "flow")
         self.flow_html = os.path.join(self.folder, "flow.html")
+        self.flow3d_html = os.path.join(self.folder, "flow-3d.html")
         self.analysis_dir = os.path.join(self.folder, "analysis")
         self.analysis_json = os.path.join(self.analysis_dir, "analysis.json")
         self.analysis_html = os.path.join(self.analysis_dir, "analysis.html")
@@ -66,6 +70,8 @@ class OutputLayout:
         self.changes_json = os.path.join(self.changes_dir, "changes.json")
         self.baseline_json = os.path.join(self.folder, "baseline.json")
         self.badge_svg = os.path.join(self.folder, "badge.svg")
+        self.mindmap_svg = os.path.join(self.folder, "mindmap.svg")
+        self.mindmap_gif = os.path.join(self.folder, "mindmap.gif")
 
     # The places GNOST wrote to before 0.6.0.
     @property

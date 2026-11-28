@@ -52,12 +52,16 @@ Complete CLI usage::
         --include               Comma-separated folder names to include
         --exclude               Comma-separated folder names to exclude
         --progress              Show a progress bar while scanning
+        --git                   summary: languages as GitHub's language bar shows them
 
     onboard:
         --progress              Always show the progress bar (default: in a terminal only)
         --no-progress           Never show the progress bar
         --mermaid               Generate only Mermaid flow diagram (FLOW.mmd)
         --inject                Inject onboarding link into README.md files
+        --3d                    Also write the 3D view of the flow (.gnost/flow-3d.html)
+        --inject-mindmap        Put the project map (.gnost/mindmap.svg) at the end of README.md
+        --mindmap-format F      svg (default), gif (turning in 3D, needs gnost[media]) or mermaid
         --layered               Produce Layered mermaid as Entry -> Core -> Leaf
         --depth                 Limit execution flow depth (e.g. --depth 2)
         --json FILE             Write the insights JSON to FILE instead of .gnost/insights.json
@@ -129,11 +133,11 @@ Run GNOST commands from the root of a repository::
 
 Subcommand usage::
 
-    gnost summary [path] [--include INCLUDE] [--exclude EXCLUDE] [--progress]
+    gnost summary [path] [--include INCLUDE] [--exclude EXCLUDE] [--progress] [--git]
     gnost stats [path] [--include INCLUDE] [--exclude EXCLUDE] [--progress]
     gnost folders [path] [--include INCLUDE] [--exclude EXCLUDE] [--progress]
     gnost files [path] [--include INCLUDE] [--exclude EXCLUDE] [--progress] [--top TOP]
-    gnost onboard [path] [--mermaid] [--progress] [--no-progress] [--inject] [--layered] [--depth DEPTH] [--json [FILE]] [--insights-only] [--no-html] [--pages [FOLDER]] [--max-edges N] [--collapse [LEVEL]]
+    gnost onboard [path] [--mermaid] [--progress] [--no-progress] [--inject] [--3d] [--inject-mindmap] [--mindmap-format F] [--layered] [--depth DEPTH] [--json [FILE]] [--insights-only] [--no-html] [--pages [FOLDER]] [--max-edges N] [--collapse [LEVEL]]
     gnost analyze [path] [--parallel] [--out] [--language NAME] [--list-analyzers] [--no-progress]
     gnost changes BASE[..HEAD] [path] [--depth N] [--format text|markdown|json] [--findings] [--no-cycles] [--no-write] [--fail-on-violations]
     gnost init [path] [--print] [--force] [--dry-run] [--pom] [--npm] [--github-action [--fork-comments]] [--agents]
@@ -145,7 +149,8 @@ Key Commands
 ------------
 
 ``summary``
-    Show a high-level project summary.
+    Show a high-level project summary. ``--git`` shows the languages as GitHub's language bar does
+    (bytes of committed files, without vendored, documentation or generated files).
 
 ``stats``
     Show detailed language statistics.
@@ -316,6 +321,15 @@ Options
 
 ``--inject``
     Inject onboarding link into README.md (onboard).
+
+``--3d``
+    Also write ``.gnost/flow-3d.html``, the 3D view of the flow (onboard). ``gnost open flow --3d`` opens it,
+    and builds it from ``.gnost/insights.json`` when it is missing.
+
+``--inject-mindmap``
+    Put the project map at the end of README.md (onboard). ``--mindmap-format gif`` writes a rotating 3D
+    image (``.gnost/mindmap.gif``, needs ``gnost[media]``) and ``mermaid`` a Mermaid block, instead of the
+    ``.gnost/mindmap.svg`` image.
 
 ``--layered``
     Produce Layered mermaid as Entry -> Core -> Leaf (onboard).

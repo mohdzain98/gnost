@@ -55,8 +55,8 @@ ruff's docstring rules) report more, so pick the threshold from your own first r
 .. note::
 
    **0.7.1 changed the score.** JS/TS/Java projects usually go up by 0.5 to 1.2, Python projects down by 0.8
-   to 1.3. If a job that passed with 0.7.0 now fails ``--fail-under``, run once and move the threshold, or set
-   ``[analyze] score = "average"`` to keep the old formula for now (it is removed in 0.8.0).
+   to 1.3. If a job that passed with 0.7.0 now fails ``--fail-under``, run once and move the threshold. The old
+   formula (``[analyze] score = "average"``) was removed in 0.8.0; the setting is now ignored with a warning.
 
 Only new findings: the baseline
 -------------------------------

@@ -120,6 +120,10 @@ used only if it is on your ``PATH``.
 ``gnost open`` writes a self-contained HTML page and opens it. The page works
 offline and can be sent as a file.
 
+The rotating project-map GIF (``onboard --inject-mindmap --mindmap-format gif``) needs Pillow, an optional
+extra: ``pip install "gnost[media]"`` or ``uvx --from "gnost[media]" gnost onboard .``. The binaries (npm,
+Maven) and the Docker image already include it.
+
 Binaries and security prompts
 -----------------------------
 

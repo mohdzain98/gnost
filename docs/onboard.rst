@@ -165,6 +165,9 @@ Options
   and when ``CI`` or ``GNOST_NO_PROGRESS`` is set. Everything goes to stderr, so stdout stays clean.
 - ``--progress``: show progress indicators.
 - ``--inject``: inject onboarding link into repository README.
+- ``--3d``: also write the 3D view of the flow (see `The 3D view`_).
+- ``--inject-mindmap``: put the project map at the end of the README (see `The project map in your README`_).
+  ``--mindmap-format gif`` writes a rotating 3D image, ``mermaid`` a Mermaid block.
 - ``--layered``: generate layered flow (Entry -> Core -> Leaf).
 - ``--depth N``: limit execution depth.
 - ``--json FILE``: write the insights JSON to ``FILE`` instead of ``.gnost/insights.json`` (which is always written).
@@ -295,13 +298,76 @@ explorer, whatever its size (``--view mermaid`` draws one flat Mermaid picture i
   without crossing other boxes. There is one arrow per box, ending at the box border (the number is how many imports it stands for); hover a file to see its own arrows. Green arrows go out of the folder, blue arrows come in.
 - **Click a file** (in the graph or in the file list on the right) to see just
   what it imports and what imports it. "Show everything" draws the whole graph.
+- **Mind map** shows the whole project as a tree: the project in the middle, folders as
+  branches and every file on the outer ring. Bigger dots are imported by more files; entry
+  points are green (with their imports drawn) and the most imported files amber. Folders deeper
+  than two levels, or with more than 40 files directly inside, start closed as one box with a file count: click
+  one to open or close it. Click a file to draw its imports (green) and importers (blue).
+
+  .. image:: ../assets/viewer_mindmap.png
+     :alt: The mind map of GNOST's own code, with graph.py clicked
+     :width: 100%
+
 - Circular imports stay red (at load time) or orange (closed by a deferred import).
 
 Use
 ``--view mermaid`` or ``--view graph`` to force one, ``--no-open`` to only write
 the HTML, and ``-o FILE`` to choose where it is saved. The page opens in a dark theme (a button switches to light, and the choice is
-remembered), and hovering anything fades everything not connected to it, and a line at the bottom describes it. The magnifier ``+`` / ``-`` buttons (or the mouse wheel) zoom, and ``Fit`` resets the view. The arrow button under them saves what is drawn as a PNG image. The page loads its
-libraries from a CDN, so it needs an internet connection.
+remembered), and hovering anything fades everything not connected to it, and a line at the bottom describes it. The magnifier ``+`` / ``-`` buttons (or the mouse wheel) zoom, and ``Fit`` resets the view. The arrow button under them saves what is drawn as a PNG image. The drawing
+libraries are bundled into the page, so it works offline.
+
+The 3D view
+-----------
+
+.. image:: ../assets/viewer_3d.png
+   :alt: The 3D view of GNOST's own code: folders as clusters, one file clicked with its imports and importers named
+   :width: 100%
+
+.. code-block:: bash
+
+   gnost onboard . --3d        # writes .gnost/flow-3d.html and adds a "3D view" button to the explorer
+   gnost open flow --3d        # opens it (and builds it from .gnost/insights.json if it is missing)
+
+The same import graph in 3D: every folder is a cluster, sub-folders sit next to their parent, and files are
+coloured by folder (entry points green). It turns slowly when it opens (untick "Rotate" to stop it). Drag to
+rotate, scroll to zoom, right-drag to pan.
+
+- **Click a file** to fly to it: it is drawn with what it imports (green arrows) and what imports it (blue),
+  with their names, and the card lists both (click a name to go there). "Hide files not connected to the
+  selection" leaves only those. Esc clears.
+- **Click a folder** in the panel to isolate it, search for a file, or show only circular imports
+  (orange: closed by a deferred import, red: at load time).
+- On large graphs (more than 2,500 imports) only the selected file's imports are drawn at first; tick
+  "Show every import" to draw all of them.
+- The page is larger than ``flow.html`` (about 1.5 MB on a small project) because it carries its 3D library,
+  so it is written only on request. It needs WebGL; without it the page points to the 2D explorer.
+
+The project map in your README
+------------------------------
+
+.. image:: ../assets/mindmap.svg
+   :alt: GNOST's own project map: folders as branches, files on the outer ring
+   :width: 100%
+
+.. code-block:: bash
+
+   gnost onboard . --inject-mindmap
+
+writes ``.gnost/mindmap.svg``, the mind map from the explorer as a static image, and adds it at the end of
+``README.md`` under a "Project map" heading. Folders are branches and files are leaves. Entry points are green,
+with lines to what they import, and the most imported files are amber. The image follows the reader's light or
+dark theme. Running it again replaces the block instead of adding a second one.
+
+- **Commit** ``.gnost/mindmap.svg`` **as well**, or GitHub cannot show the image.
+- Large projects stay readable: the deepest folders are closed (shown as one box with a file count) until at
+  most 300 leaves are left.
+- ``--mindmap-format gif`` writes ``.gnost/mindmap.gif`` instead: the same tree in 3D, turning once around
+  (one turn every 6.6 seconds, 600 pixels, about 1 to 2.5 MB, dark background). It is drawn by GNOST itself, the same image
+  every time for the same project. It needs Pillow: ``pip install "gnost[media]"`` (the binaries and Docker
+  image include it); without it GNOST says so and writes the SVG.
+- ``--mindmap-format mermaid`` writes the same tree as a Mermaid ``mindmap`` block inside the README instead.
+  GitHub draws it, so there is no image file to commit, but Mermaid uses its own layout and has no sizes or
+  colours (entry points are marked with a star).
 
 Publish the explorer on GitHub Pages
 ------------------------------------
@@ -371,7 +437,7 @@ to count the page; GNOST does not add it again.
 **Size.** The page holds the whole graph. On large projects it can be several MB, and GNOST warns from 5 MB:
 Pages allows it, but every committed update adds that much to the repository history.
 
-The page loads its drawing libraries from a CDN, like the local explorer.
+The drawing libraries are bundled into the page, like the local explorer, so it loads nothing from other sites.
 
 Folder overview, hovering a folder (the line at the bottom describes it):
 

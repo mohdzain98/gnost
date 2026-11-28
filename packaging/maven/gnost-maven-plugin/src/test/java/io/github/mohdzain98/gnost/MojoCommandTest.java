@@ -163,6 +163,23 @@ public class MojoCommandTest {
     }
 
     @Test
+    public void onboardCanPutTheProjectMapInTheReadme() {
+        OnboardMojo m = new OnboardMojo();
+        m.threeD = true;
+        m.injectMindmap = true;
+        m.mindmapFormat = "mermaid";
+        assertEquals(Arrays.asList("g", "onboard", ".", "--3d", "--inject-mindmap", "--mindmap-format", "mermaid"),
+                m.command("g"));
+    }
+
+    @Test
+    public void summaryCanCountLikeGitHub() {
+        SummaryMojo m = new SummaryMojo();
+        m.git = true;
+        assertEquals(Arrays.asList("g", "summary", ".", "--git"), m.command("g"));
+    }
+
+    @Test
     public void analyzeRepeatsTheLanguageOption() {
         AnalyzeMojo m = new AnalyzeMojo();
         m.language = "typescript, javascript";

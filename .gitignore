@@ -22,3 +22,6 @@ test-results/
 .codegraph/
 .claude/worktrees/
 dist-binary/
+
+# Local scratch: screenshots, test pages and tools from development sessions
+.cache/
